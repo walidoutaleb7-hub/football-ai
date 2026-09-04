@@ -23,7 +23,6 @@
 :root{
     --bg:#020711;
     --panel:rgba(13,25,43,.82);
-    --panel2:rgba(20,38,61,.72);
     --green:#19e68a;
     --green2:#00b968;
     --blue:#4d7cff;
@@ -161,7 +160,7 @@ button{
     font-size:8px;
 }
 
-/* MAIN HOME */
+/* HOME */
 
 .home{
     animation:fadeUp .7s ease both;
@@ -232,15 +231,11 @@ button{
     background:linear-gradient(135deg,#25ed94,#0cc576);
     box-shadow:0 12px 35px rgba(25,230,138,.22);
     transition:.2s;
-    position:relative;
-    overflow:hidden;
 }
 
 .play-main:active{
     transform:scale(.97);
 }
-
-/* QUICK STATS */
 
 .quick-stats{
     display:grid;
@@ -272,8 +267,6 @@ button{
     color:var(--muted);
     font-size:8px;
 }
-
-/* MENU */
 
 .menu-title{
     font-size:13px;
@@ -311,7 +304,7 @@ button{
     border-color:rgba(25,230,138,.28);
 }
 
-.menu-card .menu-icon{
+.menu-icon{
     width:39px;
     height:39px;
     display:flex;
@@ -391,7 +384,7 @@ button{
     font-size:9px;
 }
 
-/* MODE CARDS */
+/* MODES */
 
 .mode-list{
     display:grid;
@@ -410,6 +403,8 @@ button{
     background:linear-gradient(145deg,rgba(19,37,59,.85),rgba(7,16,28,.92));
     cursor:pointer;
     transition:.2s;
+    color:white;
+    text-align:right;
 }
 
 .mode-card:active{
@@ -442,6 +437,7 @@ button{
     color:var(--muted);
     font-size:9px;
     margin-top:3px;
+    line-height:1.6;
 }
 
 .mode-arrow{
@@ -449,8 +445,23 @@ button{
     font-size:16px;
 }
 
+.mode-card.rare{
+    border-color:rgba(155,108,255,.35);
+    background:
+        radial-gradient(circle at 10% 50%,rgba(155,108,255,.18),transparent 45%),
+        linear-gradient(145deg,rgba(35,27,67,.9),rgba(9,13,28,.95));
+}
+
+.mode-card.daily{
+    border-color:rgba(255,209,102,.25);
+}
+
+.mode-card.locked{
+    opacity:.7;
+}
+
 .mode-card.locked::after{
-    content:"👑";
+    content:"🔒";
     position:absolute;
     top:8px;
     left:9px;
@@ -582,6 +593,14 @@ button{
     transition:width .6s ease;
 }
 
+.next-level{
+    display:flex;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:8px;
+    margin-top:5px;
+}
+
 .profile-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -607,8 +626,6 @@ button{
     font-size:8px;
 }
 
-/* ACHIEVEMENTS */
-
 .achievements{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -627,6 +644,10 @@ button{
     font-size:23px;
     filter:grayscale(1);
     opacity:.35;
+}
+
+.achievement.unlocked{
+    border-color:rgba(25,230,138,.3);
 }
 
 .achievement.unlocked .a-icon{
@@ -993,6 +1014,41 @@ button{
     cursor:pointer;
 }
 
+/* RARE GAME */
+
+.rare-hint{
+    padding:13px;
+    margin-bottom:10px;
+    text-align:center;
+    border-radius:16px;
+    background:rgba(155,108,255,.09);
+    border:1px solid rgba(155,108,255,.22);
+}
+
+.rare-hint-title{
+    color:#b99aff;
+    font-size:9px;
+    font-weight:900;
+}
+
+.rare-hint-text{
+    margin-top:4px;
+    font-size:12px;
+    font-weight:800;
+}
+
+.hint-button{
+    width:100%;
+    margin-top:8px;
+    padding:10px;
+    border-radius:12px;
+    color:white;
+    background:rgba(155,108,255,.14);
+    border:1px solid rgba(155,108,255,.22);
+    font-size:9px;
+    font-weight:800;
+}
+
 /* END */
 
 .end-screen{
@@ -1063,7 +1119,7 @@ button{
     cursor:pointer;
 }
 
-/* NAVIGATION */
+/* NAV */
 
 .bottom-nav{
     position:fixed;
@@ -1169,7 +1225,7 @@ button{
 </header>
 
 
-<!-- ================= HOME ================= -->
+<!-- HOME -->
 
 <section id="homePage" class="home">
 
@@ -1185,8 +1241,8 @@ button{
         </h2>
 
         <p>
-            اختبر معلوماتك، اجمع نقاط الخبرة،
-            وارتقِ بمستواك لتصبح من نخبة اللاعبين.
+            50 سؤالًا في الوضع الكلاسيكي،
+            مستويات متقدمة وتحديات نادرة.
         </p>
 
         <button class="play-main" onclick="startGame()">
@@ -1194,7 +1250,6 @@ button{
         </button>
 
     </div>
-
 
     <div class="quick-stats">
 
@@ -1218,7 +1273,6 @@ button{
 
     </div>
 
-
     <div class="menu-title">
         ⚡ مركز اللعبة
     </div>
@@ -1228,19 +1282,19 @@ button{
         <button class="menu-card" onclick="showPage('modesPage')">
             <div class="menu-icon">🕹️</div>
             <strong>أوضاع اللعبة</strong>
-            <span>اختر طريقة لعبك</span>
+            <span>تحديات متعددة</span>
         </button>
 
         <button class="menu-card premium" onclick="showPage('premiumPage')">
             <div class="menu-icon">👑</div>
             <strong>Premium</strong>
-            <span>مزايا حصرية للاعبين</span>
+            <span>مزايا حصرية</span>
         </button>
 
         <button class="menu-card" onclick="showPage('profilePage')">
             <div class="menu-icon">👤</div>
             <strong>الملف الشخصي</strong>
-            <span>تقدمك وإنجازاتك</span>
+            <span>مستواك وإنجازاتك</span>
         </button>
 
         <button class="menu-card" onclick="showPage('settingsPage')">
@@ -1254,7 +1308,7 @@ button{
 </section>
 
 
-<!-- ================= MODES ================= -->
+<!-- MODES -->
 
 <section id="modesPage" class="page hidden">
 
@@ -1262,7 +1316,7 @@ button{
         <button class="back-btn" onclick="showPage('homePage')">→</button>
         <div>
             <div class="page-title">أوضاع اللعبة</div>
-            <div class="page-subtitle">اختر التحدي المناسب لك</div>
+            <div class="page-subtitle">كلما ارتفع مستواك فتحت تحديات أقوى</div>
         </div>
     </div>
 
@@ -1272,7 +1326,7 @@ button{
             <div class="mode-icon">⚽</div>
             <div class="mode-info">
                 <strong>الوضع الكلاسيكي</strong>
-                <p>10 أسئلة، 15 ثانية لكل سؤال.</p>
+                <p>50 سؤالًا — 15 ثانية لكل سؤال.</p>
             </div>
             <div class="mode-arrow">‹</div>
         </button>
@@ -1281,7 +1335,7 @@ button{
             <div class="mode-icon">⚡</div>
             <div class="mode-info">
                 <strong>ضد الوقت</strong>
-                <p>أجب بأسرع ما يمكنك واجمع أكبر عدد من النقاط.</p>
+                <p>30 سؤالًا — 10 ثوانٍ لكل لاعب.</p>
             </div>
             <div class="mode-arrow">‹</div>
         </button>
@@ -1290,16 +1344,25 @@ button{
             <div class="mode-icon">🔥</div>
             <div class="mode-info">
                 <strong>سلسلة الانتصارات</strong>
-                <p>حافظ على إجاباتك الصحيحة لأطول فترة ممكنة.</p>
+                <p>استمر حتى تخطئ. سجّل أطول سلسلة ممكنة.</p>
             </div>
             <div class="mode-arrow">‹</div>
         </button>
 
-        <button class="mode-card locked" onclick="premiumNotice()">
+        <button class="mode-card daily" onclick="selectMode('daily')">
             <div class="mode-icon">📅</div>
             <div class="mode-info">
                 <strong>التحدي اليومي</strong>
-                <p>تحدٍّ خاص يتجدد كل يوم.</p>
+                <p>20 سؤالًا يتغير تحديها كل يوم.</p>
+            </div>
+            <div class="mode-arrow">‹</div>
+        </button>
+
+        <button class="mode-card rare" onclick="selectMode('rare')">
+            <div class="mode-icon">🕵️</div>
+            <div class="mode-info">
+                <strong>اللعبة النادرة</strong>
+                <p>تلميحات غامضة للاعبين المميزين — مكافآت XP مضاعفة.</p>
             </div>
             <div class="mode-arrow">‹</div>
         </button>
@@ -1309,7 +1372,7 @@ button{
 </section>
 
 
-<!-- ================= PREMIUM ================= -->
+<!-- PREMIUM -->
 
 <section id="premiumPage" class="page hidden">
 
@@ -1317,7 +1380,7 @@ button{
         <button class="back-btn" onclick="showPage('homePage')">→</button>
         <div>
             <div class="page-title">Premium</div>
-            <div class="page-subtitle">ارتقِ بتجربتك إلى المستوى التالي</div>
+            <div class="page-subtitle">ارتقِ بتجربتك</div>
         </div>
     </div>
 
@@ -1334,30 +1397,11 @@ button{
 
         <div class="features">
 
-            <div class="feature">
-                <b>✓</b>
-                إزالة الإعلانات
-            </div>
-
-            <div class="feature">
-                <b>✓</b>
-                تلميحات إضافية
-            </div>
-
-            <div class="feature">
-                <b>✓</b>
-                أوضاع لعب حصرية
-            </div>
-
-            <div class="feature">
-                <b>✓</b>
-                إحصائيات متقدمة
-            </div>
-
-            <div class="feature">
-                <b>✓</b>
-                شارات Premium خاصة
-            </div>
+            <div class="feature"><b>✓</b> إزالة الإعلانات</div>
+            <div class="feature"><b>✓</b> تلميحات إضافية</div>
+            <div class="feature"><b>✓</b> أوضاع حصرية</div>
+            <div class="feature"><b>✓</b> إحصائيات متقدمة</div>
+            <div class="feature"><b>✓</b> شارات خاصة</div>
 
         </div>
 
@@ -1370,7 +1414,7 @@ button{
 </section>
 
 
-<!-- ================= PROFILE ================= -->
+<!-- PROFILE -->
 
 <section id="profilePage" class="page hidden">
 
@@ -1402,10 +1446,14 @@ button{
                     <div id="levelProgress"></div>
                 </div>
 
+                <div class="next-level">
+                    <span id="levelXP">0 / 100 XP</span>
+                    <span>المستوى التالي</span>
+                </div>
+
             </div>
 
         </div>
-
 
         <div class="profile-grid">
 
@@ -1432,7 +1480,6 @@ button{
         </div>
 
     </div>
-
 
     <div class="menu-title">
         🏅 الإنجازات
@@ -1464,12 +1511,24 @@ button{
             <span>العب 10 مباريات</span>
         </div>
 
+        <div class="achievement" id="achievementLevel">
+            <div class="a-icon">👑</div>
+            <strong>الأسطورة</strong>
+            <span>الوصول إلى المستوى 10</span>
+        </div>
+
+        <div class="achievement" id="achievementRare">
+            <div class="a-icon">🕵️</div>
+            <strong>الصياد النادر</strong>
+            <span>أكمل تحديًا نادرًا</span>
+        </div>
+
     </div>
 
 </section>
 
 
-<!-- ================= SETTINGS ================= -->
+<!-- SETTINGS -->
 
 <section id="settingsPage" class="page hidden">
 
@@ -1477,14 +1536,13 @@ button{
         <button class="back-btn" onclick="showPage('homePage')">→</button>
         <div>
             <div class="page-title">الإعدادات</div>
-            <div class="page-subtitle">خصص تجربتك داخل اللعبة</div>
+            <div class="page-subtitle">خصص تجربتك</div>
         </div>
     </div>
 
     <div class="settings">
 
         <div class="setting">
-
             <div class="setting-info">
                 <div class="setting-icon">🔊</div>
                 <div>
@@ -1496,12 +1554,9 @@ button{
             <div id="soundSwitch"
                  class="switch active"
                  onclick="toggleSetting('sound')"></div>
-
         </div>
 
-
         <div class="setting">
-
             <div class="setting-info">
                 <div class="setting-icon">📳</div>
                 <div>
@@ -1513,12 +1568,9 @@ button{
             <div id="vibrationSwitch"
                  class="switch active"
                  onclick="toggleSetting('vibration')"></div>
-
         </div>
 
-
         <div class="setting">
-
             <div class="setting-info">
                 <div class="setting-icon">✨</div>
                 <div>
@@ -1530,7 +1582,6 @@ button{
             <div id="animationSwitch"
                  class="switch active"
                  onclick="toggleSetting('animation')"></div>
-
         </div>
 
     </div>
@@ -1538,7 +1589,7 @@ button{
 </section>
 
 
-<!-- ================= GAME ================= -->
+<!-- GAME -->
 
 <section id="gameScreen" class="game-screen hidden">
 
@@ -1561,7 +1612,6 @@ button{
 
     </div>
 
-
     <div class="game-card">
 
         <div class="question-header">
@@ -1569,15 +1619,14 @@ button{
             <div class="question-number">
                 السؤال
                 <span id="questionNumber">1</span>
-                من 10
+                <span id="totalQuestionsLabel">من 50</span>
             </div>
 
             <div class="difficulty" id="difficultyLabel">
-                ⚡ تحدٍّ سريع
+                ⚽ كلاسيكي
             </div>
 
         </div>
-
 
         <div class="timer-area">
 
@@ -1592,6 +1641,21 @@ button{
 
         </div>
 
+        <div id="rareHintArea" class="rare-hint hidden">
+
+            <div class="rare-hint-title">
+                🕵️ تلميح اللاعب المجهول
+            </div>
+
+            <div id="rareHintText" class="rare-hint-text">
+                فكّر جيدًا...
+            </div>
+
+            <button class="hint-button" onclick="useRareHint()">
+                💡 كشف تلميح إضافي
+            </button>
+
+        </div>
 
         <div id="playerArea" class="player-area">
 
@@ -1607,16 +1671,13 @@ button{
 
         </div>
 
-
         <div class="question-title">
             من هو هذا اللاعب؟
         </div>
 
-
         <div id="options" class="options"></div>
 
         <div id="result" class="result"></div>
-
 
         <div class="actions">
 
@@ -1635,16 +1696,16 @@ button{
 </section>
 
 
-<!-- ================= END ================= -->
+<!-- END -->
 
 <section id="endScreen" class="end-screen hidden">
 
     <div class="trophy">🏆</div>
 
-    <h2>انتهى التحدي!</h2>
+    <h2 id="endTitle">انتهى التحدي!</h2>
 
     <div id="finalScore" class="final-score">
-        0 / 10
+        0 / 50
     </div>
 
     <div id="percentage" class="percentage">
@@ -1680,7 +1741,7 @@ button{
 </div>
 
 
-<!-- ================= BOTTOM NAV ================= -->
+<!-- NAV -->
 
 <nav class="bottom-nav">
 
@@ -1725,17 +1786,20 @@ button{
 <script>
 
 /* ==========================================
-   بيانات اللاعب
+   بيانات اللعبة
 ========================================== */
 
 let players = [];
+let questionPool = [];
 
 let currentQuestion = 0;
 let score = 0;
-let streak = 0;
-let bestStreak = 0;
-let xp = 0;
 
+let streak = 0;
+let gameBestStreak = 0;
+let bestStreak = 0;
+
+let xp = 0;
 let totalGames = 0;
 let totalCorrect = 0;
 
@@ -1744,28 +1808,42 @@ let timer = null;
 let timeLeft = 15;
 
 let gameMode = "classic";
-
-const QUESTIONS_PER_GAME = 10;
+let QUESTIONS_PER_GAME = 50;
 
 
 /* ==========================================
-   التخزين
+   التخزين الآمن
 ========================================== */
 
-let savedData = JSON.parse(
-    localStorage.getItem("footballQuizData") || "{}"
-);
+let savedData = {};
 
-xp = savedData.xp || 0;
-totalGames = savedData.games || 0;
-totalCorrect = savedData.correct || 0;
-bestStreak = savedData.bestStreak || 0;
+try{
 
-let settings = savedData.settings || {
+    savedData =
+        JSON.parse(
+            localStorage.getItem("footballQuizData") || "{}"
+        );
+
+}catch(error){
+
+    savedData = {};
+
+}
+
+xp = Number(savedData.xp) || 0;
+totalGames = Number(savedData.games) || 0;
+totalCorrect = Number(savedData.correct) || 0;
+bestStreak = Number(savedData.bestStreak) || 0;
+
+let settings = {
     sound:true,
     vibration:true,
-    animation:true
+    animation:true,
+    ...(savedData.settings || {})
 };
+
+let rareGamesPlayed =
+    Number(savedData.rareGamesPlayed) || 0;
 
 
 function saveData(){
@@ -1773,13 +1851,33 @@ function saveData(){
     localStorage.setItem(
         "footballQuizData",
         JSON.stringify({
+
             xp:xp,
             games:totalGames,
             correct:totalCorrect,
             bestStreak:bestStreak,
+            rareGamesPlayed:rareGamesPlayed,
             settings:settings
+
         })
     );
+}
+
+
+/* ==========================================
+   المستوى
+========================================== */
+
+function getLevel(){
+
+    return Math.floor(xp / 100) + 1;
+
+}
+
+function getLevelXP(){
+
+    return xp % 100;
+
 }
 
 
@@ -1801,10 +1899,11 @@ function showPage(pageId){
         document.getElementById(pageId);
 
     if(page){
+
         page.classList.remove("hidden");
-        page.classList.remove("page");
-        void page.offsetWidth;
-        page.classList.add("page");
+
+        updateProfile();
+
     }
 
     document.querySelectorAll(".nav-btn")
@@ -1817,7 +1916,6 @@ function showPage(pageId){
 
         });
 
-    updateProfile();
 }
 
 
@@ -1836,6 +1934,7 @@ function goHome(){
         .classList.add("hidden");
 
     showPage("homePage");
+
 }
 
 
@@ -1848,18 +1947,42 @@ function selectMode(mode){
     gameMode = mode;
 
     if(mode === "classic"){
+
+        QUESTIONS_PER_GAME = 50;
         timeLeft = 15;
+
     }
 
-    if(mode === "speed"){
+    else if(mode === "speed"){
+
+        QUESTIONS_PER_GAME = 30;
         timeLeft = 10;
+
     }
 
-    if(mode === "streak"){
+    else if(mode === "streak"){
+
+        QUESTIONS_PER_GAME = 100;
         timeLeft = 12;
+
+    }
+
+    else if(mode === "daily"){
+
+        QUESTIONS_PER_GAME = 20;
+        timeLeft = 15;
+
+    }
+
+    else if(mode === "rare"){
+
+        QUESTIONS_PER_GAME = 20;
+        timeLeft = 20;
+
     }
 
     startGame();
+
 }
 
 
@@ -1875,7 +1998,11 @@ async function loadPlayers(){
             await fetch("popular_players.json");
 
         if(!response.ok){
-            throw new Error("تعذر تحميل البيانات");
+
+            throw new Error(
+                "تعذر تحميل بيانات اللاعبين"
+            );
+
         }
 
         const data =
@@ -1885,40 +2012,127 @@ async function loadPlayers(){
             !Array.isArray(data) ||
             data.length < 4
         ){
-            throw new Error("بيانات اللاعبين غير كافية");
+
+            throw new Error(
+                "ملف اللاعبين فارغ أو غير كافٍ"
+            );
+
         }
 
-        players = data;
+        players =
+            data.filter(
+                player =>
+                    player &&
+                    player.name &&
+                    typeof player.name === "string"
+            );
+
+        if(players.length < 4){
+
+            throw new Error(
+                "عدد اللاعبين أقل من 4"
+            );
+
+        }
+
+        console.log(
+            "تم تحميل اللاعبين:",
+            players.length
+        );
 
     }catch(error){
 
         console.error(error);
 
-        document.getElementById("homePage").innerHTML = `
+        const hero =
+            document.querySelector(".hero");
 
-            <div class="hero" style="text-align:center">
+        if(hero){
 
-                <div style="font-size:50px">⚠️</div>
+            hero.innerHTML = `
 
-                <h2>تعذر تشغيل اللعبة</h2>
+                <div style="text-align:center">
 
-                <p>
-                    لم نتمكن من تحميل بيانات اللاعبين.
-                    <br>
-                    تأكد من وجود الملف:
-                    <br><br>
-                    <b>popular_players.json</b>
-                </p>
+                    <div style="font-size:50px">
+                        ⚠️
+                    </div>
 
-                <button
-                    class="play-main"
-                    onclick="location.reload()">
-                    🔄 إعادة المحاولة
-                </button>
+                    <h2>
+                        بيانات اللاعبين غير موجودة
+                    </h2>
 
-            </div>
-        `;
+                    <p>
+                        أضف اللاعبين إلى:
+                        <br>
+                        <b>popular_players.json</b>
+                        <br><br>
+                        ثم أعد تشغيل التطبيق.
+                    </p>
+
+                    <button
+                        class="play-main"
+                        onclick="location.reload()">
+                        🔄 إعادة المحاولة
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
     }
+
+}
+
+
+/* ==========================================
+   إنشاء مجموعة الأسئلة
+========================================== */
+
+function buildQuestionPool(){
+
+    if(players.length < 4){
+
+        questionPool = [];
+        return;
+
+    }
+
+    let shuffled =
+        [...players];
+
+    shuffle(shuffled);
+
+    /*
+       إذا كان عدد اللاعبين أقل من عدد الأسئلة،
+       نعيد تدوير اللاعبين بطريقة عشوائية.
+    */
+
+    questionPool = [];
+
+    for(
+        let i = 0;
+        i < QUESTIONS_PER_GAME;
+        i++
+    ){
+
+        questionPool.push(
+            shuffled[i % shuffled.length]
+        );
+
+        if(
+            (i + 1) % shuffled.length === 0
+        ){
+
+            shuffled = [...players];
+
+            shuffle(shuffled);
+
+        }
+
+    }
+
 }
 
 
@@ -1935,53 +2149,72 @@ function startGame(){
         );
 
         return;
+
     }
+
+    clearInterval(timer);
 
     currentQuestion = 0;
     score = 0;
     streak = 0;
-    bestStreak = 0;
+    gameBestStreak = 0;
     isAnswered = false;
 
     if(gameMode === "classic"){
+
+        QUESTIONS_PER_GAME = 50;
         timeLeft = 15;
+
     }
 
-    if(gameMode === "speed"){
+    else if(gameMode === "speed"){
+
+        QUESTIONS_PER_GAME = 30;
         timeLeft = 10;
+
     }
 
-    if(gameMode === "streak"){
+    else if(gameMode === "streak"){
+
+        QUESTIONS_PER_GAME = 100;
         timeLeft = 12;
+
     }
 
-    document.getElementById("homePage")
-        .classList.add("hidden");
+    else if(gameMode === "daily"){
 
-    document.getElementById("modesPage")
-        .classList.add("hidden");
+        QUESTIONS_PER_GAME = 20;
+        timeLeft = 15;
 
-    document.getElementById("premiumPage")
-        .classList.add("hidden");
+    }
 
-    document.getElementById("profilePage")
-        .classList.add("hidden");
+    else if(gameMode === "rare"){
 
-    document.getElementById("settingsPage")
-        .classList.add("hidden");
+        QUESTIONS_PER_GAME = 20;
+        timeLeft = 20;
 
-    document.getElementById("endScreen")
-        .classList.add("hidden");
+    }
+
+    buildQuestionPool();
+
+    document.querySelectorAll(
+        ".home,.page,.game-screen,.end-screen"
+    ).forEach(
+        element => element.classList.add("hidden")
+    );
 
     document.getElementById("gameScreen")
         .classList.remove("hidden");
 
     document.querySelectorAll(".nav-btn")
-        .forEach(btn => btn.classList.remove("active"));
+        .forEach(
+            btn => btn.classList.remove("active")
+        );
 
     updateStats();
 
     loadQuestion();
+
 }
 
 
@@ -1994,43 +2227,89 @@ function loadQuestion(){
     clearInterval(timer);
 
     if(
-        currentQuestion >= QUESTIONS_PER_GAME ||
-        currentQuestion >= players.length
+        currentQuestion >= questionPool.length
     ){
 
         endGame();
         return;
+
     }
 
     isAnswered = false;
 
     if(gameMode === "classic"){
+
         timeLeft = 15;
+
     }
 
-    if(gameMode === "speed"){
+    else if(gameMode === "speed"){
+
         timeLeft = 10;
+
     }
 
-    if(gameMode === "streak"){
+    else if(gameMode === "streak"){
+
         timeLeft = 12;
+
+    }
+
+    else if(gameMode === "daily"){
+
+        timeLeft = 15;
+
+    }
+
+    else if(gameMode === "rare"){
+
+        timeLeft = 20;
+
     }
 
     updateTimer();
 
     document.getElementById("questionNumber")
-        .textContent = currentQuestion + 1;
+        .textContent =
+            currentQuestion + 1;
 
     document.getElementById("questionCounter")
-        .textContent = currentQuestion + 1;
+        .textContent =
+            currentQuestion + 1;
+
+    document.getElementById("totalQuestionsLabel")
+        .textContent =
+            "من " + questionPool.length;
+
+    let difficultyText = "⚽ كلاسيكي";
+
+    if(gameMode === "speed"){
+
+        difficultyText = "⚡ ضد الوقت";
+
+    }
+
+    else if(gameMode === "streak"){
+
+        difficultyText = "🔥 سلسلة";
+
+    }
+
+    else if(gameMode === "daily"){
+
+        difficultyText = "📅 يومي";
+
+    }
+
+    else if(gameMode === "rare"){
+
+        difficultyText = "🕵️ نادر";
+
+    }
 
     document.getElementById("difficultyLabel")
         .textContent =
-            gameMode === "speed"
-            ? "⚡ ضد الوقت"
-            : gameMode === "streak"
-            ? "🔥 سلسلة"
-            : "⚽ كلاسيكي";
+            difficultyText;
 
     const result =
         document.getElementById("result");
@@ -2038,8 +2317,30 @@ function loadQuestion(){
     result.className = "result";
     result.textContent = "";
 
+    const rareArea =
+        document.getElementById("rareHintArea");
+
+    if(gameMode === "rare"){
+
+        rareArea.classList.remove("hidden");
+
+        document.getElementById("rareHintText")
+            .textContent =
+                getRareHint(
+                    questionPool[currentQuestion],
+                    0
+                );
+
+        rareHintLevel = 0;
+
+    }else{
+
+        rareArea.classList.add("hidden");
+
+    }
+
     const player =
-        players[currentQuestion];
+        questionPool[currentQuestion];
 
     const playerArea =
         document.getElementById("playerArea");
@@ -2063,36 +2364,65 @@ function loadQuestion(){
         const image =
             document.createElement("img");
 
-        image.src = player.image;
-        image.alt = "لاعب كرة قدم";
+        image.src =
+            player.image;
 
-        image.onload = function(){
+        image.alt =
+            "لاعب كرة قدم";
 
-            const loading =
-                playerArea.querySelector(".loading");
+        image.onload =
+            function(){
 
-            if(loading){
-                loading.remove();
-            }
-        };
+                const loading =
+                    playerArea.querySelector(
+                        ".loading"
+                    );
 
-        image.onerror = function(){
+                if(loading){
+                    loading.remove();
+                }
 
-            const loading =
-                playerArea.querySelector(".loading");
+            };
 
-            if(loading){
-                loading.textContent =
-                    "تعذر تحميل الصورة";
-            }
-        };
+        image.onerror =
+            function(){
+
+                const loading =
+                    playerArea.querySelector(
+                        ".loading"
+                    );
+
+                if(loading){
+
+                    loading.textContent =
+                        "تعذر تحميل الصورة";
+
+                }
+
+            };
 
         playerArea.prepend(image);
+
+    }else{
+
+        const loading =
+            playerArea.querySelector(
+                ".loading"
+            );
+
+        if(loading){
+
+            loading.textContent =
+                "لا توجد صورة لهذا اللاعب";
+
+        }
+
     }
 
     createOptions(player);
 
     startTimer();
+
 }
 
 
@@ -2102,7 +2432,8 @@ function loadQuestion(){
 
 function createOptions(player){
 
-    let choices = [player.name];
+    let choices =
+        [player.name];
 
     let others =
         players.filter(
@@ -2114,15 +2445,24 @@ function createOptions(player){
     shuffle(others);
 
     for(
-        let i=0;
-        i<others.length &&
-        choices.length<4;
+        let i = 0;
+        i < others.length &&
+        choices.length < 4;
         i++
     ){
 
-        if(!choices.includes(others[i].name)){
-            choices.push(others[i].name);
+        if(
+            !choices.includes(
+                others[i].name
+            )
+        ){
+
+            choices.push(
+                others[i].name
+            );
+
         }
+
     }
 
     shuffle(choices);
@@ -2144,8 +2484,11 @@ function createOptions(player){
             const button =
                 document.createElement("button");
 
-            button.className = "option";
-            button.textContent = choice;
+            button.className =
+                "option";
+
+            button.textContent =
+                choice;
 
             button.onclick =
                 function(){
@@ -2155,11 +2498,14 @@ function createOptions(player){
                         choice,
                         player.name
                     );
+
                 };
 
             options.appendChild(button);
+
         }
     );
+
 }
 
 
@@ -2180,10 +2526,13 @@ function checkAnswer(
     clearInterval(timer);
 
     const buttons =
-        document.querySelectorAll(".option");
+        document.querySelectorAll(
+            ".option"
+        );
 
     buttons.forEach(
-        button => button.disabled = true
+        button =>
+            button.disabled = true
     );
 
     const result =
@@ -2191,23 +2540,47 @@ function checkAnswer(
 
     if(answer === correctAnswer){
 
-        score += 10;
+        let points = 10;
+        let gainedXP = 10;
 
-        xp += 10;
+        if(gameMode === "rare"){
+
+            points = 20;
+            gainedXP = 25;
+
+        }
+
+        score += points;
+
+        xp += gainedXP;
 
         totalCorrect++;
 
         streak++;
 
+        if(streak > gameBestStreak){
+
+            gameBestStreak =
+                streak;
+
+        }
+
         if(streak > bestStreak){
-            bestStreak = streak;
+
+            bestStreak =
+                streak;
+
         }
 
         buttons[index]
             .classList.add("correct");
 
         result.textContent =
-            "✓ إجابة صحيحة! +10 نقاط";
+            "✓ إجابة صحيحة! +" +
+            points +
+            " نقاط • +" +
+            gainedXP +
+            " XP";
 
         result.className =
             "result show correct-result";
@@ -2222,9 +2595,11 @@ function checkAnswer(
             .classList.add("wrong");
 
         if(buttons[window.correctIndex]){
+
             buttons[
                 window.correctIndex
             ].classList.add("correct");
+
         }
 
         result.textContent =
@@ -2235,6 +2610,26 @@ function checkAnswer(
             "result show wrong-result";
 
         vibrate(80);
+
+        /*
+           في وضع السلسلة:
+           الخطأ ينهي التحدي مباشرة.
+        */
+
+        if(gameMode === "streak"){
+
+            saveData();
+            updateStats();
+
+            setTimeout(
+                () => endGame(),
+                1500
+            );
+
+            return;
+
+        }
+
     }
 
     saveData();
@@ -2250,6 +2645,7 @@ function checkAnswer(
         },
         1500
     );
+
 }
 
 
@@ -2267,384 +2663,4 @@ function startTimer(){
 
                 timeLeft--;
 
-                updateTimer();
-
-                if(timeLeft <= 0){
-
-                    clearInterval(timer);
-
-                    timeOut();
-                }
-
-            },
-            1000
-        );
-}
-
-
-function updateTimer(){
-
-    const maxTime =
-        gameMode === "speed"
-        ? 10
-        : gameMode === "streak"
-        ? 12
-        : 15;
-
-    const bar =
-        document.getElementById("timerBar");
-
-    const number =
-        document.getElementById("timerNumber");
-
-    const percentage =
-        Math.max(
-            0,
-            (timeLeft / maxTime) * 100
-        );
-
-    bar.style.width =
-        percentage + "%";
-
-    number.textContent =
-        timeLeft;
-
-    if(timeLeft <= 5){
-        bar.classList.add("warning");
-    }else{
-        bar.classList.remove("warning");
-    }
-}
-
-
-/* ==========================================
-   انتهاء الوقت
-========================================== */
-
-function timeOut(){
-
-    if(isAnswered) return;
-
-    isAnswered = true;
-
-    const buttons =
-        document.querySelectorAll(".option");
-
-    buttons.forEach(
-        button => button.disabled = true
-    );
-
-    if(buttons[window.correctIndex]){
-        buttons[
-            window.correctIndex
-        ].classList.add("correct");
-    }
-
-    streak = 0;
-
-    const result =
-        document.getElementById("result");
-
-    result.textContent =
-        "⏰ انتهى الوقت! الإجابة الصحيحة: " +
-        window.correctAnswer;
-
-    result.className =
-        "result show wrong-result";
-
-    vibrate(100);
-
-    updateStats();
-
-    setTimeout(
-        () => {
-
-            currentQuestion++;
-
-            loadQuestion();
-
-        },
-        1500
-    );
-}
-
-
-/* ==========================================
-   تخطي
-========================================== */
-
-function skipQuestion(){
-
-    if(isAnswered) return;
-
-    clearInterval(timer);
-
-    streak = 0;
-
-    currentQuestion++;
-
-    loadQuestion();
-}
-
-
-/* ==========================================
-   نهاية اللعبة
-========================================== */
-
-function endGame(){
-
-    clearInterval(timer);
-
-    totalGames++;
-
-    saveData();
-
-    document.getElementById("gameScreen")
-        .classList.add("hidden");
-
-    document.getElementById("endScreen")
-        .classList.remove("hidden");
-
-    const total =
-        Math.min(
-            QUESTIONS_PER_GAME,
-            players.length
-        );
-
-    const correct =
-        score / 10;
-
-    const percentage =
-        total > 0
-        ? Math.round(
-            (correct / total) * 100
-        )
-        : 0;
-
-    document.getElementById("finalScore")
-        .textContent =
-            correct + " / " + total;
-
-    document.getElementById("percentage")
-        .textContent =
-            percentage + "%";
-
-    document.getElementById("finalXP")
-        .textContent =
-            score;
-
-    document.getElementById("finalStreak")
-        .textContent =
-            bestStreak + " 🔥";
-
-    updateProfile();
-}
-
-
-/* ==========================================
-   الإحصائيات
-========================================== */
-
-function updateStats(){
-
-    document.getElementById("score")
-        .textContent = score;
-
-    document.getElementById("streak")
-        .textContent = streak + " 🔥";
-
-    document.getElementById("topXP")
-        .textContent = xp + " XP";
-
-    document.getElementById("homeScore")
-        .textContent = xp;
-
-    document.getElementById("homeStreak")
-        .textContent = bestStreak;
-
-    document.getElementById("homeGames")
-        .textContent = totalGames;
-}
-
-
-/* ==========================================
-   الملف الشخصي
-========================================== */
-
-function updateProfile(){
-
-    document.getElementById("profileXP")
-        .textContent = xp;
-
-    document.getElementById("profileScore")
-        .textContent = xp;
-
-    document.getElementById("profileGames")
-        .textContent = totalGames;
-
-    document.getElementById("profileCorrect")
-        .textContent = totalCorrect;
-
-    const level =
-        Math.floor(xp / 100) + 1;
-
-    const currentLevelXP =
-        xp % 100;
-
-    document.getElementById("profileLevel")
-        .textContent = level;
-
-    document.getElementById("levelProgress")
-        .style.width =
-            currentLevelXP + "%";
-
-
-    document.getElementById(
-        "achievementFirst"
-    ).classList.toggle(
-        "unlocked",
-        totalCorrect >= 1
-    );
-
-    document.getElementById(
-        "achievementTen"
-    ).classList.toggle(
-        "unlocked",
-        totalCorrect >= 10
-    );
-
-    document.getElementById(
-        "achievementStreak"
-    ).classList.toggle(
-        "unlocked",
-        bestStreak >= 5
-    );
-
-    document.getElementById(
-        "achievementGames"
-    ).classList.toggle(
-        "unlocked",
-        totalGames >= 10
-    );
-
-    updateStats();
-}
-
-
-/* ==========================================
-   الإعدادات
-========================================== */
-
-function toggleSetting(name){
-
-    settings[name] =
-        !settings[name];
-
-    saveData();
-
-    updateSettingUI();
-}
-
-
-function updateSettingUI(){
-
-    document.getElementById("soundSwitch")
-        .classList.toggle(
-            "active",
-            settings.sound
-        );
-
-    document.getElementById("vibrationSwitch")
-        .classList.toggle(
-            "active",
-            settings.vibration
-        );
-
-    document.getElementById("animationSwitch")
-        .classList.toggle(
-            "active",
-            settings.animation
-        );
-}
-
-
-/* ==========================================
-   الاهتزاز
-========================================== */
-
-function vibrate(ms){
-
-    if(
-        settings.vibration &&
-        navigator.vibrate
-    ){
-        navigator.vibrate(ms);
-    }
-}
-
-
-/* ==========================================
-   Premium
-========================================== */
-
-function premiumNotice(){
-
-    alert(
-        "👑 Premium قادم قريبًا!\n\n" +
-        "ستتوفر المزايا الحصرية في إصدار قادم."
-    );
-}
-
-
-/* ==========================================
-   الخلط
-========================================== */
-
-function shuffle(array){
-
-    for(
-        let i=array.length-1;
-        i>0;
-        i--
-    ){
-
-        const j =
-            Math.floor(
-                Math.random() * (i+1)
-            );
-
-        [
-            array[i],
-            array[j]
-        ] =
-        [
-            array[j],
-            array[i]
-        ];
-    }
-
-    return array;
-}
-
-
-/* ==========================================
-   التشغيل
-========================================== */
-
-window.addEventListener(
-    "load",
-    () => {
-
-        loadPlayers();
-
-        updateProfile();
-
-        updateSettingUI();
-
-    }
-);
-
-</script>
-
-</body>
-</html>
+                upda
