@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مين اللاعب؟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .game-section {
+            margin-bottom: 25px;
+        }
+
+        .player-image {
+            width: 100%;
+            height: 300px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #999;
+            overflow: hidden;
+        }
+
+        .player-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: #667eea;
+            color: white;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .result.correct {
+            background: #4caf50;
+            color: white;
+            display: block;
+        }
+
+        .result.incorrect {
+            background: #f44336;
+            color: white;
+            display: block;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff9800;
+            margin-top: 20px;
+        }
+
+        .reset-btn:hover {
+            background: #e68900;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>مين اللاعب؟</h1>
+        <div class="score">الدرجة: <span id="score">0</span> / <span id="total">0</span></div>
+
+        <div class="game-section">
+            <div class="player-image" id="playerImage">
+                جاري تحميل اللعبة...
+            </div>
+
+            <div class="options" id="options">
+                <button onclick="checkAnswer(1)">الخيار 1</button>
+                <button onclick="checkAnswer(2)">الخيار 2</button>
+                <button onclick="checkAnswer(3)">الخيار 3</button>
+                <button onclick="checkAnswer(4)">الخيار 4</button>
+            </div>
+
+            <div class="result" id="result"></div>
+        </div>
+
+        <button class="reset-btn" onclick="resetGame()">لعبة جديدة</button>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+        let players = [];
+        let isAnswered = false;
+
+        // تحميل البيانات من ملف JSON محلي
+        async function loadPlayers() {
+            try {
+                const response = await fetch('popular_player.json');
+                if (!response.ok) throw new Error('خطأ في تحميل البيانات');
+                players = await response.json();
+                if (players.length > 0) {
+                    document.getElementById('total').textContent = players.length;
+                    loadQuestion();
+                } else {
+                    showError('لم يتم العثور على بيانات اللاعبين');
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+                showError('خطأ في تحميل البيانات: ' + error.message);
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('playerImage').innerHTML = `<div style="color: red; font-size: 16px;">${message}</div>`;
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= players.length) {
+                endGame();
+                return;
+            }
+
+            isAnswered = false;
+            const result = document.getElementById('result');
+            result.classList.remove('correct', 'incorrect');
+            result.style.display = 'none';
+
+            const player = players[currentQuestion];
+            const playerImage = document.getElementById('playerImage');
+
+            // عرض صورة اللاعب
+            if (player.image) {
+                playerImage.innerHTML = `<img src="${player.image}" alt="${player.name}">`;
+            } else {
+                playerImage.innerHTML = '<div style="color: #999;">لا توجد صورة</div>';
+            }
+
+            // إنشاء خيارات عشوائية
+            const correctIndex = Math.floor(Math.random() * 4);
+            const options = [];
+
+            // إضافة الإجابة الصحيحة
+            options[correctIndex] = player.name;
+
+            // إضافة إجابات خاطئة عشوائية
+            let wrongCount = 0;
+            while (wrongCount < 3) {
+                const randomIndex = Math.floor(Math.random() * players.length);
+                const randomName = players[randomIndex].name;
+                if (!options.includes(randomName)) {
+                    for (let i = 0; i < 4; i++) {
+                        if (!options[i]) {
+                            options[i] = randomName;
+                            wrongCount++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // عرض الخيارات
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(index, player.name);
+                optionsDiv.appendChild(btn);
+            });
+
+            // حفظ الإجابة الصحيحة
+            document.currentCorrectAnswer = player.name;
+            document.currentCorrectIndex = correctIndex;
+        }
+
+        function checkAnswer(index, correctAnswer) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const result = document.getElementById('result');
+            const buttons = document.querySelectorAll('.options button');
+
+            if (correctAnswer === document.currentCorrectAnswer) {
+                score++;
+                result.textContent = '✓ إجابة صحيحة!';
+                result.classList.add('correct');
+                buttons[index].style.background = '#4caf50';
+            } else {
+                result.textContent = `✗ خطأ! الإجابة الصحيحة: ${document.currentCorrectAnswer}`;
+                result.classList.add('incorrect');
+                buttons[index].style.background = '#f44336';
+                buttons[document.currentCorrectIndex].style.background = '#4caf50';
+            }
+
+            result.style.display = 'block';
+            document.getElementById('score').textContent = score;
+
+            setTimeout(() => {
+                currentQuestion++;
+                loadQuestion();
+            }, 2000);
+        }
+
+        function endGame() {
+            const container = document.querySelector('.container');
+            const percentage = Math.round((score / players.length) * 100);
+            container.innerHTML = `
+                <h1>انتهت اللعبة!</h1>
+                <div style="text-align: center; padding: 30px;">
+                    <p style="font-size: 24px; margin: 20px 0;">درجتك: ${score} / ${players.length}</p>
+                    <p style="font-size: 20px; color: #667eea;">${percentage}%</p>
+                    <button class="reset-btn" onclick="location.reload()">لعبة جديدة</button>
+                </div>
+            `;
+        }
+
+        function resetGame() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('score').textContent = '0';
+            loadQuestion();
+        }
+
+        // تحميل اللعبة عند فتح الصفحة
+        window.addEventListener('load', loadPlayers);
+    </script>
+</body>
+
+</html>
