@@ -1,0 +1,22 @@
+plugins {
+    id 'com.android.application' version '8.0.2'
+}
+
+android {
+    namespace 'com.footballai'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.footballai'
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
