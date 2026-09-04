@@ -1,5 +1,7 @@
 import os
 import json
+import time
+import random
 import requests
 
 API_KEY = os.environ.get("API_KEY")
@@ -11,81 +13,214 @@ HEADERS = {
     "x-apisports-key": API_KEY
 }
 
-# دوريات مشهورة
+# الدوريات
 LEAGUES = [
     39,   # Premier League
     140,  # La Liga
     135,  # Serie A
     78,   # Bundesliga
     61,   # Ligue 1
-    2,    # Champions League
-    3,    # Europa League
     94,   # Primeira Liga
     88,   # Eredivisie
-    203,  # Süper Lig
+    203   # Süper Lig
 ]
 
 SEASON = 2024
+MAX_PLAYERS = 3000
+
 players = {}
+
+session = requests.Session()
+session.headers.update(HEADERS)
+
+
+def get_page(league, page):
+
+    url = "https://v3.football.api-sports.io/players"
+
+    for attempt in range(3):
+
+        try:
+
+            response = session.get(
+                url,
+                params={
+                    "league": league,
+                    "season": SEASON,
+                    "page": page
+                },
+                timeout=30
+            )
+
+        except requests.RequestException as error:
+
+            print(f"⚠️ خطأ في الاتصال: {error}")
+
+            time.sleep(5)
+
+            continue
+
+
+        if response.status_code == 200:
+
+            return response.json()
+
+
+        if response.status_code == 429:
+
+            print("⚠️ تجاوز حد API — ننتظر 15 ثانية...")
+
+            time.sleep(15)
+
+            continue
+
+
+        print(
+            f"⚠️ HTTP {response.status_code}"
+        )
+
+        return None
+
+
+    print("⏭️ فشل تحميل الصفحة، سيتم تخطيها.")
+
+    return None
+
+
+# ==========================================
+# جلب اللاعبين
+# ==========================================
 
 for league in LEAGUES:
 
-    print(f"جلب الدوري: {league}")
+    print()
+    print("================================")
+    print(f"🏆 الدوري رقم: {league}")
+    print("================================")
 
-    page = 1
 
-    while True:
+    # الصفحة الأولى
+    first_page = get_page(league, 1)
 
-        response = requests.get(
-            "https://v3.football.api-sports.io/players",
-            headers=HEADERS,
-            params={
-                "league": league,
-                "season": SEASON,
-                "page": page
-            },
-            timeout=30
+
+    if not first_page:
+
+        print("⏭️ تخطي الدوري")
+
+        continue
+
+
+    paging = first_page.get("paging", {})
+
+    total_pages = paging.get("total", 1)
+
+
+    print(f"📄 إجمالي الصفحات: {total_pages}")
+
+
+    # نأخذ 10 صفحات فقط من كل دوري
+    pages_to_get = min(total_pages, 10)
+
+
+    for page in range(1, pages_to_get + 1):
+
+
+        if page == 1:
+
+            data = first_page
+
+        else:
+
+            data = get_page(
+                league,
+                page
+            )
+
+
+        if not data:
+
+            break
+
+
+        response_players = data.get(
+            "response",
+            []
         )
 
-        response.raise_for_status()
 
-        data = response.json()
+        for item in response_players:
 
-        for item in data.get("response", []):
+            player = item.get(
+                "player",
+                {}
+            )
 
-            player = item.get("player", {})
 
-            name = player.get("name")
-            image = player.get("photo")
+            name = player.get(
+                "name"
+            )
+
+
+            image = player.get(
+                "photo"
+            )
+
 
             if name and image:
+
                 players[name] = {
+
                     "name": name,
+
                     "image": image
                 }
 
-        paging = data.get("paging", {})
 
-        current = paging.get("current", page)
-        total = paging.get("total", page)
+        print(
+            f"📄 صفحة {page}/{pages_to_get}"
+            f" | 👤 اللاعبين: {len(players)}"
+        )
 
-        print(f"  صفحة {current}/{total}")
 
-        if page >= total:
+        # إذا وصلنا 3000
+        if len(players) >= MAX_PLAYERS:
+
             break
 
-        page += 1
+
+        # تأخير بين الطلبات
+        time.sleep(2)
 
 
+    if len(players) >= MAX_PLAYERS:
+
+        break
+
+
+# ==========================================
 # تحويل إلى قائمة
-players = list(players.values())
+# ==========================================
+
+players = list(
+    players.values()
+)
+
 
 # خلط اللاعبين
-import random
-random.shuffle(players)
+random.shuffle(
+    players
+)
 
-# نأخذ أول 3000 فقط
-players = players[:3000]
+
+# أول 3000 لاعب
+players = players[
+    :MAX_PLAYERS
+]
+
+
+# ==========================================
+# حفظ JSON
+# ==========================================
 
 with open(
     "popular_players.json",
@@ -100,8 +235,31 @@ with open(
         indent=2
     )
 
+
+# ==========================================
+# النتيجة
+# ==========================================
+
 print()
-print("================================")
-print(f"✅ عدد اللاعبين: {len(players)}")
-print("✅ تم إنشاء popular_players.json")
-print("================================")
+print("====================================")
+print("🎉 انتهى إنشاء قاعدة اللاعبين")
+print(f"👤 عدد اللاعبين: {len(players)}")
+print("📁 الملف: popular_players.json")
+print("====================================")
+
+
+if len(players) < MAX_PLAYERS:
+
+    print(
+        f"⚠️ تم الحصول على {len(players)} فقط."
+    )
+
+    print(
+        "قد تحتاج إلى مصدر بيانات أوسع للوصول إلى 3000."
+    )
+
+else:
+
+    print(
+        "🔥 تم الوصول إلى 3000 لاعب!"
+    )
