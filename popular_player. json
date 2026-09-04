@@ -1,1 +1,82 @@
-
+[
+  {
+    "name": "كريستيانو رونالدو",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg"
+  },
+  {
+    "name": "ليونيل ميسي",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Lionel_Messi_WC2022.jpg"
+  },
+  {
+    "name": "كيليان مبابي",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Kylian_Mbappe_2019.jpg"
+  },
+  {
+    "name": "إيرلينغ هالاند",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Erling_Haaland_2023.jpg"
+  },
+  {
+    "name": "نيمار",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Neymar_2018.jpg"
+  },
+  {
+    "name": "محمد صلاح",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Mohamed_Salah_2022.jpg"
+  },
+  {
+    "name": "كيفن دي بروين",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Kevin_De_Bruyne_20180709.jpg"
+  },
+  {
+    "name": "لوكا مودريتش",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Luka_Modric_2018.jpg"
+  },
+  {
+    "name": "روبرت ليفاندوفسكي",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/77/Robert_Lewandowski_2018.jpg"
+  },
+  {
+    "name": "سيرجيو راموس",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Sergio_Ramos_2017.jpg"
+  },
+  {
+    "name": "كريم بنزيما",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Karim_Benzema_2018.jpg"
+  },
+  {
+    "name": "فينيسيوس جونيور",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Vinicius_Junior_2022.jpg"
+  },
+  {
+    "name": "جود بيلينغهام",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Jude_Bellingham_2022.jpg"
+  },
+  {
+    "name": "ساديـو ماني",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Sadio_Man%C3%A9_2018.jpg"
+  },
+  {
+    "name": "أنطوان غريزمان",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Antoine_Griezmann_2018.jpg"
+  },
+  {
+    "name": "هاري كين",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Harry_Kane_2018.jpg"
+  },
+  {
+    "name": "سون هيونغ مين",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Son_Heung-min_2018.jpg"
+  },
+  {
+    "name": "برونو فيرنانديز",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Bruno_Fernandes_2022.jpg"
+  },
+  {
+    "name": "بول بوغبا",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Paul_Pogba_2018.jpg"
+  },
+  {
+    "name": "تيبو كورتوا",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/35/Thibaut_Courtois_2018.jpg"
+  }
+]
