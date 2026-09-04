@@ -12,11 +12,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         WebView webView = new WebView(this);
+
         webView.setWebViewClient(new WebViewClient());
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
 
         webView.loadUrl("file:///android_asset/index.html");
 
