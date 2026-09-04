@@ -13,7 +13,6 @@ HEADERS = {
     "x-apisports-key": API_KEY
 }
 
-# الدوريات
 LEAGUES = [
     39,   # Premier League
     140,  # La Liga
@@ -41,7 +40,6 @@ def get_page(league, page):
     for attempt in range(3):
 
         try:
-
             response = session.get(
                 url,
                 params={
@@ -60,11 +58,8 @@ def get_page(league, page):
 
             continue
 
-
         if response.status_code == 200:
-
             return response.json()
-
 
         if response.status_code == 429:
 
@@ -74,17 +69,67 @@ def get_page(league, page):
 
             continue
 
-
-        print(
-            f"⚠️ HTTP {response.status_code}"
-        )
+        print(f"⚠️ HTTP {response.status_code}")
 
         return None
-
 
     print("⏭️ فشل تحميل الصفحة، سيتم تخطيها.")
 
     return None
+
+
+def calculate_difficulty(player):
+
+    name = (player.get("name") or "").lower()
+
+    # نجوم معروفين جدًا
+    legendary_players = [
+        "lionel messi",
+        "cristiano ronaldo",
+        "kylian mbappe",
+        "erling haaland",
+        "neymar",
+        "mohamed salah",
+        "kevin de bruyne",
+        "vinicius junior",
+        "robert lewandowski",
+        "karim benzema",
+        "luka modric",
+        "toni kroos",
+        "sergio ramos",
+        "manuel neuer",
+        "thibaut courtois"
+    ]
+
+    for legendary in legendary_players:
+        if legendary in name:
+            return "easy"
+
+    # اللاعبين المعروفين
+    famous_players = [
+        "bruno fernandes",
+        "bernardo silva",
+        "rodri",
+        "bukayo saka",
+        "phil foden",
+        "jude bellingham",
+        "pedri",
+        "gavi",
+        "lamine yamal",
+        "antoine griezmann",
+        "lautaro martinez",
+        "rafael leao",
+        "son heung-min",
+        "virgil van dijk",
+        "alisson"
+    ]
+
+    for famous in famous_players:
+        if famous in name:
+            return "medium"
+
+    # البقية أصعب
+    return "hard"
 
 
 # ==========================================
@@ -98,10 +143,7 @@ for league in LEAGUES:
     print(f"🏆 الدوري رقم: {league}")
     print("================================")
 
-
-    # الصفحة الأولى
     first_page = get_page(league, 1)
-
 
     if not first_page:
 
@@ -109,44 +151,32 @@ for league in LEAGUES:
 
         continue
 
-
     paging = first_page.get("paging", {})
 
     total_pages = paging.get("total", 1)
 
-
     print(f"📄 إجمالي الصفحات: {total_pages}")
 
-
-    # نأخذ 10 صفحات فقط من كل دوري
     pages_to_get = min(total_pages, 10)
-
 
     for page in range(1, pages_to_get + 1):
 
-
         if page == 1:
-
             data = first_page
 
         else:
-
             data = get_page(
                 league,
                 page
             )
 
-
         if not data:
-
             break
-
 
         response_players = data.get(
             "response",
             []
         )
-
 
         for item in response_players:
 
@@ -155,45 +185,82 @@ for league in LEAGUES:
                 {}
             )
 
+            name = player.get("name")
 
-            name = player.get(
-                "name"
+            image = player.get("photo")
+
+            if not name or not image:
+                continue
+
+            birth = player.get(
+                "birth",
+                {}
             )
 
+            players[name] = {
 
-            image = player.get(
-                "photo"
+                "id": player.get("id"),
+
+                "name": name,
+
+                "image": image,
+
+                "nationality": player.get(
+                    "nationality",
+                    "Unknown"
+                ),
+
+                "position": (
+                    item.get("statistics", [{}])[0]
+                    .get("games", {})
+                    .get("position", "Unknown")
+                ),
+
+                "birth": birth.get(
+                    "date",
+                    "Unknown"
+                ),
+
+                "age": birth.get(
+                    "age",
+                    None
+                ),
+
+                "difficulty": calculate_difficulty(
+                    player
+                )
+            }
+
+            statistics = item.get(
+                "statistics",
+                []
             )
 
+            if statistics:
 
-            if name and image:
+                first_stats = statistics[0]
 
-                players[name] = {
+                team = first_stats.get(
+                    "team",
+                    {}
+                )
 
-                    "name": name,
-
-                    "image": image
-                }
-
+                players[name]["club"] = team.get(
+                    "name",
+                    "Unknown"
+                )
 
         print(
             f"📄 صفحة {page}/{pages_to_get}"
             f" | 👤 اللاعبين: {len(players)}"
         )
 
-
-        # إذا وصلنا 3000
         if len(players) >= MAX_PLAYERS:
-
             break
 
-
-        # تأخير بين الطلبات
         time.sleep(2)
 
-
     if len(players) >= MAX_PLAYERS:
-
         break
 
 
@@ -205,14 +272,10 @@ players = list(
     players.values()
 )
 
-
-# خلط اللاعبين
 random.shuffle(
     players
 )
 
-
-# أول 3000 لاعب
 players = players[
     :MAX_PLAYERS
 ]
@@ -247,15 +310,10 @@ print(f"👤 عدد اللاعبين: {len(players)}")
 print("📁 الملف: popular_players.json")
 print("====================================")
 
-
 if len(players) < MAX_PLAYERS:
 
     print(
         f"⚠️ تم الحصول على {len(players)} فقط."
-    )
-
-    print(
-        "قد تحتاج إلى مصدر بيانات أوسع للوصول إلى 3000."
     )
 
 else:
