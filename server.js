@@ -42,7 +42,7 @@ function addQuestion(text, test, type) {
   questions.push({ text, test, type });
 }
 
-// 1 - المركز
+// المركز
 Object.entries(positionArabic).forEach(([english, arabic]) => {
   addQuestion(
     `هل اللاعب ${arabic}؟`,
@@ -51,7 +51,7 @@ Object.entries(positionArabic).forEach(([english, arabic]) => {
   );
 });
 
-// 2 - المركز الفرعي
+// المركز الفرعي
 Object.entries(subPositionArabic).forEach(([english, arabic]) => {
   addQuestion(
     `هل اللاعب ${arabic}؟`,
@@ -60,7 +60,7 @@ Object.entries(subPositionArabic).forEach(([english, arabic]) => {
   );
 });
 
-// 3 - القارة
+// القارة
 const continentArabic = {
   Europe: "أوروبا",
   Africa: "إفريقيا",
@@ -71,7 +71,7 @@ const continentArabic = {
 };
 
 const continents = [
-  ...new Set(players.map(player => player.continent).filter(Boolean))
+  ...new Set(players.map(p => p.continent).filter(Boolean))
 ];
 
 continents.forEach(continent => {
@@ -82,9 +82,9 @@ continents.forEach(continent => {
   );
 });
 
-// 4 - الدوري
+// الدوري
 const leagues = [
-  ...new Set(players.map(player => player.league).filter(Boolean))
+  ...new Set(players.map(p => p.league).filter(Boolean))
 ];
 
 leagues.forEach(league => {
@@ -95,9 +95,9 @@ leagues.forEach(league => {
   );
 });
 
-// 5 - الدولة
+// الدولة
 const countries = [
-  ...new Set(players.map(player => player.country).filter(Boolean))
+  ...new Set(players.map(p => p.country).filter(Boolean))
 ];
 
 countries.forEach(country => {
@@ -108,9 +108,9 @@ countries.forEach(country => {
   );
 });
 
-// 6 - النادي
+// النادي
 const clubs = [
-  ...new Set(players.map(player => player.club).filter(Boolean))
+  ...new Set(players.map(p => p.club).filter(Boolean))
 ];
 
 clubs.forEach(club => {
@@ -121,7 +121,7 @@ clubs.forEach(club => {
   );
 });
 
-// 7 - القيمة السوقية
+// القيمة السوقية
 const values = [
   5000000,
   10000000,
@@ -145,10 +145,7 @@ function pickQuestion(candidates, asked, allowedTypes) {
   for (let i = 0; i < questions.length; i++) {
     if (asked.includes(i)) continue;
 
-    if (
-      allowedTypes &&
-      !allowedTypes.includes(questions[i].type)
-    ) {
+    if (allowedTypes && !allowedTypes.includes(questions[i].type)) {
       continue;
     }
 
@@ -168,24 +165,25 @@ function pickQuestion(candidates, asked, allowedTypes) {
   return bestIndex;
 }
 
+// الصفحة الرئيسية
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// بدء لعبة جديدة
+// لعبة جديدة
 app.post("/new-game", (req, res) => {
   const gameId = crypto.randomUUID();
 
   const candidates = [...players];
   const asked = [];
 
-  const firstQuestion = pickQuestion(
+  const current = pickQuestion(
     candidates,
     asked,
     ["position"]
   );
 
-  if (firstQuestion === -1) {
+  if (current === -1) {
     return res.json({
       success: false,
       message: "لا توجد أسئلة كافية"
@@ -196,17 +194,18 @@ app.post("/new-game", (req, res) => {
     candidates,
     asked,
     stageIndex: 0,
-    current: firstQuestion
+    current
   });
 
   res.json({
     success: true,
     gameId,
-    question: questions[firstQuestion].text
+    finished: false,
+    question: questions[current].text
   });
 });
 
-// الإجابة عن السؤال
+// الإجابة
 app.post("/question", (req, res) => {
   const { gameId, answer } = req.body;
 
@@ -229,12 +228,15 @@ app.post("/question", (req, res) => {
 
   game.asked.push(game.current);
 
-  // إذا لم يبق أي لاعب
+  // لا يوجد لاعب
   if (game.candidates.length === 0) {
+    games.delete(gameId);
+
     return res.json({
       success: true,
       finished: true,
-      player: null
+      player: null,
+      restart: true
     });
   }
 
@@ -251,28 +253,30 @@ app.post("/question", (req, res) => {
   let nextQuestion = -1;
   let nextStageIndex = game.stageIndex;
 
-  // نبحث فقط داخل المرحلة الحالية أولاً
   for (let i = game.stageIndex; i < stages.length; i++) {
-    const questionIndex = pickQuestion(
+    const q = pickQuestion(
       game.candidates,
       game.asked,
       [stages[i]]
     );
 
-    if (questionIndex !== -1) {
-      nextQuestion = questionIndex;
+    if (q !== -1) {
+      nextQuestion = q;
       nextStageIndex = i;
       break;
     }
   }
 
-  // إذا انتهت كل المراحل
-  if (nextQuestion === -1) {
+  // تم العثور على اللاعب
+  if (nextQuestion === -1 || game.candidates.length === 1) {
     const player = game.candidates[0];
+
+    games.delete(gameId);
 
     return res.json({
       success: true,
       finished: true,
+      restart: true,
       player: player?.name || null,
       imageUrl: player?.imageUrl || null
     });
