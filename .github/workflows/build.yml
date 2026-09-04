@@ -31,6 +31,9 @@ jobs:
           pip install requests
           python generate_players.py
 
+          # Copy generated players database into Android assets
+          cp popular_players.json app/src/main/assets/popular_players.json
+
       - name: Show players count
         run: |
           python -c "import json; data=json.load(open('popular_players.json', encoding='utf-8')); print('Players:', len(data))"
