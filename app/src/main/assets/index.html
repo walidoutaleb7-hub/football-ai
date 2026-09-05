@@ -2,339 +2,334 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GOAT FOOTBALL QUIZ - Pro Elite Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق تحدي كرة القدم</title>
+    <!-- استدعاء خط عربي أنيق -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
-
-        :root {
-            --bg-deep: #030508;
-            --bg-card: #0a0f1d;
-            --bg-card-hover: #121a2d;
-            --primary: #00ff88;
-            --primary-glow: rgba(0, 255, 136, 0.35);
-            --gold: #ffd700;
-            --gold-glow: rgba(255, 215, 0, 0.35);
-            --accent: #3b82f6;
-            --text-main: #ffffff;
-            --text-muted: #8a99ad;
-            --border: #1a2642;
-            --danger: #ff334b;
-            --danger-glow: rgba(255, 51, 75, 0.35);
-        }
-
         * {
-            margin: 0; padding: 0; box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: 'Cairo', sans-serif;
-            -webkit-tap-highlight-color: transparent; user-select: none;
         }
-
         body {
-            background: var(--bg-deep); color: var(--text-main);
-            min-height: 100vh; padding-bottom: 95px; overflow-x: hidden;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
         }
-
-        .app { max-width: 480px; margin: 0 auto; padding: 16px; }
-
-        .screen { display: none !important; }
-        .screen.active { display: block !important; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px; }
-        .logo { font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .stats-bar { display: flex; gap: 6px; }
-        .badge-pill { background: var(--bg-card); border: 1px solid var(--border); padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; color: var(--gold); display: flex; align-items: center; gap: 4px; }
-
-        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 18px; margin-bottom: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .hero-card { text-align: center; background: radial-gradient(circle at center, #0d1b32 0%, var(--bg-card) 100%); border: 1px solid rgba(0, 255, 136, 0.2); }
-
-        .btn-primary { display: block; width: 100%; padding: 14px; border: none; border-radius: 14px; background: linear-gradient(135deg, var(--primary), #00b359); color: #030d06; font-weight: 900; font-size: 15px; cursor: pointer; box-shadow: 0 6px 20px var(--primary-glow); }
-        .btn-gold { background: linear-gradient(135deg, var(--gold), #d4af37); color: #111; box-shadow: 0 6px 20px var(--gold-glow); }
-        .btn-secondary { display: block; width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-card-hover); color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 8px; }
-
-        .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .mode-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 15px 10px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .mode-card:active { border-color: var(--primary); transform: scale(0.97); }
-        .mode-card span.ico { font-size: 28px; display: block; margin-bottom: 6px; }
-        .mode-card h3 { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
-        .mode-card p { font-size: 10px; color: var(--text-muted); }
-
-        .player-box { width: 100%; height: 210px; border-radius: 18px; background: radial-gradient(circle, #101c30 0%, #05080e 100%); border: 2px solid rgba(0, 255, 136, 0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; overflow: hidden; position: relative; }
-        .player-box img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #000; box-shadow: 0 0 20px var(--primary-glow); }
-        
-        .options-grid { display: grid; gap: 8px; }
-        .option-btn { width: 100%; padding: 13px; border-radius: 14px; background: var(--bg-card-hover); border: 1px solid var(--border); color: #fff; font-size: 14px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; }
-        .option-btn.correct { background: rgba(0, 255, 136, 0.25) !important; border-color: var(--primary) !important; color: var(--primary); }
-        .option-btn.wrong { background: rgba(255, 51, 75, 0.25) !important; border-color: var(--danger) !important; color: var(--danger); }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(3, 5, 8, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 12px; z-index: 100; }
-        .nav-item { background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
-        .nav-item span.icon { font-size: 18px; }
-        .nav-item.active { color: var(--primary); }
-
-        .toast { position: fixed; top: 15px; left: 50%; transform: translateX(-50%) translateY(-50px); background: var(--bg-card); border: 1px solid var(--primary); color: #fff; padding: 10px 20px; border-radius: 14px; font-weight: 800; font-size: 13px; z-index: 1000; opacity: 0; transition: 0.3s; pointer-events: none; }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+        }
+        header {
+            background: #2563eb;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .screen {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .screen.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #38bdf8;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #38bdf8;
+            color: #0f172a;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0ea5e9;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #475569;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background: #334155;
+        }
+        /* تصميم التبويبات السفلي */
+        .nav-tabs {
+            display: flex;
+            background: #0f172a;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 0;
+        }
+        .tab-btn.active {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            border-top: 2px solid #38bdf8;
+        }
+        /* بطاقات اللاعبين واللعبة */
+        .player-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .player-info {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        .score-box {
+            display: flex;
+            justify-content: space-between;
+            background: #0f172a;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
 
-<div class="app">
-    <!-- شاشة الرئيسية -->
-    <div id="home" class="screen active">
-        <div class="header">
-            <div class="logo">⚽ GOAT QUIZ ELITE</div>
-            <div class="stats-bar">
-                <div class="badge-pill">🪙 <span id="coinsCount">150</span></div>
-                <div class="badge-pill">❤️ <span id="livesCount">3</span></div>
+    <div class="container">
+        <header>⚽ تحدي أساطير كرة القدم</header>
+
+        <div class="content">
+            <!-- شاشة إدخال الاسم (البداية) -->
+            <div id="welcome-screen" class="screen active">
+                <h2>أهلاً بك يا بطل!</h2>
+                <p style="text-align: center; color: #94a3b8;">أدخل اسمك لتبدأ المغامرة وتدخل عالم التحديات الرياضية.</p>
+                <input type="text" id="player-name-input" placeholder="اكتب اسمك هنا...">
+                <button onclick="savePlayerName()">دخول اللعبة 🚀</button>
+            </div>
+
+            <!-- شاشة اللعبة الرئيسية -->
+            <div id="game-screen" class="screen">
+                <div class="score-box">
+                    <span>اللاعب: <strong id="display-user-name" style="color: #38bdf8;"></strong></span>
+                    <span>النقاط: <strong id="score" style="color: #22c55e;">0</strong></span>
+                </div>
+                <div class="player-card">
+                    <p style="color: #94a3b8; font-size: 0.9rem;">تخمين اللاعب بناءً على بياناته:</p>
+                    <div class="player-info" id="player-hint">جاري تحميل البيانات...</div>
+                    <input type="text" id="guess-input" placeholder="اكتب اسم اللاعب المقترح...">
+                    <button onclick="checkGuess()">تحقق من الإجابة ✅</button>
+                    <button class="btn-secondary" onclick="nextPlayer()">تخطي / لاعب آخر ⏭️</button>
+                </div>
+            </div>
+
+            <!-- شاشة الإعدادات -->
+            <div id="settings-screen" class="screen">
+                <h2>إعدادات التطبيق ⚙️</h2>
+                <label style="color: #94a3b8;">تغيير اسم اللاعب:</label>
+                <input type="text" id="settings-name-input">
+                <button onclick="updateName()">حفظ التعديل 💾</button>
+                
+                <label style="color: #94a3b8; margin-top: 10px;">اختر المستوى:</label>
+                <select id="level-select" onchange="changeLevel()">
+                    <option value="easy">سهل (نجوم الصف الأول)</option>
+                    <option value="medium">متوسط (دوريات كبرى + نجوم العرب)</option>
+                    <option value="hard">صعب (لاعبو التحدي)</option>
+                    <option value="legend">أساطير التاريخ</option>
+                </select>
+
+                <button class="btn-secondary" style="background: #ef4444; margin-top: 20px;" onclick="resetData()">إعادة ضبط التطبيق 🔄</button>
             </div>
         </div>
 
-        <div class="card hero-card">
-            <div style="font-size: 45px; margin-bottom: 10px;">🏆</div>
-            <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 6px;">أقوى تحدي كروي في التاريخ</h2>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">أكثر من 500 لاعب ونجم بانتظارك، أثبت معلوماتك!</p>
-            <button class="btn-primary" onclick="startLevel('easy')">بدء التحدي السريع 🔥</button>
-        </div>
-
-        <div class="modes-grid">
-            <div class="mode-card" onclick="startLevel('easy')">
-                <span class="ico">🟢</span>
-                <h3>المستوى السهل</h3>
-                <p>أساطير العصر الحالي</p>
-            </div>
-            <div class="mode-card" onclick="startLevel('medium')">
-                <span class="ico">🟡</span>
-                <h3>المستوى المتوسط</h3>
-                <p>نجوم الدوريات الكبرى</p>
-            </div>
-            <div class="mode-card" onclick="startLevel('hard')">
-                <span class="ico">🟠</span>
-                <h3>المستوى الصعب</h3>
-                <p>للاعبة المخضرمين فقط</p>
-            </div>
-            <div class="mode-card" onclick="startLevel('legend')">
-                <span class="ico">👑</span>
-                <h3>قسم الأساطير</h3>
-                <p>زيدان، رونالدينيو...</p>
-            </div>
-        </div>
-
-        <button class="btn-secondary btn-gold" onclick="openStore()">متجر البريميوم والـ VIP 👑</button>
-        <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 15px; font-weight: 700;">Developed by Walid - Pro Edition</div>
+        <!-- شريط التبويبات السفلي للتحكم -->
+        <nav class="nav-tabs" id="bottom-nav" style="display: none;">
+            <button class="tab-btn active" onclick="switchTab('game', this)">🎮 اللعبة</button>
+            <button class="tab-btn" onclick="switchTab('settings', this)">⚙️ الإعدادات</button>
+        </nav>
     </div>
 
-    <!-- شاشة اللعب -->
-    <div id="game" class="screen">
-        <div class="header">
-            <button class="btn-secondary" style="width: auto; padding: 6px 12px; margin:0;" onclick="showScreen('home')">⬅️ خروج</button>
-            <div class="stats-bar">
-                <div class="badge-pill">⏳ <span id="timer">15</span>ث</div>
-                <div class="badge-pill">السؤال <span id="qIndex">1</span>/<span id="qTotal">5</span></div>
-            </div>
-        </div>
+    <script>
+        // قاعدة بيانات داخلية مدمجة وقوية (لا تحتاج ملف خارجي تسبب مشاكل)
+        const playersDatabase = [
+            { name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", position: "مهاجم" },
+            { name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", position: "مهاجم" },
+            { name: "كيليان مبابي", nationality: "فرنسا", level: "easy", position: "مهاجم" },
+            { name: "إيرلينغ هالاند", "nationality": "النرويج", "level": "easy", "position": "مهاجم" },
+            { name: "محمد صلاح", nationality: "مصر", level: "easy", position: "مهاجم" },
+            { name: "رياض محرز", nationality: "الجزائر", level: "medium", position: "مهاجم" },
+            { name: "ريان آيت نوري", nationality: "الجزائر", level: "medium", position: "مدافع" },
+            { name: "إسماعيل بن ناصر", nationality: "الجزائر", level: "medium", position: "وسط ميدان" },
+            { name: "يوسف بلايلي", nationality: "الجزائر", level: "medium", position: "مهاجم" },
+            { name: "بغداد بونجاح", nationality: "الجزائر", level: "medium", position: "مهاجم" },
+            { name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", position: "وسط ميدان" },
+            { name: "رونالدينيو", nationality: "البرازيل", level: "legend", position: "وسط ميدان" },
+            { name: "بيليه", nationality: "البرازيل", level: "legend", position: "مهاجم" },
+            { name: "دييغو مارادونا", nationality: "الأرجنتين", level: "legend", position: "وسط ميدان" },
+            { name: "كيفن دي بروين", nationality: "بلجيكا", level: "easy", position: "وسط ميدان" },
+            { name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", position: "وسط ميدان" },
+            { name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard", position: "وسط ميدان" },
+            { name: "ويليام ساليبا", nationality: "فرنسا", level: "hard", position: "مدافع" }
+        ];
 
-        <div class="player-box">
-            <img id="playerImage" src="" alt="لاعب">
-        </div>
+        let currentPlayer = null;
+        let score = 0;
+        let currentLevelFilter = "easy";
 
-        <div style="text-align: center; margin-bottom: 12px; font-size: 13px; color: var(--text-muted); font-weight: 700;">
-            النادي / المنتخب: <span id="playerTeam" style="color: var(--primary);">---</span>
-        </div>
-
-        <div class="options-grid" id="optionsGrid"></div>
-    </div>
-
-    <!-- شاشة المتجر -->
-    <div id="store" class="screen">
-        <div class="header">
-            <div class="logo">🛒 متجر اللعبة</div>
-            <button class="btn-secondary" style="width: auto; padding: 6px 12px; margin:0;" onclick="showScreen('home')">⬅️ عودة</button>
-        </div>
-        <div class="card" style="text-align: center;">
-            <h3 style="margin-bottom: 10px; color: var(--gold);">عضوية VIP الأسطورية</h3>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">احصل على قلوب غير محدودة (♾️)، إلغاء الإعلانات، ومضاعفة الأرباح!</p>
-            <button class="btn-primary btn-gold" onclick="buyVip()">تفعيل VIP بـ $1 فقط 👑</button>
-        </div>
-    </div>
-
-    <!-- شريط التنقل السفلي -->
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="showScreen('home')">
-            <span class="icon">🏠</span>الرئيسية
-        </button>
-        <button class="nav-item" onclick="openStore()">
-            <span class="icon">🛒</span>المتجر
-        </button>
-        <button class="nav-item" onclick="showToast('💡 اضغط على الإجابة الصحيحة واربح العملات!')">
-            <span class="icon">ℹ️</span>مساعدة
-        </button>
-    </div>
-</div>
-
-<div class="toast" id="toast">رسالة تنبيه</div>
-
-<!-- استدعاء ملف البيانات الخارجية -->
-<script src="players-data.js"></script>
-<script>
-    "use strict";
-
-    let coins = parseInt(localStorage.getItem('goat_coins')) || 150;
-    let lives = parseInt(localStorage.getItem('goat_lives')) || 3;
-    let isVip = localStorage.getItem('goat_vip') === 'true';
-    let currentQuestions = [];
-    let currentIndex = 0;
-    let activeMode = 'easy';
-    let timer = null;
-    let timeLeft = 15;
-
-    function initApp() {
-        updateUI();
-    }
-
-    function updateUI() {
-        document.getElementById('coinsCount').textContent = coins;
-        document.getElementById('livesCount').textContent = isVip ? '♾️' : lives;
-    }
-
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    function startLevel(mode) {
-        activeMode = mode;
-        if (typeof ALL_PLAYERS_DATABASE === 'undefined' || !ALL_PLAYERS_DATABASE[mode]) {
-            showToast('❌ خطأ في تحميل ملف البيانات الخارجية!');
-            return;
-        }
-        currentQuestions = shuffle([...ALL_PLAYERS_DATABASE[mode]]).slice(0, 5);
-        currentIndex = 0;
-        document.getElementById('qTotal').textContent = currentQuestions.length;
-        showScreen('game');
-        loadQuestion();
-    }
-
-    function loadQuestion() {
-        clearInterval(timer);
-        if (currentIndex >= currentQuestions.length) {
-            showToast('🏆 مبروك! أتممت المرحلة بنجاح!');
-            showScreen('home');
-            return;
-        }
-
-        timeLeft = 15;
-        document.getElementById('timer').textContent = timeLeft;
-        document.getElementById('qIndex').textContent = currentIndex + 1;
-
-        const obj = currentQuestions[currentIndex];
-        document.getElementById('playerImage').src = obj.image;
-        document.getElementById('playerTeam').textContent = obj.team;
-
-        generateOptions(obj);
-
-        timer = setInterval(() => {
-            timeLeft--;
-            document.getElementById('timer').textContent = timeLeft;
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                handleWrong(obj.name);
+        // التحقق من وجود اسم مخزن مسبقاً عند فتح التطبيق
+        window.onload = function() {
+            const savedName = localStorage.getItem("playerName");
+            if (savedName) {
+                document.getElementById("display-user-name").innerText = savedName;
+                document.getElementById("settings-name-input").value = savedName;
+                showGameScreen();
             }
-        }, 1000);
-    }
+        };
 
-    function generateOptions(correctObj) {
-        let allPool = [...ALL_PLAYERS_DATABASE.easy, ...ALL_PLAYERS_DATABASE.medium, ...ALL_PLAYERS_DATABASE.hard, ...ALL_PLAYERS_DATABASE.legend];
-        let others = allPool.filter(p => p.name !== correctObj.name);
-        let selectedOthers = shuffle(others).slice(0, 3);
-        let options = shuffle([correctObj, ...selectedOthers]);
-
-        const grid = document.getElementById('optionsGrid');
-        grid.innerHTML = '';
-
-        options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.textContent = opt.name;
-            btn.onclick = () => checkAnswer(opt.name === correctObj.name, btn, correctObj.name);
-            grid.appendChild(btn);
-        });
-    }
-
-    function checkAnswer(isCorrect, btn, correctName) {
-        clearInterval(timer);
-        const allBtns = document.querySelectorAll('.option-btn');
-        allBtns.forEach(b => b.disabled = true);
-
-        if (isCorrect) {
-            btn.classList.add('correct');
-            coins += 10;
-            saveData();
-            updateUI();
-            showToast('✅ إجابة صحيحة! (+10 🪙)');
-            setTimeout(nextQ, 1100);
-        } else {
-            btn.classList.add('wrong');
-            allBtns.forEach(b => { if (b.textContent === correctName) b.classList.add('correct'); });
-            handleWrong(correctName);
+        function savePlayerName() {
+            const nameInput = document.getElementById("player-name-input").value.trim();
+            if (nameInput === "") {
+                alert("من فضلك اكتب اسمك أولاً!");
+                return;
+            }
+            localStorage.setItem("playerName", nameInput);
+            document.getElementById("display-user-name").innerText = nameInput;
+            document.getElementById("settings-name-input").value = nameInput;
+            showGameScreen();
         }
-    }
 
-    function handleWrong(correctName) {
-        if (!isVip) {
-            lives--;
-            saveData();
-            updateUI();
+        function showGameScreen() {
+            document.getElementById("welcome-screen").classList.remove("active");
+            document.getElementById("settings-screen").classList.remove("active");
+            document.getElementById("game-screen").classList.add("active");
+            document.getElementById("bottom-nav").style.display = "flex";
+            nextPlayer();
         }
-        showToast(`❌ خطأ! هو: ${correctName}`);
-        
-        if (!isVip && lives <= 0) {
-            setTimeout(() => {
-                showToast('💔 انتهت أرواحك!');
-                lives = 3;
-                saveData();
-                updateUI();
-                showScreen('home');
-            }, 1500);
-        } else {
-            setTimeout(nextQ, 1500);
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            document.getElementById("game-screen").classList.remove("active");
+            document.getElementById("settings-screen").classList.remove("active");
+
+            if (tabName === 'game') {
+                document.getElementById("game-screen").classList.add("active");
+            } else if (tabName === 'settings') {
+                document.getElementById("settings-screen").classList.add("active");
+            }
         }
-    }
 
-    function nextQ() {
-        currentIndex++;
-        loadQuestion();
-    }
+        function nextPlayer() {
+            // فلترة اللاعبين حسب المستوى المختار
+            const filtered = playersDatabase.filter(p => p.level === currentLevelFilter);
+            if (filtered.length === 0) {
+                currentPlayer = playersDatabase[Math.floor(Math.random() * playersDatabase.length)];
+            } else {
+                currentPlayer = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+            
+            // عرض التلميح للمستخدم (الجنسية والمركز)
+            document.getElementById("player-hint").innerHTML = `🌍 الجنسية: ${currentPlayer.nationality} <br> 📍 المركز: ${currentPlayer.position}`;
+            document.getElementById("guess-input").value = "";
+        }
 
-    function openStore() {
-        showScreen('store');
-    }
+        function checkGuess() {
+            const userGuess = document.getElementById("guess-input").value.trim();
+            if (!userGuess) return;
 
-    function buyVip() {
-        isVip = true;
-        localStorage.setItem('goat_vip', 'true');
-        updateUI();
-        showToast('👑 تم تفعيل حساب VIP بنجاح!');
-        showScreen('home');
-    }
+            if (userGuess.toLowerCase() === currentPlayer.name.toLowerCase()) {
+                score += 10;
+                document.getElementById("score").innerText = score;
+                alert("🎉 إجابة صحيحة! أحسنت يا بطل.");
+                nextPlayer();
+            } else {
+                alert("❌ إجابة خاطئة، حاول مرة أخرى!");
+            }
+        }
 
-    function saveData() {
-        localStorage.setItem('goat_coins', coins);
-        localStorage.setItem('goat_lives', lives);
-    }
+        function updateName() {
+            const newName = document.getElementById("settings-name-input").value.trim();
+            if (newName) {
+                localStorage.setItem("playerName", newName);
+                document.getElementById("display-user-name").innerText = newName;
+                alert("✅ تم تحديث الاسم بنجاح!");
+            }
+        }
 
-    function shuffle(arr) {
-        return arr.sort(() => Math.random() - 0.5);
-    }
+        function changeLevel() {
+            currentLevelFilter = document.getElementById("level-select").value;
+            nextPlayer();
+        }
 
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
-    }
-
-    window.onload = initApp;
-</script>
+        function resetData() {
+            if (confirm("هل أنت متأكد من إعادة ضبط التطبيق؟")) {
+                localStorage.removeItem("playerName");
+                location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
