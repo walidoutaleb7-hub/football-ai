@@ -3,41 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة مين اللاعب؟</title>
+    <title>لعبة مين اللاعب؟ ⚽</title>
     <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --accent: #38bdf8;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
         body {
-            background-color: #0f172a;
-            color: #ffffff;
-            font-family: Tahoma, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
         }
-        h1 {
-            color: #38bdf8;
-            margin-bottom: 10px;
-        }
+
         .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
             width: 100%;
-            margin-top: 15px;
+            max-width: 400px;
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            border: 1px solid #334155;
         }
-        .btn:active {
-            background: #1d4ed8;
+
+        h1 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            background: #0f172a;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        .player-img-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+            background: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .player-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .question-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-option {
+            background: #0f172a;
+            color: var(--text-main);
+            border: 1px solid #334155;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .btn-option:hover {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-option.correct {
+            background: var(--success) !important;
+            border-color: var(--success) !important;
+        }
+
+        .btn-option.wrong {
+            background: var(--danger) !important;
+            border-color: var(--danger) !important;
+        }
+
+        .footer-info {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
@@ -45,12 +128,105 @@
 
     <div class="container">
         <h1>مين اللاعب؟ ⚽</h1>
-        <p>مرحباً بك يا وليد في النسخة المطورة!</p>
-        <div id="game-area">
-            <p>جارٍ تحميل بيانات اللعبة...</p>
+        <div class="stats-bar">
+            <span id="score-text">النقاط: 0</span>
+            <span id="level-text">المستوى: 1</span>
         </div>
-        <button class="btn" onclick="alert('اللعبة تعمل بنجاح!')">اضغط للتجربة</button>
+
+        <div id="game-board">
+            <div class="player-img-container" id="img-box">⚽</div>
+            <div class="question-title">من هو هذا اللاعب؟</div>
+            
+            <div class="options-grid" id="options-container">
+                <!-- سيتم تعبئة الاختيارات برمجياً -->
+            </div>
+        </div>
+
+        <div class="footer-info" id="feedback-msg">اختر الإجابة الصحيحة</div>
     </div>
 
+    <script>
+        // قاعدة بيانات أولية مصغرة للتجربة (سنقوم بتوسيعها لاحقاً)
+        const playersPool = [
+            { id: 1, name: "كريستيانو رونالدو", club: "النصر", league: "الدوري السعودي", image: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Cristiano_Ronaldo_in_Al_Nassr_%28cropped%29.jpg" },
+            { id: 2, name: "ليونيل ميسي", club: "إنتر ميامي", league: "الدوري الأمريكي", image: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022_FIFA_World_Cup_%28cropped%29.jpg" },
+            { id: 3, name: "كيليان مبابي", club: "ريال مدريد", league: "الدوري الإسباني", image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Kylian_Mbapp%C3%A9_2018_%28cropped%29.jpg" },
+            { id: 4, name: "إيرلينغ هالاند", club: "مانشستر سيتي", league: "الدوري الإنجليزي", image: "https://upload.wikimedia.org/wikipedia/commons/0/07/Erling_Haaland_2023_%28cropped%29.jpg" }
+        ];
+
+        let score = 0;
+        let currentQuestion = null;
+        let askedIds = [];
+
+        function loadNewQuestion() {
+            // تصفية اللاعبين غير المسأولين
+            const available = playersPool.filter(p => !askedIds.includes(p.id));
+            
+            if (available.length === 0) {
+                document.getElementById('game-board').innerHTML = `<h2>🎉 انتهت الجولة!</h2><p>مجموع نقاطك: ${score}</p>`;
+                document.getElementById('feedback-msg').textContent = 'أداء ممتاز يا وليد!';
+                return;
+            }
+
+            // اختيار لاعب عشوائي
+            const correctPlayer = available[Math.floor(Math.random() * available.length)];
+            askedIds.push(correctPlayer.id);
+
+            // اختيار الخيارات الخاطئة
+            const wrongOptions = playersPool.filter(p => p.id !== correctPlayer.id);
+            const shuffledWrong = wrongOptions.sort(() => 0.5 - Math.random()).slice(0, 3);
+            const options = [...shuffledWrong, correctPlayer].sort(() => 0.5 - Math.random());
+
+            currentQuestion = { correct: correctPlayer, options: options };
+
+            // عرض الصورة
+            const imgBox = document.getElementById('img-box');
+            imgBox.innerHTML = `<img src="${correctPlayer.image}" alt="اللاعب" onerror="this.parentElement.textContent='⚽'">`;
+
+            // بناء الأزرار
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.textContent = opt.name;
+                btn.onclick = () => checkAnswer(opt.id, btn);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('feedback-msg').textContent = 'اختر الإجابة الصحيحة';
+        }
+
+        function checkAnswer(selectedId, btnElement) {
+            // تعطيل جميع الأزرار بعد الاختيار لمنع الضغط المزدوج
+            const allButtons = document.querySelectorAll('.btn-option');
+            allButtons.forEach(b => b.style.pointerEvents = 'none');
+
+            if (selectedId === currentQuestion.correct.id) {
+                btnElement.classList.add('correct');
+                score += 100;
+                document.getElementById('score-text').textContent = `النقاط: ${score}`;
+                document.getElementById('feedback-msg').textContent = '✅ إجابة صحيحة!';
+            } else {
+                btnElement.classList.add('wrong');
+                // إظهار الإجابة الصحيحة مباشرة
+                allButtons.forEach(b => {
+                    if (b.textContent === currentQuestion.correct.name) {
+                        b.classList.add('correct');
+                    }
+                });
+                document.getElementById('feedback-msg').textContent = `❌ خطأ! اللاعب هو ${currentQuestion.correct.name}`;
+            }
+
+            // الانتقال للسؤال الموالي بعد ثانيتين تلقائياً
+            setTimeout(() => {
+                loadNewQuestion();
+            }, 2000);
+        }
+
+        // بدء اللعبة لأول مرة
+        loadNewQuestion();
+    </script>
 </body>
 </html>
