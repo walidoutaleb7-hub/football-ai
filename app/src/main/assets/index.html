@@ -45,11 +45,11 @@
             padding: 16px 14px 20px;
         }
         .screen {
-            display: none;
-            animation: fadeIn 0.3s ease;
+            display: none !important;
         }
         .screen.active {
-            display: block;
+            display: block !important;
+            animation: fadeIn 0.3s ease;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -244,12 +244,12 @@
             transform: scale(0.97);
         }
         .option.correct {
-            background: #164b2e;
-            border-color: #20d46b;
+            background: #164b2e !important;
+            border-color: #20d46b !important;
         }
         .option.wrong {
-            background: #4a1a1a;
-            border-color: #ff5555;
+            background: #4a1a1a !important;
+            border-color: #ff5555 !important;
         }
         .option:disabled {
             opacity: 0.7;
@@ -501,7 +501,7 @@
 
             <div class="card">
                 <div class="player-box" id="playerBox">
-                    <img id="playerImage" alt="لاعب كرة قدم" loading="eager">
+                    <img id="playerImage" alt="لاعب كرة قدم">
                 </div>
 
                 <div class="options-grid" id="optionsGrid"></div>
@@ -627,9 +627,7 @@
     <script>
         "use strict";
 
-        // قاعدة بيانات مقسمة بدقة حسب المستويات (سهل، متوسط، صعب، أساطير)
         const PLAYERS_DB = [
-            // مستوى سهل (نجوم الصف الأول البارزون جداً)
             { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", image: "https://media.api-sports.io/football/players/257.png" },
             { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", image: "https://media.api-sports.io/football/players/154.png" },
             { id: 3, name: "كيليان مبابي", nationality: "فرنسا", level: "easy", image: "https://media.api-sports.io/football/players/278.png" },
@@ -641,7 +639,6 @@
             { id: 9, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", image: "https://media.api-sports.io/football/players/22828.png" },
             { id: 10, name: "روبرت ليفاندوفسكي", nationality: "بولندا", level: "easy", image: "https://media.api-sports.io/football/players/157.png" },
 
-            // مستوى متوسط (لاعبون مثل أيت نوري، رياض محرز، ونجوم متوسطي الشهرة)
             { id: 11, name: "ريان أيت نوري", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/18939.png" },
             { id: 12, name: "رياض محرز", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/1712.png" },
             { id: 13, name: "يوسف عطال", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/11232.png" },
@@ -653,7 +650,6 @@
             { id: 19, name: "جمال موسيالا", nationality: "ألمانيا", level: "medium", image: "https://media.api-sports.io/football/players/158223.png" },
             { id: 20, name: "فيل فودين", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/648.png" },
 
-            // مستوى صعب (لاعبون غير مشهورين كثيراً في الواجهة أو من دوريات أخرى)
             { id: 21, name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard", image: "https://media.api-sports.io/football/players/139.png" },
             { id: 22, name: "ديكلان رايس", nationality: "إنجلترا", level: "hard", image: "https://media.api-sports.io/football/players/18928.png" },
             { id: 23, name: "ويليام ساليبا", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/1458.png" },
@@ -663,7 +659,6 @@
             { id: 27, name: "إبراهيما كوناتي", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/15792.png" },
             { id: 28, name: "أندريه أونانا", nationality: "الكاميرون", level: "hard", image: "https://media.api-sports.io/football/players/2873.png" },
 
-            // مستوى الأساطير
             { id: 29, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", image: "https://media.api-sports.io/football/players/114979.png" },
             { id: 30, name: "رونالدينيو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/115000.png" },
             { id: 31, name: "كاكا", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114995.png" },
@@ -709,12 +704,13 @@
             if (questionLocked) return;
             currentMode = mode;
             hintsRemaining = 3;
-            document.getElementById('hintCount').textContent = '3';
-            document.getElementById('hintBtn').disabled = false;
+            const hintCountEl = document.getElementById('hintCount');
+            if (hintCountEl) hintCountEl.textContent = '3';
+            const hintBtnEl = document.getElementById('hintBtn');
+            if (hintBtnEl) hintBtnEl.disabled = false;
 
-            // فلترة صارمة للاعبين حسب المستوى المحدد فقط
             let pool = PLAYERS_DB.filter(p => p.level === mode);
-            if (pool.length < 4) pool = PLAYERS_DB; // حماية احتياطية
+            if (pool.length < 4) pool = PLAYERS_DB;
 
             const config = CONFIGS[mode];
             questions = shuffle(pool).slice(0, Math.min(config.total, pool.length));
@@ -748,7 +744,7 @@
             document.getElementById('questionNumber').textContent = currentIndex + 1;
 
             const box = document.getElementById('playerBox');
-            box.innerHTML = `<img id="playerImage" alt="لاعب كرة قدم" loading="eager">`;
+            box.innerHTML = `<img id="playerImage" alt="لاعب كرة قدم">`;
             const img = document.getElementById('playerImage');
             
             img.onerror = function() {
@@ -758,14 +754,16 @@
 
             generateOptions(q);
 
-            document.getElementById('hintBox').style.display = 'none';
-            document.getElementById('hintBox').textContent = '';
+            const hintBox = document.getElementById('hintBox');
+            if (hintBox) {
+                hintBox.style.display = 'none';
+                hintBox.textContent = '';
+            }
 
             startTimer();
         }
 
         function generateOptions(correctPlayer) {
-            // الخيارات الخطأ تأتي من نفس المستوى أو المستوى العام لتجنب الحرق
             const others = PLAYERS_DB.filter(p => p.id !== correctPlayer.id);
             const shuffledOthers = shuffle(others);
             const selectedOthers = shuffledOthers.slice(0, 3);
@@ -789,12 +787,14 @@
             clearTimer();
             const config = CONFIGS[currentMode];
             timeLeft = config.time;
-            document.getElementById('timer').textContent = timeLeft;
+            const timerEl = document.getElementById('timer');
+            if (timerEl) timerEl.textContent = timeLeft;
 
             timerInterval = setInterval(() => {
                 if (questionLocked) { clearTimer(); return; }
                 timeLeft--;
-                document.getElementById('timer').textContent = Math.max(timeLeft, 0);
+                const tEl = document.getElementById('timer');
+                if (tEl) tEl.textContent = Math.max(timeLeft, 0);
                 if (timeLeft <= 0) {
                     clearTimer();
                     answer(false, null, questions[currentIndex]);
@@ -859,12 +859,17 @@
             }
             hintsRemaining--;
             document.getElementById('hintCount').textContent = hintsRemaining;
-            if (hintsRemaining <= 0) document.getElementById('hintBtn').disabled = true;
+            if (hintsRemaining <= 0) {
+                const hintBtn = document.getElementById('hintBtn');
+                if (hintBtn) hintBtn.disabled = true;
+            }
 
             const q = questions[currentIndex];
             const box = document.getElementById('hintBox');
-            box.textContent = '🌍 الجنسية: ' + q.nationality;
-            box.style.display = 'block';
+            if (box) {
+                box.textContent = '🌍 الجنسية: ' + q.nationality;
+                box.style.display = 'block';
+            }
             vibrate(30);
         }
 
@@ -907,13 +912,20 @@
 
         function updateUI() {
             const stats = getStats();
-            document.getElementById('statGames').textContent = stats.games;
-            document.getElementById('statBest').textContent = stats.best;
-            document.getElementById('statCorrect').textContent = stats.correct;
-            document.getElementById('profileLevel').textContent = 'المستوى ' + stats.level;
+            const statGames = document.getElementById('statGames');
+            if (statGames) statGames.textContent = stats.games;
+            const statBest = document.getElementById('statBest');
+            if (statBest) statBest.textContent = stats.best;
+            const statCorrect = document.getElementById('statCorrect');
+            if (statCorrect) statCorrect.textContent = stats.correct;
+            const profileLevel = document.getElementById('profileLevel');
+            if (profileLevel) profileLevel.textContent = 'المستوى ' + stats.level;
+            
             const xpInLevel = stats.xp % 100;
-            document.getElementById('profileXP').textContent = xpInLevel;
-            document.getElementById('profileXPBar').style.width = (xpInLevel / 100 * 100) + '%';
+            const profileXP = document.getElementById('profileXP');
+            if (profileXP) profileXP.textContent = xpInLevel;
+            const profileXPBar = document.getElementById('profileXPBar');
+            if (profileXPBar) profileXPBar.style.width = (xpInLevel / 100 * 100) + '%';
 
             const achievements = [
                 stats.correct >= 1,
@@ -931,9 +943,13 @@
 
         function showScreen(id) {
             clearTimer();
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+            });
             const screen = document.getElementById(id);
-            if (screen) screen.classList.add('active');
+            if (screen) {
+                screen.classList.add('active');
+            }
             document.querySelectorAll('.nav-item').forEach(b => {
                 b.classList.toggle('active', b.dataset.screen === id);
             });
@@ -982,6 +998,7 @@
         let toastTimer = null;
         function showToast(msg) {
             const el = document.getElementById('toast');
+            if (!el) return;
             el.textContent = msg;
             el.classList.add('show');
             clearTimeout(toastTimer);
