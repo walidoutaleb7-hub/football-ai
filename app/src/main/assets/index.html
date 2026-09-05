@@ -3,48 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مين اللاعب؟</title>
+    <title>مين اللاعب؟ - الإصدار المطور</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
-        body{background:#0a0e17;color:#fff;min-height:100vh;padding-bottom:80px}
-        .app{max-width:500px;margin:auto;padding:16px}
-        .screen{display:none}
-        .screen.active{display:block}
-        .header{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
-        .logo{font-size:24px;font-weight:900}
-        .logo span{color:#20d46b}
-        .card{background:#121a26;border:1px solid #1f2a38;border-radius:16px;padding:16px;margin-bottom:14px}
-        .hero{text-align:center;padding:30px 18px}
-        .hero h1{font-size:28px;margin:8px 0}
-        .hero p{color:#8a9aaa}
-        .btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer}
-        .btn-primary{background:#20d46b;color:#041008}
-        .btn-secondary{background:#1b2533;color:#fff;margin-top:8px}
-        .mode-item{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;margin:8px 0;border-radius:12px;background:#121a26;border:1px solid #1f2a38}
-        .mode-item .info b{font-size:16px}
-        .mode-item .info small{display:block;color:#8a9aaa;font-size:11px}
-        .mode-item .play-btn{background:#20d46b;color:#041008;padding:8px 16px;border:none;border-radius:8px;font-weight:bold;font-size:13px;cursor:pointer}
-        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-        .stat-item{background:#121a26;padding:14px;text-align:center;border-radius:12px;border:1px solid #1f2a38}
-        .stat-item .num{display:block;font-size:22px;font-weight:900;color:#20d46b}
-        .stat-item .label{color:#8a9aaa;font-size:11px}
-        .player-box{height:260px;background:#0e1622;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden}
-        .player-box img{width:100%;height:100%;object-fit:contain}
-        .options-grid{display:grid;gap:10px}
-        .option{width:100%;padding:14px;border-radius:12px;background:#121a26;border:1px solid #1f2a38;color:#fff;font-size:15px;text-align:center;cursor:pointer}
-        .option.correct{background:#164b2e;border-color:#20d46b}
-        .option.wrong{background:#4a1a1a;border-color:#ff5555}
-        .option:disabled{opacity:0.7;cursor:default}
-        .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1a2533;padding:10px 20px;border-radius:10px;color:#fff;font-weight:bold;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none}
-        .toast.show{opacity:1}
-        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0a0e17;border-top:1px solid #1f2a38;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:100}
-        .nav-item{background:transparent;color:#6a7a8a;border:none;font-size:10px;font-weight:bold;cursor:pointer;display:flex;flex-direction:column;align-items:center}
-        .nav-item .icon{font-size:22px}
-        .nav-item.active{color:#20d46b}
-        .result-score{font-size:48px;color:#20d46b;font-weight:900;text-align:center}
-        .text-center{text-align:center}
-        .mt-12{margin-top:12px}
-        .mb-12{margin-bottom:12px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Tahoma', Arial, sans-serif;
+            background: #0a0e17;
+            color: #fff;
+            min-height: 100vh;
+            padding-bottom: 80px;
+            transition: background 0.3s;
+        }
+        body.light {
+            background: #f0f4fa;
+            color: #0b0f14;
+        }
+        body.light .card,
+        body.light .mode-item,
+        body.light .stat-item,
+        body.light .bottom-nav,
+        body.light .option {
+            background: #fff;
+            border-color: #ccc;
+            color: #0b0f14;
+        }
+        body.light .stat-item .label,
+        body.light .mode-item small,
+        body.light .hero-card p {
+            color: #666;
+        }
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 16px 14px 20px;
+        }
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .screen.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0 16px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+        }
+        .logo span {
+            color: #20d46b;
+        }
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #171f2a;
+            color: #fff;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .card {
+            background: #121a26;
+            border: 1px solid #1f2a38;
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-bottom: 14px;
+        }
+        .hero-card {
+            text-align: center;
+            padding: 30px 18px;
+            background: linear-gradient(145deg, #141e2c, #0c121c);
+        }
+        .hero-card .icon {
+            font-size: 52px;
+        }
+        .hero-card h1 {
+            font-size: 28px;
+            margin: 8px 0 4px;
+        }
+        .hero-card p {
+            color: #8a9aaa;
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 320px;
+            margin: 0 auto 16px;
+        }
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #20d46b, #15a852);
+            color: #041008;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: #1b2533;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .mode-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            margin: 8px 0;
+            border-radius: 14px;
+            background: #121a26;
+            border: 1px solid #1f2a38;
+        }
+        .mode-item .info b {
+            font-size: 16px;
+        }
+        .mode-item .info small {
+            display: block;
+            color: #8a9aaa;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        .mode-item .play-btn {
+            background: #20d46b;
+            color: #041008;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .stat-item {
+            background: #121a26;
+            padding: 14px 6px;
+            text-align: center;
+            border-radius: 14px;
+            border: 1px solid #1f2a38;
+        }
+        .stat-item .num {
+            display: block;
+            font-size: 22px;
+            font-weight: 900;
+            color: #20d46b;
+        }
+        .stat-item .label {
+            color: #8a9aaa;
+            font-size: 11px;
+        }
+        .game-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .game-top .badge {
+            background: #1a2533;
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: #20d46b;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .game-top .timer-box {
+            background: #2a1a1a;
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: #ff6b6b;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        .player-box {
+            height: 260px;
+            border-radius: 16px;
+            background: #0e1622;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            position: relative;
+        }
+        .player-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .player-box .fallback {
+            text-align: center;
+            color: #6a7a8a;
+            padding: 20px;
+        }
+        .loader-spinner {
+            border: 4px solid #1f2a38;
+            border-top: 4px solid #20d46b;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .options-grid {
+            display: grid;
+            gap: 10px;
+        }
+        .option {
+            width: 100%;
+            padding: 14px;
+            border-radius: 13px;
+            background: #121a26;
+            border: 1px solid #1f2a38;
+            color: #fff;
+            font-size: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .option:active {
+            transform: scale(0.97);
+        }
+        .option.correct {
+            background: #164b2e;
+            border-color: #20d46b;
+        }
+        .option.wrong {
+            background: #4a1a1a;
+            border-color: #ff5555;
+        }
+        .option:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+        .hint-box {
+            margin-top: 12px;
+            padding: 12px;
+            background: #1a2533;
+            color: #ffd45a;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+        .result-score {
+            font-size: 48px;
+            color: #20d46b;
+            font-weight: 900;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #20d46b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 12px;
+        }
+        .xp-bar {
+            height: 8px;
+            background: #1a2533;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .xp-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #20d46b, #ffd45a);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 4px;
+            border-bottom: 1px solid #1f2a38;
+        }
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .switch {
+            width: 48px;
+            height: 26px;
+            background: #2a3648;
+            border-radius: 20px;
+            padding: 3px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .switch .knob {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform 0.3s;
+        }
+        .switch.on {
+            background: rgba(32, 212, 107, 0.4);
+        }
+        .switch.on .knob {
+            transform: translateX(22px);
+            background: #20d46b;
+        }
+        .input-text {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0e1622;
+            border: 1px solid #1f2a38;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0a0e17;
+            border-top: 1px solid #1f2a38;
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 0 12px;
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: transparent;
+            color: #6a7a8a;
+            font-size: 10px;
+            padding: 4px 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .nav-item .icon {
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+        .nav-item.active {
+            color: #20d46b;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2533;
+            border: 1px solid #2a3648;
+            border-radius: 12px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .text-center { text-align: center; }
+        .text-muted { color: #8a9aaa; }
+        .text-green { color: #20d46b; }
+        .fw-bold { font-weight: 700; }
+        .fs-14 { font-size: 14px; }
+        .fs-13 { font-size: 13px; }
+        .mt-8 { margin-top: 8px; }
+        .mt-12 { margin-top: 12px; }
+        .mt-16 { margin-top: 16px; }
+        .mb-12 { margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -52,235 +417,300 @@
     <div class="toast" id="toast"></div>
 
     <div class="app">
-        <!-- HEADER -->
+
+        <!-- ======== HEADER ======== -->
         <header class="header">
             <div class="logo">مين <span>اللاعب؟</span></div>
-            <button onclick="showScreen('settings')" style="background:#1b2533;border:none;color:#fff;padding:8px 12px;border-radius:50%;font-size:20px;cursor:pointer;">⚙️</button>
+            <button class="icon-btn" onclick="showScreen('settings')" aria-label="الإعدادات">⚙️</button>
         </header>
 
-        <!-- HOME -->
+        <!-- ======== الصفحة الرئيسية ======== -->
         <section id="home" class="screen active">
-            <div class="card hero">
-                <div style="font-size:50px;">⚽</div>
-                <h1>مين اللاعب؟</h1>
-                <p>اختبر معلوماتك الكروية وخمّن اللاعب من صورته</p>
-                <button class="btn btn-primary" onclick="showScreen('modes')">🎮 ابدأ اللعب</button>
+            <div class="hero-card">
+                <div class="icon">⚽</div>
+                <h1>مين <span>اللاعب؟</span></h1>
+                <p>اختبر معلوماتك الكروية وخمّن اللاعب من صورته (مدعوم بـ API).</p>
+                <button class="btn-primary" onclick="showScreen('modes')">🎮 ابدأ اللعب</button>
             </div>
+
             <div class="card">
                 <h3 class="mb-12">📊 إحصائياتك</h3>
                 <div class="stats-grid">
-                    <div class="stat-item"><span class="num" id="statGames">0</span><span class="label">الألعاب</span></div>
-                    <div class="stat-item"><span class="num" id="statBest">0</span><span class="label">أفضل نتيجة</span></div>
-                    <div class="stat-item"><span class="num" id="statCorrect">0</span><span class="label">إجابات صحيحة</span></div>
+                    <div class="stat-item">
+                        <span class="num" id="statGames">0</span>
+                        <span class="label">الألعاب</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="statBest">0</span>
+                        <span class="label">أفضل نتيجة</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="statCorrect">0</span>
+                        <span class="label">صحيحة</span>
+                    </div>
                 </div>
             </div>
+
+            <button class="btn-secondary" onclick="toggleTheme()" style="margin-top:4px;">🌓 تبديل الوضع</button>
         </section>
 
-        <!-- MODES -->
-        <section id="modes" class="screen" style="display:none;">
+        <!-- ======== أوضاع اللعب ======== -->
+        <section id="modes" class="screen">
             <div class="card">
                 <h2 class="mb-12">🎮 اختر الوضع</h2>
+                <p class="text-muted fs-14 mb-12">اختر طريقة التحدي المفضلة لديك</p>
+
                 <div class="mode-item">
-                    <div class="info"><b>الكلاسيكي</b><small>50 سؤال • 15 ثانية</small></div>
+                    <div class="info"><b>الكلاسيكي</b><small>20 سؤال • 15 ثانية</small></div>
                     <button class="play-btn" onclick="startGame('classic')">لعب</button>
                 </div>
+
                 <div class="mode-item">
-                    <div class="info"><b>⚡ السرعة</b><small>30 سؤال • 10 ثواني</small></div>
+                    <div class="info"><b>⚡ السرعة</b><small>15 سؤال • 10 ثواني</small></div>
                     <button class="play-btn" onclick="startGame('speed')">لعب</button>
                 </div>
+
                 <div class="mode-item">
-                    <div class="info"><b>🔥 الستريك</b><small>حتى 100 سؤال</small></div>
+                    <div class="info"><b>🔥 الستريك أونلاين</b><small>بدون خطأ حتى النهاية</small></div>
                     <button class="play-btn" onclick="startGame('streak')">لعب</button>
                 </div>
-                <div class="mode-item">
-                    <div class="info"><b>💎 النادر</b><small>لاعبون أصعب</small></div>
-                    <button class="play-btn" onclick="startGame('rare')">لعب</button>
-                </div>
-                <button class="btn btn-secondary" onclick="showScreen('home')">رجوع</button>
+
+                <button class="btn-secondary mt-12" onclick="showScreen('home')">رجوع</button>
             </div>
         </section>
 
-        <!-- GAME -->
-        <section id="game" class="screen" style="display:none;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                <span style="background:#1a2533;padding:6px 14px;border-radius:30px;color:#20d46b;font-weight:bold;" id="qNum">1 / 50</span>
-                <span style="background:#2a1a1a;padding:6px 14px;border-radius:30px;color:#ff6b6b;font-weight:bold;">⏱ <span id="timerDisplay">15</span></span>
+        <!-- ======== شاشة اللعبة ======== -->
+        <section id="game" class="screen">
+            <div class="game-top">
+                <div class="badge"><span id="questionNumber">1</span> / <span id="questionTotal">20</span></div>
+                <div class="timer-box">⏱ <span id="timer">15</span></div>
             </div>
+
             <div class="card">
-                <div class="player-box"><img id="playerImage" alt="لاعب"></div>
+                <div class="player-box" id="playerBox">
+                    <div class="loader-spinner" id="loaderSpinner"></div>
+                    <img id="playerImage" alt="لاعب كرة قدم" style="display:none;" loading="eager">
+                </div>
+
                 <div class="options-grid" id="optionsGrid"></div>
-                <button class="btn btn-secondary mt-12" onclick="useHint()">💡 تلميح (<span id="hintCount">3</span>)</button>
+
+                <div class="hint-box" id="hintBox"></div>
+
+                <button class="btn-secondary mt-12" id="hintBtn" onclick="useHint()">
+                    💡 تلميح (<span id="hintCount">3</span>)
+                </button>
             </div>
-            <div class="text-center" style="color:#8a9aaa;">النقاط: <b id="scoreDisplay" style="color:#20d46b;">0</b> &nbsp;|&nbsp; 🔥 <b id="streakDisplay" style="color:#20d46b;">0</b></div>
+
+            <div class="text-center text-muted fs-14">
+                النقاط: <b class="text-green" id="score">0</b>
+                &nbsp;|&nbsp; 🔥 <b class="text-green" id="streakDisplay">0</b>
+            </div>
         </section>
 
-        <!-- RESULT -->
-        <section id="result" class="screen" style="display:none;">
+        <!-- ======== شاشة النتيجة ======== -->
+        <section id="result" class="screen">
             <div class="card text-center">
                 <div style="font-size:55px;">🏆</div>
                 <h2>انتهت اللعبة!</h2>
+                <p class="text-muted fs-14">إليك نتيجتك النهائية</p>
                 <div class="result-score" id="finalScore">0</div>
-                <p style="color:#8a9aaa;">نقطة</p>
-                <div class="stats-grid mt-12">
-                    <div class="stat-item"><span class="num" id="finalCorrect">0</span><span class="label">صحيحة</span></div>
-                    <div class="stat-item"><span class="num" id="finalWrong">0</span><span class="label">خاطئة</span></div>
-                    <div class="stat-item"><span class="num" id="finalBest">0</span><span class="label">أفضل ستريك</span></div>
+                <p class="text-muted fs-14">نقطة</p>
+
+                <div class="stats-grid mt-16">
+                    <div class="stat-item">
+                        <span class="num" id="finalCorrect">0</span>
+                        <span class="label">صحيحة</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="finalWrong">0</span>
+                        <span class="label">خاطئة</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="finalBest">0</span>
+                        <span class="label">أفضل ستريك</span>
+                    </div>
                 </div>
-                <button class="btn btn-primary mt-12" onclick="showScreen('modes')">🔄 العب مرة أخرى</button>
-                <button class="btn btn-secondary" onclick="showScreen('home')">🏠 الرئيسية</button>
+
+                <button class="btn-primary mt-16" onclick="showScreen('modes')">🔄 العب مرة أخرى</button>
+                <button class="btn-secondary mt-8" onclick="showScreen('home')">🏠 الرئيسية</button>
             </div>
         </section>
 
-        <!-- SETTINGS -->
-        <section id="settings" class="screen" style="display:none;">
-            <div class="card">
-                <h2 class="mb-12">⚙️ الإعدادات</h2>
-                <button class="btn btn-secondary" onclick="showScreen('home')">رجوع</button>
+        <!-- ======== الملف الشخصي ======== -->
+        <section id="profile" class="screen">
+            <div class="card text-center">
+                <div class="profile-avatar">🏆</div>
+                <h2>بروفايل اللاعب</h2>
+                <div class="text-green fw-bold fs-14" id="profileLevel">المستوى 1</div>
+                <div class="xp-bar">
+                    <div class="fill" id="profileXPBar" style="width:0%;"></div>
+                </div>
+                <p class="text-muted fs-13"><span id="profileXP">0</span> / 100 XP</p>
             </div>
         </section>
+
+        <!-- ======== الإعدادات والربط بـ API ======== -->
+        <section id="settings" class="screen">
+            <div class="card">
+                <h2 class="mb-12">⚙️ الإعدادات و API</h2>
+
+                <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+                    <div><b>🔑 مفتاح API (RapidAPI - API Football)</b></div>
+                    <small class="text-muted fs-13">حط الـ API Key نتاعك هنا باش تجيب الصور حقيقية أونلاين:</small>
+                    <input type="text" id="apiKeyInput" class="input-text" placeholder="أدخل مفتاح الـ API هنا..." onchange="saveApiKey(this.value)">
+                </div>
+
+                <div class="setting-item mt-12">
+                    <div><b>🔊 الصوت الحقيقي</b><small class="text-muted fs-13">صافرة وأصوات تفاعلية</small></div>
+                    <div class="switch on" id="soundSwitch" onclick="toggleSetting('sound')">
+                        <span class="knob"></span>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div><b>📳 الاهتزاز</b><small class="text-muted fs-13">اهتزاز عند الإجابة</small></div>
+                    <div class="switch on" id="vibrationSwitch" onclick="toggleSetting('vibration')">
+                        <span class="knob"></span>
+                    </div>
+                </div>
+
+                <button class="btn-secondary mt-16" onclick="showScreen('home')">رجوع</button>
+            </div>
+            <div class="card text-center">
+                <div style="font-size:35px;">⚽</div>
+                <h3>مين اللاعب؟</h3>
+                <p class="text-muted fs-13">الإصدار المطور 2.5</p>
+                <p class="text-green fw-bold">Developed by Walid Outaleb</p>
+            </div>
+        </section>
+
     </div>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="showScreen('home')" data-screen="home"><span class="icon">🏠</span>الرئيسية</button>
-        <button class="nav-item" onclick="showScreen('modes')" data-screen="modes"><span class="icon">🎮</span>اللعب</button>
-        <button class="nav-item" onclick="showScreen('settings')" data-screen="settings"><span class="icon">⚙️</span>الإعدادات</button>
+    <!-- ======== التنقل السفلي ======== -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-item active" onclick="showScreen('home')" data-screen="home">
+            <span class="icon">🏠</span>الرئيسية
+        </button>
+        <button class="nav-item" onclick="showScreen('modes')" data-screen="modes">
+            <span class="icon">🎮</span>اللعب
+        </button>
+        <button class="nav-item" onclick="showScreen('profile')" data-screen="profile">
+            <span class="icon">👤</span>ملفي
+        </button>
+        <button class="nav-item" onclick="showScreen('settings')" data-screen="settings">
+            <span class="icon">⚙️</span>الإعدادات
+        </button>
     </nav>
+
+    <!-- عناصر الصوت الحقيقية (أصوات تفاعلية عبر ملفات خفيفة) -->
+    <audio id="correctAudio" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+    <audio id="wrongAudio" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
 
     <script>
         "use strict";
 
-        // ===== رسالة تأكيد عند تحميل الصفحة =====
-        console.log("✅ الصفحة تحمّلت بنجاح!");
-
-        // ===== قاعدة بيانات اللاعبين (مدمجة) =====
-        var PLAYERS = [
-            { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", image: "https://media.api-sports.io/football/players/257.png" },
-            { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", image: "https://media.api-sports.io/football/players/154.png" },
-            { id: 3, name: "كيليان مبابي", nationality: "فرنسا", level: "easy", image: "https://media.api-sports.io/football/players/278.png" },
-            { id: 4, name: "إيرلينغ هالاند", nationality: "النرويج", level: "easy", image: "https://media.api-sports.io/football/players/1100.png" },
-            { id: 5, name: "محمد صلاح", nationality: "مصر", level: "easy", image: "https://media.api-sports.io/football/players/306.png" },
-            { id: 6, name: "نيمار", nationality: "البرازيل", level: "easy", image: "https://media.api-sports.io/football/players/212.png" },
-            { id: 7, name: "فينيسيوس جونيور", nationality: "البرازيل", level: "easy", image: "https://media.api-sports.io/football/players/276.png" },
-            { id: 8, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", image: "https://media.api-sports.io/football/players/1000.png" },
-            { id: 9, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/1465.png" },
-            { id: 10, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", image: "https://media.api-sports.io/football/players/1000.png" }
+        // قاعدة البيانات الاحتياطية (Local Fallback Database)
+        const FALLBACK_PLAYERS = [
+            { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", image: "https://media.api-sports.io/football/players/257.png" },
+            { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", image: "https://media.api-sports.io/football/players/154.png" },
+            { id: 3, name: "كيليان مبابي", nationality: "فرنسا", image: "https://media.api-sports.io/football/players/278.png" },
+            { id: 4, name: "إيرلينغ هالاند", nationality: "النرويج", image: "https://media.api-sports.io/football/players/1100.png" },
+            { id: 5, name: "محمد صلاح", nationality: "مصر", image: "https://media.api-sports.io/football/players/306.png" },
+            { id: 6, name: "فينيسيوس جونيور", nationality: "البرازيل", image: "https://media.api-sports.io/football/players/276.png" },
+            { id: 7, name: "جود بيلينغهام", nationality: "إنجلترا", image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 8, name: "كيفن دي بروين", nationality: "بلجيكا", image: "https://media.api-sports.io/football/players/886.png" },
+            { id: 9, name: "نيمار", nationality: "البرازيل", image: "https://media.api-sports.io/football/players/212.png" },
+            { id: 10, name: "لوكا مودريتش", nationality: "كرواتيا", image: "https://media.api-sports.io/football/players/886.png" }
         ];
 
-        console.log("✅ عدد اللاعبين:", PLAYERS.length);
+        let players = [...FALLBACK_PLAYERS];
+        let questions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let correct = 0;
+        let wrong = 0;
+        let streak = 0;
+        let bestStreak = 0;
+        let currentMode = 'classic';
+        let hintsRemaining = 3;
+        let questionLocked = false;
+        let timerInterval = null;
+        let timeLeft = 0;
 
-        // ===== متغيرات اللعبة =====
-        var questions = [];
-        var currentIndex = 0;
-        var score = 0;
-        var correct = 0;
-        var wrong = 0;
-        var streak = 0;
-        var bestStreak = 0;
-        var hintsRemaining = 3;
-        var timerInterval = null;
-        var timeLeft = 0;
-        var currentMode = 'classic';
-        var questionLocked = false;
-
-        var CONFIGS = {
-            classic: { total: 50, time: 15, bonus: 0 },
-            speed: { total: 30, time: 10, bonus: 3 },
-            streak: { total: 100, time: 12, bonus: 2 },
-            rare: { total: 40, time: 18, bonus: 5 }
+        let settings = {
+            sound: true,
+            vibration: true,
+            animation: true,
+            apiKey: localStorage.getItem('footballApiKey') || ''
         };
 
-        // ===== الإحصائيات (LocalStorage) =====
-        function getStats() {
+        const CONFIGS = {
+            classic: { total: 20, time: 15, bonus: 0 },
+            speed: { total: 15, time: 10, bonus: 3 },
+            streak: { total: 50, time: 12, bonus: 2 }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if(document.getElementById('apiKeyInput')) {
+                document.getElementById('apiKeyInput').value = settings.apiKey;
+            }
+            ['sound', 'vibration', 'animation'].forEach(name => {
+                const el = document.getElementById(name + 'Switch');
+                if (el) el.classList.toggle('on', settings[name]);
+            });
+            updateUI();
+            showScreen('home');
+        });
+
+        function saveApiKey(key) {
+            settings.apiKey = key.trim();
+            localStorage.setItem('footballApiKey', settings.apiKey);
+            showToast('💾 تم حفظ مفتاح API بنجاح');
+        }
+
+        // دالة جلب البيانات من الـ API (إذا كان المفتاح موجوداً)
+        async function fetchPlayersFromAPI() {
+            if (!settings.apiKey) return FALLBACK_PLAYERS;
+            
             try {
-                var saved = localStorage.getItem('gameStats');
-                if (!saved) return { games: 0, best: 0, correct: 0, xp: 0, level: 1 };
-                var data = JSON.parse(saved);
-                return {
-                    games: Number(data.games) || 0,
-                    best: Number(data.best) || 0,
-                    correct: Number(data.correct) || 0,
-                    xp: Number(data.xp) || 0,
-                    level: Number(data.level) || 1
-                };
-            } catch (e) { return { games: 0, best: 0, correct: 0, xp: 0, level: 1 }; }
+                // مثال لجلب اللاعبين من RapidAPI (API-Football)
+                // يمكنك تخصيص الـ Endpoint حسب رغبتك (مثلا قمة الهدافين في دوري معين)
+                const response = await fetch("https://api-football-v1.p.rapidapi.com/v3/players/topscorers?season=2023&league=39", {
+                    "method": "GET",
+                    "headers": {
+                        "x-rapidapi-key": settings.apiKey,
+                        "x-rapidapi-host": "api-football-v1.p.rapidapi.com"
+                    }
+                });
+                const data = await response.json();
+                if (data && data.response && data.response.length > 0) {
+                    return data.response.map(item => ({
+                        id: item.player.id,
+                        name: item.player.name,
+                        nationality: item.player.nationality || 'عالمي',
+                        image: item.player.photo
+                    }));
+                }
+            } catch (e) {
+                console.warn("تعذر الاتصال بـ API، جاري استخدام القائمة المحلية:", e);
+            }
+            return FALLBACK_PLAYERS;
         }
 
-        function saveStats(stats) {
-            try { localStorage.setItem('gameStats', JSON.stringify(stats)); } catch (e) {}
-        }
+        async function startGame(mode) {
+            if (questionLocked) return;
+            showToast('⏳ جاري تحضير اللاعبين...');
+            
+            // جلب البيانات (من الAPI أو القائمة المحلية)
+            players = await fetchPlayersFromAPI();
 
-        function updateUI() {
-            var stats = getStats();
-            document.getElementById('statGames').textContent = stats.games;
-            document.getElementById('statBest').textContent = stats.best;
-            document.getElementById('statCorrect').textContent = stats.correct;
-        }
-
-        // ===== التنقل بين الشاشات =====
-        function showScreen(id) {
-            console.log("🔄 التنقل إلى:", id);
-            clearTimer();
-            var screens = document.querySelectorAll('.screen');
-            for (var i = 0; i < screens.length; i++) {
-                screens[i].style.display = 'none';
-            }
-            var target = document.getElementById(id);
-            if (target) target.style.display = 'block';
-            var navs = document.querySelectorAll('.nav-item');
-            for (var j = 0; j < navs.length; j++) {
-                navs[j].classList.toggle('active', navs[j].getAttribute('data-screen') === id);
-            }
-            if (id === 'home') updateUI();
-        }
-
-        // ===== خلط المصفوفة =====
-        function shuffle(arr) {
-            var a = arr.slice();
-            for (var i = a.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = a[i];
-                a[i] = a[j];
-                a[j] = temp;
-            }
-            return a;
-        }
-
-        // ===== بدء اللعبة (هنا المشكلة كانت) =====
-        function startGame(mode) {
-            console.log("🚀 تم استدعاء startGame بالوضع:", mode);
-            alert("✅ تم الضغط على زر 'لعب'! الوضع: " + mode);
-
-            // نتحقق من وجود لاعبين
-            if (PLAYERS.length === 0) {
-                alert("❌ لا يوجد لاعبين!");
-                return;
-            }
-
-            var config = CONFIGS[mode];
-            if (!config) {
-                alert("❌ الوضع غير معروف!");
-                return;
-            }
-
+            const config = CONFIGS[mode];
             currentMode = mode;
             hintsRemaining = 3;
             document.getElementById('hintCount').textContent = '3';
-            document.getElementById('hintBtn').disabled = false;
 
-            var pool = PLAYERS.slice();
-            if (mode === 'rare') {
-                var hard = PLAYERS.filter(function(p) { return p.level === 'hard' || p.level === 'legend'; });
-                if (hard.length >= 4) pool = hard;
-            }
-
-            if (pool.length === 0) {
-                alert("⚠️ لا توجد لاعبين كافيين للوضع النادر");
-                return;
-            }
-
-            var shuffled = shuffle(pool);
-            questions = shuffled.slice(0, Math.min(config.total, shuffled.length));
+            let pool = [...players];
+            questions = shuffle(pool).slice(0, Math.min(config.total, pool.length));
             currentIndex = 0;
             score = 0;
             correct = 0;
@@ -289,8 +719,8 @@
             bestStreak = 0;
             questionLocked = false;
 
-            document.getElementById('qNum').textContent = '1 / ' + questions.length;
-            document.getElementById('scoreDisplay').textContent = '0';
+            document.getElementById('questionTotal').textContent = questions.length;
+            document.getElementById('score').textContent = '0';
             document.getElementById('streakDisplay').textContent = '0';
 
             showScreen('game');
@@ -298,7 +728,6 @@
             showToast('🎮 بدأت المباراة!');
         }
 
-        // ===== عرض السؤال =====
         function renderQuestion() {
             clearTimer();
             questionLocked = false;
@@ -308,54 +737,64 @@
                 return;
             }
 
-            var q = questions[currentIndex];
-            document.getElementById('qNum').textContent = (currentIndex + 1) + ' / ' + questions.length;
+            const q = questions[currentIndex];
+            document.getElementById('questionNumber').textContent = currentIndex + 1;
 
-            var box = document.getElementById('playerBox');
-            box.innerHTML = '<img id="playerImage" src="' + q.image + '" alt="لاعب" onerror="this.parentElement.innerHTML=\'<div style=\\\'text-align:center;color:#6a7a8a;padding:20px;\\\'><strong style=\\\'display:block;color:#fff;\\\'>⚽</strong>تعذر تحميل الصورة</div>\'">';
+            const box = document.getElementById('playerBox');
+            const spinner = document.getElementById('loaderSpinner');
+            const img = document.getElementById('playerImage');
+            
+            spinner.style.display = 'block';
+            img.style.display = 'none';
+
+            img.onload = function() {
+                spinner.style.display = 'none';
+                img.style.display = 'block';
+            };
+            img.onerror = function() {
+                spinner.style.display = 'none';
+                box.innerHTML = `<div class="fallback"><strong>⚽</strong><span>تعذر تحميل الصورة</span></div>`;
+            };
+            img.src = q.image;
 
             generateOptions(q);
+
+            document.getElementById('hintBox').style.display = 'none';
+            document.getElementById('hintBox').textContent = '';
+
             startTimer();
         }
 
-        // ===== إنشاء الخيارات =====
         function generateOptions(correctPlayer) {
-            var others = [];
-            for (var i = 0; i < PLAYERS.length; i++) {
-                if (PLAYERS[i].id !== correctPlayer.id) others.push(PLAYERS[i]);
-            }
-            var shuffled = shuffle(others);
-            var selected = shuffled.slice(0, 3);
-            var options = shuffle([correctPlayer].concat(selected));
+            const others = players.filter(p => p.id !== correctPlayer.id);
+            const shuffled = shuffle(others);
+            const selected = shuffled.slice(0, 3);
+            const options = shuffle([correctPlayer, ...selected]);
 
-            var container = document.getElementById('optionsGrid');
+            const container = document.getElementById('optionsGrid');
             container.innerHTML = '';
 
-            for (var j = 0; j < options.length; j++) {
-                var player = options[j];
-                var btn = document.createElement('button');
+            options.forEach(player => {
+                const btn = document.createElement('button');
                 btn.className = 'option';
                 btn.textContent = player.name;
-                btn.onclick = (function(p) {
-                    return function() {
-                        answer(p.id === correctPlayer.id, this, correctPlayer);
-                    };
-                })(player);
+                btn.onclick = function() {
+                    answer(player.id === correctPlayer.id, this, correctPlayer);
+                };
                 container.appendChild(btn);
-            }
+            });
         }
 
-        // ===== المؤقت =====
         function startTimer() {
             clearTimer();
-            var config = CONFIGS[currentMode];
+            const config = CONFIGS[currentMode];
             timeLeft = config.time;
-            document.getElementById('timerDisplay').textContent = timeLeft;
+            document.getElementById('timer').textContent = timeLeft;
 
-            timerInterval = setInterval(function() {
+            timerInterval = setInterval(() => {
                 if (questionLocked) { clearTimer(); return; }
                 timeLeft--;
-                document.getElementById('timerDisplay').textContent = Math.max(timeLeft, 0);
+                document.getElementById('timer').textContent = Math.max(timeLeft, 0);
                 if (timeLeft <= 0) {
                     clearTimer();
                     answer(false, null, questions[currentIndex]);
@@ -370,50 +809,48 @@
             }
         }
 
-        // ===== الإجابة =====
         function answer(isCorrect, button, correctPlayer) {
             if (questionLocked) return;
             questionLocked = true;
             clearTimer();
 
-            var buttons = document.querySelectorAll('.option');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].disabled = true;
-            }
+            const buttons = document.querySelectorAll('.option');
+            buttons.forEach(b => b.disabled = true);
 
             if (isCorrect) {
                 correct++;
                 streak++;
                 if (streak > bestStreak) bestStreak = streak;
-                var config = CONFIGS[currentMode];
-                var earned = 10 + config.bonus + Math.floor(streak / 5) * 2;
+                const config = CONFIGS[currentMode];
+                const earned = 10 + config.bonus + Math.floor(streak / 5) * 2;
                 score += earned;
                 if (button) button.classList.add('correct');
                 showToast('✅ صحيح! +' + earned + ' XP');
+                vibrate(60);
+                playSound(true);
             } else {
                 wrong++;
                 streak = 0;
                 if (button) button.classList.add('wrong');
                 showToast('❌ خطأ');
+                vibrate([80, 50, 80]);
+                playSound(false);
                 if (correctPlayer) {
-                    for (var j = 0; j < buttons.length; j++) {
-                        if (buttons[j].textContent === correctPlayer.name) {
-                            buttons[j].classList.add('correct');
-                        }
-                    }
+                    buttons.forEach(b => {
+                        if (b.textContent === correctPlayer.name) b.classList.add('correct');
+                    });
                 }
             }
 
-            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('score').textContent = score;
             document.getElementById('streakDisplay').textContent = streak;
 
-            setTimeout(function() {
+            setTimeout(() => {
                 currentIndex++;
                 renderQuestion();
-            }, 700);
+            }, 800);
         }
 
-        // ===== التلميح =====
         function useHint() {
             if (questionLocked || currentIndex >= questions.length) return;
             if (hintsRemaining <= 0) {
@@ -422,20 +859,21 @@
             }
             hintsRemaining--;
             document.getElementById('hintCount').textContent = hintsRemaining;
-            if (hintsRemaining <= 0) document.getElementById('hintBtn').disabled = true;
 
-            var q = questions[currentIndex];
-            showToast('🌍 الجنسية: ' + q.nationality);
+            const q = questions[currentIndex];
+            const box = document.getElementById('hintBox');
+            box.textContent = '🌍 الجنسية: ' + q.nationality;
+            box.style.display = 'block';
+            vibrate(30);
         }
 
-        // ===== نهاية اللعبة =====
         function endGame() {
             clearTimer();
             questionLocked = true;
 
-            var old = getStats();
-            var best = Math.max(old.best, score);
-            var stats = {
+            const old = getStats();
+            const best = Math.max(old.best, score);
+            const stats = {
                 games: old.games + 1,
                 best: best,
                 correct: old.correct + correct,
@@ -451,31 +889,92 @@
 
             showScreen('result');
             updateUI();
-            showToast('🏁 انتهت المباراة!');
         }
 
-        // ===== Toast =====
-        var toastTimer = null;
+        function getStats() {
+            try {
+                const saved = localStorage.getItem('gameStats');
+                if (!saved) return { games: 0, best: 0, correct: 0, xp: 0, level: 1 };
+                return JSON.parse(saved);
+            } catch { return { games: 0, best: 0, correct: 0, xp: 0, level: 1 }; }
+        }
 
+        function saveStats(stats) {
+            try { localStorage.setItem('gameStats', JSON.stringify(stats)); } catch {}
+        }
+
+        function updateUI() {
+            const stats = getStats();
+            document.getElementById('statGames').textContent = stats.games;
+            document.getElementById('statBest').textContent = stats.best;
+            document.getElementById('statCorrect').textContent = stats.correct;
+            document.getElementById('profileLevel').textContent = 'المستوى ' + stats.level;
+            const xpInLevel = stats.xp % 100;
+            document.getElementById('profileXP').textContent = xpInLevel;
+            document.getElementById('profileXPBar').style.width = (xpInLevel / 100 * 100) + '%';
+        }
+
+        function showScreen(id) {
+            clearTimer();
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const screen = document.getElementById(id);
+            if (screen) screen.classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(b => {
+                b.classList.toggle('active', b.dataset.screen === id);
+            });
+            if (id === 'home' || id === 'profile') updateUI();
+        }
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function vibrate(pattern) {
+            if (settings.vibration && navigator.vibrate) {
+                try { navigator.vibrate(pattern); } catch {}
+            }
+        }
+
+        // تشغيل الأصوات عبر الملفات الحقيقية
+        function playSound(isCorrect) {
+            if (!settings.sound) return;
+            try {
+                const audio = document.getElementById(isCorrect ? 'correctAudio' : 'wrongAudio');
+                if(audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                }
+            } catch {}
+        }
+
+        function toggleSetting(name) {
+            if (!settings.hasOwnProperty(name)) return;
+            settings[name] = !settings[name];
+            const el = document.getElementById(name + 'Switch');
+            if (el) el.classList.toggle('on', settings[name]);
+            showToast(settings[name] ? '✅ تم التفعيل' : '🔕 تم التعطيل');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light');
+            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+        }
+
+        let toastTimer = null;
         function showToast(msg) {
-            var el = document.getElementById('toast');
+            const el = document.getElementById('toast');
             el.textContent = msg;
             el.classList.add('show');
             clearTimeout(toastTimer);
-            toastTimer = setTimeout(function() {
+            toastTimer = setTimeout(() => {
                 el.classList.remove('show');
             }, 2000);
         }
-
-        // ===== بدء التشغيل =====
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("✅ DOM جاهز!");
-            updateUI();
-            showScreen('home');
-            console.log("✅ عدد اللاعبين:", PLAYERS.length);
-            console.log("✅ جاهز! اضغط على 'لعب' لبدء المباراة");
-        });
     </script>
-
 </body>
 </html>
