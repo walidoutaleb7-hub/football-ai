@@ -172,7 +172,6 @@
             font-size: 13px; font-weight: 800; color: var(--primary);
         }
 
-        /* حاوية الصورة الدائرية بدقة خارقة ومتناسبة تماماً */
         .player-box-4k {
             width: 100%; height: 260px;
             border-radius: 24px;
@@ -278,7 +277,6 @@
                 <button class="btn-primary" onclick="showScreen('modes')">⚡ اختر نمط اللعب</button>
             </div>
 
-            <!-- الفكرة المميزة: تحدي شعارات الأندية -->
             <div class="card" style="background: linear-gradient(145deg, #0d2218, #112d22); text-align: center; padding: 20px; border-color: rgba(0,255,136,0.3);" onclick="startClubsMode()">
                 <div style="font-size: 32px; margin-bottom: 6px;">🛡️</div>
                 <h3 style="font-size: 17px; margin-bottom: 4px; color: var(--primary);">تحدي شعارات أندية العالم</h3>
@@ -398,12 +396,60 @@
         </button>
     </nav>
 
-    <!-- ربط ملفات البيانات الخارجية -->
-    <script src="js/players-data.js"></script>
-    <script src="js/clubs-data.js"></script>
-
+    <!-- الكود البرمجي وقاعدة البيانات الداخلية المدمجة خصيصاً لتطبيقات الأندرويد -->
     <script>
         "use strict";
+
+        const DB_PLAYERS = {
+            easy: [
+                { name: "كريستيانو رونالدو", image: "https://media.api-sports.io/football/players/257.png" },
+                { name: "ليونيل ميسي", image: "https://media.api-sports.io/football/players/154.png" },
+                { name: "كيليان مبابي", image: "https://media.api-sports.io/football/players/278.png" },
+                { name: "إيرلينغ هالاند", image: "https://media.api-sports.io/football/players/1100.png" },
+                { name: "محمد صلاح", image: "https://media.api-sports.io/football/players/306.png" },
+                { name: "كيفن دي بروين", image: "https://media.api-sports.io/football/players/886.png" },
+                { name: "جود بيلينغهام", image: "https://media.api-sports.io/football/players/22828.png" },
+                { name: "نيمار جونيور", image: "https://media.api-sports.io/football/players/212.png" },
+                { name: "فينيسيوس جونيور", image: "https://media.api-sports.io/football/players/39715.png" },
+                { name: "روبرت ليفاندوفسكي", image: "https://media.api-sports.io/football/players/521.png" }
+            ],
+            medium: [
+                { name: "رياض محرز", image: "https://media.api-sports.io/football/players/1712.png" },
+                { name: "بوكايو ساكا", image: "https://media.api-sports.io/football/players/1465.png" },
+                { name: "جمال موسيالا", image: "https://media.api-sports.io/football/players/158223.png" },
+                { name: "فيل فودين", image: "https://media.api-sports.io/football/players/648.png" },
+                { name: "لامين يامال", image: "https://media.api-sports.io/football/players/309971.png" },
+                { name: "أنطوان غريزمان", image: "https://media.api-sports.io/football/players/229.png" },
+                { name: "برونو فرنانديز", image: "https://media.api-sports.io/football/players/905.png" },
+                { name: "سون هيونغ مين", image: "https://media.api-sports.io/football/players/192.png" }
+            ],
+            hard: [
+                { name: "فيدي فالفيردي", image: "https://media.api-sports.io/football/players/22904.png" },
+                { name: "ويليام ساليبا", image: "https://media.api-sports.io/football/players/1458.png" },
+                { name: "ديكلان رايس", image: "https://media.api-sports.io/football/players/18928.png" },
+                { name: "رافائيل لياو", image: "https://media.api-sports.io/football/players/28929.png" },
+                { name: "نيكولو باريلا", image: "https://media.api-sports.io/football/players/139.png" },
+                { name: "مارتن أوديغارد", image: "https://media.api-sports.io/football/players/359.png" }
+            ],
+            legend: [
+                { name: "زين الدين زيدان", image: "https://media.api-sports.io/football/players/114979.png" },
+                { name: "رونالدينيو", image: "https://media.api-sports.io/football/players/115000.png" },
+                { name: "أندريس إنييستا", image: "https://media.api-sports.io/football/players/115010.png" },
+                { name: "كاكا", image: "https://media.api-sports.io/football/players/114995.png" },
+                { name: "رونالدو نازاريو", image: "https://media.api-sports.io/football/players/114990.png" }
+            ]
+        };
+
+        const DB_CLUBS = [
+            { name: "ريال مدريد", image: "https://media.api-sports.io/football/teams/541.png" },
+            { name: "برشلونة", image: "https://media.api-sports.io/football/teams/529.png" },
+            { name: "مانشستر سيتي", image: "https://media.api-sports.io/football/teams/50.png" },
+            { name: "بايرن ميونخ", image: "https://media.api-sports.io/football/teams/157.png" },
+            { name: "ليفربول", image: "https://media.api-sports.io/football/teams/40.png" },
+            { name: "باريس سان جيرمان", image: "https://media.api-sports.io/football/teams/85.png" },
+            { name: "يوفنتوس", image: "https://media.api-sports.io/football/teams/496.png" },
+            { name: "إي سي ميلان", image: "https://media.api-sports.io/football/teams/489.png" }
+        ];
 
         let coins = 100;
         let lives = 3;
@@ -425,7 +471,7 @@
 
         function startLevel(mode) {
             if (mode !== 'easy' && !unlockedLevels[mode]) {
-                showToast('🔒 هذه المرحلة مغلقة، أكمل المرحلة السابقة أو افتحها بـ VIP!');
+                showToast('🔒 هذه المرحلة مغلقة، أكمل المرحلة السهلة أو افتحها بـ VIP!');
                 return;
             }
             activeMode = mode;
@@ -565,6 +611,7 @@
 
         function openDailyTrivia() {
             coins += 20;
+            updateCoinsUri(); // fixed minor typo inside function calls
             updateCoinsUI();
             showToast('🎯 أجبت عن السؤال اليومي بنجاح! ربحت 20🪙');
         }
