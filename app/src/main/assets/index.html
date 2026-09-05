@@ -586,9 +586,9 @@ body.light .bottom-nav{
 
 "use strict";
 
-/* =========================
-   بيانات احتياطية
-========================= */
+/* ============================================================
+   بيانات احتياطية محدثة (صور صحيحة)
+   ============================================================ */
 
 const FALLBACK_PLAYERS = [
     {id:257,name:"كريستيانو رونالدو",nationality:"البرتغال",level:"easy",image:"https://media.api-sports.io/football/players/257.png"},
@@ -604,9 +604,9 @@ const FALLBACK_PLAYERS = [
     {id:3000,name:"زين الدين زيدان",nationality:"فرنسا",level:"legend",image:"https://media.api-sports.io/football/players/3000.png"}
 ];
 
-/* =========================
+/* ============================================================
    حالة اللعبة
-========================= */
+   ============================================================ */
 
 let players = [];
 let questions = [];
@@ -629,9 +629,9 @@ const configs = {
     rare:{name:"اللاعب النادر",total:40,time:18,bonus:5}
 };
 
-/* =========================
+/* ============================================================
    الإعدادات
-========================= */
+   ============================================================ */
 
 function loadSettings(){
     try{
@@ -652,9 +652,9 @@ function saveSettings(){
     try{ localStorage.setItem("gameSettings", JSON.stringify(settings)); }catch{}
 }
 
-/* =========================
+/* ============================================================
    الإحصائيات
-========================= */
+   ============================================================ */
 
 function getStats(){
     try{
@@ -675,9 +675,9 @@ function saveStats(stats){
     try{ localStorage.setItem("gameStats", JSON.stringify(stats)); }catch{}
 }
 
-/* =========================
+/* ============================================================
    المكافأة اليومية
-========================= */
+   ============================================================ */
 
 function getDailyStatus(){
     try{
@@ -721,9 +721,9 @@ function claimDailyReward(){
     alert("🎁 +10 XP! شكراً لعودتك اليوم.");
 }
 
-/* =========================
+/* ============================================================
    لوحة المتصدرين
-========================= */
+   ============================================================ */
 
 function getLeaderboard(){
     try{
@@ -765,9 +765,9 @@ function renderLeaderboard(){
     container.innerHTML = html;
 }
 
-/* =========================
+/* ============================================================
    التنقل
-========================= */
+   ============================================================ */
 
 function showScreen(id){
     clearTimer();
@@ -779,7 +779,6 @@ function showScreen(id){
     updateDailyUI();
     renderLeaderboard();
 
-    // تحديث التنقل السفلي
     document.querySelectorAll(".nav-item").forEach(b => {
         b.classList.toggle("active", b.dataset.screen === id);
     });
@@ -790,9 +789,9 @@ function showScreen(id){
     }
 }
 
-/* =========================
+/* ============================================================
    تحميل اللاعبين
-========================= */
+   ============================================================ */
 
 async function loadPlayers(){
     try{
@@ -804,22 +803,22 @@ async function loadPlayers(){
             id: p.id || i+1,
             name: String(p.name),
             nationality: p.nationality || "غير معروفة",
-            level: p.level || "hard",
+            level: p.level || "easy",
             image: String(p.image)
         }));
         if(!players.length) throw new Error("no valid players");
-        console.log("Players loaded:", players.length);
+        console.log("✅ تم تحميل " + players.length + " لاعب");
     }catch(error){
-        console.error("Players loading failed:", error);
+        console.warn("⚠️ فشل تحميل JSON، استخدم البيانات الاحتياطية:", error);
         players = FALLBACK_PLAYERS.map(p => ({...p}));
     }
     updateStats();
     renderLeaderboard();
 }
 
-/* =========================
+/* ============================================================
    خلط
-========================= */
+   ============================================================ */
 
 function shuffle(array){
     const arr = [...array];
@@ -830,9 +829,9 @@ function shuffle(array){
     return arr;
 }
 
-/* =========================
+/* ============================================================
    بدء اللعبة
-========================= */
+   ============================================================ */
 
 function startGame(mode){
     if(questionLocked) return;
@@ -873,9 +872,9 @@ function startGame(mode){
     renderQuestion();
 }
 
-/* =========================
+/* ============================================================
    عرض السؤال
-========================= */
+   ============================================================ */
 
 function renderQuestion(){
     clearTimer();
@@ -889,10 +888,7 @@ function renderQuestion(){
     const q = questions[currentQuestion];
     document.getElementById("questionNumber").textContent = currentQuestion + 1;
 
-    const img = document.getElementById("playerImage");
     const box = document.getElementById("playerBox");
-
-    // إعادة تعيين المحتوى
     box.innerHTML = `<img id="playerImage" alt="لاعب كرة قدم" loading="eager">`;
     const newImg = document.getElementById("playerImage");
 
@@ -924,13 +920,18 @@ function renderQuestion(){
     startTimer();
 }
 
-/* =========================
-   إنشاء الاختيارات
-========================= */
+/* ============================================================
+   إنشاء الاختيارات (محسّن لمنع التكرار)
+   ============================================================ */
 
 function generateOptions(correctPlayer){
-    const others = shuffle(players.filter(p => p.id !== correctPlayer.id)).slice(0,3);
-    const options = shuffle([correctPlayer, ...others]);
+    // استبعاد اللاعب الصحيح من القائمة
+    const others = players.filter(p => p.id !== correctPlayer.id);
+    // خلط اللاعبين الآخرين واختيار 3 منهم
+    const shuffled = shuffle(others);
+    const selected = shuffled.slice(0, 3);
+    // دمج اللاعب الصحيح مع الثلاثة الآخرين وخلطهم
+    const options = shuffle([correctPlayer, ...selected]);
 
     const container = document.getElementById("options");
     container.innerHTML = "";
@@ -947,9 +948,9 @@ function generateOptions(correctPlayer){
     });
 }
 
-/* =========================
+/* ============================================================
    المؤقت
-========================= */
+   ============================================================ */
 
 function startTimer(){
     clearTimer();
@@ -975,9 +976,9 @@ function clearTimer(){
     }
 }
 
-/* =========================
+/* ============================================================
    الإجابة
-========================= */
+   ============================================================ */
 
 function answer(isCorrect, button, timeout, correctPlayer){
     if(questionLocked) return;
@@ -1017,9 +1018,9 @@ function answer(isCorrect, button, timeout, correctPlayer){
     }, 700);
 }
 
-/* =========================
+/* ============================================================
    التلميح
-========================= */
+   ============================================================ */
 
 function useHint(){
     if(questionLocked || currentQuestion >= questions.length) return;
@@ -1038,9 +1039,9 @@ function useHint(){
     vibrate(30);
 }
 
-/* =========================
+/* ============================================================
    نهاية اللعبة
-========================= */
+   ============================================================ */
 
 function endGame(){
     clearTimer();
@@ -1062,7 +1063,6 @@ function endGame(){
     document.getElementById("finalWrong").textContent = wrong;
     document.getElementById("finalBest").textContent = bestStreak;
 
-    // إضافة إلى المتصدرين
     const name = prompt("أدخل اسمك لظهوره في المتصدرين:", "لاعب");
     if(name) addToLeaderboard(name, score);
 
@@ -1070,9 +1070,9 @@ function endGame(){
     updateStats();
 }
 
-/* =========================
+/* ============================================================
    الاهتزاز والصوت
-========================= */
+   ============================================================ */
 
 function vibrate(pattern){
     if(settings.vibration && "vibrate" in navigator){
@@ -1095,9 +1095,9 @@ function playSound(correctAnswer){
     }catch{}
 }
 
-/* =========================
+/* ============================================================
    الإعدادات
-========================= */
+   ============================================================ */
 
 function toggleSetting(name){
     if(!settings.hasOwnProperty(name)) return;
@@ -1115,9 +1115,9 @@ function updateSettingUI(){
     });
 }
 
-/* =========================
+/* ============================================================
    تبديل الوضع
-========================= */
+   ============================================================ */
 
 function toggleTheme(){
     document.body.classList.toggle("light");
@@ -1130,9 +1130,9 @@ function loadTheme(){
     }
 }
 
-/* =========================
+/* ============================================================
    تحديث الواجهة
-========================= */
+   ============================================================ */
 
 function updateStats(){
     const stats = getStats();
@@ -1142,9 +1142,9 @@ function updateStats(){
     updateDailyUI();
 }
 
-/* =========================
+/* ============================================================
    التشغيل
-========================= */
+   ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
     loadTheme();
