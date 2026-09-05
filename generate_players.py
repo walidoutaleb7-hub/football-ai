@@ -4,20 +4,62 @@ import os
 
 API_KEY = os.environ.get('API_KEY', '')
 
-# قائمة بأشهر الدوريات حول العالم (ID الخاص بكل دوري في API-Football)
+# ============================================================
+#  تصنيف اللاعبين حسب "الشهرة" (صعوبة التخمين)
+# ============================================================
+
+# 🟢 سهل: نجوم خارقون يعرفهم الجميع
+EASY_PLAYERS = [
+    "كريستيانو رونالدو", "ليونيل ميسي", "كيليان مبابي", "إيرلينغ هالاند",
+    "نيمار", "محمد صلاح", "كيليان مبابي", "فينيسيوس جونيور",
+    "جود بيلينغهام", "لامين يامال", "روبرت ليفاندوفسكي",
+    "كيفن دي بروين", "لوكا مودريتش", "تيبو كورتوا"
+]
+
+# 🔵 متوسط: نجوم معروفون لدى متابعي كرة القدم
+MEDIUM_PLAYERS = [
+    "برناردو سيلفا", "رافائيل لياو", "مارتن أوديغارد", "ديكلان رايس",
+    "بوكايو ساكا", "فيل فودين", "لاوتارو مارتينيز", "رودري",
+    "أليكسيس ماك أليستر", "ماتيو كوفاسيتش", "دومينيك سوبوسلاي",
+    "ويليام ساليبا", "رونالد أراوخو", "جيريمي فريمبونغ",
+    "أندريه أونانا", "نيكولو باريلا", "فيدي فالفيردي",
+    "جمال موسيالا", "فلوريان فيرتز", "مسعود أوزيل"
+]
+
+# 🟠 صعب: لاعبون أقل شهرة (قد يعرفهم فقط متابعو دوري معين)
+HARD_PLAYERS = [
+    "إبراهيما كوناتي", "فيديريكو ديماركو", "ماركوس تورام",
+    "ميكي فان دي فين", "ديني زكريا", "راسموس هويلوند",
+    "إدريسا غي", "جوناثان ديفيد", "لويس أوبيندا",
+    "جيريمي دوكو", "دونييل مالين", "نونو تافاريس",
+    "رينان لودي", "إدواردو كامافينغا"  # (رغم شهرته، لكنه لا يزال غير معروف للجميع)
+]
+
+# 🔴 أسطوري: أساطير اعتزلوا
+LEGEND_PLAYERS = [
+    "زين الدين زيدان", "رونالدينيو", "رونالدو نازاريو", "ريفالدو",
+    "كاكا", "أندريا بيرلو", "تشافي", "أندريس إنييستا",
+    "فرانك لامبارد", "ستيفن جيرارد", "تييري هنري", "رونالد كومان",
+    "باولو مالديني", "فرانكو باريزي", "لوتار ماتيوس"
+]
+
+# ============================================================
+#  تحميل اللاعبين من جميع الدوريات
+# ============================================================
+
 LEAGUES = [
-    {'id': 39, 'name': 'الدوري الإنجليزي'},    # Premier League
-    {'id': 140, 'name': 'الدوري الإسباني'},   # La Liga
-    {'id': 135, 'name': 'الدوري الإيطالي'},   # Serie A
-    {'id': 78, 'name': 'الدوري الألماني'},    # Bundesliga
-    {'id': 61, 'name': 'الدوري الفرنسي'},     # Ligue 1
-    {'id': 307, 'name': 'الدوري السعودي'},    # Saudi Pro League (يضم رونالدو)
-    {'id': 253, 'name': 'الدوري الأمريكي'},   # MLS (يضم ميسي)
+    {'id': 39, 'name': 'الدوري الإنجليزي'},
+    {'id': 140, 'name': 'الدوري الإسباني'},
+    {'id': 135, 'name': 'الدوري الإيطالي'},
+    {'id': 78, 'name': 'الدوري الألماني'},
+    {'id': 61, 'name': 'الدوري الفرنسي'},
+    {'id': 307, 'name': 'الدوري السعودي'},
+    {'id': 253, 'name': 'الدوري الأمريكي'},
 ]
 
 SEASON = 2024
 all_players = []
-seen_names = set()  # لمنع التكرار
+seen_names = set()
 
 print('🔄 جاري تحميل اللاعبين من جميع الدوريات...')
 
@@ -43,18 +85,32 @@ for league in LEAGUES:
             name = player.get('name')
             photo = player.get('photo')
             
-            # تجاهل اللاعبين بدون صور أو أسماء مكررة
             if not name or not photo:
                 continue
             if name in seen_names:
                 continue
                 
             seen_names.add(name)
+            
+            # ============================================
+            #  تصنيف الصعوبة حسب الشهرة (من القوائم أعلاه)
+            # ============================================
+            if name in LEGEND_PLAYERS:
+                level = 'legend'
+            elif name in EASY_PLAYERS:
+                level = 'easy'
+            elif name in MEDIUM_PLAYERS:
+                level = 'medium'
+            elif name in HARD_PLAYERS:
+                level = 'hard'
+            else:
+                level = 'easy'  # افتراضي: إذا لم يكن في أي قائمة، نعتبره سهل (لكن يمكنك تعديل هذا)
+            
             all_players.append({
                 'id': player.get('id'),
                 'name': name,
                 'nationality': player.get('nationality', 'غير معروف'),
-                'level': 'easy',  # سنتركها سهلة حالياً، لكن يمكنك تخصيصها لاحقاً
+                'level': level,
                 'image': photo
             })
             count += 1
@@ -63,14 +119,16 @@ for league in LEAGUES:
     except Exception as e:
         print(f'    ❌ خطأ في {league["name"]}: {e}')
 
-# في حال فشل API بالكامل (مثلاً انتهاء المفتاح)، استخدم بيانات احتياطية تضم رونالدو وميسي
+# في حال فشل API بالكامل
 if len(all_players) == 0:
     print('⚠️ فشل تحميل جميع الدوريات، استخدام بيانات احتياطية.')
     all_players = [
-        {"id": 1, "name": "كريستيانو رونالدو", "nationality": "البرتغال", "level": "legend", "image": "https://media.api-sports.io/football/players/257.png"},
-        {"id": 2, "name": "ليونيل ميسي", "nationality": "الأرجنتين", "level": "legend", "image": "https://media.api-sports.io/football/players/457.png"},
+        {"id": 1, "name": "كريستيانو رونالدو", "nationality": "البرتغال", "level": "easy", "image": "https://media.api-sports.io/football/players/257.png"},
+        {"id": 2, "name": "ليونيل ميسي", "nationality": "الأرجنتين", "level": "easy", "image": "https://media.api-sports.io/football/players/457.png"},
         {"id": 3, "name": "كيليان مبابي", "nationality": "فرنسا", "level": "easy", "image": "https://media.api-sports.io/football/players/1495.png"},
-        {"id": 4, "name": "إيرلينغ هالاند", "nationality": "النرويج", "level": "easy", "image": "https://media.api-sports.io/football/players/10035.png"},
+        {"id": 4, "name": "زين الدين زيدان", "nationality": "فرنسا", "level": "legend", "image": "https://media.api-sports.io/football/players/1000.png"},
+        {"id": 5, "name": "بوكايو ساكا", "nationality": "إنجلترا", "level": "medium", "image": "https://media.api-sports.io/football/players/14947.png"},
+        {"id": 6, "name": "نيكولو باريلا", "nationality": "إيطاليا", "level": "hard", "image": "https://media.api-sports.io/football/players/10035.png"},
     ]
 
 # حفظ الملف
@@ -78,4 +136,4 @@ with open('popular_players.json', 'w', encoding='utf-8') as f:
     json.dump(all_players, f, ensure_ascii=False, indent=2)
 
 print(f'✅ تم حفظ {len(all_players)} لاعباً بنجاح!')
-print('🎉 الآن اللعبة تحتوي على نجوم من جميع أنحاء العالم، بما فيهم رونالدو وميسي!')
+print('🎉 التصنيف الآن حسب الشهرة: سهل (نجوم خارقون) ← متوسط (معروفون) ← صعب (أقل شهرة) ← أسطوري (معتزلون)!')
