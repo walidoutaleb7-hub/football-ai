@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مين اللاعب؟ - أسطورة كرة القدم</title>
+    <title>مين اللاعب؟ - النسخة الأسطورية</title>
     <style>
         /* =========================================================
            BASE STYLES
@@ -20,6 +20,35 @@
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        body.light-mode {
+            background: #f0f4fa;
+            color: #0a0e17;
+        }
+
+        body.light-mode .header,
+        body.light-mode .hero,
+        body.light-mode .mode-card,
+        body.light-mode .stat-card,
+        body.light-mode .profile-card,
+        body.light-mode .settings-list,
+        body.light-mode .premium-card,
+        body.light-mode .large-mode,
+        body.light-mode .bottom-nav,
+        body.light-mode .answer-btn {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-color: rgba(0, 0, 0, 0.05) !important;
+            color: #0a0e17 !important;
+        }
+
+        body.light-mode .hero p,
+        body.light-mode .mode-card p,
+        body.light-mode .stat-card .label,
+        body.light-mode .profile-card .level,
+        body.light-mode .settings-list span {
+            color: #555 !important;
         }
 
         /* =========================================================
@@ -112,40 +141,9 @@
             z-index: 1;
         }
 
-        /* Floating background animation */
-        .bg-particles {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .bg-particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(46, 204, 113, 0.04);
-            animation: floatParticle 20s infinite alternate ease-in-out;
-        }
-
-        .bg-particle:nth-child(1) { width: 120px; height: 120px; top: 10%; left: -30px; animation-duration: 18s; }
-        .bg-particle:nth-child(2) { width: 200px; height: 200px; bottom: 20%; right: -50px; animation-duration: 25s; background: rgba(241, 196, 15, 0.03); }
-        .bg-particle:nth-child(3) { width: 80px; height: 80px; top: 50%; left: 20%; animation-duration: 22s; background: rgba(46, 204, 113, 0.02); }
-        .bg-particle:nth-child(4) { width: 150px; height: 150px; bottom: 10%; left: 10%; animation-duration: 20s; background: rgba(241, 196, 15, 0.02); }
-
-        @keyframes floatParticle {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(40px, -30px) rotate(20deg); }
-        }
-
-        /* =========================================================
-           PAGES
-        ========================================================= */
         .page {
             display: none;
             animation: fadeSlide 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            position: relative;
-            z-index: 1;
         }
 
         .page.active {
@@ -218,6 +216,57 @@
             align-items: center;
             gap: 6px;
             box-shadow: 0 0 20px rgba(241,196,15,0.04);
+        }
+
+        /* =========================================================
+           DAILY REWARD
+        ========================================================= */
+        .daily-reward {
+            background: linear-gradient(135deg, rgba(241,196,15,0.05), rgba(46,204,113,0.05));
+            border: 1px solid rgba(241,196,15,0.08);
+            border-radius: 20px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .daily-reward:active {
+            transform: scale(0.98);
+        }
+
+        .daily-reward .info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .daily-reward .info .icon {
+            font-size: 28px;
+        }
+
+        .daily-reward .info .text {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .daily-reward .info .text small {
+            display: block;
+            color: #8896ab;
+            font-size: 10px;
+            font-weight: 400;
+        }
+
+        .daily-reward .reward {
+            background: rgba(241,196,15,0.1);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #f1c40f;
         }
 
         /* =========================================================
@@ -323,7 +372,6 @@
             gap: 10px;
         }
 
-        /* Mode Cards */
         .mode-card {
             background: rgba(20, 28, 43, 0.8);
             backdrop-filter: blur(10px);
@@ -392,7 +440,6 @@
             margin-top: 2px;
         }
 
-        /* Stat Cards */
         .stat-card {
             background: rgba(20, 28, 43, 0.6);
             backdrop-filter: blur(8px);
@@ -545,7 +592,6 @@
             transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* Timer - 3D Style */
         .timer {
             width: 76px;
             height: 76px;
@@ -594,7 +640,6 @@
             color: #ff6b7a;
         }
 
-        /* Player Image */
         .player-frame {
             width: 100%;
             height: 280px;
@@ -623,7 +668,6 @@
             transform: scale(1.02);
         }
 
-        /* Answers */
         .answers {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -691,7 +735,6 @@
             opacity: 0.6;
         }
 
-        /* Result Box */
         .result-box {
             margin-top: 12px;
             padding: 12px;
@@ -724,7 +767,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Tools */
         .tools {
             display: flex;
             gap: 8px;
@@ -751,6 +793,47 @@
         .tools button:disabled {
             opacity: 0.3;
             cursor: not-allowed;
+        }
+
+        /* =========================================================
+           LEADERBOARD
+        ========================================================= */
+        .leaderboard {
+            background: rgba(20, 28, 43, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.03);
+            margin-top: 12px;
+        }
+
+        .leaderboard .entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .leaderboard .entry:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard .rank {
+            font-weight: 900;
+            color: #f1c40f;
+            width: 30px;
+        }
+
+        .leaderboard .name {
+            flex: 1;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .leaderboard .score {
+            font-weight: 800;
+            color: #2ecc71;
         }
 
         /* =========================================================
@@ -916,7 +999,6 @@
             transition: width 0.6s ease;
         }
 
-        /* Achievements */
         .achievements {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1250,16 +1332,6 @@
 </div>
 
 <!-- ============================================================
-     BACKGROUND PARTICLES
-     ============================================================ -->
-<div class="bg-particles">
-    <div class="bg-particle"></div>
-    <div class="bg-particle"></div>
-    <div class="bg-particle"></div>
-    <div class="bg-particle"></div>
-</div>
-
-<!-- ============================================================
      LOADING OVERLAY
      ============================================================ -->
 <div class="loading-overlay" id="loadingOverlay">
@@ -1283,6 +1355,18 @@
                 </div>
             </div>
             <div class="xp-badge">⭐ <span id="headerXP">0 XP</span></div>
+        </div>
+
+        <!-- الميزة 1: مكافأة يومية -->
+        <div class="daily-reward" onclick="claimDailyReward()" id="dailyReward">
+            <div class="info">
+                <div class="icon">🎁</div>
+                <div class="text">
+                    مكافأة يومية
+                    <small id="dailyStatus">تسجيل الدخول يمنحك +10 XP</small>
+                </div>
+            </div>
+            <div class="reward" id="dailyRewardBtn">استلام</div>
         </div>
 
         <div class="hero">
@@ -1337,6 +1421,12 @@
                 <div class="label">أفضل ستريك</div>
             </div>
         </div>
+
+        <!-- الميزة 2: لوحة المتصدرين (Leaderboard) -->
+        <div class="section-title"><h3>🏆 المتصدرين</h3><span>أفضل اللاعبين</span></div>
+        <div class="leaderboard" id="leaderboard">
+            <!-- سيتم ملؤها بواسطة JavaScript -->
+        </div>
     </section>
 
     <!-- GAME -->
@@ -1380,6 +1470,8 @@
         <div class="tools">
             <button id="hintBtn" onclick="useHint()">💡 تلميح</button>
             <button id="skipBtn" onclick="skipQuestion()">⏭ تخطي</button>
+            <!-- الميزة 3: زر إزالة خيارين -->
+            <button id="eliminateBtn" onclick="eliminateOptions()">✂️ إزالة خيارين</button>
         </div>
     </section>
 
@@ -1408,6 +1500,13 @@
                     <div class="stat-icon">⭐</div>
                     <div class="value" id="endXP">0</div>
                     <div class="label">XP</div>
+                </div>
+            </div>
+            <!-- الميزة 4: إحصائيات متقدمة -->
+            <div style="background:rgba(20,28,43,0.4);border-radius:18px;padding:12px;margin:12px 0;border:1px solid rgba(255,255,255,0.03);">
+                <div style="display:flex;justify-content:space-around;font-size:11px;color:#8896ab;">
+                    <div><span style="color:#2ecc71;">✔️</span> نسبة النجاح: <strong id="endRatio" style="color:#fff;">0%</strong></div>
+                    <div><span style="color:#f1c40f;">⭐</span> المتوسط: <strong id="endAvg" style="color:#fff;">0</strong></div>
                 </div>
             </div>
             <button class="btn-primary" onclick="playAgain()" style="margin-bottom:10px;">🔄 العب مجدداً</button>
@@ -1449,11 +1548,12 @@
                 <p>مكافآت أكبر</p>
             </div>
         </button>
-        <button class="large-mode" onclick="showToast('🚧 قريباً')">
+        <!-- الميزة 5: تحديات يومية -->
+        <button class="large-mode" onclick="startDailyChallenge()">
             <div class="icon">📅</div>
             <div class="content">
                 <h3>التحدي اليومي</h3>
-                <p>تحدٍ جديد كل يوم</p>
+                <p id="dailyChallengeDesc">10 أسئلة • مكافأة مضاعفة</p>
             </div>
         </button>
     </section>
@@ -1508,27 +1608,8 @@
         </div>
 
         <div class="section-title"><h3>الإنجازات</h3></div>
-        <div class="achievements">
-            <div class="achievement">
-                <div class="achievement-icon">🎯</div>
-                <h4>أول إجابة</h4>
-                <p>أجب بشكل صحيح</p>
-            </div>
-            <div class="achievement">
-                <div class="achievement-icon">🔥</div>
-                <h4>ستريك 5</h4>
-                <p>5 إجابات متتالية</p>
-            </div>
-            <div class="achievement">
-                <div class="achievement-icon">🏆</div>
-                <h4>100 إجابة</h4>
-                <p>إجمالي 100 صحيحة</p>
-            </div>
-            <div class="achievement">
-                <div class="achievement-icon">⭐</div>
-                <h4>1000 XP</h4>
-                <p>اجمع 1000 نقطة</p>
-            </div>
+        <div class="achievements" id="achievementsContainer">
+            <!-- سيتم ملؤها بواسطة JavaScript -->
         </div>
     </section>
 
@@ -1559,71 +1640,4 @@
                 </div>
                 <div class="switch on" id="vibrationSwitch"></div>
             </div>
-            <div class="setting-row" onclick="toggleSetting('animation')">
-                <div class="info">
-                    <div class="icon">✨</div>
-                    <div>
-                        <strong>الحركات</strong>
-                        <span>تأثيرات بصرية</span>
-                    </div>
-                </div>
-                <div class="switch on" id="animationSwitch"></div>
-            </div>
-        </div>
-        <div class="dev-card">
-            <small>تم التطوير بواسطة</small>
-            <strong>Walid Outaleb</strong>
-            <span>مطور • Football Quiz</span>
-        </div>
-    </section>
-
-</div>
-
-<!-- ============================================================
-     BOTTOM NAVIGATION
-     ============================================================ -->
-<nav class="bottom-nav">
-    <button class="nav-btn active" onclick="navigate('homePage')">
-        <span class="icon">🏠</span>الرئيسية
-    </button>
-    <button class="nav-btn" onclick="navigate('modesPage')">
-        <span class="icon">🎮</span>الأنماط
-    </button>
-    <button class="nav-btn" onclick="navigate('premiumPage')">
-        <span class="icon">👑</span>بريميوم
-    </button>
-    <button class="nav-btn" onclick="navigate('profilePage')">
-        <span class="icon">👤</span>ملفي
-    </button>
-    <button class="nav-btn" onclick="navigate('settingsPage')">
-        <span class="icon">⚙️</span>الإعدادات
-    </button>
-</nav>
-
-<!-- ============================================================
-     TOAST
-     ============================================================ -->
-<div class="toast" id="toast"></div>
-
-<!-- ============================================================
-     JAVASCRIPT
-     ============================================================ -->
-<script>
-// ============================================================
-//  CONFIGURATION
-// ============================================================
-const API_KEY = '__API_KEY__';
-const LEAGUE_ID = 39;
-const SEASON = 2024;
-
-// ============================================================
-//  SPLASH SCREEN
-// ============================================================
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-        document.getElementById('splash').classList.add('hide');
-        setTimeout(function() {
-            document.getElementById('splash').style.display = 'none';
-        }, 900);
-    }, 2200);
-}
+            <div class="setting-row" onclick="toggleSetting('animatio
