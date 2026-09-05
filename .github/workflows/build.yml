@@ -1,104 +1,337 @@
-name: Build APK
+import json
+import os
+import time
+import requests
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+# ============================================================
+# الإعدادات
+# ============================================================
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+API_KEY = os.environ.get("API_KEY", "")
+SEASON = int(os.environ.get("SEASON", "2026"))
+TARGET_PLAYERS = 1000
 
-    steps:
+BASE_URL = "https://v3.football.api-sports.io/players"
 
-      - name: Checkout code
-        uses: actions/checkout@v4
+if not API_KEY:
+    raise RuntimeError("❌ API_KEY غير موجود في GitHub Secrets")
 
-      # Python
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+HEADERS = {
+    "x-apisports-key": API_KEY
+}
 
-      # Generate players database
-      - name: Generate players database
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+# ============================================================
+# اللاعبون المشهورون
+# ============================================================
 
-          python generate_players.py
+EASY_PLAYERS = {
+    "Cristiano Ronaldo",
+    "Lionel Messi",
+    "Kylian Mbappé",
+    "Erling Haaland",
+    "Neymar",
+    "Mohamed Salah",
+    "Vinicius Junior",
+    "Jude Bellingham",
+    "Lamine Yamal",
+    "Robert Lewandowski",
+    "Kevin De Bruyne",
+    "Luka Modric",
+    "Thibaut Courtois"
+}
 
-          if [ ! -f popular_players.json ]; then
-            echo "❌ popular_players.json was not generated"
-            exit 1
-          fi
+MEDIUM_PLAYERS = {
+    "Bernardo Silva",
+    "Rafael Leão",
+    "Martin Ødegaard",
+    "Declan Rice",
+    "Bukayo Saka",
+    "Phil Foden",
+    "Lautaro Martinez",
+    "Rodri",
+    "Alexis Mac Allister",
+    "Mateo Kovacic",
+    "Dominik Szoboszlai",
+    "William Saliba",
+    "Ronald Araujo",
+    "Jeremie Frimpong",
+    "André Onana",
+    "Nicolò Barella",
+    "Federico Valverde",
+    "Jamal Musiala",
+    "Florian Wirtz"
+}
 
-          cp popular_players.json app/src/main/assets/popular_players.json
+HARD_PLAYERS = {
+    "Ibrahima Konaté",
+    "Federico Dimarco",
+    "Marcus Thuram",
+    "Micky van de Ven",
+    "Denis Zakaria",
+    "Rasmus Højlund",
+    "Idrissa Gueye",
+    "Jonathan David",
+    "Loïs Openda",
+    "Jérémy Doku",
+    "Donyell Malen",
+    "Nuno Tavares",
+    "Renan Lodi",
+    "Eduardo Camavinga"
+}
 
-      # Check database
-      - name: Check players database
-        run: |
-          python - <<'PY'
-          import json
+# ============================================================
+# الدوريات
+# ============================================================
 
-          path = "app/src/main/assets/popular_players.json"
+LEAGUES = [
+    {"id": 39, "name": "الدوري الإنجليزي"},
+    {"id": 140, "name": "الدوري الإسباني"},
+    {"id": 135, "name": "الدوري الإيطالي"},
+    {"id": 78, "name": "الدوري الألماني"},
+    {"id": 61, "name": "الدوري الفرنسي"},
+    {"id": 307, "name": "الدوري السعودي"},
+    {"id": 253, "name": "الدوري الأمريكي"}
+]
 
-          with open(path, encoding="utf-8") as f:
-              data = json.load(f)
+# ============================================================
+# تحديد مستوى اللاعب
+# ============================================================
 
-          print("Players:", len(data))
+def get_level(name):
 
-          if len(data) == 0:
-              raise SystemExit("❌ No players found")
+    if name in EASY_PLAYERS:
+        return "easy"
 
-          print("✅ Players database is ready")
-          PY
+    if name in MEDIUM_PLAYERS:
+        return "medium"
 
-      # Java
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    if name in HARD_PLAYERS:
+        return "hard"
 
-      # Android SDK
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+    return "hard"
 
-      # Gradle
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.0.2'
 
-      # Build
-      - name: Build Debug APK
-        run: |
-          gradle assembleDebug --stacktrace
+# ============================================================
+# تحميل اللاعبين
+# ============================================================
 
-      # Check APK
-      - name: Check APK
-        run: |
-          APK="app/build/outputs/apk/debug/app-debug.apk"
+all_players = []
+seen_ids = set()
 
-          if [ -f "$APK" ]; then
-            echo "✅ APK built successfully!"
-            ls -lh "$APK"
-          else
-            echo "❌ APK was not generated"
-            exit 1
-          fi
+print("🚀 بدء تحميل اللاعبين...")
+print(f"📅 الموسم: {SEASON}")
+print(f"🎯 الهدف: {TARGET_PLAYERS} لاعب")
 
-      # Upload
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: football-ai-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
+for league in LEAGUES:
+
+    if len(all_players) >= TARGET_PLAYERS:
+        break
+
+    league_id = league["id"]
+    league_name = league["name"]
+
+    print()
+    print(f"📥 تحميل {league_name}")
+
+    page = 1
+
+    while len(all_players) < TARGET_PLAYERS:
+
+        try:
+
+            params = {
+                "league": league_id,
+                "season": SEASON,
+                "page": page
+            }
+
+            response = requests.get(
+                BASE_URL,
+                headers=HEADERS,
+                params=params,
+                timeout=30
+            )
+
+            print(
+                f"   📄 صفحة {page} | HTTP {response.status_code}"
+            )
+
+            if response.status_code != 200:
+                print("   ❌ فشل الطلب")
+                break
+
+            data = response.json()
+
+            if data.get("errors"):
+                print(
+                    f"   ❌ API Error: {data['errors']}"
+                )
+                break
+
+            results = data.get("response", [])
+
+            if not results:
+                print("   🏁 لا توجد نتائج إضافية")
+                break
+
+            added = 0
+
+            for item in results:
+
+                player = item.get("player", {})
+
+                player_id = player.get("id")
+                name = player.get("name")
+                nationality = player.get(
+                    "nationality",
+                    "غير معروف"
+                )
+                photo = player.get("photo")
+
+                if not player_id:
+                    continue
+
+                if not name:
+                    continue
+
+                if not photo:
+                    continue
+
+                if player_id in seen_ids:
+                    continue
+
+                seen_ids.add(player_id)
+
+                all_players.append({
+                    "id": player_id,
+                    "name": name,
+                    "nationality": nationality,
+                    "level": get_level(name),
+                    "image": photo
+                })
+
+                added += 1
+
+                if len(all_players) >= TARGET_PLAYERS:
+                    break
+
+            print(
+                f"   ✅ أضيف: {added} "
+                f"| المجموع: {len(all_players)}"
+            )
+
+            paging = data.get("paging", {})
+
+            current_page = paging.get(
+                "current",
+                page
+            )
+
+            total_pages = paging.get(
+                "total",
+                page
+            )
+
+            if current_page >= total_pages:
+                print("   🏁 انتهت صفحات هذا الدوري")
+                break
+
+            page += 1
+
+            time.sleep(0.15)
+
+        except requests.RequestException as error:
+
+            print(
+                f"   ❌ خطأ في الاتصال: {error}"
+            )
+            break
+
+        except Exception as error:
+
+            print(
+                f"   ❌ خطأ غير متوقع: {error}"
+            )
+            break
+
+
+# ============================================================
+# تحديد العدد النهائي
+# ============================================================
+
+all_players = all_players[:TARGET_PLAYERS]
+
+print()
+print("=" * 55)
+print(
+    f"📊 عدد اللاعبين النهائي: {len(all_players)}"
+)
+print("=" * 55)
+
+if len(all_players) < TARGET_PLAYERS:
+
+    print(
+        f"⚠️ تم الحصول على {len(all_players)} "
+        f"بدل {TARGET_PLAYERS}."
+    )
+
+else:
+
+    print(
+        f"🎯 تم الوصول إلى {TARGET_PLAYERS} لاعب!"
+    )
+
+
+# ============================================================
+# الإحصائيات
+# ============================================================
+
+levels = {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0
+}
+
+for player in all_players:
+
+    level = player.get("level")
+
+    if level in levels:
+        levels[level] += 1
+
+
+print()
+print("📈 الإحصائيات:")
+print(f"🟢 سهل: {levels['easy']}")
+print(f"🔵 متوسط: {levels['medium']}")
+print(f"🟠 صعب: {levels['hard']}")
+
+
+# ============================================================
+# حفظ قاعدة البيانات
+# ============================================================
+
+with open(
+    "popular_players.json",
+    "w",
+    encoding="utf-8"
+) as file:
+
+    json.dump(
+        all_players,
+        file,
+        ensure_ascii=False,
+        indent=2
+    )
+
+
+# ============================================================
+# النهاية
+# ============================================================
+
+print()
+print("🎉 تم إنشاء popular_players.json بنجاح!")
+print(
+    f"👥 إجمالي اللاعبين: {len(all_players)}"
+)
+print("✅ انتهى التوليد بنجاح!")
