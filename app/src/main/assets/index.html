@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مين اللاعب؟</title>
+    <title>مين اللاعب؟ - أسطورة</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif}
         body{background:#0a0e17;color:#fff;min-height:100vh}
@@ -77,11 +76,55 @@
         .tools{display:flex;gap:6px;margin-top:10px}
         .tools button{flex:1;padding:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;color:#8896ab;font-weight:700;font-size:9px;cursor:pointer}
         .tools button:disabled{opacity:0.3;cursor:not-allowed}
+        .end-screen{text-align:center;padding-top:16px}
+        .end-icon{width:72px;height:72px;border-radius:26px;background:radial-gradient(circle at 40% 30%,rgba(46,204,113,0.1),transparent);display:grid;place-items:center;margin:0 auto 12px;font-size:34px;border:1px solid rgba(46,204,113,0.05);box-shadow:0 0 50px rgba(46,204,113,0.03)}
+        .final-score{background:rgba(20,28,43,0.6);border-radius:20px;padding:16px;margin:14px 0;border:1px solid rgba(255,255,255,0.03)}
+        .final-score strong{font-size:36px;color:#2ecc71;display:block;font-weight:900}
+        .final-score span{color:#8896ab;font-size:10px}
+        .large-mode{background:rgba(20,28,43,0.6);border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px;width:100%;margin-bottom:6px;color:#fff;cursor:pointer;transition:all 0.25s ease}
+        .large-mode:active{transform:scale(0.98)}
+        .large-mode .icon{width:42px;height:42px;border-radius:14px;background:rgba(46,204,113,0.04);display:grid;place-items:center;font-size:20px;flex-shrink:0}
+        .large-mode .content{flex:1;text-align:right}
+        .large-mode .content h3{font-size:13px;font-weight:800}
+        .large-mode .content p{color:#8896ab;font-size:9px;margin-top:2px}
+        .profile-card{background:rgba(20,28,43,0.6);border-radius:24px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 30px rgba(0,0,0,0.12)}
+        .profile-card .avatar{width:72px;height:72px;border-radius:20px;background:radial-gradient(circle at 40% 30%,rgba(46,204,113,0.06),transparent);display:grid;place-items:center;margin:0 auto 10px;font-size:32px;border:1px solid rgba(46,204,113,0.05)}
+        .profile-card h2{font-size:18px;font-weight:900}
+        .profile-card .level{color:#8896ab;font-size:11px;margin-top:2px}
+        .level-bar{margin-top:14px}
+        .level-bar .head{display:flex;justify-content:space-between;font-size:10px;color:#8896ab}
+        .level-bar .track{height:5px;background:rgba(255,255,255,0.04);border-radius:20px;overflow:hidden;margin-top:3px}
+        .level-bar .track .fill{height:100%;width:0%;background:linear-gradient(90deg,#2ecc71,#7df0a0);border-radius:inherit;transition:width 0.5s ease}
+        .achievements{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+        .achievement{background:rgba(20,28,43,0.4);border-radius:16px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.03)}
+        .achievement .achievement-icon{font-size:20px}
+        .achievement h4{font-size:11px;font-weight:800;margin-top:3px}
+        .achievement p{color:#8896ab;font-size:8px}
+        .settings-list{background:rgba(20,28,43,0.4);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
+        .setting-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer}
+        .setting-row:last-child{border-bottom:none}
+        .setting-row .info{display:flex;align-items:center;gap:8px}
+        .setting-row .info .icon{width:30px;height:30px;border-radius:10px;background:rgba(255,255,255,0.02);display:grid;place-items:center;font-size:14px}
+        .setting-row .info strong{font-size:11px;font-weight:800;display:block}
+        .setting-row .info span{color:#8896ab;font-size:8px;display:block}
+        .switch{width:36px;height:20px;border-radius:30px;background:#252d39;position:relative;transition:background 0.3s;cursor:pointer}
+        .switch.on{background:rgba(46,204,113,0.25)}
+        .switch::after{content:'';position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#87909d;transition:all 0.3s ease}
+        .switch.on::after{right:18px;background:#2ecc71;box-shadow:0 0 16px rgba(46,204,113,0.2)}
+        .dev-card{margin-top:14px;padding:16px;background:linear-gradient(135deg,rgba(46,204,113,0.04),rgba(46,204,113,0.01));border-radius:20px;text-align:center;border:1px solid rgba(255,255,255,0.03)}
+        .dev-card small{color:#8896ab;font-size:8px}
+        .dev-card strong{display:block;font-size:14px;color:#2ecc71;margin-top:2px;font-weight:900}
+        .dev-card span{color:#8896ab;font-size:9px}
+        .premium-card{background:radial-gradient(circle at 50% 0%,rgba(241,196,15,0.03),transparent 60%);background-color:rgba(20,28,43,0.4);border-radius:24px;padding:20px;text-align:center;border:1px solid rgba(241,196,15,0.05);box-shadow:0 6px 30px rgba(0,0,0,0.12)}
+        .premium-card .icon{font-size:38px}
+        .premium-card h2{font-size:20px;font-weight:900}
+        .premium-card p{color:#8896ab;font-size:11px;margin:6px 0 14px;line-height:1.5}
+        .coming-soon{display:inline-block;background:rgba(241,196,15,0.06);color:#f1c40f;padding:5px 12px;border-radius:30px;font-size:10px;font-weight:800;margin-top:10px;border:1px solid rgba(241,196,15,0.05)}
         .bottom-nav{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;background:rgba(10,14,23,0.88);backdrop-filter:blur(18px);border-radius:22px;padding:6px 4px;display:grid;grid-template-columns:repeat(5,1fr);z-index:100;border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 30px rgba(0,0,0,0.25)}
         .nav-btn{padding:5px 0;background:transparent;color:#8896ab;font-size:8px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all 0.2s}
         .nav-btn .icon{display:block;font-size:16px;margin-bottom:1px}
         .nav-btn.active{background:rgba(46,204,113,0.06);color:#2ecc71}
-        .toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-120px);background:rgba(10,14,23,0.95);backdrop-filter:blur(14px);border-radius:14px;padding:10px 20px;color:#fff;font-weight:700;font-size:12px;z-index:999;transition:transform 0.4s ease,opacity 0.3s;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 40px rgba(0,0,0,0.35);text-align:center;min-width:160px;max-width:85%}
+        .toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-120px);background:rgba(10,14,23,0.95);backdrop-filter:blur(14px);border-radius:14px;padding:10px 20px;color:#fff;font-weight:700;font-size:12px;z-index:999;transition:transform 0.4s ease;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 40px rgba(0,0,0,0.35);text-align:center;min-width:160px;max-width:85%}
         .toast.show{transform:translate(-50%,0)}
         @media(max-width:360px){.hero h2{font-size:20px}.player-frame{height:200px}.answers{grid-template-columns:1fr 1fr;gap:6px}.answer-btn{font-size:11px;padding:8px 6px}}
         @media(min-width:480px){.app{padding:20px 16px 100px}}
@@ -258,6 +301,91 @@
                 </div>
             </button>
         </section>
+
+        <!-- PREMIUM -->
+        <section id="premiumPage" class="page">
+            <div style="margin-bottom:14px;">
+                <h2 style="font-size:20px;font-weight:900;">بريميوم</h2>
+                <p style="color:#8896ab;font-size:11px;">مزايا حصرية</p>
+            </div>
+            <div class="premium-card">
+                <div class="icon">👑</div>
+                <h2>مين اللاعب؟ بريميوم</h2>
+                <p>مزايا إضافية قادمة قريباً لتجعل تجربتك أكثر متعة واحترافية.</p>
+                <div style="text-align:right;margin:10px 0;">
+                    <div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> أنماط لعب حصرية</div>
+                    <div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> إحصائيات متقدمة</div>
+                    <div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> تحديات خاصة</div>
+                    <div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> مكافآت XP إضافية</div>
+                </div>
+                <div class="coming-soon">🚀 قريباً</div>
+            </div>
+        </section>
+
+        <!-- PROFILE -->
+        <section id="profilePage" class="page">
+            <div style="margin-bottom:14px;">
+                <h2 style="font-size:20px;font-weight:900;">ملفي</h2>
+                <p style="color:#8896ab;font-size:11px;">تقدمك وإنجازاتك</p>
+            </div>
+            <div class="profile-card">
+                <div class="avatar">🏆</div>
+                <h2>لاعب كرة القدم</h2>
+                <div class="level" id="profileLevel">المستوى 1</div>
+                <div class="level-bar">
+                    <div class="head">
+                        <span>التقدم للمستوى التالي</span>
+                        <strong id="profileXP">0 / 100 XP</strong>
+                    </div>
+                    <div class="track">
+                        <div class="fill" id="levelProgress"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-title"><h3>الإنجازات</h3></div>
+            <div class="achievements" id="achievementsContainer">
+                <div class="achievement"><div class="achievement-icon">🎯</div><h4>أول إجابة</h4><p>أجب بشكل صحيح</p></div>
+                <div class="achievement"><div class="achievement-icon">🔥</div><h4>ستريك 5</h4><p>5 إجابات متتالية</p></div>
+                <div class="achievement"><div class="achievement-icon">🏆</div><h4>100 إجابة</h4><p>إجمالي 100 صحيحة</p></div>
+                <div class="achievement"><div class="achievement-icon">⭐</div><h4>1000 XP</h4><p>اجمع 1000 نقطة</p></div>
+            </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="settingsPage" class="page">
+            <div style="margin-bottom:14px;">
+                <h2 style="font-size:20px;font-weight:900;">الإعدادات</h2>
+                <p style="color:#8896ab;font-size:11px;">خصص تجربتك</p>
+            </div>
+            <div class="settings-list">
+                <div class="setting-row" onclick="toggleSetting('sound')">
+                    <div class="info">
+                        <div class="icon">🔊</div>
+                        <div><strong>الأصوات</strong><span>المؤثرات الصوتية</span></div>
+                    </div>
+                    <div class="switch on" id="soundSwitch"></div>
+                </div>
+                <div class="setting-row" onclick="toggleSetting('vibration')">
+                    <div class="info">
+                        <div class="icon">📳</div>
+                        <div><strong>الاهتزاز</strong><span>اهتزاز عند الإجابة</span></div>
+                    </div>
+                    <div class="switch on" id="vibrationSwitch"></div>
+                </div>
+                <div class="setting-row" onclick="toggleSetting('animation')">
+                    <div class="info">
+                        <div class="icon">✨</div>
+                        <div><strong>الحركات</strong><span>تأثيرات بصرية</span></div>
+                    </div>
+                    <div class="switch on" id="animationSwitch"></div>
+                </div>
+            </div>
+            <div class="dev-card">
+                <small>تم التطوير بواسطة</small>
+                <strong>Walid Outaleb</strong>
+                <span>مطور • Football Quiz</span>
+            </div>
+        </section>
     </div>
 
     <nav class="bottom-nav">
@@ -271,7 +399,7 @@
 
     <script>
         // ============================================================
-        //  البيانات
+        //  البيانات الأساسية (متطابقة)
         // ============================================================
         let players = [];
         let questions = [];
@@ -288,34 +416,23 @@
         let timeLeft = 15;
 
         const FALLBACK_PLAYERS = [
-            { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy",
-            image: "https://media.api-sports.io/football/players/257.png" },
-            { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy",
-            image: "https://media.api-sports.io/football/players/457.png" },
-            { id: 3, name: "كيليان مبابي", nationality: "فرنسا", level: "easy",
-            image: "https://media.api-sports.io/football/players/1495.png" },
-            { id: 4, name: "إيرلينغ هالاند", nationality: "النرويج", level: "easy",
-            image: "https://media.api-sports.io/football/players/10035.png" },
-            { id: 5, name: "محمد صلاح", nationality: "مصر", level: "easy",
-            image: "https://media.api-sports.io/football/players/1502.png" },
-            { id: 6, name: "فينيسيوس جونيور", nationality: "البرازيل", level: "easy",
-            image: "https://media.api-sports.io/football/players/9964.png" },
-            { id: 7, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy",
-            image: "https://media.api-sports.io/football/players/14947.png" },
-            { id: 8, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium",
-            image: "https://media.api-sports.io/football/players/14947.png" },
-            { id: 9, name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard",
-            image: "https://media.api-sports.io/football/players/10035.png" },
-            { id: 10, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend",
-            image: "https://media.api-sports.io/football/players/1000.png" }
+            { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", image: "https://media.api-sports.io/football/players/257.png" },
+            { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتین", image: "https://media.api-sports.io/football/players/457.png" },
+            { id: 3, name: "كيليان مبابي", nationality: "فرنسا", image: "https://media.api-sports.io/football/players/1495.png" },
+            { id: 4, name: "إيرلينغ هالاند", nationality: "النرويج", image: "https://media.api-sports.io/football/players/10035.png" },
+            { id: 5, name: "محمد صلاح", nationality: "مصر", image: "https://media.api-sports.io/football/players/1502.png" },
+            { id: 6, name: "فينيسيوس جونيور", nationality: "البرازيل", image: "https://media.api-sports.io/football/players/9964.png" },
+            { id: 7, name: "جود بيلينغهام", nationality: "إنجلترا", image: "https://media.api-sports.io/football/players/14947.png" },
+            { id: 8, name: "بوكايو ساكا", nationality: "إنجلترا", image: "https://media.api-sports.io/football/players/14947.png" },
+            { id: 9, name: "نيكولو باريلا", nationality: "إيطاليا", image: "https://media.api-sports.io/football/players/10035.png" },
+            { id: 10, name: "زين الدين زيدان", nationality: "فرنسا", image: "https://media.api-sports.io/football/players/1000.png" }
         ];
 
         // ============================================================
         //  تحميل البيانات
         // ============================================================
         function loadPlayers() {
-            players = FALLBACK_PLAYERS.map(p => ({ ...p,
-                image: p.image || `https://i.pravatar.cc/300?img=${p.id}` }));
+            players = FALLBACK_PLAYERS.map(p => ({ ...p }));
             updateUI();
         }
 
@@ -581,6 +698,13 @@
             const idx = map[page];
             if (idx !== undefined) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleSetting(id) {
+            const sw = document.getElementById(id + 'Switch');
+            if (!sw) return;
+            sw.classList.toggle('on');
+            showToast(`✅ تم ${sw.classList.contains('on') ? 'تفعيل' : 'تعطيل'} ${id}`);
         }
 
         function showToast(msg) {
