@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مين اللاعب؟ - الإصدار النهائي الشامل</title>
+    <title>مين اللاعب؟ - الإصدار المحترف</title>
     <style>
         * {
             margin: 0;
@@ -469,22 +469,22 @@
                 <p class="text-muted fs-14 mb-12">كل وضع له مستواه وتحديه الخاص</p>
 
                 <div class="mode-item">
-                    <div class="info"><b>الكلاسيكي (سهل)</b><small>20 سؤال • 15 ثانية • نجوم العالم</small></div>
+                    <div class="info"><b>الكلاسيكي (سهل)</b><small>نجوم الصف الأول (ميسي، رونالدو، مبابي...)</small></div>
                     <button class="play-btn" onclick="startGame('easy')">لعب</button>
                 </div>
 
                 <div class="mode-item">
-                    <div class="info"><b>⚡ وضع السرعة (متوسط)</b><small>15 سؤال • 10 ثواني • لاعبون واعدون</small></div>
+                    <div class="info"><b>⚡ وضع السرعة (متوسط)</b><small>أيت نوري، محرز، لاعبو الدوريات الكبرى</small></div>
                     <button class="play-btn" onclick="startGame('medium')">لعب</button>
                 </div>
 
                 <div class="mode-item">
-                    <div class="info"><b>🔥 التحدي الصعب</b><small>20 سؤال • 12 ثانية • نجوم الخفاء والدوريات</small></div>
+                    <div class="info"><b>🔥 التحدي الصعب</b><small>لاعبون غير مشهورين كثيراً والمنتخبات</small></div>
                     <button class="play-btn" onclick="startGame('hard')">لعب</button>
                 </div>
 
                 <div class="mode-item">
-                    <div class="info"><b>👑 أساطير كرة القدم</b><small>15 سؤال • 15 ثانية • الأساطير التاريخية</small></div>
+                    <div class="info"><b>👑 أساطير كرة القدم</b><small>زيدان، رونالدينيو، كاكا والأساطير</small></div>
                     <button class="play-btn" onclick="startGame('legend')">لعب</button>
                 </div>
 
@@ -495,7 +495,7 @@
         <!-- ======== شاشة اللعبة ======== -->
         <section id="game" class="screen">
             <div class="game-top">
-                <div class="badge"><span id="questionNumber">1</span> / <span id="questionTotal">20</span></div>
+                <div class="badge"><span id="questionNumber">1</span> / <span id="questionTotal">10</span></div>
                 <div class="timer-box">⏱ <span id="timer">15</span></div>
             </div>
 
@@ -597,7 +597,7 @@
             <div class="card text-center">
                 <div style="font-size:35px;">⚽</div>
                 <h3>مين اللاعب؟</h3>
-                <p class="text-muted fs-13">الإصدار الشامل 3.0</p>
+                <p class="text-muted fs-13">الإصدار المخصص 3.1</p>
                 <p class="text-green fw-bold">Developed by Walid Outaleb</p>
             </div>
         </section>
@@ -627,9 +627,9 @@
     <script>
         "use strict";
 
-        // قاعدة البيانات الدقيقة والصحيحة 100% (روابط مطابقة تماماً للشخصيات والأسماء)
+        // قاعدة بيانات مقسمة بدقة حسب المستويات (سهل، متوسط، صعب، أساطير)
         const PLAYERS_DB = [
-            // مستويات سهلة (نجوم الصف الأول)
+            // مستوى سهل (نجوم الصف الأول البارزون جداً)
             { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", image: "https://media.api-sports.io/football/players/257.png" },
             { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", image: "https://media.api-sports.io/football/players/154.png" },
             { id: 3, name: "كيليان مبابي", nationality: "فرنسا", level: "easy", image: "https://media.api-sports.io/football/players/278.png" },
@@ -641,36 +641,34 @@
             { id: 9, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", image: "https://media.api-sports.io/football/players/22828.png" },
             { id: 10, name: "روبرت ليفاندوفسكي", nationality: "بولندا", level: "easy", image: "https://media.api-sports.io/football/players/157.png" },
 
-            // مستوى متوسط (لاعبون واعدون ومشهورون)
-            { id: 11, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/1465.png" },
-            { id: 12, name: "لامين يامال", nationality: "إسبانيا", level: "medium", image: "https://media.api-sports.io/football/players/309971.png" },
-            { id: 13, name: "أنطوان غريزمان", nationality: "فرنسا", level: "medium", image: "https://media.api-sports.io/football/players/229.png" },
-            { id: 14, name: "هاري كين", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/173.png" },
-            { id: 15, name: "سون هيونغ مين", nationality: "كوريا الجنوبية", level: "medium", image: "https://media.api-sports.io/football/players/158.png" },
-            { id: 16, name: "برونو فيرنانديز", nationality: "البرتغال", level: "medium", image: "https://media.api-sports.io/football/players/258.png" },
-            { id: 17, name: "فيل فودين", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/648.png" },
+            // مستوى متوسط (لاعبون مثل أيت نوري، رياض محرز، ونجوم متوسطي الشهرة)
+            { id: 11, name: "ريان أيت نوري", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/18939.png" },
+            { id: 12, name: "رياض محرز", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/1712.png" },
+            { id: 13, name: "يوسف عطال", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/11232.png" },
+            { id: 14, name: "رامي بن سبعيني", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/2798.png" },
+            { id: 15, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/1465.png" },
+            { id: 16, name: "لامين يامال", nationality: "إسبانيا", level: "medium", image: "https://media.api-sports.io/football/players/309971.png" },
+            { id: 17, name: "سون هيونغ مين", nationality: "كوريا الجنوبية", level: "medium", image: "https://media.api-sports.io/football/players/158.png" },
             { id: 18, name: "مارتن أوديغارد", nationality: "النرويج", level: "medium", image: "https://media.api-sports.io/football/players/47118.png" },
             { id: 19, name: "جمال موسيالا", nationality: "ألمانيا", level: "medium", image: "https://media.api-sports.io/football/players/158223.png" },
-            { id: 20, name: "رودري", nationality: "إسبانيا", level: "medium", image: "https://media.api-sports.io/football/players/18815.png" },
+            { id: 20, name: "فيل فودين", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/648.png" },
 
-            // مستوى صعب (نجوم التحدي)
+            // مستوى صعب (لاعبون غير مشهورين كثيراً في الواجهة أو من دوريات أخرى)
             { id: 21, name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard", image: "https://media.api-sports.io/football/players/139.png" },
             { id: 22, name: "ديكلان رايس", nationality: "إنجلترا", level: "hard", image: "https://media.api-sports.io/football/players/18928.png" },
             { id: 23, name: "ويليام ساليبا", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/1458.png" },
             { id: 24, name: "فيدي فالفيردي", nationality: "الأوروغواي", level: "hard", image: "https://media.api-sports.io/football/players/22904.png" },
-            { id: 25, name: "لاوتارو مارتينيز", nationality: "الأرجنتين", level: "hard", image: "https://media.api-sports.io/football/players/135091.png" },
-            { id: 26, name: "رافائيل لياو", nationality: "البرتغال", level: "hard", image: "https://media.api-sports.io/football/players/28929.png" },
-            { id: 27, name: "دومينيك سوبوسلاي", nationality: "المجر", level: "hard", image: "https://media.api-sports.io/football/players/42220.png" },
-            { id: 28, name: "إبراهيما كوناتي", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/15792.png" },
-            { id: 29, name: "أندريه أونانا", nationality: "الكاميرون", level: "hard", image: "https://media.api-sports.io/football/players/2873.png" },
-            { id: 30, name: "برناردو سيلفا", nationality: "البرتغال", level: "hard", image: "https://media.api-sports.io/football/players/629.png" },
+            { id: 25, name: "رافائيل لياو", nationality: "البرتغال", level: "hard", image: "https://media.api-sports.io/football/players/28929.png" },
+            { id: 26, name: "دومينيك سوبوسلاي", nationality: "المجر", level: "hard", image: "https://media.api-sports.io/football/players/42220.png" },
+            { id: 27, name: "إبراهيما كوناتي", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/15792.png" },
+            { id: 28, name: "أندريه أونانا", nationality: "الكاميرون", level: "hard", image: "https://media.api-sports.io/football/players/2873.png" },
 
             // مستوى الأساطير
-            { id: 31, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", image: "https://media.api-sports.io/football/players/114979.png" },
-            { id: 32, name: "رونالدينيو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/115000.png" },
-            { id: 33, name: "كاكا", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114995.png" },
-            { id: 34, name: "رونالدو نازاريو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114990.png" },
-            { id: 35, name: "أندريس إنييستا", nationality: "إسبانيا", level: "legend", image: "https://media.api-sports.io/football/players/115010.png" }
+            { id: 29, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", image: "https://media.api-sports.io/football/players/114979.png" },
+            { id: 30, name: "رونالدينيو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/115000.png" },
+            { id: 31, name: "كاكا", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114995.png" },
+            { id: 32, name: "رونالدو نازاريو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114990.png" },
+            { id: 33, name: "أندريس إنييستا", nationality: "إسبانيا", level: "legend", image: "https://media.api-sports.io/football/players/115010.png" }
         ];
 
         let questions = [];
@@ -687,10 +685,10 @@
         let timeLeft = 0;
 
         const CONFIGS = {
-            easy: { total: 20, time: 15, bonus: 0 },
-            medium: { total: 15, time: 10, bonus: 3 },
-            hard: { total: 20, time: 12, bonus: 5 },
-            legend: { total: 15, time: 15, bonus: 8 }
+            easy: { total: 10, time: 15, bonus: 0 },
+            medium: { total: 10, time: 12, bonus: 3 },
+            hard: { total: 10, time: 10, bonus: 5 },
+            legend: { total: 10, time: 12, bonus: 8 }
         };
 
         let settings = {
@@ -714,9 +712,9 @@
             document.getElementById('hintCount').textContent = '3';
             document.getElementById('hintBtn').disabled = false;
 
-            // فلترة اللاعبين حسب المستوى المختار
+            // فلترة صارمة للاعبين حسب المستوى المحدد فقط
             let pool = PLAYERS_DB.filter(p => p.level === mode);
-            if (pool.length < 4) pool = PLAYERS_DB; // احتياط لو العدد قليل
+            if (pool.length < 4) pool = PLAYERS_DB; // حماية احتياطية
 
             const config = CONFIGS[mode];
             questions = shuffle(pool).slice(0, Math.min(config.total, pool.length));
@@ -767,7 +765,7 @@
         }
 
         function generateOptions(correctPlayer) {
-            // اختيار 3 لاعبين عشوائيين آخرين خطأ
+            // الخيارات الخطأ تأتي من نفس المستوى أو المستوى العام لتجنب الحرق
             const others = PLAYERS_DB.filter(p => p.id !== correctPlayer.id);
             const shuffledOthers = shuffle(others);
             const selectedOthers = shuffledOthers.slice(0, 3);
@@ -856,7 +854,7 @@
         function useHint() {
             if (questionLocked || currentIndex >= questions.length) return;
             if (hintsRemaining <= 0) {
-                showToast('💡 انتهت التلمiحات!');
+                showToast('💡 انتهت التلميحات!');
                 return;
             }
             hintsRemaining--;
@@ -917,7 +915,6 @@
             document.getElementById('profileXP').textContent = xpInLevel;
             document.getElementById('profileXPBar').style.width = (xpInLevel / 100 * 100) + '%';
 
-            // نظام الإنجازات
             const achievements = [
                 stats.correct >= 1,
                 stats.best >= 5,
