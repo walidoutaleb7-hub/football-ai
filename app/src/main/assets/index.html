@@ -56,10 +56,7 @@ html,body{
     height:100%;
     background:var(--bg);
     color:var(--text);
-    font-family:
-        Arial,
-        "Noto Sans Arabic",
-        sans-serif;
+    font-family:Arial,"Noto Sans Arabic",sans-serif;
     overflow:hidden;
 }
 
@@ -79,10 +76,6 @@ button{
         radial-gradient(circle at 0% 100%,rgba(0,190,255,.08),transparent 30%),
         var(--bg);
 }
-
-/* =========================
-   COMMON
-========================= */
 
 .hidden{
     display:none!important;
@@ -159,11 +152,7 @@ button{
 }
 
 .card{
-    background:linear-gradient(
-        145deg,
-        var(--card),
-        var(--bg2)
-    );
+    background:linear-gradient(145deg,var(--card),var(--bg2));
     border:1px solid var(--border);
     border-radius:22px;
     padding:16px;
@@ -207,9 +196,7 @@ button{
     font-weight:bold;
 }
 
-/* =========================
-   HOME
-========================= */
+/* HOME */
 
 .hero{
     position:relative;
@@ -307,9 +294,7 @@ button{
     transition:width .5s;
 }
 
-/* =========================
-   QUICK GAME
-========================= */
+/* QUICK */
 
 .quick-grid{
     display:grid;
@@ -344,9 +329,7 @@ button{
     margin-top:4px;
 }
 
-/* =========================
-   GAMES
-========================= */
+/* GAMES */
 
 .games-grid{
     display:grid;
@@ -407,9 +390,7 @@ button{
     opacity:.7;
 }
 
-/* =========================
-   CHALLENGES
-========================= */
+/* CHALLENGES */
 
 .challenge-card{
     padding:18px;
@@ -446,9 +427,7 @@ button{
     margin:15px 0;
 }
 
-/* =========================
-   PROFILE
-========================= */
+/* PROFILE */
 
 .profile-head{
     text-align:center;
@@ -502,9 +481,7 @@ button{
     font-size:11px;
 }
 
-/* =========================
-   ACHIEVEMENTS
-========================= */
+/* ACHIEVEMENTS */
 
 .achievement-grid{
     display:grid;
@@ -541,9 +518,7 @@ button{
     margin-top:4px;
 }
 
-/* =========================
-   BOTTOM NAV
-========================= */
+/* NAV */
 
 .bottom-nav{
     position:absolute;
@@ -587,9 +562,7 @@ body.light .bottom-nav{
     color:var(--primary2);
 }
 
-/* =========================
-   GAME SCREEN
-========================= */
+/* GAME */
 
 #gameScreen{
     padding-bottom:18px;
@@ -734,9 +707,7 @@ body.light .bottom-nav{
     margin-top:3px;
 }
 
-/* =========================
-   MODAL
-========================= */
+/* MODAL */
 
 .modal{
     position:absolute;
@@ -779,9 +750,7 @@ body.light .bottom-nav{
     opacity:.4;
 }
 
-/* =========================
-   RESULT
-========================= */
+/* RESULT */
 
 .result-icon{
     width:90px;
@@ -830,9 +799,7 @@ body.light .bottom-nav{
     font-size:11px;
 }
 
-/* =========================
-   TOAST
-========================= */
+/* TOAST */
 
 .toast{
     position:absolute;
@@ -858,11 +825,8 @@ body.light .bottom-nav{
     transform:translateY(0);
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
 @media(min-width:700px){
+
     .screen{
         max-width:700px;
         left:50%;
@@ -882,6 +846,7 @@ body.light .bottom-nav{
         width:calc(100% - 20px);
         transform:translateX(-50%);
     }
+
 }
 </style>
 </head>
@@ -890,1268 +855,1183 @@ body.light .bottom-nav{
 
 <div id="app">
 
-<!-- =========================
-     HOME
-========================= -->
-
 <section id="homeScreen" class="screen active">
 
-    <div class="topbar">
+<div class="topbar">
 
-        <div class="logo">
-            <div class="logo-icon">⚽</div>
+<div class="logo">
+<div class="logo-icon">⚽</div>
+<div>
+<h1>مين اللاعب؟</h1>
+<small>اختبر معرفتك الكروية</small>
+</div>
+</div>
 
-            <div>
-                <h1>مين اللاعب؟</h1>
-                <small>اختبر معرفتك الكروية</small>
-            </div>
-        </div>
+<button class="icon-btn" onclick="openSettings()">⚙️</button>
 
-        <button class="icon-btn" onclick="openSettings()">⚙️</button>
+</div>
 
-    </div>
+<div class="hero">
 
-    <div class="hero">
+<div class="hero-title">جاهز للتحدي؟ 🔥</div>
 
-        <div class="hero-title">
-            جاهز للتحدي؟ 🔥
-        </div>
+<div class="hero-text">
+اختبر معلوماتك عن أشهر لاعبي كرة القدم،
+ارتقِ بالمستويات وافتح ألعاباً جديدة.
+</div>
 
-        <div class="hero-text">
-            اختبر معلوماتك عن أشهر لاعبي كرة القدم،
-            ارتقِ بالمستويات وافتح ألعاباً جديدة.
-        </div>
+<button class="primary-btn" onclick="startGame('classic')">
+🎮 لعب سريع
+</button>
 
-        <button class="primary-btn" onclick="startGame('classic')">
-            🎮 لعب سريع
-        </button>
+<div class="stats-grid" style="margin-top:15px">
 
-        <div class="stats-grid" style="margin-top:15px">
+<div class="stat">
+<div class="stat-icon">⭐</div>
+<strong id="homeLevel">1</strong>
+<span>المستوى</span>
+</div>
 
-            <div class="stat">
-                <div class="stat-icon">⭐</div>
-                <strong id="homeLevel">1</strong>
-                <span>المستوى</span>
-            </div>
+<div class="stat">
+<div class="stat-icon">🪙</div>
+<strong id="homeCoins">100</strong>
+<span>العملات</span>
+</div>
 
-            <div class="stat">
-                <div class="stat-icon">🪙</div>
-                <strong id="homeCoins">100</strong>
-                <span>العملات</span>
-            </div>
+<div class="stat">
+<div class="stat-icon">🔥</div>
+<strong id="homeStreak">0</strong>
+<span>المتتالية</span>
+</div>
 
-            <div class="stat">
-                <div class="stat-icon">🔥</div>
-                <strong id="homeStreak">0</strong>
-                <span>المتتالية</span>
-            </div>
+</div>
+</div>
 
-        </div>
+<div class="card level-card">
 
-    </div>
+<div class="level-row">
+<b id="levelName">مبتدئ</b>
+<span>
+<span id="xpCurrent">0</span> /
+<span id="xpNeed">300</span> XP
+</span>
+</div>
 
-    <div class="card level-card">
+<div class="progress">
+<div id="xpBar" class="progress-fill"></div>
+</div>
 
-        <div class="level-row">
-            <b id="levelName">مبتدئ</b>
-            <span>
-                <span id="xpCurrent">0</span> /
-                <span id="xpNeed">300</span> XP
-            </span>
-        </div>
+</div>
 
-        <div class="progress">
-            <div id="xpBar" class="progress-fill"></div>
-        </div>
+<div class="section-title">
+<h2>⚡ لعب سريع</h2>
+<span>ابدأ الآن</span>
+</div>
 
-    </div>
+<div class="quick-grid">
 
-    <div class="section-title">
-        <h2>⚡ لعب سريع</h2>
-        <span>ابدأ الآن</span>
-    </div>
+<button class="quick-game" onclick="startGame('classic')">
+<div class="emoji">🎯</div>
+<strong>كلاسيكي</strong>
+<small>اختبر معلوماتك</small>
+</button>
 
-    <div class="quick-grid">
+<button class="quick-game" onclick="startGame('speed')">
+<div class="emoji">⚡</div>
+<strong>السرعة</strong>
+<small>جاوب قبل انتهاء الوقت</small>
+</button>
 
-        <button class="quick-game" onclick="startGame('classic')">
-            <div class="emoji">🎯</div>
-            <strong>كلاسيكي</strong>
-            <small>اختبر معلوماتك</small>
-        </button>
+<button class="quick-game" onclick="startGame('truefalse')">
+<div class="emoji">✅</div>
+<strong>صح أم خطأ</strong>
+<small>قرارات سريعة</small>
+</button>
 
-        <button class="quick-game" onclick="startGame('speed')">
-            <div class="emoji">⚡</div>
-            <strong>السرعة</strong>
-            <small>جاوب قبل انتهاء الوقت</small>
-        </button>
+<button class="quick-game" onclick="startGame('millionaire')">
+<div class="emoji">💰</div>
+<strong>المليون الكروي</strong>
+<small>أسئلة تصعد بالصعوبة</small>
+</button>
 
-        <button class="quick-game" onclick="startGame('truefalse')">
-            <div class="emoji">✅</div>
-            <strong>صح أم خطأ</strong>
-            <small>قرارات سريعة</small>
-        </button>
+</div>
 
-        <button class="quick-game" onclick="startGame('millionaire')">
-            <div class="emoji">💰</div>
-            <strong>المليون الكروي</strong>
-            <small>أسئلة تصعد بالصعوبة</small>
-        </button>
+<div class="section-title">
+<h2>🔥 تحدي اليوم</h2>
+<span id="dailyStatus">جاهز</span>
+</div>
 
-    </div>
+<div class="challenge-card">
 
-    <div class="section-title">
-        <h2>🔥 تحدي اليوم</h2>
-        <span id="dailyStatus">جاهز</span>
-    </div>
+<div class="challenge-head">
+<div class="challenge-icon">🏆</div>
+<div>
+<strong>التحدي اليومي</strong>
+<small>5 أسئلة • مكافآت مضاعفة</small>
+</div>
+</div>
 
-    <div class="challenge-card">
+<div class="challenge-progress">
+<div class="progress">
+<div id="dailyBar"
+class="progress-fill"
+style="width:0%">
+</div>
+</div>
+</div>
 
-        <div class="challenge-head">
+<button class="secondary-btn"
+style="width:100%"
+onclick="startGame('daily')">
+ابدأ التحدي
+</button>
 
-            <div class="challenge-icon">🏆</div>
-
-            <div>
-                <strong>التحدي اليومي</strong>
-                <small>5 أسئلة • مكافآت مضاعفة</small>
-            </div>
-
-        </div>
-
-        <div class="challenge-progress">
-            <div class="progress">
-                <div id="dailyBar"
-                     class="progress-fill"
-                     style="width:0%">
-                </div>
-            </div>
-        </div>
-
-        <button class="secondary-btn"
-                style="width:100%"
-                onclick="startGame('daily')">
-            ابدأ التحدي
-        </button>
-
-    </div>
+</div>
 
 </section>
 
-
-<!-- =========================
-     GAMES
-========================= -->
 
 <section id="gamesScreen" class="screen">
 
-    <div class="topbar">
-        <div>
-            <h1 style="margin:0">🎮 الألعاب</h1>
-            <small style="color:var(--muted)">
-                اختر طريقتك المفضلة
-            </small>
-        </div>
-    </div>
+<div class="topbar">
+<div>
+<h1 style="margin:0">🎮 الألعاب</h1>
+<small style="color:var(--muted)">
+اختر طريقتك المفضلة
+</small>
+</div>
+</div>
 
-    <div id="gamesList" class="games-grid"></div>
+<div id="gamesList" class="games-grid"></div>
 
 </section>
 
-
-<!-- =========================
-     CHALLENGES
-========================= -->
 
 <section id="challengesScreen" class="screen">
 
-    <div class="topbar">
-        <div>
-            <h1 style="margin:0">🔥 التحديات</h1>
-            <small style="color:var(--muted)">
-                تحديات خاصة ومكافآت
-            </small>
-        </div>
-    </div>
+<div class="topbar">
+<div>
+<h1 style="margin:0">🔥 التحديات</h1>
+<small style="color:var(--muted)">
+تحديات خاصة ومكافآت
+</small>
+</div>
+</div>
 
-    <div class="challenge-card">
+<div class="challenge-card">
 
-        <div class="challenge-head">
-            <div class="challenge-icon">📅</div>
+<div class="challenge-head">
+<div class="challenge-icon">📅</div>
+<div>
+<strong>التحدي اليومي</strong>
+<small>يتجدد كل يوم</small>
+</div>
+</div>
 
-            <div>
-                <strong>التحدي اليومي</strong>
-                <small>يتجدد كل يوم</small>
-            </div>
-        </div>
+<p style="color:var(--muted);line-height:1.7">
+5 أسئلة متدرجة. أكملها كلها للحصول على
+XP وعملات إضافية.
+</p>
 
-        <p style="color:var(--muted);line-height:1.7">
-            5 أسئلة متدرجة. أكملها كلها للحصول على
-            XP وعملات إضافية.
-        </p>
+<button class="primary-btn"
+onclick="startGame('daily')">
+ابدأ
+</button>
 
-        <button class="primary-btn"
-                onclick="startGame('daily')">
-            ابدأ
-        </button>
+</div>
 
-    </div>
+<div class="challenge-card">
 
+<div class="challenge-head">
+<div class="challenge-icon">👑</div>
+<div>
+<strong>Boss Challenge</strong>
+<small>للمستويات المتقدمة</small>
+</div>
+</div>
 
-    <div class="challenge-card">
+<p style="color:var(--muted);line-height:1.7">
+10 أسئلة صعبة جداً بدون أخطاء.
+</p>
 
-        <div class="challenge-head">
-            <div class="challenge-icon">👑</div>
+<button id="bossButton"
+class="primary-btn"
+onclick="startGame('boss')">
+🔒 افتح عند المستوى 15
+</button>
 
-            <div>
-                <strong>Boss Challenge</strong>
-                <small>للمستويات المتقدمة</small>
-            </div>
-        </div>
+</div>
 
-        <p style="color:var(--muted);line-height:1.7">
-            10 أسئلة صعبة جداً بدون أخطاء.
-        </p>
+<div class="challenge-card">
 
-        <button id="bossButton"
-                class="primary-btn"
-                onclick="startGame('boss')">
-            🔒 افتح عند المستوى 15
-        </button>
+<div class="challenge-head">
+<div class="challenge-icon">♾️</div>
+<div>
+<strong>الوضع اللانهائي</strong>
+<small>كم سؤالاً تستطيع الإجابة عليه؟</small>
+</div>
+</div>
 
-    </div>
+<button class="secondary-btn"
+style="width:100%"
+onclick="startGame('endless')">
+لعب بلا نهاية
+</button>
 
-
-    <div class="challenge-card">
-
-        <div class="challenge-head">
-            <div class="challenge-icon">♾️</div>
-
-            <div>
-                <strong>الوضع اللانهائي</strong>
-                <small>كم سؤالاً تستطيع الإجابة عليه؟</small>
-            </div>
-        </div>
-
-        <button class="secondary-btn"
-                style="width:100%"
-                onclick="startGame('endless')">
-            لعب بلا نهاية
-        </button>
-
-    </div>
+</div>
 
 </section>
 
-
-<!-- =========================
-     ACHIEVEMENTS
-========================= -->
 
 <section id="achievementsScreen" class="screen">
 
-    <div class="topbar">
+<div class="topbar">
+<div>
+<h1 style="margin:0">🏆 الإنجازات</h1>
+<small style="color:var(--muted)">
+اجمعها كلها
+</small>
+</div>
+</div>
 
-        <div>
-            <h1 style="margin:0">🏆 الإنجازات</h1>
-            <small style="color:var(--muted)">
-                اجمعها كلها
-            </small>
-        </div>
-
-    </div>
-
-    <div id="achievementGrid"
-         class="achievement-grid">
-    </div>
+<div id="achievementGrid"
+class="achievement-grid">
+</div>
 
 </section>
 
-
-<!-- =========================
-     PROFILE
-========================= -->
 
 <section id="profileScreen" class="screen">
 
-    <div class="card profile-head">
+<div class="card profile-head">
 
-        <div class="avatar">⚽</div>
+<div class="avatar">⚽</div>
 
-        <div class="profile-name">
-            لاعب كرة القدم
-        </div>
+<div class="profile-name">
+لاعب كرة القدم
+</div>
 
-        <div id="profileRank" class="rank">
-            مبتدئ
-        </div>
+<div id="profileRank" class="rank">
+مبتدئ
+</div>
 
-        <div class="profile-stats">
+<div class="profile-stats">
 
-            <div class="profile-stat">
-                <strong id="profileGames">0</strong>
-                <span>المباريات</span>
-            </div>
+<div class="profile-stat">
+<strong id="profileGames">0</strong>
+<span>المباريات</span>
+</div>
 
-            <div class="profile-stat">
-                <strong id="profileCorrect">0</strong>
-                <span>الإجابات الصحيحة</span>
-            </div>
+<div class="profile-stat">
+<strong id="profileCorrect">0</strong>
+<span>الإجابات الصحيحة</span>
+</div>
 
-            <div class="profile-stat">
-                <strong id="profileBest">0</strong>
-                <span>أفضل نتيجة</span>
-            </div>
+<div class="profile-stat">
+<strong id="profileBest">0</strong>
+<span>أفضل نتيجة</span>
+</div>
 
-            <div class="profile-stat">
-                <strong id="profileXP">0</strong>
-                <span>XP</span>
-            </div>
+<div class="profile-stat">
+<strong id="profileXP">0</strong>
+<span>XP</span>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
+<div class="section-title">
+<h2>🎨 المظهر</h2>
+</div>
 
-    <div class="section-title">
-        <h2>🎨 المظهر</h2>
-    </div>
+<div class="quick-grid">
 
-    <div class="quick-grid">
+<button class="quick-game"
+onclick="setTheme('dark')">
+<div class="emoji">🌙</div>
+<strong>داكن</strong>
+</button>
 
-        <button class="quick-game"
-                onclick="setTheme('dark')">
-            <div class="emoji">🌙</div>
-            <strong>داكن</strong>
-        </button>
+<button class="quick-game"
+onclick="setTheme('light')">
+<div class="emoji">☀️</div>
+<strong>فاتح</strong>
+</button>
 
-        <button class="quick-game"
-                onclick="setTheme('light')">
-            <div class="emoji">☀️</div>
-            <strong>فاتح</strong>
-        </button>
+<button class="quick-game"
+onclick="setTheme('champions')">
+<div class="emoji">🏆</div>
+<strong>Champions</strong>
+</button>
 
-        <button class="quick-game"
-                onclick="setTheme('champions')">
-            <div class="emoji">🏆</div>
-            <strong>Champions</strong>
-        </button>
+<button class="quick-game"
+onclick="setTheme('algeria')">
+<div class="emoji">🇩🇿</div>
+<strong>Algeria</strong>
+</button>
 
-        <button class="quick-game"
-                onclick="setTheme('algeria')">
-            <div class="emoji">🇩🇿</div>
-            <strong>Algeria</strong>
-        </button>
+</div>
 
-    </div>
+<div class="section-title">
+<h2>📊 التقدم</h2>
+</div>
 
+<div class="card">
 
-    <div class="section-title">
-        <h2>📊 التقدم</h2>
-    </div>
+<div class="level-row">
+<b>المستوى <span id="profileLevel">1</span></b>
+<span id="profileXPText">0 XP</span>
+</div>
 
-    <div class="card">
+<div class="progress">
+<div id="profileXPBar"
+class="progress-fill">
+</div>
+</div>
 
-        <div class="level-row">
-            <b>المستوى <span id="profileLevel">1</span></b>
-            <span id="profileXPText">0 XP</span>
-        </div>
-
-        <div class="progress">
-            <div id="profileXPBar"
-                 class="progress-fill">
-            </div>
-        </div>
-
-    </div>
+</div>
 
 </section>
 
-
-<!-- =========================
-     GAME
-========================= -->
 
 <section id="gameScreen" class="screen">
 
-    <div class="game-top">
+<div class="game-top">
 
-        <button class="back-btn"
-                onclick="quitGame()">
-            ←
-        </button>
+<button class="back-btn"
+onclick="quitGame()">
+←
+</button>
 
-        <div class="game-title">
+<div class="game-title">
 
-            <strong id="gameModeName">
-                اللعبة
-            </strong>
+<strong id="gameModeName">
+اللعبة
+</strong>
 
-            <small>
-                سؤال <span id="questionIndex">1</span>
-                / <span id="questionTotal">10</span>
-            </small>
+<small>
+سؤال <span id="questionIndex">1</span>
+/
+<span id="questionTotal">10</span>
+</small>
 
-        </div>
+</div>
 
-        <div id="timer"
-             class="timer">
-            20
-        </div>
+<div id="timer"
+class="timer">
+20
+</div>
 
-    </div>
+</div>
 
+<div class="game-progress">
 
-    <div class="game-progress">
+<div class="progress">
+<div id="questionBar"
+class="progress-fill">
+</div>
+</div>
 
-        <div class="progress">
-            <div id="questionBar"
-                 class="progress-fill">
-            </div>
-        </div>
+</div>
 
-    </div>
+<div class="question-card">
 
+<div id="difficulty"
+class="difficulty">
+سهل
+</div>
 
-    <div class="question-card">
+<div id="questionText"
+class="question">
+السؤال...
+</div>
 
-        <div id="difficulty"
-             class="difficulty">
-            سهل
-        </div>
+<div id="answers"
+class="answers">
+</div>
 
-        <div id="questionText"
-             class="question">
-            السؤال...
-        </div>
+<div id="comboBox"
+class="combo-box">
+</div>
 
-        <div id="answers"
-             class="answers">
-        </div>
+</div>
 
-        <div id="comboBox"
-             class="combo-box">
-        </div>
+<div class="hints">
 
-    </div>
+<button class="hint"
+onclick="useHint('fifty')">
+✂️ 50/50
+<small>25 🪙</small>
+</button>
 
+<button class="hint"
+onclick="useHint('clue')">
+💡 تلميح
+<small>20 🪙</small>
+</button>
 
-    <div class="hints">
+<button class="hint"
+onclick="useHint('skip')">
+⏭️ تخطي
+<small>35 🪙</small>
+</button>
 
-        <button class="hint"
-                onclick="useHint('fifty')">
-            ✂️ 50/50
-            <small>25 🪙</small>
-        </button>
-
-        <button class="hint"
-                onclick="useHint('clue')">
-            💡 تلميح
-            <small>20 🪙</small>
-        </button>
-
-        <button class="hint"
-                onclick="useHint('skip')">
-            ⏭️ تخطي
-            <small>35 🪙</small>
-        </button>
-
-    </div>
+</div>
 
 </section>
 
-
-<!-- =========================
-     RESULT
-========================= -->
 
 <section id="resultScreen" class="screen">
 
-    <div class="result-icon" id="resultIcon">
-        🏆
-    </div>
+<div class="result-icon" id="resultIcon">
+🏆
+</div>
 
-    <div class="result-title"
-         id="resultTitle">
-        ممتاز!
-    </div>
+<div class="result-title"
+id="resultTitle">
+ممتاز!
+</div>
 
-    <div class="result-sub"
-         id="resultSub">
-        أداء رائع
-    </div>
+<div class="result-sub"
+id="resultSub">
+أداء رائع
+</div>
 
-    <div class="result-grid">
+<div class="result-grid">
 
-        <div class="result-stat">
-            <strong id="resultScore">0</strong>
-            <span>النقاط</span>
-        </div>
+<div class="result-stat">
+<strong id="resultScore">0</strong>
+<span>النقاط</span>
+</div>
 
-        <div class="result-stat">
-            <strong id="resultCorrect">0</strong>
-            <span>صحيح</span>
-        </div>
+<div class="result-stat">
+<strong id="resultCorrect">0</strong>
+<span>صحيح</span>
+</div>
 
-        <div class="result-stat">
-            <strong id="resultXP">+0</strong>
-            <span>XP</span>
-        </div>
+<div class="result-stat">
+<strong id="resultXP">+0</strong>
+<span>XP</span>
+</div>
 
-        <div class="result-stat">
-            <strong id="resultCoins">+0</strong>
-            <span>عملات</span>
-        </div>
+<div class="result-stat">
+<strong id="resultCoins">+0</strong>
+<span>عملات</span>
+</div>
 
-    </div>
+</div>
 
-    <div style="margin-top:20px">
+<div style="margin-top:20px">
 
-        <button class="primary-btn"
-                onclick="restartLastGame()">
-            🔄 لعب مرة أخرى
-        </button>
+<button class="primary-btn"
+onclick="restartLastGame()">
+🔄 لعب مرة أخرى
+</button>
 
-        <button class="secondary-btn"
-                style="width:100%;margin-top:10px"
-                onclick="showScreen('homeScreen')">
-            🏠 الرئيسية
-        </button>
+<button class="secondary-btn"
+style="width:100%;margin-top:10px"
+onclick="showScreen('homeScreen')">
+🏠 الرئيسية
+</button>
 
-    </div>
+</div>
 
 </section>
 
 
-<!-- =========================
-     BOTTOM NAV
-========================= -->
-
 <nav id="bottomNav" class="bottom-nav">
 
-    <button class="nav-btn active"
-            data-screen="homeScreen"
-            onclick="showScreen('homeScreen')">
-        <span>🏠</span>
-        <span>الرئيسية</span>
-    </button>
+<button class="nav-btn active"
+data-screen="homeScreen"
+onclick="showScreen('homeScreen')">
+<span>🏠</span>
+<span>الرئيسية</span>
+</button>
 
-    <button class="nav-btn"
-            data-screen="gamesScreen"
-            onclick="showScreen('gamesScreen')">
-        <span>🎮</span>
-        <span>الألعاب</span>
-    </button>
+<button class="nav-btn"
+data-screen="gamesScreen"
+onclick="showScreen('gamesScreen')">
+<span>🎮</span>
+<span>الألعاب</span>
+</button>
 
-    <button class="nav-btn"
-            data-screen="challengesScreen"
-            onclick="showScreen('challengesScreen')">
-        <span>🔥</span>
-        <span>التحديات</span>
-    </button>
+<button class="nav-btn"
+data-screen="challengesScreen"
+onclick="showScreen('challengesScreen')">
+<span>🔥</span>
+<span>التحديات</span>
+</button>
 
-    <button class="nav-btn"
-            data-screen="achievementsScreen"
-            onclick="showScreen('achievementsScreen')">
-        <span>🏆</span>
-        <span>الإنجازات</span>
-    </button>
+<button class="nav-btn"
+data-screen="achievementsScreen"
+onclick="showScreen('achievementsScreen')">
+<span>🏆</span>
+<span>الإنجازات</span>
+</button>
 
-    <button class="nav-btn"
-            data-screen="profileScreen"
-            onclick="showScreen('profileScreen')">
-        <span>👤</span>
-        <span>الملف</span>
-    </button>
+<button class="nav-btn"
+data-screen="profileScreen"
+onclick="showScreen('profileScreen')">
+<span>👤</span>
+<span>الملف</span>
+</button>
 
 </nav>
 
 
-<!-- =========================
-     SETTINGS MODAL
-========================= -->
-
 <div id="settingsModal"
-     class="modal"
-     onclick="closeModal(event)">
+class="modal"
+onclick="closeModal(event)">
 
-    <div class="modal-box">
+<div class="modal-box">
 
-        <div class="modal-handle"></div>
+<div class="modal-handle"></div>
 
-        <h2>⚙️ الإعدادات</h2>
+<h2>⚙️ الإعدادات</h2>
 
-        <div class="card" style="margin-top:15px">
+<div class="card" style="margin-top:15px">
 
-            <div class="level-row">
-                <b>🔊 المؤثرات</b>
+<div class="level-row">
+<b>🔊 المؤثرات</b>
 
-                <button class="secondary-btn"
-                        id="soundButton"
-                        onclick="toggleSound()">
-                    تشغيل
-                </button>
-            </div>
-
-        </div>
-
-        <div class="card" style="margin-top:10px">
-
-            <div class="level-row">
-                <b>🔔 الاهتزاز</b>
-
-                <button class="secondary-btn"
-                        id="vibrationButton"
-                        onclick="toggleVibration()">
-                    تشغيل
-                </button>
-            </div>
-
-        </div>
-
-        <button class="secondary-btn"
-                style="width:100%;margin-top:20px;color:var(--red)"
-                onclick="resetProgress()">
-            🗑️ حذف التقدم
-        </button>
-
-    </div>
+<button class="secondary-btn"
+id="soundButton"
+onclick="toggleSound()">
+تشغيل
+</button>
+</div>
 
 </div>
 
+<div class="card" style="margin-top:10px">
 
-<div id="toast"
-     class="toast">
+<div class="level-row">
+<b>🔔 الاهتزاز</b>
+
+<button class="secondary-btn"
+id="vibrationButton"
+onclick="toggleVibration()">
+تشغيل
+</button>
 </div>
+
+</div>
+
+<button class="secondary-btn"
+style="width:100%;margin-top:20px;color:var(--red)"
+onclick="resetProgress()">
+🗑️ حذف التقدم
+</button>
+
+</div>
+</div>
+
+
+<div id="toast" class="toast"></div>
 
 </div>
 
 
 <script>
 
-/* =========================================================
-   FALLBACK PLAYER DATABASE
-   إذا كان popular_players.json موجوداً يمكن تحميله
-   ========================================================= */
-
 const FALLBACK_PLAYERS = [
 
 {
- id:"messi",
- name:"ليونيل ميسي",
- nationality:"الأرجنتين",
- position:"جناح",
- club:"إنتر ميامي",
- previousClubs:["برشلونة","باريس سان جيرمان"],
- foot:"يسرى",
- number:10,
- birth:"24 يونيو 1987",
- height:170,
- style:"صانع ألعاب",
- league:"الدوري الأمريكي",
- champions:true,
- worldcup:true
+id:"messi",
+name:"ليونيل ميسي",
+nationality:"الأرجنتين",
+position:"جناح",
+club:"إنتر ميامي",
+previousClubs:["برشلونة","باريس سان جيرمان"],
+foot:"يسرى",
+number:10,
+birth:"24 يونيو 1987",
+height:170,
+style:"صانع ألعاب",
+league:"الدوري الأمريكي",
+champions:true,
+worldcup:true
 },
 
 {
- id:"ronaldo",
- name:"كريستيانو رونالدو",
- nationality:"البرتغال",
- position:"مهاجم",
- club:"النصر",
- previousClubs:["سبورتينغ لشبونة","مانشستر يونايتد","ريال مدريد","يوفنتوس"],
- foot:"يمنى",
- number:7,
- birth:"5 فبراير 1985",
- height:187,
- style:"مهاجم",
- league:"الدوري السعودي",
- champions:true,
- worldcup:false
+id:"ronaldo",
+name:"كريستيانو رونالدو",
+nationality:"البرتغال",
+position:"مهاجم",
+club:"النصر",
+previousClubs:["سبورتينغ لشبونة","مانشستر يونايتد","ريال مدريد","يوفنتوس"],
+foot:"يمنى",
+number:7,
+birth:"5 فبراير 1985",
+height:187,
+style:"مهاجم",
+league:"الدوري السعودي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"mbappe",
- name:"كيليان مبابي",
- nationality:"فرنسا",
- position:"مهاجم",
- club:"ريال مدريد",
- previousClubs:["موناكو","باريس سان جيرمان"],
- foot:"يمنى",
- number:9,
- birth:"20 ديسمبر 1998",
- height:178,
- style:"مهاجم سريع",
- league:"الدوري الإسباني",
- champions:false,
- worldcup:true
+id:"mbappe",
+name:"كيليان مبابي",
+nationality:"فرنسا",
+position:"مهاجم",
+club:"ريال مدريد",
+previousClubs:["موناكو","باريس سان جيرمان"],
+foot:"يمنى",
+number:9,
+birth:"20 ديسمبر 1998",
+height:178,
+style:"مهاجم سريع",
+league:"الدوري الإسباني",
+champions:false,
+worldcup:true
 },
 
 {
- id:"salah",
- name:"محمد صلاح",
- nationality:"مصر",
- position:"جناح",
- club:"ليفربول",
- previousClubs:["المقاولون العرب","بازل","تشيلسي","فيورنتينا","روما"],
- foot:"يسرى",
- number:11,
- birth:"15 يونيو 1992",
- height:175,
- style:"جناح هجومي",
- league:"الدوري الإنجليزي",
- champions:true,
- worldcup:false
+id:"salah",
+name:"محمد صلاح",
+nationality:"مصر",
+position:"جناح",
+club:"ليفربول",
+previousClubs:["المقاولون العرب","بازل","تشيلسي","فيورنتينا","روما"],
+foot:"يسرى",
+number:11,
+birth:"15 يونيو 1992",
+height:175,
+style:"جناح هجومي",
+league:"الدوري الإنجليزي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"haaland",
- name:"إيرلينغ هالاند",
- nationality:"النرويج",
- position:"مهاجم",
- club:"مانشستر سيتي",
- previousClubs:["مولده","ريد بول سالزبورغ","بوروسيا دورتموند"],
- foot:"يسرى",
- number:9,
- birth:"21 يوليو 2000",
- height:195,
- style:"مهاجم صندوق",
- league:"الدوري الإنجليزي",
- champions:true,
- worldcup:false
+id:"haaland",
+name:"إيرلينغ هالاند",
+nationality:"النرويج",
+position:"مهاجم",
+club:"مانشستر سيتي",
+previousClubs:["مولده","ريد بول سالزبورغ","بوروسيا دورتموند"],
+foot:"يسرى",
+number:9,
+birth:"21 يوليو 2000",
+height:195,
+style:"مهاجم صندوق",
+league:"الدوري الإنجليزي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"vinicius",
- name:"فينيسيوس جونيور",
- nationality:"البرازيل",
- position:"جناح",
- club:"ريال مدريد",
- previousClubs:[],
- foot:"يمنى",
- number:7,
- birth:"12 يوليو 2000",
- height:176,
- style:"جناح سريع",
- league:"الدوري الإسباني",
- champions:true,
- worldcup:false
+id:"vinicius",
+name:"فينيسيوس جونيور",
+nationality:"البرازيل",
+position:"جناح",
+club:"ريال مدريد",
+previousClubs:[],
+foot:"يمنى",
+number:7,
+birth:"12 يوليو 2000",
+height:176,
+style:"جناح سريع",
+league:"الدوري الإسباني",
+champions:true,
+worldcup:false
 },
 
 {
- id:"bellingham",
- name:"جود بيلينغهام",
- nationality:"إنجلترا",
- position:"وسط",
- club:"ريال مدريد",
- previousClubs:["برمنغهام","بوروسيا دورتموند"],
- foot:"يمنى",
- number:5,
- birth:"29 يونيو 2003",
- height:186,
- style:"وسط متكامل",
- league:"الدوري الإسباني",
- champions:true,
- worldcup:false
+id:"bellingham",
+name:"جود بيلينغهام",
+nationality:"إنجلترا",
+position:"وسط",
+club:"ريال مدريد",
+previousClubs:["برمنغهام","بوروسيا دورتموند"],
+foot:"يمنى",
+number:5,
+birth:"29 يونيو 2003",
+height:186,
+style:"وسط متكامل",
+league:"الدوري الإسباني",
+champions:true,
+worldcup:false
 },
 
 {
- id:"debruyne",
- name:"كيفن دي بروين",
- nationality:"بلجيكا",
- position:"وسط",
- club:"مانشستر سيتي",
- previousClubs:["جينك","تشيلسي","فيردر بريمن","فولفسبورغ"],
- foot:"يمنى",
- number:17,
- birth:"28 يونيو 1991",
- height:181,
- style:"صانع ألعاب",
- league:"الدوري الإنجليزي",
- champions:true,
- worldcup:false
+id:"debruyne",
+name:"كيفن دي بروين",
+nationality:"بلجيكا",
+position:"وسط",
+club:"مانشستر سيتي",
+previousClubs:["جينك","تشيلسي","فيردر بريمن","فولفسبورغ"],
+foot:"يمنى",
+number:17,
+birth:"28 يونيو 1991",
+height:181,
+style:"صانع ألعاب",
+league:"الدوري الإنجليزي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"neymar",
- name:"نيمار",
- nationality:"البرازيل",
- position:"جناح",
- club:"الهلال",
- previousClubs:["سانتوس","برشلونة","باريس سان جيرمان"],
- foot:"يمنى",
- number:10,
- birth:"5 فبراير 1992",
- height:175,
- style:"مراوغ",
- league:"الدوري السعودي",
- champions:true,
- worldcup:false
+id:"neymar",
+name:"نيمار",
+nationality:"البرازيل",
+position:"جناح",
+club:"الهلال",
+previousClubs:["سانتوس","برشلونة","باريس سان جيرمان"],
+foot:"يمنى",
+number:10,
+birth:"5 فبراير 1992",
+height:175,
+style:"مراوغ",
+league:"الدوري السعودي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"modric",
- name:"لوكا مودريتش",
- nationality:"كرواتيا",
- position:"وسط",
- club:"ريال مدريد",
- previousClubs:["دينامو زغرب","توتنهام"],
- foot:"يمنى",
- number:10,
- birth:"9 سبتمبر 1985",
- height:172,
- style:"صانع ألعاب",
- league:"الدوري الإسباني",
- champions:true,
- worldcup:false
+id:"modric",
+name:"لوكا مودريتش",
+nationality:"كرواتيا",
+position:"وسط",
+club:"ريال مدريد",
+previousClubs:["دينامو زغرب","توتنهام"],
+foot:"يمنى",
+number:10,
+birth:"9 سبتمبر 1985",
+height:172,
+style:"صانع ألعاب",
+league:"الدوري الإسباني",
+champions:true,
+worldcup:false
 },
 
 {
- id:"lewandowski",
- name:"روبرت ليفاندوفسكي",
- nationality:"بولندا",
- position:"مهاجم",
- club:"برشلونة",
- previousClubs:["ليخ بوزنان","بوروسيا دورتموند","بايرن ميونخ"],
- foot:"يمنى",
- number:9,
- birth:"21 أغسطس 1988",
- height:185,
- style:"مهاجم صندوق",
- league:"الدوري الإسباني",
- champions:true,
- worldcup:false
+id:"lewandowski",
+name:"روبرت ليفاندوفسكي",
+nationality:"بولندا",
+position:"مهاجم",
+club:"برشلونة",
+previousClubs:["ليخ بوزنان","بوروسيا دورتموند","بايرن ميونخ"],
+foot:"يمنى",
+number:9,
+birth:"21 أغسطس 1988",
+height:185,
+style:"مهاجم صندوق",
+league:"الدوري الإسباني",
+champions:true,
+worldcup:false
 },
 
 {
- id:"griezmann",
- name:"أنطوان غريزمان",
- nationality:"فرنسا",
- position:"مهاجم",
- club:"أتلتيكو مدريد",
- previousClubs:["ريال سوسيداد","برشلونة"],
- foot:"يسرى",
- number:7,
- birth:"21 مارس 1991",
- height:176,
- style:"مهاجم متحرك",
- league:"الدوري الإسباني",
- champions:false,
- worldcup:true
+id:"griezmann",
+name:"أنطوان غريزمان",
+nationality:"فرنسا",
+position:"مهاجم",
+club:"أتلتيكو مدريد",
+previousClubs:["ريال سوسيداد","برشلونة"],
+foot:"يسرى",
+number:7,
+birth:"21 مارس 1991",
+height:176,
+style:"مهاجم متحرك",
+league:"الدوري الإسباني",
+champions:false,
+worldcup:true
 },
 
 {
- id:"kane",
- name:"هاري كين",
- nationality:"إنجلترا",
- position:"مهاجم",
- club:"بايرن ميونخ",
- previousClubs:["توتنهام"],
- foot:"يمنى",
- number:9,
- birth:"28 يوليو 1993",
- height:188,
- style:"مهاجم وصانع لعب",
- league:"الدوري الألماني",
- champions:false,
- worldcup:false
+id:"kane",
+name:"هاري كين",
+nationality:"إنجلترا",
+position:"مهاجم",
+club:"بايرن ميونخ",
+previousClubs:["توتنهام"],
+foot:"يمنى",
+number:9,
+birth:"28 يوليو 1993",
+height:188,
+style:"مهاجم وصانع لعب",
+league:"الدوري الألماني",
+champions:false,
+worldcup:false
 },
 
 {
- id:"son",
- name:"سون هيونغ مين",
- nationality:"كوريا الجنوبية",
- position:"جناح",
- club:"توتنهام",
- previousClubs:["هامبورغ","باير ليفركوزن"],
- foot:"يمنى",
- number:7,
- birth:"8 يوليو 1992",
- height:183,
- style:"جناح سريع",
- league:"الدوري الإنجليزي",
- champions:false,
- worldcup:false
+id:"son",
+name:"سون هيونغ مين",
+nationality:"كوريا الجنوبية",
+position:"جناح",
+club:"توتنهام",
+previousClubs:["هامبورغ","باير ليفركوزن"],
+foot:"يمنى",
+number:7,
+birth:"8 يوليو 1992",
+height:183,
+style:"جناح سريع",
+league:"الدوري الإنجليزي",
+champions:false,
+worldcup:false
 },
 
 {
- id:"rodri",
- name:"رودري",
- nationality:"إسبانيا",
- position:"وسط",
- club:"مانشستر سيتي",
- previousClubs:["فياريال","أتلتيكو مدريد"],
- foot:"يمنى",
- number:16,
- birth:"22 يونيو 1996",
- height:191,
- style:"محور",
- league:"الدوري الإنجليزي",
- champions:true,
- worldcup:false
+id:"rodri",
+name:"رودري",
+nationality:"إسبانيا",
+position:"وسط",
+club:"مانشستر سيتي",
+previousClubs:["فياريال","أتلتيكو مدريد"],
+foot:"يمنى",
+number:16,
+birth:"22 يونيو 1996",
+height:191,
+style:"محور",
+league:"الدوري الإنجليزي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"saka",
- name:"بوكايو ساكا",
- nationality:"إنجلترا",
- position:"جناح",
- club:"أرسنال",
- previousClubs:[],
- foot:"يسرى",
- number:7,
- birth:"5 سبتمبر 2001",
- height:178,
- style:"جناح هجومي",
- league:"الدوري الإنجليزي",
- champions:false,
- worldcup:false
+id:"saka",
+name:"بوكايو ساكا",
+nationality:"إنجلترا",
+position:"جناح",
+club:"أرسنال",
+previousClubs:[],
+foot:"يسرى",
+number:7,
+birth:"5 سبتمبر 2001",
+height:178,
+style:"جناح هجومي",
+league:"الدوري الإنجليزي",
+champions:false,
+worldcup:false
 },
 
 {
- id:"osimhen",
- name:"فيكتور أوسيمين",
- nationality:"نيجيريا",
- position:"مهاجم",
- club:"غلطة سراي",
- previousClubs:["شارلروا","ليل","نابولي"],
- foot:"يمنى",
- number:9,
- birth:"29 ديسمبر 1998",
- height:186,
- style:"مهاجم سريع",
- league:"الدوري التركي",
- champions:false,
- worldcup:false
+id:"osimhen",
+name:"فيكتور أوسيمين",
+nationality:"نيجيريا",
+position:"مهاجم",
+club:"غلطة سراي",
+previousClubs:["شارلروا","ليل","نابولي"],
+foot:"يمنى",
+number:9,
+birth:"29 ديسمبر 1998",
+height:186,
+style:"مهاجم سريع",
+league:"الدوري التركي",
+champions:false,
+worldcup:false
 },
 
 {
- id:"vanDijk",
- name:"فيرجيل فان دايك",
- nationality:"هولندا",
- position:"مدافع",
- club:"ليفربول",
- previousClubs:["غرونينغن","سلتيك","ساوثهامبتون"],
- foot:"يمنى",
- number:4,
- birth:"8 يوليو 1991",
- height:193,
- style:"قلب دفاع",
- league:"الدوري الإنجليزي",
- champions:true,
- worldcup:false
+id:"vanDijk",
+name:"فيرجيل فان دايك",
+nationality:"هولندا",
+position:"مدافع",
+club:"ليفربول",
+previousClubs:["غرونينغن","سلتيك","ساوثهامبتون"],
+foot:"يمنى",
+number:4,
+birth:"8 يوليو 1991",
+height:193,
+style:"قلب دفاع",
+league:"الدوري الإنجليزي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"alisson",
- name:"أليسون بيكر",
- nationality:"البرازيل",
- position:"حارس",
- club:"ليفربول",
- previousClubs:["إنترناسيونال","روما"],
- foot:"يمنى",
- number:1,
- birth:"2 أكتوبر 1992",
- height:191,
- style:"حارس",
- league:"الدوري الإنجليزي",
- champions:true,
- worldcup:false
+id:"alisson",
+name:"أليسون بيكر",
+nationality:"البرازيل",
+position:"حارس",
+club:"ليفربول",
+previousClubs:["إنترناسيونال","روما"],
+foot:"يمنى",
+number:1,
+birth:"2 أكتوبر 1992",
+height:191,
+style:"حارس",
+league:"الدوري الإنجليزي",
+champions:true,
+worldcup:false
 },
 
 {
- id:"bernardo",
- name:"برناردو سيلفا",
- nationality:"البرتغال",
- position:"وسط",
- club:"مانشستر سيتي",
- previousClubs:["بنفيكا","موناكو"],
- foot:"يسرى",
- number:20,
- birth:"10 أغسطس 1994",
- height:173,
- style:"صانع ألعاب",
- league:"الدوري الإنجليزي",
- champions:true,
- worldcup:false
+id:"bernardo",
+name:"برناردو سيلفا",
+nationality:"البرتغال",
+position:"وسط",
+club:"مانشستر سيتي",
+previousClubs:["بنفيكا","موناكو"],
+foot:"يسرى",
+number:20,
+birth:"10 أغسطس 1994",
+height:173,
+style:"صانع ألعاب",
+league:"الدوري الإنجليزي",
+champions:true,
+worldcup:false
 }
 
 ];
 
-let players = [...FALLBACK_PLAYERS];
-
-
-/* =========================================================
-   LOAD JSON IF AVAILABLE
-   ========================================================= */
+let players=[...FALLBACK_PLAYERS];
 
 async function loadPlayers(){
 
-    try{
+try{
 
-        const response =
-            await fetch("popular_players.json");
+const response=await fetch("popular_players.json");
 
-        if(!response.ok)
-            throw new Error("JSON unavailable");
+if(!response.ok)
+throw new Error("JSON unavailable");
 
-        const data =
-            await response.json();
+const data=await response.json();
 
-        if(Array.isArray(data) && data.length >= 5){
+if(Array.isArray(data)&&data.length>=5){
 
-            players = data;
+players=data;
 
-            toast("تم تحميل قاعدة اللاعبين ⚽");
+renderGames();
 
-            renderGames();
+}
 
-        }
+}catch(error){
 
-    }catch(error){
+console.log("Using built-in player database.");
 
-        console.log(
-            "Using built-in player database."
-        );
-
-    }
+}
 
 }
 
 loadPlayers();
 
 
-/* =========================================================
-   GAME MODES
-   ========================================================= */
-
-const GAME_MODES = {
+const GAME_MODES={
 
 classic:{
- name:"كلاسيكي",
- icon:"🎯",
- desc:"اختبار متوازن من أسئلة متنوعة",
- unlock:1,
- questions:10,
- time:20
+name:"كلاسيكي",
+icon:"🎯",
+desc:"اختبار متوازن من أسئلة متنوعة",
+unlock:1,
+questions:10,
+time:20
 },
 
 speed:{
- name:"السرعة",
- icon:"⚡",
- desc:"لديك وقت قصير جداً لكل سؤال",
- unlock:1,
- questions:10,
- time:8
+name:"السرعة",
+icon:"⚡",
+desc:"لديك وقت قصير جداً لكل سؤال",
+unlock:1,
+questions:10,
+time:8
 },
 
 truefalse:{
- name:"صح أم خطأ",
- icon:"✅",
- desc:"هل المعلومة صحيحة أم خاطئة؟",
- unlock:2,
- questions:12,
- time:12
+name:"صح أم خطأ",
+icon:"✅",
+desc:"هل المعلومة صحيحة أم خاطئة؟",
+unlock:2,
+questions:12,
+time:12
 },
 
 compare:{
- name:"المقارنة",
- icon:"⚖️",
- desc:"قارن بين لاعبين واكتشف الصحيح",
- unlock:3,
- questions:10,
- time:18
+name:"المقارنة",
+icon:"⚖️",
+desc:"قارن بين لاعبين واكتشف الصحيح",
+unlock:3,
+questions:10,
+time:18
 },
 
 career:{
- name:"المسيرة",
- icon:"🛣️",
- desc:"اختبر معرفتك بمسيرة اللاعبين",
- unlock:5,
- questions:10,
- time:20
+name:"المسيرة",
+icon:"🛣️",
+desc:"اختبر معرفتك بمسيرة اللاعبين",
+unlock:5,
+questions:10,
+time:20
 },
 
 nationality:{
- name:"الجنسيات",
- icon:"🌍",
- desc:"خمن اللاعب من جنسيته",
- unlock:4,
- questions:10,
- time:15
+name:"الجنسيات",
+icon:"🌍",
+desc:"خمن اللاعب من جنسيته",
+unlock:4,
+questions:10,
+time:15
 },
 
 jersey:{
- name:"رقم القميص",
- icon:"👕",
- desc:"من يرتدي هذا الرقم؟",
- unlock:6,
- questions:10,
- time:15
+name:"رقم القميص",
+icon:"👕",
+desc:"من يرتدي هذا الرقم؟",
+unlock:6,
+questions:10,
+time:15
 },
 
 millionaire:{
- name:"المليون الكروي",
- icon:"💰",
- desc:"كل سؤال أصعب من السابق",
- unlock:8,
- questions:12,
- time:25
+name:"المليون الكروي",
+icon:"💰",
+desc:"كل سؤال أصعب من السابق",
+unlock:8,
+questions:12,
+time:25
 },
 
 detective:{
- name:"المحقق",
- icon:"🕵️",
- desc:"اكتشف اللاعب من مجموعة أدلة",
- unlock:10,
- questions:10,
- time:25
+name:"المحقق",
+icon:"🕵️",
+desc:"اكتشف اللاعب من مجموعة أدلة",
+unlock:10,
+questions:10,
+time:25
 },
 
 knowledge:{
- name:"المعرفة",
- icon:"🧠",
- desc:"أسئلة معلومات كروية عميقة",
- unlock:12,
- questions:12,
- time:25
+name:"المعرفة",
+icon:"🧠",
+desc:"أسئلة معلومات كروية عميقة",
+unlock:12,
+questions:12,
+time:25
 },
 
 hardcore:{
- name:"Hardcore",
- icon:"☠️",
- desc:"بدون تلميحات وأخطاء قليلة",
- unlock:15,
- questions:15,
- time:15
+name:"Hardcore",
+icon:"☠️",
+desc:"بدون تلميحات وأخطاء قليلة",
+unlock:15,
+questions:15,
+time:15
 },
 
 boss:{
- name:"Boss Challenge",
- icon:"👑",
- desc:"أصعب تحديات اللعبة",
- unlock:15,
- questions:10,
- time:18
+name:"Boss Challenge",
+icon:"👑",
+desc:"أصعب تحديات اللعبة",
+unlock:15,
+questions:10,
+time:18
 },
 
 daily:{
- name:"التحدي اليومي",
- icon:"📅",
- desc:"5 أسئلة خاصة كل يوم",
- unlock:1,
- questions:5,
- time:20
+name:"التحدي اليومي",
+icon:"📅",
+desc:"5 أسئلة خاصة كل يوم",
+unlock:1,
+questions:5,
+time:20
 },
 
 endless:{
- name:"اللانهائي",
- icon:"♾️",
- desc:"استمر حتى تخطئ",
- unlock:1,
- questions:999,
- time:18
+name:"اللانهائي",
+icon:"♾️",
+desc:"استمر حتى تخطئ",
+unlock:1,
+questions:999,
+time:18
 }
 
 };
 
 
-/* =========================================================
-   QUESTION TEMPLATES
-   ========================================================= */
-
-const QUESTION_TYPES = [
+const QUESTION_TYPES=[
 
 {
- id:"nationality",
- min:1,
- text:p=>`ما جنسية ${p.name}؟`,
- answer:p=>p.nationality
+id:"nationality",
+min:1,
+text:p=>`ما جنسية ${p.name}؟`,
+answer:p=>p.nationality
 },
 
 {
- id:"position",
- min:1,
- text:p=>`ما مركز ${p.name}؟`,
- answer:p=>p.position
+id:"position",
+min:1,
+text:p=>`ما مركز ${p.name}؟`,
+answer:p=>p.position
 },
 
 {
- id:"club",
- min:1,
- text:p=>`مع أي نادٍ يلعب ${p.name}؟`,
- answer:p=>p.club
+id:"club",
+min:1,
+text:p=>`مع أي نادٍ يلعب ${p.name}؟`,
+answer:p=>p.club
 },
 
 {
- id:"foot",
- min:4,
- text:p=>`ما القدم التي يعتمد عليها ${p.name} أكثر؟`,
- answer:p=>p.foot
+id:"foot",
+min:4,
+text:p=>`ما القدم التي يعتمد عليها ${p.name} أكثر؟`,
+answer:p=>p.foot
 },
 
 {
- id:"number",
- min:5,
- text:p=>`ما رقم قميص ${p.name}؟`,
- answer:p=>String(p.number)
+id:"number",
+min:5,
+text:p=>`ما رقم قميص ${p.name}؟`,
+answer:p=>String(p.number)
 },
 
 {
- id:"birth",
- min:6,
- text:p=>`متى وُلد ${p.name}؟`,
- answer:p=>p.birth
+id:"birth",
+min:6,
+text:p=>`متى وُلد ${p.name}؟`,
+answer:p=>p.birth
 },
 
 {
- id:"height",
- min:7,
- text:p=>`كم يبلغ طول ${p.name} تقريباً؟`,
- answer:p=>`${p.height} سم`
+id:"height",
+min:7,
+text:p=>`كم يبلغ طول ${p.name} تقريباً؟`,
+answer:p=>`${p.height} سم`
 },
 
 {
- id:"style",
- min:8,
- text:p=>`كيف يمكن وصف أسلوب لعب ${p.name}؟`,
- answer:p=>p.style
+id:"style",
+min:8,
+text:p=>`كيف يمكن وصف أسلوب لعب ${p.name}؟`,
+answer:p=>p.style
 },
 
 {
- id:"league",
- min:8,
- text:p=>`في أي دوري يلعب ${p.name}؟`,
- answer:p=>p.league
+id:"league",
+min:8,
+text:p=>`في أي دوري يلعب ${p.name}؟`,
+answer:p=>p.league
 },
 
 {
- id:"previousClub",
- min:10,
- text:p=>`أي نادٍ لعب له ${p.name} في مسيرته؟`,
- answer:p=>p.previousClubs?.[0] || p.club
+id:"previousClub",
+min:10,
+text:p=>`أي نادٍ لعب له ${p.name} في مسيرته؟`,
+answer:p=>p.previousClubs?.[0]||p.club
 },
 
 {
- id:"champions",
- min:12,
- text:p=>`هل حقق ${p.name} دوري أبطال أوروبا؟`,
- answer:p=>p.champions ? "نعم" : "لا"
+id:"champions",
+min:12,
+text:p=>`هل حقق ${p.name} دوري أبطال أوروبا؟`,
+answer:p=>p.champions?"نعم":"لا"
 },
 
 {
- id:"worldcup",
- min:14,
- text:p=>`هل فاز ${p.name} بكأس العالم؟`,
- answer:p=>p.worldcup ? "نعم" : "لا"
+id:"worldcup",
+min:14,
+text:p=>`هل فاز ${p.name} بكأس العالم؟`,
+answer:p=>p.worldcup?"نعم":"لا"
 }
 
 ];
 
 
-/* =========================================================
-   STATE
-   ========================================================= */
-
-const defaultState = {
+const defaultState={
 
 xp:0,
 coins:100,
@@ -2180,498 +2060,751 @@ dailyProgress:0
 
 };
 
-let state =
-    JSON.parse(
-        localStorage.getItem("minPlayerState")
-    ) || {...defaultState};
+let state;
 
+try{
 
-/* =========================================================
-   SAVE
-   ========================================================= */
+state=
+JSON.parse(localStorage.getItem("minPlayerState"))
+||{...defaultState};
 
-function save(){
+}catch(e){
 
-    localStorage.setItem(
-        "minPlayerState",
-        JSON.stringify(state)
-    );
+state={...defaultState};
 
 }
 
+function save(){
 
-/* =========================================================
-   LEVEL SYSTEM
-   ========================================================= */
+localStorage.setItem(
+"minPlayerState",
+JSON.stringify(state)
+);
+
+}
 
 function xpForLevel(level){
 
-    return Math.floor(
-        300 *
-        Math.pow(level,1.45)
-    );
+return Math.floor(
+300*Math.pow(level,1.45)
+);
 
 }
 
 function getLevelFromXP(xp){
 
-    let level = 1;
+let level=1;
 
-    while(
-        xp >= xpForLevel(level) &&
-        level < 100
-    ){
-        xp -= xpForLevel(level);
-        level++;
-    }
+while(
+xp>=xpForLevel(level)&&
+level<100
+){
 
-    return level;
+xp-=xpForLevel(level);
+level++;
+
+}
+
+return level;
 
 }
 
 function updateLevel(){
 
-    const oldLevel =
-        state.level;
+const oldLevel=state.level;
 
-    state.level =
-        getLevelFromXP(state.xp);
+state.level=getLevelFromXP(state.xp);
 
-    if(state.level > oldLevel){
+if(state.level>oldLevel){
 
-        state.coins +=
-            50 * (state.level-oldLevel);
+const reward=
+50*(state.level-oldLevel);
 
-        toast(
-            `🎉 وصلت إلى المستوى ${state.level}! +${50*(state.level-oldLevel)} 🪙`
-        );
+state.coins+=reward;
 
-    }
+toast(
+`🎉 وصلت إلى المستوى ${state.level}! +${reward} 🪙`
+);
 
 }
 
-
-/* =========================================================
-   RANK
-   ========================================================= */
+}
 
 function getRank(level){
 
-    if(level >= 50)
-        return "أسطورة كروية";
+if(level>=50)
+return "أسطورة كروية";
 
-    if(level >= 35)
-        return "عبقري كروي";
+if(level>=35)
+return "عبقري كروي";
 
-    if(level >= 25)
-        return "محترف عالمي";
+if(level>=25)
+return "محترف عالمي";
 
-    if(level >= 15)
-        return "محترف";
+if(level>=15)
+return "محترف";
 
-    if(level >= 10)
-        return "خبير";
+if(level>=10)
+return "خبير";
 
-    if(level >= 5)
-        return "متقدم";
+if(level>=5)
+return "متقدم";
 
-    return "مبتدئ";
+return "مبتدئ";
 
 }
 
-
-/* =========================================================
-   RANDOM HELPERS
-   ========================================================= */
-
 function random(arr){
 
-    return arr[
-        Math.floor(
-            Math.random()*arr.length
-        )
-    ];
+if(!arr||!arr.length)
+return null;
+
+return arr[
+Math.floor(Math.random()*arr.length)
+];
 
 }
 
 function shuffle(arr){
 
-    return [...arr].sort(
-        ()=>Math.random()-.5
-    );
+return [...arr].sort(
+()=>Math.random()-.5
+);
 
 }
 
 
 /* =========================================================
-   UNIQUE PLAYER
-   ========================================================= */
+   PLAYER SELECTION
+========================================================= */
 
 function choosePlayer(){
 
-    let available =
-        players.filter(
-            p =>
-            !state.recentPlayers.includes(p.id)
-        );
+let available=
+players.filter(
+p=>!state.recentPlayers.includes(p.id)
+);
 
-    if(available.length < 4){
+if(!available.length){
 
-        state.recentPlayers = [];
+state.recentPlayers=[];
 
-        available = [...players];
+available=[...players];
 
-    }
+}
 
-    const player =
-        random(available);
+const player=random(available);
 
-    state.recentPlayers.push(player.id);
+if(!player)
+return players[0];
 
-    if(state.recentPlayers.length > 35)
-        state.recentPlayers.shift();
+state.recentPlayers.push(player.id);
 
-    return player;
+if(state.recentPlayers.length>35)
+state.recentPlayers.shift();
+
+return player;
 
 }
 
 
 /* =========================================================
-   UNIQUE QUESTION TYPE
-   ========================================================= */
+   QUESTION TYPE
+========================================================= */
 
-let usedTypes = [];
+let usedTypes=[];
 
 function chooseQuestionType(){
 
-    let level =
-        state.level;
+let available=
+QUESTION_TYPES.filter(
+q=>q.min<=state.level
+);
 
-    let available =
-        QUESTION_TYPES.filter(
-            q=>q.min<=level
-        );
+available=
+available.filter(
+q=>!usedTypes.includes(q.id)
+);
 
-    available =
-        available.filter(
-            q=>!usedTypes.includes(q.id)
-        );
+if(!available.length){
 
-    if(!available.length){
+usedTypes=[];
 
-        usedTypes = [];
+available=
+QUESTION_TYPES.filter(
+q=>q.min<=state.level
+);
 
-        available =
-            QUESTION_TYPES.filter(
-                q=>q.min<=level
-            );
+}
 
-    }
+const type=random(available);
 
-    const type =
-        random(available);
+if(type)
+usedTypes.push(type.id);
 
-    usedTypes.push(type.id);
-
-    return type;
+return type;
 
 }
 
 
 /* =========================================================
-   CREATE DISTRACTORS
-   ========================================================= */
+   QUESTION SIGNATURE
+========================================================= */
+
+let usedQuestionKeys=new Set();
+
+function questionKey(q){
+
+return [
+q.mode||"",
+q.player?.id||"",
+q.type||"",
+q.answer||"",
+(q.text||"")
+].join("|");
+
+}
+
+
+/* =========================================================
+   DISTRACTORS
+========================================================= */
 
 function getDistractors(correct,field,count=3){
 
-    let values =
-        players
-        .map(p=>{
+let values=
+players
+.map(p=>{
 
-            let value = p[field];
+let value=p[field];
 
-            if(Array.isArray(value))
-                value=value[0];
+if(Array.isArray(value))
+value=value[0];
 
-            return value;
+if(typeof value==="boolean")
+value=value?"نعم":"لا";
 
-        })
-        .filter(Boolean)
-        .filter(
-            v=>String(v)!==String(correct)
-        );
+return value;
 
-    values =
-        [...new Set(values)];
+})
+.filter(v=>v!==undefined&&v!==null&&v!=="")
+.filter(
+v=>String(v)!==String(correct)
+);
 
-    return shuffle(values)
-        .slice(0,count);
+values=[...new Set(values)];
+
+return shuffle(values).slice(0,count);
 
 }
 
 
 /* =========================================================
-   CREATE QUESTION
-   ========================================================= */
+   SPECIAL QUESTION GENERATORS
+========================================================= */
+
+function makeStandardQuestion(mode){
+
+let player=choosePlayer();
+
+let type;
+
+if(mode==="nationality"){
+
+type={
+id:"nationality",
+text:p=>`أي لاعب يحمل جنسية ${p.nationality}؟`,
+answer:p=>p.name
+};
+
+}
+
+else if(mode==="jersey"){
+
+type={
+id:"number",
+text:p=>`من يرتدي الرقم ${p.number}؟`,
+answer:p=>p.name
+};
+
+}
+
+else if(mode==="career"){
+
+type={
+id:"previousClub",
+text:p=>`أي نادٍ لعب له ${p.name} قبل ناديه الحالي؟`,
+answer:p=>p.previousClubs?.[0]||p.club
+};
+
+}
+
+else{
+
+type=chooseQuestionType();
+
+}
+
+if(!type)
+type=QUESTION_TYPES[0];
+
+const correct=type.answer(player);
+
+let field=type.id;
+
+if(field==="previousClub")
+field="previousClubs";
+
+let choices;
+
+if(
+mode==="nationality"||
+mode==="jersey"
+){
+
+const wrong=
+shuffle(
+players.filter(p=>p.id!==player.id)
+).slice(0,3);
+
+choices=shuffle([
+player.name,
+...wrong.map(p=>p.name)
+]);
+
+}else{
+
+let distractors=
+getDistractors(
+correct,
+field,
+3
+);
+
+if(distractors.length<3){
+
+const extra=
+players
+.filter(p=>p.id!==player.id)
+.map(p=>type.answer(p))
+.filter(Boolean)
+.map(v=>
+typeof v==="boolean"
+?v?"نعم":"لا"
+:v
+);
+
+distractors=[
+...distractors,
+...shuffle(extra)
+];
+
+distractors=[
+...new Set(
+distractors.map(String)
+)
+]
+.filter(
+v=>String(v)!==String(correct)
+)
+.slice(0,3);
+
+}
+
+choices=shuffle([
+correct,
+...distractors
+]);
+
+}
+
+let difficulty="سهل";
+
+if(state.level>=5)
+difficulty="متوسط";
+
+if(state.level>=12)
+difficulty="صعب";
+
+if(state.level>=25)
+difficulty="خبير";
+
+if(
+mode==="boss"||
+state.level>=50
+)
+difficulty="أسطوري";
+
+return{
+
+id:
+`${player.id}_${type.id}_${Date.now()}_${Math.random()}`,
+
+mode,
+
+player,
+
+type:type.id,
+
+text:type.text(player),
+
+answer:String(correct),
+
+choices:choices.map(String),
+
+difficulty,
+
+explanation:
+`الإجابة الصحيحة هي: ${correct}`
+
+};
+
+}
+
+
+/* =========================================================
+   TRUE / FALSE
+========================================================= */
+
+function makeTrueFalseQuestion(){
+
+const player=choosePlayer();
+
+const facts=[
+
+{
+text:`${player.name} يلعب حالياً مع ${player.club}.`,
+correct:true
+},
+
+{
+text:`${player.name} جنسيته ${player.nationality}.`,
+correct:true
+},
+
+{
+text:`${player.name} يلعب في مركز ${player.position}.`,
+correct:true
+},
+
+{
+text:`${player.name} يعتمد أكثر على قدمه ${player.foot}.`,
+correct:true
+},
+
+{
+text:`${player.name} يرتدي الرقم ${player.number}.`,
+correct:true
+},
+
+{
+text:`${player.name} طوله ${player.height} سم تقريباً.`,
+correct:true
+}
+
+];
+
+let fact=random(facts);
+
+let correct=fact.correct;
+
+if(Math.random()<.45){
+
+const wrongFields=[
+{
+text:`${player.name} يلعب حالياً مع ${random(
+players.filter(p=>p.id!==player.id)
+)?.club||"نادي آخر"}.`,
+correct:false
+},
+{
+text:`${player.name} جنسيته ${random(
+players.filter(p=>p.id!==player.id)
+)?.nationality||"بلد آخر"}.`,
+correct:false
+}
+];
+
+fact=random(wrongFields);
+correct=false;
+
+}
+
+return{
+
+id:`tf_${player.id}_${Date.now()}_${Math.random()}`,
+
+mode:"truefalse",
+
+player,
+
+type:"truefalse",
+
+text:fact.text,
+
+answer:correct?"صحيح":"خطأ",
+
+choices:["صحيح","خطأ"],
+
+difficulty:
+state.level>=25?"خبير":
+state.level>=12?"صعب":
+"متوسط",
+
+explanation:
+correct
+?"المعلومة صحيحة."
+:"المعلومة غير صحيحة."
+
+};
+
+}
+
+
+/* =========================================================
+   COMPARE
+========================================================= */
+
+function makeCompareQuestion(){
+
+let a=choosePlayer();
+
+let possible=
+players.filter(p=>p.id!==a.id);
+
+let b=random(possible);
+
+if(!b)
+return makeStandardQuestion("classic");
+
+const stats=[
+
+{
+field:"height",
+label:"الطول",
+higher:true,
+format:v=>`${v} سم`
+},
+
+{
+field:"number",
+label:"رقم القميص",
+higher:false,
+format:v=>String(v)
+}
+
+];
+
+const stat=random(stats);
+
+let winner;
+
+if(stat.higher){
+
+winner=
+a[stat.field]>=b[stat.field]
+?a:b;
+
+}else{
+
+winner=
+a[stat.field]<=b[stat.field]
+?a:b;
+
+}
+
+return{
+
+id:`compare_${a.id}_${b.id}_${stat.field}_${Date.now()}`,
+
+mode:"compare",
+
+player:a,
+
+type:"compare",
+
+text:
+`من صاحب ${stat.label} الأكبر بين ${a.name} و${b.name}؟`,
+
+answer:winner.name,
+
+choices:shuffle([
+a.name,
+b.name
+]),
+
+difficulty:
+state.level>=25?"خبير":
+state.level>=12?"صعب":
+"متوسط",
+
+explanation:
+`${winner.name} هو الصحيح في هذه المقارنة.`
+
+};
+
+}
+
+
+/* =========================================================
+   DETECTIVE
+========================================================= */
+
+function makeDetectiveQuestion(){
+
+const player=choosePlayer();
+
+let clues=[
+
+`الجنسية: ${player.nationality}`,
+
+`المركز: ${player.position}`,
+
+`النادي الحالي: ${player.club}`,
+
+`القدم المفضلة: ${player.foot}`,
+
+`رقم القميص: ${player.number}`
+
+];
+
+clues=shuffle(clues).slice(0,4);
+
+const wrong=
+shuffle(
+players.filter(p=>p.id!==player.id)
+).slice(0,3);
+
+return{
+
+id:`detective_${player.id}_${Date.now()}`,
+
+mode:"detective",
+
+player,
+
+type:"detective",
+
+text:
+`🕵️ من هو اللاعب؟\n\n${clues.map(
+(c,i)=>`${i+1}. ${c}`
+).join("\n")}`,
+
+answer:player.name,
+
+choices:shuffle([
+player.name,
+...wrong.map(p=>p.name)
+]),
+
+difficulty:
+state.level>=25?"خبير":
+state.level>=12?"صعب":
+"متوسط",
+
+explanation:
+`اللاعب هو ${player.name}.`
+
+};
+
+}
+
+
+/* =========================================================
+   KNOWLEDGE
+========================================================= */
+
+function makeKnowledgeQuestion(){
+
+const player=choosePlayer();
+
+const available=QUESTION_TYPES.filter(
+q=>q.min<=Math.max(state.level,8)
+);
+
+const type=random(available);
+
+if(!type)
+return makeStandardQuestion("classic");
+
+return makeStandardQuestion("knowledge");
+
+}
+
+
+/* =========================================================
+   GENERATE QUESTION
+========================================================= */
 
 function generateQuestion(mode){
 
-    const player =
-        choosePlayer();
+let attempts=0;
 
-    let type;
+while(attempts<50){
 
-    if(mode==="nationality"){
+let q;
 
-        type={
-            id:"nationality",
-            min:1,
-            text:p=>`أي لاعب يحمل هذه الجنسية؟`,
-            answer:p=>p.name
-        };
+if(mode==="truefalse")
+q=makeTrueFalseQuestion();
 
-    }
+else if(mode==="compare")
+q=makeCompareQuestion();
 
-    else if(mode==="jersey"){
+else if(mode==="detective")
+q=makeDetectiveQuestion();
 
-        type={
-            id:"number",
-            min:1,
-            text:p=>`من يرتدي الرقم ${p.number}؟`,
-            answer:p=>p.name
-        };
+else
+q=makeStandardQuestion(mode);
 
-    }
+q.mode=mode;
 
-    else if(mode==="career"){
+const key=questionKey(q);
 
-        type={
-            id:"previousClub",
-            min:1,
-            text:p=>
-                `أي نادٍ لعب له ${p.name} قبل ناديه الحالي؟`,
-            answer:p=>p.previousClubs?.[0] || p.club
-        };
+if(
+!usedQuestionKeys.has(key) &&
+!state.recentQuestions.includes(key)
+){
 
-    }
+usedQuestionKeys.add(key);
 
-    else{
+state.recentQuestions.push(key);
 
-        type =
-            chooseQuestionType();
+if(state.recentQuestions.length>100)
+state.recentQuestions.shift();
 
-    }
+return q;
 
+}
 
-    const correct =
-        type.answer(player);
+attempts++;
 
-    let choices;
+}
 
-    let field =
-        type.id;
-
-    if(
-        type.id==="previousClub"
-    )
-        field="previousClubs";
-
-    if(
-        type.id==="nationality"
-    )
-        field="nationality";
-
-    if(
-        type.id==="position"
-    )
-        field="position";
-
-    if(
-        type.id==="club"
-    )
-        field="club";
-
-    if(
-        type.id==="foot"
-    )
-        field="foot";
-
-    if(
-        type.id==="number"
-    )
-        field="number";
-
-    if(
-        type.id==="birth"
-    )
-        field="birth";
-
-    if(
-        type.id==="height"
-    )
-        field="height";
-
-    if(
-        type.id==="style"
-    )
-        field="style";
-
-    if(
-        type.id==="league"
-    )
-        field="league";
-
-    if(
-        type.id==="champions"
-    )
-        field="champions";
-
-    if(
-        type.id==="worldcup"
-    )
-        field="worldcup";
-
-
-    if(
-        mode==="nationality" ||
-        mode==="jersey"
-    ){
-
-        const wrongPlayers =
-            shuffle(
-                players.filter(
-                    p=>p.id!==player.id
-                )
-            ).slice(0,3);
-
-        choices =
-            shuffle([
-                player.name,
-                ...wrongPlayers.map(
-                    p=>p.name
-                )
-            ]);
-
-    }
-
-    else{
-
-        let distractors =
-            getDistractors(
-                correct,
-                field,
-                3
-            );
-
-        if(distractors.length<3){
-
-            const extra =
-                players
-                .filter(
-                    p=>p.id!==player.id
-                )
-                .map(
-                    p=>type.answer(p)
-                )
-                .filter(Boolean);
-
-            distractors =
-                [
-                    ...distractors,
-                    ...shuffle(extra)
-                ]
-                .filter(
-                    (v,i,a)=>
-                        a.indexOf(v)===i &&
-                        String(v)!==
-                        String(correct)
-                )
-                .slice(0,3);
-
-        }
-
-        choices =
-            shuffle([
-                correct,
-                ...distractors
-            ]);
-
-    }
-
-
-    let difficulty =
-        "سهل";
-
-    if(state.level>=5)
-        difficulty="متوسط";
-
-    if(state.level>=12)
-        difficulty="صعب";
-
-    if(state.level>=25)
-        difficulty="خبير";
-
-    if(
-        mode==="boss" ||
-        state.level>=50
-    )
-        difficulty="أسطوري";
-
-
-    return {
-
-        id:
-            `${player.id}_${type.id}_${Date.now()}_${Math.random()}`,
-
-        player,
-        type:type.id,
-
-        text:type.text(player),
-
-        answer:String(correct),
-
-        choices:
-            choices.map(
-                String
-            ),
-
-        difficulty,
-
-        explanation:
-            `الإجابة الصحيحة هي: ${correct}`
-
-    };
+return mode==="truefalse"
+?makeTrueFalseQuestion()
+:makeStandardQuestion(mode);
 
 }
 
 
 /* =========================================================
    GAME STATE
-   ========================================================= */
+========================================================= */
 
-let game = {
+let game={
 
-    mode:"classic",
-
-    questions:[],
-
-    index:0,
-
-    score:0,
-
-    correct:0,
-
-    combo:0,
-
-    maxCombo:0,
-
-    timeLeft:20,
-
-    timer:null,
-
-    hintsUsed:0,
-
-    answered:false
+mode:"classic",
+questions:[],
+index:0,
+score:0,
+correct:0,
+combo:0,
+maxCombo:0,
+timeLeft:20,
+timer:null,
+hintsUsed:0,
+answered:false,
+finished:false
 
 };
 
@@ -2679,1442 +2812,787 @@ let lastMode="classic";
 
 
 /* =========================================================
+   SCREEN NAVIGATION
+========================================================= */
+
+function showScreen(id){
+
+const screens=
+document.querySelectorAll(".screen");
+
+screens.forEach(screen=>{
+screen.classList.remove("active");
+});
+
+const target=
+document.getElementById(id);
+
+if(!target)
+return;
+
+target.classList.add("active");
+
+const nav=
+document.getElementById("bottomNav");
+
+if(id==="gameScreen"){
+
+nav.style.display="none";
+
+}else{
+
+nav.style.display="grid";
+
+}
+
+document
+.querySelectorAll(".nav-btn")
+.forEach(btn=>{
+
+btn.classList.toggle(
+"active",
+btn.dataset.screen===id
+);
+
+});
+
+if(id==="homeScreen")
+updateHome();
+
+if(id==="gamesScreen")
+renderGames();
+
+if(id==="challengesScreen")
+updateChallenges();
+
+if(id==="achievementsScreen")
+renderAchievements();
+
+if(id==="profileScreen")
+updateProfile();
+
+}
+
+
+/* =========================================================
    START GAME
-   ========================================================= */
+========================================================= */
 
 function startGame(mode){
 
-    const data =
-        GAME_MODES[mode];
+const data=GAME_MODES[mode];
 
-    if(!data)
-        return;
+if(!data)
+return;
 
-    if(state.level < data.unlock){
+if(state.level<data.unlock){
 
-        toast(
-            `🔒 تحتاج المستوى ${data.unlock}`
-        );
+toast(`🔒 تحتاج المستوى ${data.unlock}`);
 
-        return;
+return;
 
-    }
+}
 
-    if(mode==="boss" && state.level<15){
+if(mode==="boss"&&state.level<15){
 
-        toast("👑 الـBoss يفتح في المستوى 15");
+toast("👑 الـBoss يفتح في المستوى 15");
 
-        return;
+return;
 
-    }
+}
 
-    lastMode=mode;
+if(mode==="daily"&&isDailyCompleted()){
 
-    usedTypes=[];
+toast("✅ أكملت تحدي اليوم بالفعل!");
 
-    game = {
+return;
 
-        mode,
+}
 
-        questions:[],
+lastMode=mode;
 
-        index:0,
+usedTypes=[];
 
-        score:0,
+usedQuestionKeys=new Set();
 
-        correct:0,
+game={
 
-        combo:0,
+mode,
 
-        maxCombo:0,
+questions:[],
 
-        timeLeft:data.time,
+index:0,
 
-        timer:null,
+score:0,
 
-        hintsUsed:0,
+correct:0,
 
-        answered:false
+combo:0,
 
-    };
+maxCombo:0,
 
+timeLeft:data.time,
 
-    const count =
-        Math.min(
-            data.questions,
-            mode==="endless"
-                ? 999
-                : data.questions
-        );
+timer:null,
 
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
+hintsUsed:0,
 
-        game.questions.push(
-            generateQuestion(mode)
-        );
+answered:false,
 
-    }
+finished:false
 
+};
 
-    document
-        .getElementById("bottomNav")
-        .style.display="none";
+const count=
+mode==="endless"
+?999
+:data.questions;
 
-    showScreen("gameScreen");
+for(let i=0;i<count;i++){
 
-    document
-        .getElementById("gameModeName")
-        .textContent=data.name;
+game.questions.push(
+generateQuestion(mode)
+);
 
-    document
-        .getElementById("questionTotal")
-        .textContent=
-            mode==="endless"
-            ? "∞"
-            : count;
+}
 
-    showQuestion();
+document
+.getElementById("gameModeName")
+.textContent=data.name;
+
+document
+.getElementById("questionTotal")
+.textContent=
+mode==="endless"
+?"∞"
+:count;
+
+showScreen("gameScreen");
+
+setTimeout(()=>{
+showQuestion();
+},50);
 
 }
 
 
 /* =========================================================
    SHOW QUESTION
-   ========================================================= */
+========================================================= */
 
 function showQuestion(){
 
-    clearInterval(game.timer);
+clearInterval(game.timer);
 
-    const q =
-        game.questions[game.index];
+if(game.finished)
+return;
 
-    if(!q){
+const q=game.questions[game.index];
 
-        finishGame();
+if(!q){
 
-        return;
+finishGame();
 
-    }
-
-
-    game.answered=false;
-
-    document
-        .getElementById("questionIndex")
-        .textContent=
-            game.index+1;
-
-    document
-        .getElementById("questionText")
-        .textContent=q.text;
-
-    document
-        .getElementById("difficulty")
-        .textContent=q.difficulty;
-
-
-    const bar =
-        document
-        .getElementById("questionBar");
-
-    if(game.mode==="endless"){
-
-        bar.style.width="50%";
-
-    }else{
-
-        bar.style.width=
-            (
-                game.index /
-                game.questions.length
-            )*100+"%";
-
-    }
-
-
-    const answers =
-        document
-        .getElementById("answers");
-
-    answers.innerHTML="";
-
-
-    q.choices.forEach(
-        choice=>{
-
-            const button =
-                document.createElement("button");
-
-            button.className="answer";
-
-            button.textContent=choice;
-
-            button.onclick=()=>{
-                answerQuestion(
-                    choice,
-                    button
-                );
-            };
-
-            answers.appendChild(button);
-
-        }
-    );
-
-
-    document
-        .getElementById("comboBox")
-        .textContent=
-            game.combo>=2
-            ? `🔥 Combo ×${game.combo}`
-            : "";
-
-
-    let time =
-        GAME_MODES[game.mode].time;
-
-    if(
-        game.mode==="millionaire"
-    ){
-
-        time =
-            Math.max(
-                10,
-                time -
-                game.index
-            );
-
-    }
-
-    game.timeLeft=time;
-
-    updateTimer();
-
-    game.timer =
-        setInterval(
-            ()=>{
-
-                game.timeLeft--;
-
-                updateTimer();
-
-                if(game.timeLeft<=0){
-
-                    clearInterval(game.timer);
-
-                    answerQuestion(
-                        "__TIMEOUT__",
-                        null
-                    );
-
-                }
-
-            },
-            1000
-        );
+return;
 
 }
 
+game.answered=false;
 
-/* =========================================================
-   TIMER
-   ========================================================= */
+document
+.getElementById("questionIndex")
+.textContent=game.index+1;
 
-function updateTimer(){
+document
+.getElementById("questionText")
+.textContent=q.text;
 
-    document
-        .getElementById("timer")
-        .textContent=
-            game.timeLeft;
+document
+.getElementById("difficulty")
+.textContent=q.difficulty;
+
+const bar=
+document.getElementById("questionBar");
+
+if(game.mode==="endless"){
+
+bar.style.width="50%";
+
+}else{
+
+bar.style.width=
+((game.index/game.questions.length)*100)+"%";
+
+}
+
+const answers=
+document.getElementById("answers");
+
+answers.innerHTML="";
+
+q.choices.forEach(choice=>{
+
+const button=
+document.createElement("button");
+
+button.className="answer";
+
+button.textContent=choice;
+
+button.onclick=()=>{
+answerQuestion(choice,button);
+};
+
+answers.appendChild(button);
+
+});
+
+document
+.getElementById("comboBox")
+.textContent=
+game.combo>=2
+?`🔥 Combo ×${game.combo}`
+:"";
+
+let time=
+GAME_MODES[game.mode]?.time||20;
+
+if(game.mode==="millionaire"){
+
+time=
+Math.max(
+8,
+GAME_MODES[game.mode].time-
+game.index
+);
+
+}
+
+if(game.mode==="boss")
+time=18;
+
+game.timeLeft=time;
+
+const timer=
+document.getElementById("timer");
+
+timer.textContent=time;
+
+timer.style.borderColor="var(--primary)";
+
+game.timer=setInterval(()=>{
+
+game.timeLeft--;
+
+timer.textContent=game.timeLeft;
+
+if(game.timeLeft<=5)
+timer.style.borderColor="var(--red)";
+else
+timer.style.borderColor="var(--primary)";
+
+if(game.timeLeft<=0){
+
+clearInterval(game.timer);
+
+if(!game.answered){
+
+game.answered=true;
+
+game.combo=0;
+
+showWrongAnswer(null);
+
+setTimeout(()=>{
+nextQuestion();
+},700);
+
+}
+
+}
+
+},1000);
 
 }
 
 
 /* =========================================================
    ANSWER
-   ========================================================= */
+========================================================= */
 
 function answerQuestion(choice,button){
 
-    if(game.answered)
-        return;
+if(game.answered)
+return;
 
-    game.answered=true;
+game.answered=true;
 
-    clearInterval(game.timer);
+clearInterval(game.timer);
 
-    const q =
-        game.questions[game.index];
+const q=game.questions[game.index];
 
-    const buttons =
-        document.querySelectorAll(
-            "#answers .answer"
-        );
+const correct=
+String(choice)===String(q.answer);
 
-    buttons.forEach(
-        b=>b.disabled=true
-    );
+document
+.querySelectorAll(".answer")
+.forEach(btn=>{
+btn.disabled=true;
+});
 
+if(correct){
 
-    const correct =
-        choice !== "__TIMEOUT__" &&
-        String(choice)===
-        String(q.answer);
+button.classList.add("correct");
 
+game.correct++;
 
-    if(correct){
+game.combo++;
 
-        if(button)
-            button.classList.add("correct");
+game.maxCombo=
+Math.max(
+game.maxCombo,
+game.combo
+);
 
-        game.correct++;
+state.correct++;
 
-        game.combo++;
+state.streak++;
 
-        game.maxCombo =
-            Math.max(
-                game.maxCombo,
-                game.combo
-            );
+state.maxCombo=
+Math.max(
+state.maxCombo,
+game.combo
+);
 
-        let base=10;
+let points=
+100+
+game.timeLeft*5+
+game.combo*15;
 
-        if(q.difficulty==="متوسط")
-            base=15;
+if(game.mode==="speed")
+points+=50;
 
-        if(q.difficulty==="صعب")
-            base=25;
+if(game.mode==="millionaire")
+points+=game.index*30;
 
-        if(q.difficulty==="خبير")
-            base=40;
+if(game.mode==="boss")
+points+=100;
 
-        if(q.difficulty==="أسطوري")
-            base=60;
+game.score+=points;
 
+document
+.getElementById("comboBox")
+.textContent=
+game.combo>=2
+?`🔥 Combo ×${game.combo} +${points} نقطة`
+:`✅ صحيح! +${points}`;
 
-        const speedBonus =
-            Math.max(
-                0,
-                game.timeLeft
-            );
+playTone(true);
 
-        game.score +=
-            base +
-            speedBonus +
-            game.combo*2;
+vibrate(25);
 
-        state.correct++;
+}else{
 
-        state.streak++;
+button.classList.add("wrong");
 
-        if(
-            game.combo >
-            state.maxCombo
-        ){
+showWrongAnswer(q.answer);
 
-            state.maxCombo=
-                game.combo;
+game.combo=0;
 
-        }
+state.streak=0;
 
-        showFeedback(
-            `🔥 صحيح! +${base+speedBonus} نقطة`
-        );
+playTone(false);
 
-        playSound("correct");
+vibrate(70);
 
-    }
+}
 
-    else{
-
-        if(button)
-            button.classList.add("wrong");
-
-        game.combo=0;
-
-        state.streak=0;
-
-        buttons.forEach(
-            b=>{
-                if(
-                    String(b.textContent)===
-                    String(q.answer)
-                )
-                    b.classList.add("correct");
-            }
-        );
-
-        showFeedback(
-            `❌ ${q.explanation}`
-        );
-
-        playSound("wrong");
-
-    }
-
-
-    setTimeout(
-        ()=>{
-
-            game.index++;
-
-            if(
-                game.mode==="endless" &&
-                !correct
-            ){
-
-                finishGame();
-
-                return;
-
-            }
-
-
-            if(
-                game.index >=
-                game.questions.length
-            ){
-
-                finishGame();
-
-            }else{
-
-                showQuestion();
-
-            }
-
-        },
-        900
-    );
+setTimeout(()=>{
+nextQuestion();
+},900);
 
 }
 
 
 /* =========================================================
-   FEEDBACK
-   ========================================================= */
+   WRONG ANSWER HIGHLIGHT
+========================================================= */
 
-function showFeedback(text){
+function showWrongAnswer(correct){
 
-    document
-        .getElementById("comboBox")
-        .textContent=text;
+if(correct===null)
+return;
+
+document
+.querySelectorAll(".answer")
+.forEach(btn=>{
+
+if(
+String(btn.textContent)===
+String(correct)
+){
+
+btn.classList.add("correct");
+
+}
+
+});
 
 }
 
 
 /* =========================================================
-   HINTS
-   ========================================================= */
+   NEXT QUESTION
+========================================================= */
 
-function useHint(type){
+function nextQuestion(){
 
-    if(game.answered)
-        return;
+if(game.finished)
+return;
 
-    if(game.mode==="hardcore"){
+if(
+game.mode==="endless"&&
+game.index>=game.questions.length-1
+){
 
-        toast(
-            "☠️ التلميحات ممنوعة في Hardcore"
-        );
+game.questions.push(
+generateQuestion(game.mode)
+);
 
-        return;
+}
 
-    }
+game.index++;
 
-    const costs={
-        fifty:25,
-        clue:20,
-        skip:35
-    };
+if(
+game.mode==="endless" ||
+game.index<game.questions.length
+){
 
-    const cost =
-        costs[type];
+showQuestion();
 
-    if(state.coins<cost){
+}else{
 
-        toast("🪙 ما عندكش عملات كافية");
+finishGame();
 
-        return;
-
-    }
-
-    state.coins-=cost;
-
-    game.hintsUsed++;
-
-    const q =
-        game.questions[game.index];
-
-    if(type==="fifty"){
-
-        const wrong =
-            [...document.querySelectorAll(
-                "#answers .answer"
-            )]
-            .filter(
-                b=>
-                String(b.textContent)!==
-                String(q.answer)
-            );
-
-        shuffle(wrong)
-            .slice(0,2)
-            .forEach(
-                b=>{
-                    b.disabled=true;
-                    b.style.opacity=".2";
-                }
-            );
-
-        toast("✂️ تم حذف إجابتين");
-
-    }
-
-    if(type==="clue"){
-
-        toast(
-            `💡 تلميح: ${q.player.position} — ${q.player.nationality}`
-        );
-
-    }
-
-    if(type==="skip"){
-
-        game.answered=true;
-
-        clearInterval(game.timer);
-
-        game.index++;
-
-        showQuestion();
-
-        toast("⏭️ تم تخطي السؤال");
-
-    }
-
-    save();
-
-    updateUI();
+}
 
 }
 
 
 /* =========================================================
-   FINISH
-   ========================================================= */
+   FINISH GAME
+========================================================= */
 
 function finishGame(){
 
-    clearInterval(game.timer);
+if(game.finished)
+return;
 
-    const total =
-        game.mode==="endless"
-        ? game.index
-        : game.questions.length;
+game.finished=true;
 
+clearInterval(game.timer);
 
-    let xp =
-        game.correct*15;
+let xp=
+game.correct*35+
+Math.floor(game.score/50);
 
-    let coins =
-        Math.floor(game.score/20);
+let coins=
+game.correct*5+
+Math.floor(game.combo/2);
 
+if(game.mode==="daily"){
 
-    if(
-        game.correct===total &&
-        total>0
-    ){
-
-        xp+=50;
-        coins+=30;
-
-    }
-
-
-    if(game.mode==="daily"){
-
-        xp*=2;
-        coins*=2;
-
-        state.dailyCompleted=true;
-        state.dailyProgress=5;
-
-    }
-
-
-    if(game.mode==="boss"){
-
-        xp*=2;
-        coins*=3;
-
-    }
-
-
-    state.xp+=xp;
-
-    state.coins+=coins;
-
-    state.games++;
-
-    state.bestScore =
-        Math.max(
-            state.bestScore,
-            game.score
-        );
-
-
-    updateLevel();
-
-    checkAchievements();
-
-    save();
-
-    updateUI();
-
-
-    document
-        .getElementById("resultScore")
-        .textContent=game.score;
-
-    document
-        .getElementById("resultCorrect")
-        .textContent=
-            `${game.correct}/${total}`;
-
-    document
-        .getElementById("resultXP")
-        .textContent=`+${xp}`;
-
-    document
-        .getElementById("resultCoins")
-        .textContent=`+${coins}`;
-
-
-    let title="جيد جداً!";
-
-    if(
-        total>0 &&
-        game.correct===total
-    )
-        title="🔥 مثالي!";
-
-    else if(
-        game.correct>=total*.8
-    )
-        title="🏆 ممتاز!";
-
-    else if(
-        game.correct>=total*.5
-    )
-        title="👏 أداء جيد";
-
-    else
-        title="💪 حاول مرة أخرى";
-
-
-    document
-        .getElementById("resultTitle")
-        .textContent=title;
-
-
-    document
-        .getElementById("resultSub")
-        .textContent=
-            `أنهيت ${game.correct} إجابة صحيحة`;
-
-    document
-        .getElementById("bottomNav")
-        .style.display="grid";
-
-    showScreen("resultScreen");
+xp*=2;
+coins*=2;
 
 }
 
+if(game.mode==="boss"){
 
-/* =========================================================
-   RESTART
-   ========================================================= */
+xp=Math.floor(xp*2.5);
+coins=Math.floor(coins*2);
 
-function restartLastGame(){
+}
 
-    startGame(lastMode);
+if(game.mode==="millionaire"){
+
+xp=Math.floor(xp*1.4);
+coins+=20;
+
+}
+
+if(
+game.correct===game.questions.length &&
+game.mode!=="endless"
+){
+
+xp+=100;
+coins+=50;
+
+}
+
+state.xp+=xp;
+state.coins+=coins;
+state.games++;
+
+state.bestScore=
+Math.max(
+state.bestScore,
+game.score
+);
+
+if(game.mode==="daily"){
+
+state.dailyCompleted=true;
+state.dailyProgress=5;
+state.dailyDate=getToday();
+
+}
+
+updateLevel();
+
+checkAchievements();
+
+save();
+
+document
+.getElementById("resultScore")
+.textContent=game.score;
+
+document
+.getElementById("resultCorrect")
+.textContent=
+`${game.correct}/${game.mode==="endless"
+?"∞"
+:game.questions.length}`;
+
+document
+.getElementById("resultXP")
+.textContent=`+${xp}`;
+
+document
+.getElementById("resultCoins")
+.textContent=`+${coins}`;
+
+if(game.correct===0){
+
+document
+.getElementById("resultIcon")
+.textContent="😅";
+
+document
+.getElementById("resultTitle")
+.textContent="حاول مرة أخرى";
+
+document
+.getElementById("resultSub")
+.textContent=
+"المرة الجاية تكون أقوى 💪";
+
+}else if(
+game.correct===game.questions.length &&
+game.mode!=="endless"
+){
+
+document
+.getElementById("resultIcon")
+.textContent="👑";
+
+document
+.getElementById("resultTitle")
+.textContent="مثالي! 🔥";
+
+document
+.getElementById("resultSub")
+.textContent=
+"أجبت على جميع الأسئلة بشكل صحيح!";
+
+}else{
+
+document
+.getElementById("resultIcon")
+.textContent="🏆";
+
+document
+.getElementById("resultTitle")
+.textContent="ممتاز!";
+
+document
+.getElementById("resultSub")
+.textContent=
+`أجبت على ${game.correct} سؤال بشكل صحيح.`;
+
+}
+
+showScreen("resultScreen");
 
 }
 
 
 /* =========================================================
    QUIT
-   ========================================================= */
+========================================================= */
 
 function quitGame(){
 
+clearInterval(game.timer);
+
+game.finished=true;
+
+showScreen("homeScreen");
+
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+function restartLastGame(){
+
+startGame(lastMode);
+
+}
+
+
+/* =========================================================
+   HINTS
+========================================================= */
+
+function useHint(type){
+
+if(game.finished||game.answered)
+return;
+
+if(game.mode==="hardcore"||game.mode==="boss"){
+
+toast("☠️ التلميحات غير متاحة هنا");
+
+return;
+
+}
+
+const costs={
+
+fifty:25,
+clue:20,
+skip:35
+
+};
+
+const cost=costs[type]: 
+
+if(state.coins<cost){
+
+    toast("❌ لا تملك عملات كافية");
+
+    return;
+
+}
+
+state.coins-=cost;
+
+save();
+
+game.hintsUsed++;
+
+const q=game.questions[game.index];
+
+if(type==="fifty"){
+
+    const buttons=
+        [...document.querySelectorAll(".answer")];
+
+    const wrong=
+        buttons.filter(
+            btn=>String(btn.textContent)!==
+            String(q.answer)
+        );
+
+    shuffle(wrong)
+        .slice(0,2)
+        .forEach(btn=>{
+            btn.disabled=true;
+            btn.style.opacity=".25";
+        });
+
+    toast("✂️ تم حذف إجابتين");
+
+}
+
+else if(type==="clue"){
+
+    toast(
+        `💡 تلميح: ${q.player.nationality} • ${q.player.position}`
+    );
+
+}
+
+else if(type==="skip"){
+
+    game.answered=true;
+
     clearInterval(game.timer);
 
-    document
-        .getElementById("bottomNav")
-        .style.display="grid";
+    toast("⏭️ تم تخطي السؤال");
 
-    showScreen("homeScreen");
-
-}
-
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-function showScreen(id){
-
-    if(id==="gameScreen")
-        return;
-
-    document
-        .querySelectorAll(".screen")
-        .forEach(
-            s=>s.classList.remove("active")
-        );
-
-    const screen =
-        document.getElementById(id);
-
-    if(screen)
-        screen.classList.add("active");
-
-
-    document
-        .querySelectorAll(".nav-btn")
-        .forEach(
-            btn=>{
-
-                btn.classList.toggle(
-                    "active",
-                    btn.dataset.screen===id
-                );
-
-            }
-        );
-
-
-    if(id==="gamesScreen")
-        renderGames();
-
-    if(id==="achievementsScreen")
-        renderAchievements();
-
-    if(id==="profileScreen")
-        updateUI();
+    setTimeout(()=>{
+        nextQuestion();
+    },500);
 
 }
 
-
-/* =========================================================
-   RENDER GAMES
-   ========================================================= */
-
-function renderGames(){
-
-    const container =
-        document.getElementById(
-            "gamesList"
-        );
-
-    container.innerHTML="";
-
-
-    Object.entries(GAME_MODES)
-    .forEach(
-        ([id,mode])=>{
-
-            const unlocked =
-                state.level>=mode.unlock;
-
-            const card =
-                document.createElement("button");
-
-            card.className="game-card";
-
-            card.innerHTML=`
-
-                <div class="game-icon">
-                    ${mode.icon}
-                </div>
-
-                <div class="game-info">
-
-                    <strong>
-                        ${mode.name}
-                    </strong>
-
-                    <small>
-                        ${mode.desc}
-                    </small>
-
-                    <small>
-                        ${unlocked
-                            ? `⏱️ ${mode.time} ثانية`
-                            : `🔒 المستوى ${mode.unlock}`}
-                    </small>
-
-                </div>
-
-                <div class="lock">
-                    ${unlocked ? "›" : "🔒"}
-                </div>
-            `;
-
-
-            card.onclick=()=>{
-
-                if(unlocked)
-                    startGame(id);
-                else
-                    toast(
-                        `🔒 افتحها في المستوى ${mode.unlock}`
-                    );
-
-            };
-
-
-            container.appendChild(card);
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ACHIEVEMENTS
-   ========================================================= */
-
-const ACHIEVEMENTS=[
-
-{
- id:"first",
- icon:"🎮",
- name:"البداية",
- desc:"أكمل أول مباراة",
- check:s=>s.games>=1
-},
-
-{
- id:"ten",
- icon:"🔟",
- name:"10 مباريات",
- desc:"أكمل 10 مباريات",
- check:s=>s.games>=10
-},
-
-{
- id:"correct10",
- icon:"🎯",
- name:"قناص",
- desc:"أجب على 10 أسئلة بشكل صحيح",
- check:s=>s.correct>=10
-},
-
-{
- id:"correct100",
- icon:"💯",
- name:"خبير",
- desc:"أجب على 100 سؤال صحيح",
- check:s=>s.correct>=100
-},
-
-{
- id:"combo5",
- icon:"🔥",
- name:"سلسلة نارية",
- desc:"حقق Combo ×5",
- check:s=>s.maxCombo>=5
-},
-
-{
- id:"combo10",
- icon:"🌋",
- name:"لا يمكن إيقافي",
- desc:"حقق Combo ×10",
- check:s=>s.maxCombo>=10
-},
-
-{
- id:"level10",
- icon:"⭐",
- name:"متقدم",
- desc:"الوصول إلى المستوى 10",
- check:s=>s.level>=10
-},
-
-{
- id:"level25",
- icon:"👑",
- name:"محترف",
- desc:"الوصول إلى المستوى 25",
- check:s=>s.level>=25
-},
-
-{
- id:"level50",
- icon:"🐐",
- name:"الأسطورة",
- desc:"الوصول إلى المستوى 50",
- check:s=>s.level>=50
-},
-
-{
- id:"coins1000",
- icon:"🪙",
- name:"ثري",
- desc:"امتلك 1000 عملة",
- check:s=>s.coins>=1000
-},
-
-{
- id:"daily",
- icon:"📅",
- name:"ملتزم",
- desc:"أكمل تحدي اليوم",
- check:s=>s.dailyCompleted
-},
-
-{
- id:"boss",
- icon:"👑",
- name:"سيد الزعماء",
- desc:"أكمل Boss Challenge",
- check:s=>s.achievements.includes("bossWin")
-},
-
-{
- id:"millionaire",
- icon:"💰",
- name:"المليونير",
- desc:"أكمل المليون الكروي",
- check:s=>s.achievements.includes("millionaireWin")
-},
-
-{
- id:"perfect",
- icon:"💎",
- name:"الكمال",
- desc:"أنهِ مباراة بدون أخطاء",
- check:s=>s.achievements.includes("perfect")
-}
-
-];
-
-
-function checkAchievements(){
-
-    ACHIEVEMENTS.forEach(a=>{
-
-        if(
-            !state.achievements.includes(a.id) &&
-            a.check(state)
-        ){
-
-            state.achievements.push(a.id);
-
-            state.xp+=50;
-
-            state.coins+=50;
-
-            toast(
-                `🏆 إنجاز جديد: ${a.name}!`
-            );
-
-        }
-
-    });
-
-
-    if(
-        game.correct===
-        game.questions.length &&
-        game.questions.length>0
-    ){
-
-        if(
-            !state.achievements.includes("perfect")
-        ){
-
-            state.achievements.push(
-                "perfect"
-            );
-
-        }
-
-    }
-
-
-    if(
-        game.mode==="boss" &&
-        game.correct===game.questions.length
-    ){
-
-        if(
-            !state.achievements.includes("bossWin")
-        ){
-
-            state.achievements.push(
-                "bossWin"
-            );
-
-        }
-
-    }
-
-
-    if(
-        game.mode==="millionaire" &&
-        game.correct===game.questions.length
-    ){
-
-        if(
-            !state.achievements.includes("millionaireWin")
-        ){
-
-            state.achievements.push(
-                "millionaireWin"
-            );
-
-        }
-
-    }
-
-}
-
-
-function renderAchievements(){
-
-    const grid =
-        document.getElementById(
-            "achievementGrid"
-        );
-
-    grid.innerHTML="";
-
-
-    ACHIEVEMENTS.forEach(a=>{
-
-        const unlocked =
-            state.achievements
-            .includes(a.id) ||
-            a.check(state);
-
-
-        const div =
-            document.createElement("div");
-
-        div.className=
-            "achievement"+
-            (
-                unlocked
-                ? ""
-                : " locked"
-            );
-
-
-        div.innerHTML=`
-
-            <div class="achievement-icon">
-                ${a.icon}
-            </div>
-
-            <strong>
-                ${a.name}
-            </strong>
-
-            <small>
-                ${a.desc}
-            </small>
-
-            <small style="margin-top:8px">
-                ${unlocked
-                    ? "✅ مكتمل"
-                    : "🔒 غير مكتمل"}
-            </small>
-
-        `;
-
-        grid.appendChild(div);
-
-    });
-
-}
-
-
-/* =========================================================
-   DAILY
-   ========================================================= */
-
-function updateDaily(){
-
-    const today =
-        new Date()
-        .toISOString()
-        .slice(0,10);
-
-    if(state.dailyDate!==today){
-
-        state.dailyDate=today;
-        state.dailyCompleted=false;
-        state.dailyProgress=0;
-
-        save();
-
-    }
-
-
-    const bar =
-        document.getElementById(
-            "dailyBar"
-        );
-
-    if(bar){
-
-        bar.style.width=
-            (
-                state.dailyProgress/5
-            )*100+"%";
-
-    }
-
-
-    const status =
-        document.getElementById(
-            "dailyStatus"
-        );
-
-    if(status){
-
-        status.textContent=
-            state.dailyCompleted
-            ? "مكتمل ✅"
-            : `${state.dailyProgress}/5`;
-
-    }
-
-}
-
-
-/* =========================================================
-   UI UPDATE
-   ========================================================= */
-
-function updateUI(){
-
-    updateLevel();
-
-    const level =
-        state.level;
-
-    const currentBase =
-        level<=1
-        ? 0
-        : xpForLevel(level-1);
-
-    const need =
-        xpForLevel(level);
-
-    let levelXP =
-        state.xp-currentBase;
-
-    if(levelXP<0)
-        levelXP=0;
-
-    const percent =
-        Math.min(
-            100,
-            (levelXP/need)*100
-        );
-
-
-    setText(
-        "homeLevel",
-        level
-    );
-
-    setText(
-        "homeCoins",
-        state.coins
-    );
-
-    setText(
-        "homeStreak",
-        state.streak
-    );
-
-    setText(
-        "xpCurrent",
-        Math.floor(levelXP)
-    );
-
-    setText(
-        "xpNeed",
-        Math.floor(need)
-    );
-
-    setText(
-        "levelName",
-        getRank(level)
-    );
-
-
-    const xpBar =
-        document.getElementById(
-            "xpBar"
-        );
-
-    if(xpBar)
-        xpBar.style.width=
-            percent+"%";
-
-
-    setText(
-        "profileGames",
-        state.games
-    );
-
-    setText(
-        "profileCorrect",
-        state.correct
-    );
-
-    setText(
-        "profileBest",
-        state.bestScore
-    );
-
-    setText(
-        "profileXP",
-        state.xp
-    );
-
-    setText(
-        "profileLevel",
-        level
-    );
-
-    setText(
-        "profileRank",
-        getRank(level)
-    );
-
-    setText(
-        "profileXPText",
-        `${state.xp} XP`
-    );
-
-
-    const profileBar =
-        document.getElementById(
-            "profileXPBar"
-        );
-
-    if(profileBar)
-        profileBar.style.width=
-            percent+"%";
-
-
-    const bossButton =
-        document.getElementById(
-            "bossButton"
-        );
-
-    if(bossButton){
-
-        if(level>=15){
-
-            bossButton.textContent=
-                "👑 ابدأ Boss Challenge";
-
-        }else{
-
-            bossButton.textContent=
-                `🔒 افتح عند المستوى 15`;
-
-        }
-
-    }
-
-
-    applyTheme();
-
-    updateDaily();
-
-}
-
-
-/* =========================================================
-   SET TEXT
-   ========================================================= */
-
-function setText(id,text){
-
-    const el =
-        document.getElementById(id);
-
-    if(el)
-        el.textContent=text;
-
-}
-
-
-/* =========================================================
-   THEMES
-   ========================================================= */
-
-function setTheme(theme){
-
-    state.theme=theme;
-
-    save();
-
-    applyTheme();
-
-    toast("🎨 تم تغيير المظهر");
-
-}
-
-function applyTheme(){
-
-    document.body.classList.remove(
-        "light",
-        "algeria",
-        "champions"
-    );
-
-    if(state.theme!=="dark")
-        document.body.classList.add(
-            state.theme
-        );
-
-}
-
-
-/* =========================================================
-   SETTINGS
-   ========================================================= */
-
-function openSettings(){
-
-    document
-        .getElementById(
-            "settingsModal"
-        )
-        .classList.add("show");
-
-}
-
-function closeModal(event){
-
-    if(
-        event.target.id===
-        "settingsModal"
-    ){
-
-        event.target.classList.remove(
-            "show"
-        );
-
-    }
-
-}
-
-
-function toggleSound(){
-
-    state.sound=
-        !state.sound;
-
-    save();
-
-    document
-        .getElementById(
-            "soundButton"
-        )
-        .textContent=
-            state.sound
-            ? "تشغيل"
-            : "إيقاف";
-
-}
-
-
-function toggleVibration(){
-
-    state.vibration=
-        !state.vibration;
-
-    save();
-
-    document
-        .getElementById(
-            "vibrationButton"
-        )
-        .textContent=
-            state.vibration
-            ? "تشغيل"
-            : "إيقاف";
+updateHome();
 
 }
 
 
 /* =========================================================
    SOUND
-   ========================================================= */
+========================================================= */
 
-function playSound(type){
+let audioContext=null;
+
+function playTone(correct){
 
     if(!state.sound)
         return;
 
     try{
 
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
+        if(!audioContext)
+            audioContext=
+                new (window.AudioContext||
+                window.webkitAudioContext)();
 
-        const ctx =
-            new AudioContext();
+        const oscillator=
+            audioContext.createOscillator();
 
-        const oscillator =
-            ctx.createOscillator();
-
-        const gain =
-            ctx.createGain();
+        const gain=
+            audioContext.createGain();
 
         oscillator.connect(gain);
+        gain.connect(audioContext.destination);
 
-        gain.connect(ctx.destination);
+        oscillator.frequency.value=
+            correct?720:220;
 
-
-        oscillator.frequency.value =
-            type==="correct"
-            ? 700
-            : 180;
+        oscillator.type="sine";
 
         gain.gain.setValueAtTime(
             .08,
-            ctx.currentTime
+            audioContext.currentTime
         );
 
         gain.gain.exponentialRampToValueAtTime(
             .001,
-            ctx.currentTime+.18
+            audioContext.currentTime+.18
         );
 
         oscillator.start();
 
         oscillator.stop(
-            ctx.currentTime+.18
+            audioContext.currentTime+.18
         );
 
     }catch(e){}
@@ -4124,9 +3602,9 @@ function playSound(type){
 
 /* =========================================================
    VIBRATION
-   ========================================================= */
+========================================================= */
 
-function vibrate(ms=40){
+function vibrate(ms){
 
     if(
         state.vibration &&
@@ -4141,60 +3619,640 @@ function vibrate(ms=40){
 
 
 /* =========================================================
-   TOAST
-   ========================================================= */
+   SETTINGS
+========================================================= */
 
-let toastTimer;
+function openSettings(){
 
-function toast(text){
+    document
+        .getElementById("settingsModal")
+        .classList.add("show");
 
-    const el =
-        document.getElementById(
-            "toast"
-        );
+    updateSettingsButtons();
 
-    el.textContent=text;
+}
 
-    el.classList.add("show");
+function closeModal(event){
 
-    clearTimeout(toastTimer);
+    if(
+        event.target.classList.contains("modal")
+    ){
 
-    toastTimer =
-        setTimeout(
-            ()=>{
-                el.classList.remove(
-                    "show"
+        event.target
+            .classList.remove("show");
+
+    }
+
+}
+
+function toggleSound(){
+
+    state.sound=!state.sound;
+
+    save();
+
+    updateSettingsButtons();
+
+    if(state.sound)
+        playTone(true);
+
+}
+
+function toggleVibration(){
+
+    state.vibration=!state.vibration;
+
+    save();
+
+    updateSettingsButtons();
+
+    if(state.vibration)
+        vibrate(40);
+
+}
+
+function updateSettingsButtons(){
+
+    document
+        .getElementById("soundButton")
+        .textContent=
+        state.sound?"تشغيل":"إيقاف";
+
+    document
+        .getElementById("vibrationButton")
+        .textContent=
+        state.vibration?"تشغيل":"إيقاف";
+
+}
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function setTheme(theme){
+
+    document.body.classList.remove(
+        "light",
+        "algeria",
+        "champions"
+    );
+
+    if(theme!=="dark"){
+
+        document.body.classList.add(theme);
+
+    }
+
+    state.theme=theme;
+
+    save();
+
+    toast("🎨 تم تغيير المظهر");
+
+}
+
+
+/* =========================================================
+   HOME UPDATE
+========================================================= */
+
+function updateHome(){
+
+    document
+        .getElementById("homeLevel")
+        .textContent=state.level;
+
+    document
+        .getElementById("homeCoins")
+        .textContent=state.coins;
+
+    document
+        .getElementById("homeStreak")
+        .textContent=state.streak;
+
+    const currentLevelXP=
+        state.level>1
+        ?getXPIntoLevel(state.xp,state.level)
+        :state.xp;
+
+    const needed=
+        xpForLevel(state.level);
+
+    document
+        .getElementById("xpCurrent")
+        .textContent=currentLevelXP;
+
+    document
+        .getElementById("xpNeed")
+        .textContent=needed;
+
+    document
+        .getElementById("xpBar")
+        .style.width=
+        Math.min(
+            100,
+            (currentLevelXP/needed)*100
+        )+"%";
+
+    document
+        .getElementById("levelName")
+        .textContent=
+        getRank(state.level);
+
+    updateDailyHome();
+
+}
+
+
+/* =========================================================
+   XP
+========================================================= */
+
+function getXPIntoLevel(xp,level){
+
+    let remaining=xp;
+
+    for(
+        let i=1;
+        i<level;
+        i++
+    ){
+
+        remaining-=xpForLevel(i);
+
+        if(remaining<0)
+            return 0;
+
+    }
+
+    return Math.max(0,remaining);
+
+}
+
+
+/* =========================================================
+   DAILY
+========================================================= */
+
+function getToday(){
+
+    const d=new Date();
+
+    return [
+        d.getFullYear(),
+        String(d.getMonth()+1).padStart(2,"0"),
+        String(d.getDate()).padStart(2,"0")
+    ].join("-");
+
+}
+
+function isDailyCompleted(){
+
+    return (
+        state.dailyDate===getToday() &&
+        state.dailyCompleted
+    );
+
+}
+
+function updateDailyHome(){
+
+    const bar=
+        document.getElementById("dailyBar");
+
+    const status=
+        document.getElementById("dailyStatus");
+
+    if(isDailyCompleted()){
+
+        bar.style.width="100%";
+
+        status.textContent="مكتمل ✅";
+
+    }else{
+
+        bar.style.width=
+            Math.min(
+                100,
+                (state.dailyProgress/5)*100
+            )+"%";
+
+        status.textContent=
+            `${state.dailyProgress}/5`;
+
+    }
+
+}
+
+function updateChallenges(){
+
+    const button=
+        document.getElementById("bossButton");
+
+    if(state.level>=15){
+
+        button.textContent=
+            "👑 ابدأ التحدي";
+
+    }else{
+
+        button.textContent=
+            "🔒 افتح عند المستوى 15";
+
+    }
+
+    updateDailyHome();
+
+}
+
+
+/* =========================================================
+   GAMES LIST
+========================================================= */
+
+function renderGames(){
+
+    const container=
+        document.getElementById("gamesList");
+
+    if(!container)
+        return;
+
+    container.innerHTML="";
+
+    Object.entries(GAME_MODES)
+        .forEach(([id,mode])=>{
+
+        if(id==="daily"||id==="endless")
+            return;
+
+        const unlocked=
+            state.level>=mode.unlock;
+
+        const button=
+            document.createElement("button");
+
+        button.className="game-card";
+
+        button.onclick=()=>{
+
+            if(unlocked)
+                startGame(id);
+            else
+                toast(
+                    `🔒 تحتاج المستوى ${mode.unlock}`
                 );
-            },
-            2200
+
+        };
+
+        button.innerHTML=`
+
+            <div class="game-icon">
+                ${mode.icon}
+            </div>
+
+            <div class="game-info">
+
+                <strong>
+                    ${mode.name}
+                </strong>
+
+                <small>
+                    ${mode.desc}
+                </small>
+
+                ${
+                    unlocked
+                    ?`<small style="color:var(--green)">
+                        متاح الآن
+                      </small>`
+                    :`<small style="color:var(--yellow)">
+                        🔒 المستوى ${mode.unlock}
+                      </small>`
+                }
+
+            </div>
+
+            <div class="lock">
+                ${unlocked?"▶️":"🔒"}
+            </div>
+
+        `;
+
+        container.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function updateProfile(){
+
+    document
+        .getElementById("profileGames")
+        .textContent=state.games;
+
+    document
+        .getElementById("profileCorrect")
+        .textContent=state.correct;
+
+    document
+        .getElementById("profileBest")
+        .textContent=state.bestScore;
+
+    document
+        .getElementById("profileXP")
+        .textContent=state.xp;
+
+    document
+        .getElementById("profileLevel")
+        .textContent=state.level;
+
+    document
+        .getElementById("profileRank")
+        .textContent=
+        getRank(state.level);
+
+    const current=
+        getXPIntoLevel(
+            state.xp,
+            state.level
         );
+
+    const need=
+        xpForLevel(state.level);
+
+    document
+        .getElementById("profileXPText")
+        .textContent=
+        `${current} / ${need} XP`;
+
+    document
+        .getElementById("profileXPBar")
+        .style.width=
+        Math.min(
+            100,
+            current/need*100
+        )+"%";
+
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+========================================================= */
+
+const ACHIEVEMENTS=[
+
+{
+    id:"first",
+    icon:"🎮",
+    title:"البداية",
+    desc:"أكمل أول مباراة",
+    check:s=>s.games>=1
+},
+
+{
+    id:"ten",
+    icon:"🔥",
+    title:"لاعب نشيط",
+    desc:"أكمل 10 مباريات",
+    check:s=>s.games>=10
+},
+
+{
+    id:"correct50",
+    icon:"🎯",
+    title:"قناص",
+    desc:"أجب عن 50 سؤالاً بشكل صحيح",
+    check:s=>s.correct>=50
+},
+
+{
+    id:"correct100",
+    icon:"💯",
+    title:"خبير الإجابات",
+    desc:"أجب عن 100 سؤال صحيح",
+    check:s=>s.correct>=100
+},
+
+{
+    id:"combo5",
+    icon:"🔥",
+    title:"Combo ×5",
+    desc:"حقق متتالية من 5",
+    check:s=>s.maxCombo>=5
+},
+
+{
+    id:"combo10",
+    icon:"⚡",
+    title:"آلة",
+    desc:"حقق متتالية من 10",
+    check:s=>s.maxCombo>=10
+},
+
+{
+    id:"level10",
+    icon:"⭐",
+    title:"خبير",
+    desc:"الوصول إلى المستوى 10",
+    check:s=>s.level>=10
+},
+
+{
+    id:"level25",
+    icon:"👑",
+    title:"محترف عالمي",
+    desc:"الوصول إلى المستوى 25",
+    check:s=>s.level>=25
+},
+
+{
+    id:"level50",
+    icon:"🏆",
+    title:"أسطورة",
+    desc:"الوصول إلى المستوى 50",
+    check:s=>s.level>=50
+},
+
+{
+    id:"perfect",
+    icon:"💎",
+    title:"مثالي",
+    desc:"أكمل مباراة بدون أي خطأ",
+    check:s=>false
+}
+
+];
+
+
+function checkAchievements(){
+
+    if(!Array.isArray(state.achievements))
+        state.achievements=[];
+
+    ACHIEVEMENTS.forEach(a=>{
+
+        if(
+            !state.achievements.includes(a.id) &&
+            a.check(state)
+        ){
+
+            state.achievements.push(a.id);
+
+            state.coins+=25;
+
+            toast(
+                `🏆 إنجاز جديد: ${a.title} +25 🪙`
+            );
+
+        }
+
+    });
+
+}
+
+
+function renderAchievements(){
+
+    const grid=
+        document.getElementById(
+            "achievementGrid"
+        );
+
+    if(!grid)
+        return;
+
+    grid.innerHTML="";
+
+    ACHIEVEMENTS.forEach(a=>{
+
+        const unlocked=
+            state.achievements.includes(a.id);
+
+        const item=
+            document.createElement("div");
+
+        item.className=
+            "achievement"+
+            (unlocked?"":" locked");
+
+        item.innerHTML=`
+
+            <div class="achievement-icon">
+                ${unlocked?a.icon:"🔒"}
+            </div>
+
+            <strong>
+                ${a.title}
+            </strong>
+
+            <small>
+                ${a.desc}
+            </small>
+
+        `;
+
+        grid.appendChild(item);
+
+    });
 
 }
 
 
 /* =========================================================
    RESET
-   ========================================================= */
+========================================================= */
 
 function resetProgress(){
 
-    const ok =
-        prompt(
-            "اكتب RESET لتأكيد حذف تقدمك:"
+    const confirmed=
+        confirm(
+            "هل أنت متأكد؟ سيتم حذف كل تقدمك."
         );
 
-    if(ok==="RESET"){
+    if(!confirmed)
+        return;
 
-        localStorage.removeItem(
-            "minPlayerState"
-        );
+    state={
+        ...defaultState,
+        recentQuestions:[],
+        recentPlayers:[],
+        achievements:[]
+    };
 
-        location.reload();
+    save();
 
-    }else{
+    setTheme("dark");
 
-        toast(
-            "لم يتم حذف أي شيء"
+    updateHome();
+    renderGames();
+    renderAchievements();
+    updateProfile();
+
+    closeModal({
+        target:
+        document.getElementById(
+            "settingsModal"
+        )
+    });
+
+    toast("🗑️ تم حذف التقدم");
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer=null;
+
+function toast(message){
+
+    const element=
+        document.getElementById("toast");
+
+    if(!element)
+        return;
+
+    element.textContent=message;
+
+    element.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer=setTimeout(()=>{
+
+        element.classList.remove("show");
+
+    },2200);
+
+}
+
+
+/* =========================================================
+   APPLY SAVED THEME
+========================================================= */
+
+function applySavedTheme(){
+
+    document.body.classList.remove(
+        "light",
+        "algeria",
+        "champions"
+    );
+
+    if(state.theme!=="dark"){
+
+        document.body.classList.add(
+            state.theme
         );
 
     }
@@ -4203,26 +4261,20 @@ function resetProgress(){
 
 
 /* =========================================================
-   SPECIAL DAILY/BOSS ACHIEVEMENT
-   ========================================================= */
+   DAILY DATE CHECK
+========================================================= */
 
-function markSpecialAchievements(){
+function checkDailyReset(){
 
-    if(
-        game.mode==="boss" &&
-        game.correct===
-        game.questions.length
-    ){
+    const today=getToday();
 
-        if(
-            !state.achievements
-            .includes("bossWin")
-        ){
+    if(state.dailyDate!==today){
 
-            state.achievements
-            .push("bossWin");
+        state.dailyDate=today;
+        state.dailyCompleted=false;
+        state.dailyProgress=0;
 
-        }
+        save();
 
     }
 
@@ -4231,13 +4283,29 @@ function markSpecialAchievements(){
 
 /* =========================================================
    INITIALIZE
-   ========================================================= */
+========================================================= */
 
-updateUI();
+function init(){
 
-renderGames();
+    checkDailyReset();
 
-renderAchievements();
+    applySavedTheme();
+
+    updateLevel();
+
+    updateHome();
+
+    renderGames();
+
+    renderAchievements();
+
+    updateProfile();
+
+    updateSettingsButtons();
+
+}
+
+init();
 
 </script>
 
