@@ -13,7 +13,7 @@ LEAGUES = [
     {'id': 78, 'name': 'الدوري الألماني'},
     {'id': 61, 'name': 'الدوري الفرنسي'},
     {'id': 307, 'name': 'الدوري السعودي'},
-    {'id': 253, 'name': 'الدوري الأمريكي'},
+    {'id': 253, 'name': 'الدوري الأمريكي'},   # ✅ تم التصحيح
 ]
 
 SEASON = 2024
@@ -67,10 +67,14 @@ for league in LEAGUES:
 
             # تصنيف الصعوبة
             level = 'easy'
-            if name in LEGEND: level = 'legend'
-            elif name in HARD: level = 'hard'
-            elif name in MEDIUM: level = 'medium'
-            elif name in EASY: level = 'easy'
+            if name in LEGEND:
+                level = 'legend'
+            elif name in HARD:
+                level = 'hard'
+            elif name in MEDIUM:
+                level = 'medium'
+            elif name in EASY:
+                level = 'easy'
 
             all_players.append({
                 'id': player.get('id'),
