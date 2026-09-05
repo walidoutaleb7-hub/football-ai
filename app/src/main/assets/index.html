@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>من اللاعب؟ | النسخة المستقبلية الفائقة</title>
+    <title>من اللاعب؟ | النسخة الشاملة والمتطورة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -43,6 +43,17 @@
             --border: #144272;
         }
 
+        [data-theme="algeria"] {
+            --bg-main: #05190f;
+            --bg-card: #0c2d1b;
+            --bg-hover: #174c31;
+            --primary: #10b981;
+            --primary-glow: rgba(16, 185, 129, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #a7f3d0;
+            --border: #047857;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -74,7 +85,7 @@
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            min-height: 750px;
+            min-height: 760px;
         }
 
         .view-screen {
@@ -94,7 +105,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* شريط التنقل العلوي */
         .header-panel {
             display: flex;
             justify-content: space-between;
@@ -121,16 +131,15 @@
             gap: 12px;
         }
 
-        /* الأزرار الفاخرة */
         .btn-futuristic {
             width: 100%;
-            padding: 16px;
-            margin: 8px 0;
+            padding: 15px;
+            margin: 7px 0;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: #060913;
             border: none;
             border-radius: 14px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 900;
             cursor: pointer;
             box-shadow: 0 10px 25px var(--primary-glow);
@@ -152,7 +161,6 @@
             box-shadow: none;
         }
 
-        /* صندوق المدرب الذكي */
         .coach-container {
             background: var(--primary-glow);
             border-right: 4px solid var(--primary);
@@ -160,14 +168,13 @@
             border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
             line-height: 1.6;
         }
 
-        /* ساحة اللعب */
         .game-status-bar {
             display: flex;
             justify-content: space-between;
@@ -183,7 +190,7 @@
             background: var(--bg-hover);
             border-radius: 4px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .time-line-fill {
@@ -195,12 +202,12 @@
 
         .visual-frame {
             width: 100%;
-            height: 240px;
+            height: 230px;
             background: var(--bg-hover);
             border-radius: var(--radius);
             overflow: hidden;
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             border: 2px solid var(--border);
             display: flex;
             justify-content: center;
@@ -251,7 +258,7 @@
         .option-choice-card {
             background: var(--bg-hover);
             border: 2px solid var(--border);
-            padding: 16px;
+            padding: 15px;
             border-radius: 14px;
             color: var(--text-main);
             font-weight: 700;
@@ -278,7 +285,6 @@
             color: #fff !important;
         }
 
-        /* نظام التبويبات المتعددة للأقسام الإضافية */
         .tab-navigation-bar {
             display: flex;
             gap: 6px;
@@ -333,7 +339,6 @@
         .item-row-card h4 { font-size: 14px; margin-bottom: 2px; }
         .item-row-card p { font-size: 11px; color: var(--text-muted); }
 
-        /* أوضاع اللعب الشاملة */
         .modes-selection-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -374,28 +379,29 @@
                     <span>⚽ وليد</span>
                 </div>
                 <div class="currency-box">
-                    <div class="user-pill">🪙 <span id="lbl-coins">350</span></div>
-                    <div class="user-pill">⚡ <span id="lbl-xp">240</span></div>
+                    <div class="user-pill">🪙 <span id="lbl-coins">450</span></div>
+                    <div class="user-pill">⚡ <span id="lbl-xp">300</span></div>
                 </div>
             </div>
 
-            <div style="text-align: center; margin: 10px 0 20px 0;">
-                <h1 style="font-size: 26px; font-weight: 900; color: var(--primary); margin-bottom: 4px;">مين اللاعب؟</h1>
-                <p style="color: var(--text-muted); font-size: 12px;">منظومة كرة القدم المتطورة والشاملة</p>
+            <div style="text-align: center; margin: 5px 0 15px 0;">
+                <h1 style="font-size: 25px; font-weight: 900; color: var(--primary); margin-bottom: 4px;">مين اللاعب؟</h1>
+                <p style="color: var(--text-muted); font-size: 12px;">النسخة الشاملة مع المتجر والتحدي اليومي</p>
             </div>
 
             <div class="coach-container">
                 <span>🧠</span>
-                <span id="home-coach-msg">المدرب: "أهلاً بك يا بطل! جاهز لكسر الأرقام القياسية اليوم؟"</span>
+                <span id="home-coach-msg">المدرب: "أهلاً بك يا بطل! جاهز تسيطر على قمة المحترفين اليوم؟"</span>
             </div>
 
-            <button class="btn-futuristic" onclick="launchGameMode('classic')">🚀 ابدأ التحدي السريع (Classic)</button>
-            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-modes')">🎮 أوضاع اللعب المتعددة (14 وضعاً)</button>
-            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-hub')">👤 الملف الشخصي والإنجازات والوسام</button>
-            <button class="btn-futuristic btn-sub" onclick="cycleThemeVisuals()">🎨 تغيير الثيم والواجهة</button>
+            <button class="btn-futuristic" onclick="launchGameMode('classic')">🚀 التحدي السريع (Classic)</button>
+            <button class="btn-futuristic btn-sub" onclick="launchDailyChallenge()">📅 التحدي اليومي (Daily)</button>
+            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-modes')">🎮 أوضاع اللعب المتعددة</button>
+            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-shop')">🛒 المتجر والثيمات البصرية</button>
+            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-hub')">👤 الملف الشخصي والإنجازات</button>
         </div>
 
-        <!-- 2. شاشة أوضاع اللعب المتنوعة -->
+        <!-- 2. شاشة أوضاع اللعب -->
         <div id="screen-modes" class="view-screen">
             <div class="header-panel">
                 <h2>أضاع اللعب الكروية</h2>
@@ -404,32 +410,70 @@
             <div class="modes-selection-grid">
                 <div class="mode-box-card" onclick="launchGameMode('classic')">
                     <h3>🟢 Classic</h3>
-                    <p>التحدي الكلاسيكي بـ 10 أسئلة.</p>
+                    <p>10 أسئلة كلاسيكية تنافسية.</p>
                 </div>
                 <div class="mode-box-card" onclick="launchGameMode('speed')">
                     <h3>⚡ Speed</h3>
-                    <p>سرعة فائقة ووقتاً ضيقاً للغاية.</p>
+                    <p>سرعة بديهة ووقت قياسي ضيق.</p>
                 </div>
                 <div class="mode-box-card" onclick="launchGameMode('detective')">
                     <h3>🕵️ محقق</h3>
-                    <p>تخمين اللاعب من معلوماته فقط.</p>
+                    <p>معلومات النادي والجنسية بدون صورة.</p>
                 </div>
                 <div class="mode-box-card" onclick="launchGameMode('silhouette')">
                     <h3>👤 Silhouette</h3>
-                    <p>اعتماداً على ظل اللاعب فقط.</p>
+                    <p>تخمين اللاعب من ظله فقط.</p>
                 </div>
                 <div class="mode-box-card" onclick="launchGameMode('blur')">
                     <h3>🔍 صورة مشوشة</h3>
-                    <p>الصورة توضح تدريجياً.</p>
+                    <p>الصورة تبدأ ضبابية وتتضح.</p>
                 </div>
                 <div class="mode-box-card" onclick="launchGameMode('hardcore')">
                     <h3>🧠 Hardcore</h3>
-                    <p>بلا مساعدات وبصعوبة عالية.</p>
+                    <p>صعوبة عالية بدون مساعدات.</p>
                 </div>
             </div>
         </div>
 
-        <!-- 3. شاشة ساحة التخمين الحية -->
+        <!-- 3. شاشة المتجر (Shop) -->
+        <div id="screen-shop" class="view-screen">
+            <div class="header-panel">
+                <h2>🛒 متجر الثيمات</h2>
+                <button class="btn-sub" style="padding: 6px 12px; border-radius: 8px; font-size: 12px;" onclick="navigateTo('screen-home')">الرجوع</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto;">
+                <div class="item-row-card">
+                    <div>
+                        <h4>☀️ الثيم الفاتح (Light)</h4>
+                        <p>مظهر ساطع ومريح للعين.</p>
+                    </div>
+                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('light')">تفعيل</button>
+                </div>
+                <div class="item-row-card">
+                    <div>
+                        <h4>🏆 ثيم دوري الأبطال (Champions)</h4>
+                        <p>أجواء الليالي الأوروبية الساحرة.</p>
+                    </div>
+                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('champions')">تفعيل</button>
+                </div>
+                <div class="item-row-card">
+                    <div>
+                        <h4>🇩🇿 الثيم الجزائري (Algeria)</h4>
+                        <p>ألوان الخضراء الوطنية الأصيلة.</p>
+                    </div>
+                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('algeria')">تفعيل</button>
+                </div>
+                <div class="item-row-card">
+                    <div>
+                        <h4>🌑 الثيم الداكن (Dark)</h4>
+                        <p>المظهر الافتراضي الأنيق.</p>
+                    </div>
+                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('dark')">تفعيل</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. شاشة ساحة التخمين الحية -->
         <div id="screen-gameplay" class="view-screen">
             <div class="game-status-bar">
                 <span>🎯 السؤال: <span id="game-q-cur">1</span>/<span id="game-q-tot">10</span></span>
@@ -461,7 +505,7 @@
             <div class="options-action-grid" id="options-buttons-grid"></div>
         </div>
 
-        <!-- 4. شاشة النتائج الختامية -->
+        <!-- 5. شاشة النتائج الختامية -->
         <div id="screen-results" class="view-screen">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h2 style="font-size: 24px; color: var(--primary);">🏆 تقرير المباراة الأسطوري</h2>
@@ -479,7 +523,7 @@
             <button class="btn-futuristic" onclick="navigateTo('screen-home')">🏠 العودة للقائمة الرئيسية</button>
         </div>
 
-        <!-- 5. لوحة التحكم الشاملة (الملف الشخصي، الإنجازات، والإعدادات عبر تبويبات) -->
+        <!-- 6. مركز اللاعب (الملف والإنجازات) -->
         <div id="screen-hub" class="view-screen">
             <div class="header-panel">
                 <h2>مركز اللاعب المتطور</h2>
@@ -489,23 +533,20 @@
             <div class="tab-navigation-bar">
                 <button class="tab-btn active" onclick="switchHubTab('tab-profile')">الملف الشخصي</button>
                 <button class="tab-btn" onclick="switchHubTab('tab-achievements')">الإنجازات</button>
-                <button class="tab-btn" onclick="switchHubTab('tab-settings')">الإعدادات</button>
             </div>
 
-            <!-- تبويب الملف الشخصي -->
             <div id="tab-profile" class="tab-content-pane active">
                 <div style="background: var(--bg-hover); padding: 20px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border);">
                     <h3 style="font-size: 20px; color: var(--primary); margin-bottom: 4px;">وليد</h3>
                     <p style="color: var(--text-muted); font-size: 12px;">مستوى اللاعب: محلل كروي محترف (سنة أولى ثانوي)</p>
                 </div>
                 <div style="background: var(--bg-hover); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); line-height: 2; font-size: 13px;">
-                    <p>⚡ إجمالي الـ XP: <span id="hub-xp-val">240</span></p>
-                    <p>🪙 رصيد العملات: <span id="hub-coins-val">350</span></p>
+                    <p>⚡ إجمالي الـ XP: <span id="hub-xp-val">300</span></p>
+                    <p>🪙 رصيد العملات: <span id="hub-coins-val">450</span></p>
                     <p>🔥 أقصى سلسلة انتصارات: <span id="hub-streak-val">0</span></p>
                 </div>
             </div>
 
-            <!-- تبويب الإنجازات -->
             <div id="tab-achievements" class="tab-content-pane">
                 <div class="item-row-card">
                     <div>
@@ -529,30 +570,11 @@
                     <span style="color: var(--text-muted); font-weight: 700;">مقفل 🔒</span>
                 </div>
             </div>
-
-            <!-- تبويب الإعدادات -->
-            <div id="tab-settings" class="tab-content-pane">
-                <div class="item-row-card">
-                    <div>
-                        <h4>🔊 المؤثرات الصوتية</h4>
-                        <p>تشغيل أصوات التفاعل والنجاح.</p>
-                    </div>
-                    <span style="color: var(--primary); font-weight: 700;">مفعل</span>
-                </div>
-                <div class="item-row-card">
-                    <div>
-                        <h4>🎨 نمط العرض البصري</h4>
-                        <p>التبديل بين الثيمات المتعددة.</p>
-                    </div>
-                    <button class="btn-sub" style="padding: 4px 10px; font-size: 11px;" onclick="cycleThemeVisuals()">تغيير</button>
-                </div>
-            </div>
         </div>
 
     </div>
 
     <script>
-        // قاعدة البيانات الكروية الغنية للاعبين
         const globalPlayersRepo = [
             { name: "ليونيل ميسي", nationality: "الأرجنتين 🇦🇷", position: "مهاجم", club: "إنتر ميامي", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop&q=80" },
             { name: "كريستيانو رونالدو", nationality: "البرتغال 🇵🇹", position: "مهاجم", club: "النصر السعودي", image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=500&auto=format&fit=crop&q=80" },
@@ -566,8 +588,8 @@
         let gameSession = {
             currentMode: 'classic',
             score: 0,
-            xp: parseInt(localStorage.getItem('fut_xp')) || 240,
-            coins: parseInt(localStorage.getItem('fut_coins')) || 350,
+            xp: parseInt(localStorage.getItem('fut_xp')) || 300,
+            coins: parseInt(localStorage.getItem('fut_coins')) || 450,
             streak: parseInt(localStorage.getItem('fut_streak')) || 0,
             questionIndex: 0,
             totalLimit: 10,
@@ -578,13 +600,13 @@
             timeLeftValue: 100
         };
 
-        const themePaletteList = ['dark', 'light', 'champions'];
-        let activeThemeCursor = 0;
-
-        function cycleThemeVisuals() {
-            activeThemeCursor = (activeThemeCursor + 1) % themePaletteList.length;
-            document.body.setAttribute('data-theme', themePaletteList[activeThemeCursor]);
+        function applyTheme(themeName) {
+            document.body.setAttribute('data-theme', themeName);
+            localStorage.setItem('fut_theme', themeName);
         }
+
+        const savedTheme = localStorage.getItem('fut_theme');
+        if (savedTheme) applyTheme(savedTheme);
 
         function navigateTo(targetScreenId) {
             document.querySelectorAll('.view-screen').forEach(s => s.classList.remove('active'));
@@ -613,6 +635,18 @@
             gameSession.score = 0;
             gameSession.comboCount = 0;
             gameSession.correctAnswers = 0;
+            gameSession.totalLimit = 10;
+            navigateTo('screen-gameplay');
+            loadNextChallengeItem();
+        }
+
+        function launchDailyChallenge() {
+            gameSession.currentMode = 'classic';
+            gameSession.questionIndex = 0;
+            gameSession.score = 0;
+            gameSession.comboCount = 0;
+            gameSession.correctAnswers = 0;
+            gameSession.totalLimit = 5; // التحدي اليومي مكون من 5 أسئلة ثابتة
             navigateTo('screen-gameplay');
             loadNextChallengeItem();
         }
