@@ -5,9 +5,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,7 +21,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // شاشة كاملة
+        // تفعيل الشاشة الكاملة (تمتد تحت شريط الحالة)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -34,49 +33,55 @@ public class MainActivity extends Activity {
             );
         }
 
+        // تثبيت الاتجاه العمودي (منع الدوران)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // إنشاء WebView
         webView = new WebView(this);
         WebSettings settings = webView.getSettings();
 
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setDatabaseEnabled(true);
-        settings.setAllowFileAccess(true);
-        settings.setAllowContentAccess(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true);
-        settings.setBuiltInZoomControls(false);
-        settings.setDisplayZoomControls(false);
+        // إعدادات أساسية
+        settings.setJavaScriptEnabled(true);               // تفعيل JavaScript
+        settings.setDomStorageEnabled(true);               // تفعيل LocalStorage
+        settings.setDatabaseEnabled(true);                 // تفعيل IndexedDB
+        settings.setAllowFileAccess(true);                 // السماح بالوصول للملفات
+        settings.setAllowContentAccess(true);              // السماح بمحتوى ContentProvider
+        settings.setLoadWithOverviewMode(true);            // عرض الصفحة كاملة
+        settings.setUseWideViewPort(true);                 // دعم العرض الكامل
+        settings.setBuiltInZoomControls(false);            // إلغاء التحكم بالتكبير
+        settings.setDisplayZoomControls(false);            // إخفاء أزرار التكبير
 
-        // حل مشكلة الصور
+        // 🔥 الحل السحري لظهور الصور من الإنترنت في الملف المحلي
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             settings.setAllowUniversalAccessFromFileURLs(true);
         }
 
+        // معالج الروابط: تبقى داخل التطبيق (لا تفتح المتصفح)
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
                 return true;
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Toast.makeText(MainActivity.this, "تعذر تحميل اللعبة. تأكد من اتصالك بالإنترنت.", Toast.LENGTH_LONG).show();
             }
         });
 
+        // معالج الإشعارات (لتنبيهات JavaScript)
         webView.setWebChromeClient(new WebChromeClient());
+
+        // تحميل ملف اللعبة من مجلد assets
         webView.loadUrl("file:///android_asset/index.html");
+
+        // عرض الـ WebView كواجهة التطبيق
         setContentView(webView);
     }
 
+    // معالج زر الرجوع: العودة للصفحة السابقة داخل اللعبة
     @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
+            // خروج مزدوج (اضغط مرتين خلال ثانيتين للخروج)
             if (System.currentTimeMillis() - exitTime < 2000) {
                 finish();
             } else {
@@ -86,6 +91,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // استعادة الشاشة الكاملة عند العودة للتطبيق من الخلفية
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
