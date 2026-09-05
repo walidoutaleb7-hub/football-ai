@@ -23,6 +23,14 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
+      # ============================================================
+      # 🚀 الخطوة السحرية: حقن مفتاح API في ملف index.html
+      # ============================================================
+      - name: Inject API Key
+        run: |
+          sed -i "s/__API_KEY__/${{ secrets.API_FOOTBALL_KEY }}/g" app/src/main/assets/index.html
+      # ============================================================
+
       - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
 
