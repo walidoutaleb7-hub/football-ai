@@ -2,962 +2,244 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#07110d">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>مين اللاعب؟</title>
 
 <style>
-:root{
-    --bg:#060b12;
-    --panel:#0d1622;
-    --panel2:#111d2b;
-    --border:rgba(255,255,255,.07);
-    --text:#f7faf8;
-    --muted:#8492a6;
-    --green:#24e07b;
-    --green2:#0eaa55;
-    --gold:#ffd34d;
-    --red:#ff5264;
-    --blue:#4da3ff;
-    --shadow:0 20px 60px rgba(0,0,0,.35);
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-    min-height:100%;
-    background:var(--bg);
-}
-
+*{box-sizing:border-box}
 body{
-    color:var(--text);
-    font-family:Arial,"Tahoma",sans-serif;
-    overflow-x:hidden;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0b0f14;
+    color:#fff;
+    min-height:100vh;
 }
-
 button{
-    font:inherit;
-}
-
-.app{
-    width:100%;
-    max-width:520px;
-    margin:auto;
-    padding:
-        calc(14px + env(safe-area-inset-top))
-        13px
-        calc(100px + env(safe-area-inset-bottom));
-}
-
-.page{
-    display:none;
-    animation:pageIn .28s ease;
-}
-
-.page.active{
-    display:block;
-}
-
-@keyframes pageIn{
-    from{opacity:0;transform:translateY(8px)}
-    to{opacity:1;transform:none}
-}
-
-/* HEADER */
-
-.topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px 12px;
-    border:1px solid var(--border);
-    border-radius:22px;
-    background:rgba(13,22,34,.82);
-    backdrop-filter:blur(20px);
-    box-shadow:var(--shadow);
-    margin-bottom:14px;
-}
-
-.logo-area{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.logo{
-    width:43px;
-    height:43px;
-    border-radius:14px;
-    display:grid;
-    place-items:center;
-    font-size:22px;
-    background:linear-gradient(145deg,rgba(36,224,123,.2),rgba(36,224,123,.03));
-    border:1px solid rgba(36,224,123,.2);
-}
-
-.logo-title{
-    font-size:15px;
-    font-weight:950;
-}
-
-.logo-sub{
-    display:block;
-    margin-top:2px;
-    font-size:7px;
-    color:var(--muted);
-    letter-spacing:2px;
-}
-
-.xp-pill{
-    display:flex;
-    align-items:center;
-    gap:5px;
-    padding:7px 10px;
-    border-radius:14px;
-    background:rgba(255,211,77,.07);
-    border:1px solid rgba(255,211,77,.12);
-    color:var(--gold);
-    font-size:10px;
-    font-weight:900;
-}
-
-/* HERO */
-
-.hero{
-    position:relative;
-    overflow:hidden;
-    padding:24px 20px;
-    border-radius:28px;
-    background:
-        radial-gradient(circle at 100% 0%,rgba(36,224,123,.15),transparent 35%),
-        linear-gradient(145deg,#122131,#09111c);
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-}
-
-.hero:after{
-    content:"⚽";
-    position:absolute;
-    left:-22px;
-    bottom:-40px;
-    font-size:120px;
-    opacity:.035;
-    transform:rotate(-15deg);
-}
-
-.badge{
-    display:inline-flex;
-    padding:5px 10px;
-    border-radius:20px;
-    background:rgba(36,224,123,.09);
-    color:var(--green);
-    border:1px solid rgba(36,224,123,.1);
-    font-size:9px;
-    font-weight:900;
-}
-
-.hero h1{
-    margin-top:12px;
-    font-size:27px;
-    line-height:1.25;
-    font-weight:950;
-}
-
-.gradient{
-    background:linear-gradient(135deg,var(--green),var(--gold));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-}
-
-.hero p{
-    color:var(--muted);
-    font-size:11px;
-    line-height:1.7;
-    margin-top:6px;
-}
-
-.hero-actions{
-    display:flex;
-    gap:8px;
-    margin-top:17px;
-}
-
-.primary,
-.secondary{
+    font-family:inherit;
     border:0;
     cursor:pointer;
-    border-radius:15px;
-    padding:13px 12px;
-    font-weight:900;
-    font-size:11px;
 }
-
-.primary{
-    flex:1;
-    color:#031008;
-    background:linear-gradient(135deg,var(--green),#16bd63);
-    box-shadow:0 10px 30px rgba(36,224,123,.16);
+.app{
+    max-width:520px;
+    margin:auto;
+    min-height:100vh;
+    padding:18px;
 }
-
-.secondary{
-    flex:1;
-    color:#fff;
-    background:rgba(255,255,255,.045);
-    border:1px solid var(--border);
-}
-
-/* SECTIONS */
-
-.section-head{
+.header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin:21px 2px 10px;
+    margin-bottom:20px;
 }
-
-.section-head h2{
-    font-size:15px;
-    font-weight:950;
+.logo{
+    font-size:25px;
+    font-weight:bold;
 }
-
-.section-head span{
-    color:var(--muted);
-    font-size:9px;
+.logo span{color:#20d46b}
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#151b23;
+    color:#fff;
+    font-size:20px;
 }
+.screen{display:none}
+.screen.active{display:block}
 
-/* MODES */
-
-.mode-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:9px;
+.card{
+    background:#121821;
+    border:1px solid #202936;
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:14px;
 }
-
-.mode{
-    position:relative;
-    overflow:hidden;
+.hero{
+    text-align:center;
+    padding:28px 18px;
+}
+.hero h1{
+    font-size:32px;
+    margin:8px 0;
+}
+.hero p{
+    color:#9ba6b5;
+    line-height:1.7;
+}
+.primary{
+    width:100%;
     padding:15px;
-    border-radius:20px;
-    background:linear-gradient(145deg,#101c2a,#0b141f);
-    border:1px solid var(--border);
-    cursor:pointer;
-    transition:.18s;
+    border-radius:14px;
+    background:#20d46b;
+    color:#06130b;
+    font-weight:bold;
+    font-size:17px;
 }
-
-.mode:active{
-    transform:scale(.97);
+.secondary{
+    width:100%;
+    padding:13px;
+    border-radius:13px;
+    background:#1b232e;
+    color:#fff;
+    font-weight:bold;
 }
-
-.mode-icon{
-    width:38px;
-    height:38px;
-    display:grid;
-    place-items:center;
-    border-radius:12px;
-    background:rgba(36,224,123,.07);
-    font-size:19px;
+.mode{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px;
+    margin:10px 0;
+    border-radius:15px;
+    background:#171e28;
+    border:1px solid #242e3b;
 }
-
-.mode h3{
-    font-size:13px;
-    margin-top:9px;
+.mode b{font-size:17px}
+.mode small{display:block;color:#929dac;margin-top:5px}
+.mode button{
+    background:#20d46b;
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:bold;
 }
-
-.mode p{
-    color:var(--muted);
-    font-size:8px;
-    margin-top:3px;
-}
-
-.mode-tag{
-    position:absolute;
-    top:10px;
-    left:9px;
-    padding:3px 7px;
-    border-radius:20px;
-    color:var(--gold);
-    background:rgba(255,211,77,.07);
-    font-size:7px;
-}
-
-/* STATS */
-
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:8px;
+    gap:10px;
 }
-
 .stat{
-    padding:13px 5px;
+    background:#171e28;
+    padding:14px 5px;
     text-align:center;
-    border-radius:17px;
-    background:rgba(17,29,43,.7);
-    border:1px solid var(--border);
-}
-
-.stat-icon{
-    font-size:17px;
-}
-
-.stat-value{
-    margin-top:3px;
-    color:var(--green);
-    font-size:18px;
-    font-weight:950;
-}
-
-.stat-label{
-    color:var(--muted);
-    font-size:7px;
-}
-
-/* GAME */
-
-.game-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:12px;
-}
-
-.icon-btn{
-    width:40px;
-    height:40px;
-    border:1px solid var(--border);
-    border-radius:13px;
-    background:rgba(255,255,255,.045);
-    color:#fff;
-    cursor:pointer;
-}
-
-.game-title{
-    text-align:center;
-}
-
-.game-title strong{
-    display:block;
-    font-size:12px;
-}
-
-.game-title span{
-    color:var(--muted);
-    font-size:8px;
-}
-
-.score-box{
-    text-align:left;
-}
-
-.score-box strong{
-    color:var(--green);
-    font-size:17px;
-}
-
-.score-box span{
-    display:block;
-    color:var(--muted);
-    font-size:7px;
-}
-
-.progress-info{
-    display:flex;
-    justify-content:space-between;
-    color:var(--muted);
-    font-size:8px;
-}
-
-.progress{
-    height:4px;
-    margin-top:5px;
-    border-radius:20px;
-    background:rgba(255,255,255,.06);
-    overflow:hidden;
-}
-
-.progress-fill{
-    height:100%;
-    width:0;
-    border-radius:inherit;
-    background:linear-gradient(90deg,var(--green),#8affb8);
-    transition:.35s;
-}
-
-/* TIMER */
-
-.timer{
-    width:74px;
-    height:74px;
-    position:relative;
-    display:grid;
-    place-items:center;
-    margin:15px auto 13px;
-    border-radius:50%;
-    background:#0c1520;
-}
-
-.timer-ring{
-    position:absolute;
-    inset:-2px;
-    border-radius:50%;
-    background:conic-gradient(var(--green) 100%,rgba(255,255,255,.04) 0);
-    -webkit-mask:radial-gradient(circle,transparent 59%,#000 60%);
-    mask:radial-gradient(circle,transparent 59%,#000 60%);
-}
-
-.timer.danger .timer-ring{
-    background:conic-gradient(var(--red) var(--progress),rgba(255,255,255,.04) 0);
-}
-
-.timer-number{
-    position:relative;
-    z-index:2;
-    font-size:22px;
-    font-weight:950;
-}
-
-.timer.danger .timer-number{
-    color:#ff7180;
-}
-
-/* PLAYER */
-
-.player-card{
-    position:relative;
-    height:270px;
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    overflow:hidden;
-    border-radius:26px;
-    background:
-        radial-gradient(circle at 50% 20%,rgba(36,224,123,.09),transparent 45%),
-        linear-gradient(180deg,#142436,#09111b);
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-}
-
-.player-card:before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-        linear-gradient(90deg,transparent 49%,rgba(255,255,255,.025) 50%,transparent 51%);
-    pointer-events:none;
-}
-
-.player-card img{
-    position:relative;
-    z-index:2;
-    height:94%;
-    max-width:88%;
-    object-fit:contain;
-    filter:drop-shadow(0 18px 25px rgba(0,0,0,.55));
-}
-
-.question{
-    text-align:center;
-    margin:10px 0;
-    font-size:16px;
-    font-weight:950;
-}
-
-/* ANSWERS */
-
-.answers{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-}
-
-.answer{
-    min-height:48px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:8px;
-    border-radius:15px;
-    color:#fff;
-    background:#101b29;
-    border:1px solid var(--border);
-    cursor:pointer;
-    text-align:right;
-    font-size:10px;
-    font-weight:800;
-    transition:.18s;
-}
-
-.answer:active{
-    transform:scale(.97);
-}
-
-.answer-letter{
-    flex:0 0 25px;
-    width:25px;
-    height:25px;
-    display:grid;
-    place-items:center;
-    border-radius:8px;
-    color:var(--muted);
-    background:rgba(255,255,255,.05);
-}
-
-.answer.correct{
-    background:rgba(36,224,123,.12);
-    border-color:rgba(36,224,123,.5);
-}
-
-.answer.correct .answer-letter{
-    background:var(--green);
-    color:#041008;
-}
-
-.answer.wrong{
-    background:rgba(255,82,100,.12);
-    border-color:rgba(255,82,100,.45);
-}
-
-.answer.wrong .answer-letter{
-    background:var(--red);
-    color:#fff;
-}
-
-.answer.disabled{
-    pointer-events:none;
-    opacity:.6;
-}
-
-.result{
-    display:none;
-    margin-top:9px;
-    padding:10px;
-    text-align:center;
-    border-radius:13px;
-    font-size:11px;
-    font-weight:900;
-}
-
-.result.show{
-    display:block;
-}
-
-.result.good{
-    color:var(--green);
-    background:rgba(36,224,123,.07);
-}
-
-.result.bad{
-    color:var(--red);
-    background:rgba(255,82,100,.07);
-}
-
-.tools{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:7px;
-    margin-top:8px;
-}
-
-.tool{
-    padding:9px;
-    color:var(--muted);
-    background:rgba(255,255,255,.025);
-    border:1px solid var(--border);
-    border-radius:12px;
-    font-size:9px;
-    font-weight:800;
-}
-
-.tool:disabled{
-    opacity:.3;
-}
-
-/* LIST PAGES */
-
-.page-title{
-    margin-bottom:14px;
-}
-
-.page-title h2{
-    font-size:21px;
-    font-weight:950;
-}
-
-.page-title p{
-    color:var(--muted);
-    font-size:9px;
-    margin-top:3px;
-}
-
-.large-list{
-    display:grid;
-    gap:7px;
-}
-
-.large-mode{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    padding:13px;
-    border-radius:17px;
-    background:#101b29;
-    border:1px solid var(--border);
-    color:#fff;
-    cursor:pointer;
-    text-align:right;
-}
-
-.large-mode-icon{
-    width:42px;
-    height:42px;
-    flex:0 0 42px;
-    display:grid;
-    place-items:center;
     border-radius:14px;
-    background:rgba(36,224,123,.07);
-    font-size:20px;
 }
-
-.large-mode-content{
-    flex:1;
+.stat b{
+    display:block;
+    font-size:22px;
+    color:#20d46b;
 }
-
-.large-mode-content h3{
+.stat span{
+    color:#8f99a7;
     font-size:12px;
 }
 
-.large-mode-content p{
-    color:var(--muted);
-    font-size:8px;
-    margin-top:3px;
-}
-
-/* PROFILE */
-
-.profile{
-    padding:20px;
-    text-align:center;
-    border-radius:24px;
-    background:linear-gradient(145deg,#101d2b,#0b141f);
-    border:1px solid var(--border);
-}
-
-.avatar{
-    width:75px;
-    height:75px;
-    display:grid;
-    place-items:center;
-    margin:auto;
-    border-radius:23px;
-    font-size:34px;
-    background:rgba(36,224,123,.07);
-    border:1px solid rgba(36,224,123,.12);
-}
-
-.profile h2{
-    margin-top:9px;
-    font-size:17px;
-}
-
-.level{
-    margin-top:3px;
-    color:var(--green);
-    font-size:9px;
-    font-weight:800;
-}
-
-.level-head{
+.question-top{
     display:flex;
     justify-content:space-between;
-    margin-top:15px;
-    color:var(--muted);
-    font-size:8px;
+    margin-bottom:15px;
 }
-
-.level-track{
-    height:6px;
-    margin-top:5px;
+.badge{
+    background:#1b2733;
+    padding:8px 12px;
+    border-radius:10px;
+    color:#20d46b;
+}
+.timer{
+    background:#2a1c1c;
+    padding:8px 12px;
+    border-radius:10px;
+    color:#ff7373;
+    font-weight:bold;
+}
+.player-box{
+    height:280px;
+    border-radius:18px;
+    background:#171e28;
     overflow:hidden;
-    border-radius:20px;
-    background:rgba(255,255,255,.05);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:15px;
 }
-
-.level-fill{
-    width:0;
+.player-box img{
+    width:100%;
     height:100%;
-    background:linear-gradient(90deg,var(--green),var(--gold));
-    border-radius:inherit;
+    object-fit:contain;
 }
-
-.achievements{
+.options{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
+    gap:10px;
 }
-
-.achievement{
-    padding:13px 8px;
+.option{
+    width:100%;
+    padding:15px;
+    border-radius:13px;
+    background:#171e28;
+    color:#fff;
+    border:1px solid #26303c;
+    font-size:16px;
+}
+.option.correct{
+    background:#164b2e;
+    border-color:#20d46b;
+}
+.option.wrong{
+    background:#512020;
+    border-color:#ff5555;
+}
+.hint{
+    margin-top:12px;
+    background:#202936;
+    color:#ffd45a;
+    padding:12px;
+    border-radius:12px;
     text-align:center;
-    border-radius:17px;
-    background:#101b29;
-    border:1px solid var(--border);
-    opacity:.45;
 }
-
-.achievement.unlocked{
-    opacity:1;
-    border-color:rgba(36,224,123,.2);
+.back{
+    margin-top:12px;
+    color:#9ba6b5;
+    text-align:center;
 }
-
-.achievement-icon{
-    font-size:22px;
-}
-
-.achievement h3{
-    margin-top:4px;
-    font-size:10px;
-}
-
-.achievement p{
-    margin-top:2px;
-    color:var(--muted);
-    font-size:7px;
-}
-
-/* SETTINGS */
-
-.settings{
-    overflow:hidden;
-    border-radius:20px;
-    background:#101b29;
-    border:1px solid var(--border);
-}
-
 .setting{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:13px;
-    border-bottom:1px solid var(--border);
-    cursor:pointer;
+    padding:16px 4px;
+    border-bottom:1px solid #222b36;
 }
-
-.setting:last-child{
-    border-bottom:0;
-}
-
-.setting-info{
-    display:flex;
-    align-items:center;
-    gap:9px;
-}
-
-.setting-icon{
-    width:32px;
-    height:32px;
-    display:grid;
-    place-items:center;
-    border-radius:10px;
-    background:rgba(255,255,255,.04);
-}
-
-.setting-title{
+.setting:last-child{border:0}
+.setting small{
     display:block;
-    font-size:10px;
-    font-weight:900;
+    color:#8e98a6;
+    margin-top:4px;
 }
-
-.setting-desc{
-    display:block;
-    margin-top:2px;
-    color:var(--muted);
-    font-size:7px;
-}
-
 .switch{
-    width:38px;
-    height:22px;
-    padding:2px;
-    border-radius:30px;
-    background:#283341;
+    width:48px;
+    height:26px;
+    background:#333d49;
+    border-radius:20px;
+    padding:3px;
 }
-
-.switch:after{
-    content:"";
+.switch i{
     display:block;
-    width:18px;
-    height:18px;
+    width:20px;
+    height:20px;
     border-radius:50%;
-    background:#8492a0;
+    background:#fff;
     transition:.2s;
 }
+.switch.on{background:#20d46b}
+.switch.on i{transform:translateX(22px)}
 
-.switch.on{
-    background:rgba(36,224,123,.22);
-}
-
-.switch.on:after{
-    transform:translateX(-16px);
-    background:var(--green);
-}
-
-.dev{
-    margin-top:12px;
-    padding:15px;
+.result{
     text-align:center;
-    border-radius:18px;
-    background:rgba(36,224,123,.035);
-    border:1px solid var(--border);
 }
-
-.dev small{
-    color:var(--muted);
-    font-size:7px;
+.result-score{
+    font-size:48px;
+    color:#20d46b;
+    font-weight:bold;
 }
-
-.dev strong{
-    display:block;
-    color:var(--green);
-    margin-top:3px;
-    font-size:13px;
-}
-
-/* END */
-
-.end{
+.footer{
     text-align:center;
-    padding-top:20px;
+    color:#657080;
+    font-size:12px;
+    margin:25px 0 10px;
 }
-
-.end-icon{
-    width:78px;
-    height:78px;
-    display:grid;
-    place-items:center;
-    margin:auto;
-    border-radius:27px;
-    font-size:35px;
-    background:rgba(36,224,123,.07);
-    border:1px solid rgba(36,224,123,.12);
+.fade{
+    animation:fade .25s ease;
 }
-
-.end h2{
-    margin-top:12px;
-    font-size:22px;
-}
-
-.end>p{
-    color:var(--muted);
-    font-size:10px;
-    margin-top:3px;
-}
-
-.final-score{
-    margin:15px 0;
-    padding:18px;
-    border-radius:22px;
-    background:#101b29;
-    border:1px solid var(--border);
-}
-
-.final-score strong{
-    display:block;
-    color:var(--green);
-    font-size:40px;
-}
-
-.final-score span{
-    color:var(--muted);
-    font-size:9px;
-}
-
-/* NAV */
-
-.bottom-nav{
-    position:fixed;
-    z-index:100;
-    bottom:9px;
-    left:50%;
-    transform:translateX(-50%);
-    width:calc(100% - 18px);
-    max-width:500px;
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    padding:6px;
-    border-radius:22px;
-    background:rgba(7,12,19,.88);
-    backdrop-filter:blur(22px);
-    border:1px solid var(--border);
-    box-shadow:0 12px 45px rgba(0,0,0,.45);
-}
-
-.nav-btn{
-    padding:7px 2px;
-    border:0;
-    border-radius:14px;
-    color:var(--muted);
-    background:transparent;
-    font-size:7px;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.nav-btn span{
-    display:block;
-    font-size:16px;
-    margin-bottom:2px;
-}
-
-.nav-btn.active{
-    color:var(--green);
-    background:rgba(36,224,123,.06);
-}
-
-/* TOAST */
-
-.toast{
-    position:fixed;
-    z-index:999;
-    top:15px;
-    left:50%;
-    width:max-content;
-    max-width:88%;
-    padding:10px 16px;
-    border-radius:14px;
-    color:#fff;
-    background:rgba(8,13,20,.96);
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-    font-size:10px;
-    font-weight:800;
-    transform:translate(-50%,-150%);
-    transition:.35s;
-}
-
-.toast.show{
-    transform:translate(-50%,0);
-}
-
-.shake{
-    animation:shake .3s;
-}
-
-@keyframes shake{
-    25%{transform:translateX(-5px)}
-    50%{transform:translateX(5px)}
-    75%{transform:translateX(-3px)}
-}
-
-@media(max-width:360px){
-    .hero h1{font-size:23px}
-    .player-card{height:225px}
-    .answer{font-size:9px}
+@keyframes fade{
+    from{opacity:.2;transform:translateY(5px)}
+    to{opacity:1;transform:translateY(0)}
 }
 </style>
 </head>
@@ -966,1449 +248,699 @@ button{
 
 <div class="app">
 
-<!-- HOME -->
-<section id="homePage" class="page active">
+<header class="header">
+    <div class="logo">مين <span>اللاعب؟</span></div>
+    <button class="icon-btn" onclick="showScreen('settings')">⚙️</button>
+</header>
 
-    <header class="topbar">
-        <div class="logo-area">
-            <div class="logo">⚽</div>
-            <div>
-                <div class="logo-title">مين اللاعب؟</div>
-                <span class="logo-sub">FOOTBALL QUIZ</span>
+<!-- الرئيسية -->
+<section id="home" class="screen active">
+
+    <div class="card hero">
+        <div style="font-size:50px">⚽</div>
+        <h1>مين اللاعب؟</h1>
+        <p>
+            اختبر معلوماتك الكروية وخمّن اللاعب من صورته.
+            هل تستطيع الوصول إلى أعلى نتيجة؟
+        </p>
+        <button class="primary" onclick="showScreen('modes')">
+            🎮 ابدأ اللعب
+        </button>
+    </div>
+
+    <div class="card">
+        <h3>📊 إحصائياتك</h3>
+        <div class="stats">
+            <div class="stat">
+                <b id="statGames">0</b>
+                <span>الألعاب</span>
+            </div>
+            <div class="stat">
+                <b id="statBest">0</b>
+                <span>أفضل نتيجة</span>
+            </div>
+            <div class="stat">
+                <b id="statCorrect">0</b>
+                <span>إجابات صحيحة</span>
             </div>
         </div>
-        <div class="xp-pill">⭐ <span id="headerXP">0 XP</span></div>
-    </header>
-
-    <div class="hero">
-        <span class="badge">🔥 تحدي معرفتك الكروية</span>
-        <h1>هل تستطيع معرفة <span class="gradient">اللاعب</span>؟</h1>
-        <p>شاهد الصورة، اختر الإجابة الصحيحة، واجمع أكبر عدد من XP.</p>
-
-        <div class="hero-actions">
-            <button class="primary" onclick="startGame('classic')">🎯 ابدأ الآن</button>
-            <button class="secondary" onclick="navigate('modesPage')">🎮 الأوضاع</button>
-        </div>
-    </div>
-
-    <div class="section-head">
-        <h2>أوضاع اللعب</h2>
-        <span>اختر تحديك</span>
-    </div>
-
-    <div class="mode-grid">
-
-        <div class="mode" onclick="startGame('classic')">
-            <span class="mode-tag">الأفضل</span>
-            <div class="mode-icon">🎯</div>
-            <h3>الكلاسيكي</h3>
-            <p>50 سؤال • 15 ثانية</p>
-        </div>
-
-        <div class="mode" onclick="startGame('speed')">
-            <span class="mode-tag">⚡ سريع</span>
-            <div class="mode-icon">⚡</div>
-            <h3>السرعة</h3>
-            <p>30 سؤال • 10 ثوانٍ</p>
-        </div>
-
-        <div class="mode" onclick="startGame('streak')">
-            <span class="mode-tag">🔥 تحدي</span>
-            <div class="mode-icon">🔥</div>
-            <h3>الستريك</h3>
-            <p>لا تخطئ</p>
-        </div>
-
-        <div class="mode" onclick="startGame('rare')">
-            <span class="mode-tag">💎 نادر</span>
-            <div class="mode-icon">💎</div>
-            <h3>اللاعب النادر</h3>
-            <p>XP إضافي</p>
-        </div>
-
-    </div>
-
-    <div class="section-head">
-        <h2>إحصائياتك</h2>
-        <span>مسيرتك</span>
-    </div>
-
-    <div class="stats">
-        <div class="stat">
-            <div class="stat-icon">🏆</div>
-            <div class="stat-value" id="homeGames">0</div>
-            <div class="stat-label">مباريات</div>
-        </div>
-
-        <div class="stat">
-            <div class="stat-icon">🎯</div>
-            <div class="stat-value" id="homeCorrect">0</div>
-            <div class="stat-label">صحيحة</div>
-        </div>
-
-        <div class="stat">
-            <div class="stat-icon">🔥</div>
-            <div class="stat-value" id="homeBest">0</div>
-            <div class="stat-label">أفضل ستريك</div>
-        </div>
     </div>
 
 </section>
 
+<!-- أوضاع اللعب -->
+<section id="modes" class="screen">
 
-<!-- GAME -->
-<section id="gamePage" class="page">
+    <div class="card">
+        <h2>🎮 اختر الوضع</h2>
 
-    <div class="game-top">
-
-        <button class="icon-btn" onclick="confirmExit()">→</button>
-
-        <div class="game-title">
-            <strong id="gameModeName">الكلاسيكي</strong>
-            <span id="gameDifficulty">15 ثانية</span>
+        <div class="mode">
+            <div>
+                <b>الكلاسيكي</b>
+                <small>50 سؤال • 15 ثانية</small>
+            </div>
+            <button onclick="startGame('classic')">لعب</button>
         </div>
 
-        <div class="score-box">
-            <strong id="gameScore">0</strong>
-            <span>نقاط</span>
+        <div class="mode">
+            <div>
+                <b>⚡ السرعة</b>
+                <small>30 سؤال • 10 ثواني</small>
+            </div>
+            <button onclick="startGame('speed')">لعب</button>
         </div>
 
-    </div>
+        <div class="mode">
+            <div>
+                <b>🔥 الستريك</b>
+                <small>حتى 100 سؤال</small>
+            </div>
+            <button onclick="startGame('streak')">لعب</button>
+        </div>
 
-    <div class="progress-info">
-        <span id="questionCounter">1 / 50</span>
-        <span id="streakDisplay">🔥 0</span>
-    </div>
+        <div class="mode">
+            <div>
+                <b>💎 اللاعب النادر</b>
+                <small>لاعبون أصعب في التخمين</small>
+            </div>
+            <button onclick="startGame('rare')">لعب</button>
+        </div>
 
-    <div class="progress">
-        <div class="progress-fill" id="gameProgress"></div>
-    </div>
-
-    <div class="timer" id="timer">
-        <div class="timer-ring" id="timerRing"></div>
-        <div class="timer-number" id="timerText">15</div>
-    </div>
-
-    <div class="player-card" id="playerCard">
-        <img id="playerImage" src="" alt="لاعب كرة قدم">
-    </div>
-
-    <div class="question">من هو هذا اللاعب؟</div>
-
-    <div class="answers" id="answers"></div>
-
-    <div class="result" id="resultBox"></div>
-
-    <div class="tools">
-        <button class="tool" id="hintBtn" onclick="useHint()">💡 تلميح (3)</button>
-        <button class="tool" id="skipBtn" onclick="skipQuestion()">⏭ تخطي</button>
+        <button class="secondary" onclick="showScreen('home')">
+            رجوع
+        </button>
     </div>
 
 </section>
 
+<!-- اللعبة -->
+<section id="game" class="screen">
 
-<!-- END -->
-<section id="endPage" class="page">
-
-    <div class="end">
-
-        <div class="end-icon">🏁</div>
-
-        <h2>انتهى التحدي!</h2>
-        <p>هذه نتيجة مباراتك</p>
-
-        <div class="final-score">
-            <strong id="endScore">0</strong>
-            <span>نقطة</span>
+    <div class="question-top">
+        <div class="badge">
+            <span id="questionNumber">1</span>/<span id="questionTotal">50</span>
         </div>
+        <div class="timer">
+            ⏱ <span id="timer">15</span>
+        </div>
+    </div>
+
+    <div class="card fade" id="questionCard">
+
+        <div class="player-box">
+            <img id="playerImage" alt="لاعب كرة قدم">
+        </div>
+
+        <div class="options" id="options"></div>
+
+        <div id="hintBox" class="hint" style="display:none"></div>
+
+        <button class="secondary" style="margin-top:12px"
+                onclick="useHint()">
+            💡 تلميح
+        </button>
+
+    </div>
+
+    <div style="text-align:center;color:#8d98a7">
+        النقاط: <b id="score" style="color:#20d46b">0</b>
+    </div>
+
+</section>
+
+<!-- النتيجة -->
+<section id="result" class="screen">
+
+    <div class="card result">
+        <div style="font-size:55px">🏆</div>
+        <h2>انتهت اللعبة!</h2>
+
+        <div class="result-score" id="finalScore">0</div>
+        <p>نقطتك النهائية</p>
 
         <div class="stats">
-
             <div class="stat">
-                <div class="stat-icon">✅</div>
-                <div class="stat-value" id="endCorrect">0</div>
-                <div class="stat-label">صحيح</div>
+                <b id="finalCorrect">0</b>
+                <span>صحيحة</span>
             </div>
-
             <div class="stat">
-                <div class="stat-icon">❌</div>
-                <div class="stat-value" id="endWrong">0</div>
-                <div class="stat-label">خطأ</div>
+                <b id="finalWrong">0</b>
+                <span>خاطئة</span>
             </div>
-
             <div class="stat">
-                <div class="stat-icon">🔥</div>
-                <div class="stat-value" id="endBestStreak">0</div>
-                <div class="stat-label">ستريك</div>
+                <b id="finalBest">0</b>
+                <span>الأفضل</span>
             </div>
-
         </div>
 
-        <button class="primary" style="width:100%;margin-top:12px" onclick="playAgain()">
+        <button class="primary" style="margin-top:18px"
+                onclick="showScreen('modes')">
             🔄 العب مرة أخرى
         </button>
 
-        <button class="secondary" style="width:100%;margin-top:7px" onclick="goHome()">
+        <button class="secondary" style="margin-top:10px"
+                onclick="showScreen('home')">
             🏠 الرئيسية
         </button>
-
     </div>
 
 </section>
 
+<!-- الإعدادات -->
+<section id="settings" class="screen">
 
-<!-- MODES -->
-<section id="modesPage" class="page">
-
-    <div class="page-title">
-        <h2>🎮 أوضاع اللعب</h2>
-        <p>كل وضع له تحدي مختلف</p>
-    </div>
-
-    <div class="large-list">
-
-        <button class="large-mode" onclick="startGame('classic')">
-            <div class="large-mode-icon">🎯</div>
-            <div class="large-mode-content">
-                <h3>الكلاسيكي</h3>
-                <p>50 سؤال • 15 ثانية • نقاط متوازنة</p>
-            </div>
-        </button>
-
-        <button class="large-mode" onclick="startGame('speed')">
-            <div class="large-mode-icon">⚡</div>
-            <div class="large-mode-content">
-                <h3>السرعة</h3>
-                <p>30 سؤال • 10 ثوانٍ • مكافأة سرعة</p>
-            </div>
-        </button>
-
-        <button class="large-mode" onclick="startGame('streak')">
-            <div class="large-mode-icon">🔥</div>
-            <div class="large-mode-content">
-                <h3>الستريك</h3>
-                <p>100 سؤال • 12 ثانية • حافظ على السلسلة</p>
-            </div>
-        </button>
-
-        <button class="large-mode" onclick="startGame('rare')">
-            <div class="large-mode-icon">💎</div>
-            <div class="large-mode-content">
-                <h3>اللاعب النادر</h3>
-                <p>40 سؤال • 18 ثانية • مكافآت أكبر</p>
-            </div>
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- PROFILE -->
-<section id="profilePage" class="page">
-
-    <div class="page-title">
-        <h2>👤 ملفي</h2>
-        <p>تقدمك وإنجازاتك</p>
-    </div>
-
-    <div class="profile">
-
-        <div class="avatar">🏆</div>
-
-        <h2>أسطورة كرة القدم</h2>
-
-        <div class="level" id="profileLevel">المستوى 1</div>
-
-        <div class="level-head">
-            <span>التقدم</span>
-            <span id="profileXP">0 / 100 XP</span>
-        </div>
-
-        <div class="level-track">
-            <div class="level-fill" id="levelProgress"></div>
-        </div>
-
-    </div>
-
-    <div class="section-head">
-        <h2>الإنجازات</h2>
-        <span id="achievementCount">0 / 6</span>
-    </div>
-
-    <div class="achievements" id="achievementsContainer"></div>
-
-</section>
-
-
-<!-- SETTINGS -->
-<section id="settingsPage" class="page">
-
-    <div class="page-title">
+    <div class="card">
         <h2>⚙️ الإعدادات</h2>
-        <p>خصص تجربتك</p>
+
+        <div class="setting">
+            <div>
+                <b>🔊 الصوت</b>
+                <small>أصوات الإجابات</small>
+            </div>
+            <button class="switch on" id="soundSwitch"
+                    onclick="toggleSetting('sound')">
+                <i></i>
+            </button>
+        </div>
+
+        <div class="setting">
+            <div>
+                <b>📳 الاهتزاز</b>
+                <small>اهتزاز عند الإجابة</small>
+            </div>
+            <button class="switch on" id="vibrationSwitch"
+                    onclick="toggleSetting('vibration')">
+                <i></i>
+            </button>
+        </div>
+
+        <div class="setting">
+            <div>
+                <b>✨ الأنيميشن</b>
+                <small>حركات الواجهة</small>
+            </div>
+            <button class="switch on" id="animationSwitch"
+                    onclick="toggleSetting('animation')">
+                <i></i>
+            </button>
+        </div>
+
+        <button class="secondary" style="margin-top:18px"
+                onclick="showScreen('home')">
+            رجوع
+        </button>
     </div>
 
-    <div class="settings">
-
-        <div class="setting" onclick="toggleSetting('sound')">
-            <div class="setting-info">
-                <div class="setting-icon">🔊</div>
-                <div>
-                    <span class="setting-title">الأصوات</span>
-                    <span class="setting-desc">المؤثرات الصوتية</span>
-                </div>
-            </div>
-            <div class="switch on" id="soundSwitch"></div>
-        </div>
-
-        <div class="setting" onclick="toggleSetting('vibration')">
-            <div class="setting-info">
-                <div class="setting-icon">📳</div>
-                <div>
-                    <span class="setting-title">الاهتزاز</span>
-                    <span class="setting-desc">اهتزاز عند الإجابة</span>
-                </div>
-            </div>
-            <div class="switch on" id="vibrationSwitch"></div>
-        </div>
-
-        <div class="setting" onclick="toggleSetting('animation')">
-            <div class="setting-info">
-                <div class="setting-icon">✨</div>
-                <div>
-                    <span class="setting-title">الحركات</span>
-                    <span class="setting-desc">التأثيرات البصرية</span>
-                </div>
-            </div>
-            <div class="switch on" id="animationSwitch"></div>
-        </div>
-
-    </div>
-
-    <div class="dev">
-        <small>تم التطوير بواسطة</small>
-        <strong>Walid Outaleb</strong>
+    <div class="card" style="text-align:center">
+        <div style="font-size:35px">⚽</div>
+        <h3>مين اللاعب؟</h3>
+        <p style="color:#8e98a6">الإصدار 1.0</p>
+        <p style="color:#20d46b;font-weight:bold">
+            Developed by Walid Outaleb
+        </p>
     </div>
 
 </section>
+
+<div class="footer">
+    Developed by Walid Outaleb
+</div>
 
 </div>
 
-
-<!-- NAV -->
-<nav class="bottom-nav">
-
-    <button class="nav-btn active" onclick="navigate('homePage')">
-        <span>🏠</span>الرئيسية
-    </button>
-
-    <button class="nav-btn" onclick="navigate('modesPage')">
-        <span>🎮</span>اللعب
-    </button>
-
-    <button class="nav-btn" onclick="navigate('profilePage')">
-        <span>🏆</span>ملفي
-    </button>
-
-    <button class="nav-btn" onclick="navigate('settingsPage')">
-        <span>⚙️</span>الإعدادات
-    </button>
-
-</nav>
-
-<div class="toast" id="toast"></div>
-
-
 <script>
 
-/* =========================================================
-   DATABASE
-========================================================= */
-
 const FALLBACK_PLAYERS = [
-    {id:1,name:"كريستيانو رونالدو",nationality:"البرتغال",image:"https://media.api-sports.io/football/players/257.png"},
-    {id:2,name:"ليونيل ميسي",nationality:"الأرجنتين",image:"https://media.api-sports.io/football/players/154.png"},
-    {id:3,name:"كيليان مبابي",nationality:"فرنسا",image:"https://media.api-sports.io/football/players/278.png"},
-    {id:4,name:"إيرلينغ هالاند",nationality:"النرويج",image:"https://media.api-sports.io/football/players/1100.png"},
-    {id:5,name:"محمد صلاح",nationality:"مصر",image:"https://media.api-sports.io/football/players/306.png"},
-    {id:6,name:"فينيسيوس جونيور",nationality:"البرازيل",image:"https://media.api-sports.io/football/players/276.png"},
-    {id:7,name:"جود بيلينغهام",nationality:"إنجلترا",image:"https://media.api-sports.io/football/players/1000.png"},
-    {id:8,name:"بوكايو ساكا",nationality:"إنجلترا",image:"https://media.api-sports.io/football/players/1465.png"},
-    {id:9,name:"لامين يامال",nationality:"إسبانيا",image:"https://media.api-sports.io/football/players/2929.png"},
-    {id:10,name:"نيمار",nationality:"البرازيل",image:"https://media.api-sports.io/football/players/276.png"}
+    {
+        id:257,
+        name:"Cristiano Ronaldo",
+        nationality:"Portugal",
+        level:"easy",
+        image:"https://media.api-sports.io/football/players/257.png"
+    },
+    {
+        id:154,
+        name:"Lionel Messi",
+        nationality:"Argentina",
+        level:"easy",
+        image:"https://media.api-sports.io/football/players/154.png"
+    },
+    {
+        id:278,
+        name:"Neymar",
+        nationality:"Brazil",
+        level:"easy",
+        image:"https://media.api-sports.io/football/players/278.png"
+    }
 ];
 
 let players = [];
 let questions = [];
-
-let currentIndex = 0;
+let currentQuestion = 0;
 let score = 0;
-let streak = 0;
-let sessionBestStreak = 0;
 let correct = 0;
 let wrong = 0;
-let hints = 3;
+let streak = 0;
+let timerInterval = null;
+let timeLeft = 0;
+let currentMode = "classic";
 
-let gameMode = "classic";
-let timer = null;
-let timeLeft = 15;
-let timeLimit = 15;
+const configs = {
+    classic:{name:"الكلاسيكي",total:50,time:15,bonus:0},
+    speed:{name:"السرعة",total:30,time:10,bonus:3},
+    streak:{name:"الستريك",total:100,time:12,bonus:2},
+    rare:{name:"اللاعب النادر",total:40,time:18,bonus:5}
+};
 
-let isAnswered = false;
-let gameFinished = false;
-
-let stats = loadStats();
-let settings = loadSettings();
-
-
-/* =========================================================
-   SAFE STORAGE
-========================================================= */
-
-function loadStats(){
-
-    const defaultStats = {
-        games:0,
-        correct:0,
-        wrong:0,
-        xp:0,
-        bestStreak:0
-    };
-
-    try{
-        const saved = JSON.parse(localStorage.getItem("footballStats"));
-
-        return {
-            ...defaultStats,
-            ...(saved || {})
-        };
-
-    }catch{
-        return defaultStats;
-    }
-}
-
-
-function saveStats(){
-
-    try{
-        localStorage.setItem(
-            "footballStats",
-            JSON.stringify(stats)
-        );
-    }catch(e){
-        console.warn("Storage unavailable",e);
-    }
-}
-
-
-function loadSettings(){
-
-    const defaults = {
-        sound:true,
-        vibration:true,
-        animation:true
-    };
-
-    try{
-        return {
-            ...defaults,
-            ...(JSON.parse(localStorage.getItem("footballSettings")) || {})
-        };
-    }catch{
-        return defaults;
-    }
-}
-
+let settings = JSON.parse(
+    localStorage.getItem("gameSettings") ||
+    '{"sound":true,"vibration":true,"animation":true}'
+);
 
 function saveSettings(){
-
-    try{
-        localStorage.setItem(
-            "footballSettings",
-            JSON.stringify(settings)
-        );
-    }catch{}
+    localStorage.setItem("gameSettings",JSON.stringify(settings));
 }
 
+function showScreen(id){
 
-/* =========================================================
-   DATABASE LOADING
-========================================================= */
+    document.querySelectorAll(".screen")
+        .forEach(s=>s.classList.remove("active"));
+
+    const screen = document.getElementById(id);
+
+    if(screen){
+        screen.classList.add("active");
+    }
+
+    updateStats();
+}
+
+function updateStats(){
+
+    const stats = JSON.parse(
+        localStorage.getItem("gameStats") ||
+        '{"games":0,"best":0,"correct":0}'
+    );
+
+    document.getElementById("statGames").textContent = stats.games;
+    document.getElementById("statBest").textContent = stats.best;
+    document.getElementById("statCorrect").textContent = stats.correct;
+}
 
 async function loadPlayers(){
-
-    showToast("⏳ جاري تجهيز اللاعبين...");
 
     try{
 
         const response = await fetch(
-            "popular_players.json",
-            {
-                cache:"no-store"
-            }
+            "popular_players.json?x="+Date.now(),
+            {cache:"no-store"}
         );
 
         if(!response.ok){
-            throw new Error("Database HTTP error");
+            throw new Error("players file error");
         }
 
         const data = await response.json();
 
-        if(!Array.isArray(data) || !data.length){
-            throw new Error("Invalid database");
+        if(!Array.isArray(data) || data.length===0){
+            throw new Error("empty players");
         }
 
         players = data
-            .filter(p => p && p.name && p.image)
+            .filter(p=>p && p.name && p.image)
             .map((p,index)=>({
-                id:p.id ?? index + 1,
+                id:p.id ?? index+1,
                 name:String(p.name),
                 nationality:p.nationality || "غير معروفة",
+                level:p.level || "hard",
                 image:String(p.image)
             }));
 
-        if(!players.length){
-            throw new Error("Empty database");
-        }
-
-        showToast(`⚽ تم تجهيز ${players.length} لاعب`);
+        console.log("Players loaded:",players.length);
 
     }catch(error){
 
-        console.warn("JSON loading failed:",error);
-
-        players = FALLBACK_PLAYERS.map(p=>({...p}));
-
-        showToast("⚠️ تم تشغيل قاعدة احتياطية");
+        console.error(error);
+        players = FALLBACK_PLAYERS;
     }
 
-    updateUI();
+    updateStats();
 }
-
-
-/* =========================================================
-   GAME CONFIG
-========================================================= */
-
-function getModeConfig(mode){
-
-    const modes = {
-
-        classic:{
-            name:"الكلاسيكي",
-            total:50,
-            time:15,
-            bonus:0
-        },
-
-        speed:{
-            name:"السرعة",
-            total:30,
-            time:10,
-            bonus:3
-        },
-
-        streak:{
-            name:"الستريك",
-            total:100,
-            time:12,
-            bonus:2
-        },
-
-        rare:{
-            name:"اللاعب النادر",
-            total:40,
-            time:18,
-            bonus:5
-        }
-
-    };
-
-    return modes[mode] || modes.classic;
-}
-
-
-/* =========================================================
-   SHUFFLE
-========================================================= */
 
 function shuffle(array){
 
-    const copy = [...array];
+    const arr=[...array];
 
-    for(let i=copy.length-1;i>0;i--){
+    for(let i=arr.length-1;i>0;i--){
 
-        const j = Math.floor(Math.random()*(i+1));
+        const j=Math.floor(Math.random()*(i+1));
 
-        [copy[i],copy[j]] = [copy[j],copy[i]];
+        [arr[i],arr[j]]=[arr[j],arr[i]];
     }
 
-    return copy;
+    return arr;
 }
-
-
-/* =========================================================
-   START GAME
-========================================================= */
 
 function startGame(mode){
 
     if(!players.length){
 
-        showToast("⏳ قاعدة اللاعبين لم تجهز بعد");
+        alert("جاري تحميل اللاعبين، حاول بعد لحظات.");
         return;
     }
 
-    const config = getModeConfig(mode);
+    currentMode = mode;
 
-    gameMode = mode;
-    timeLimit = config.time;
+    const config = configs[mode];
 
-    const shuffled = shuffle(players);
+    let pool = players;
 
-    /*
-      اللاعب الواحد لا يتكرر داخل المباراة.
-    */
-    questions = shuffled.slice(
-        0,
-        Math.min(config.total, shuffled.length)
-    );
+    if(mode==="rare"){
 
-    currentIndex = 0;
-    score = 0;
-    streak = 0;
-    sessionBestStreak = 0;
-    correct = 0;
-    wrong = 0;
-    hints = 3;
-    isAnswered = false;
-    gameFinished = false;
+        const hardPlayers = players.filter(
+            p=>p.level==="hard"
+        );
 
-    document.getElementById("gameModeName").textContent =
-        config.name;
+        if(hardPlayers.length >= config.total){
+            pool = hardPlayers;
+        }
+    }
 
-    document.getElementById("gameDifficulty").textContent =
-        `${config.time} ثانية`;
+    questions = shuffle(pool)
+        .slice(0,Math.min(config.total,pool.length));
 
-    document.getElementById("gameScore").textContent = "0";
+    currentQuestion=0;
+    score=0;
+    correct=0;
+    wrong=0;
+    streak=0;
 
-    document.getElementById("hintBtn").textContent =
-        "💡 تلميح (3)";
+    document.getElementById("questionTotal")
+        .textContent=questions.length;
 
-    document.getElementById("hintBtn").disabled = false;
-    document.getElementById("skipBtn").disabled = false;
+    document.getElementById("score")
+        .textContent="0";
 
-    navigate("gamePage");
+    showScreen("game");
 
     renderQuestion();
 }
 
-
-/* =========================================================
-   QUESTION
-========================================================= */
-
 function renderQuestion(){
 
-    if(currentIndex >= questions.length){
+    clearInterval(timerInterval);
+
+    if(currentQuestion>=questions.length){
 
         endGame();
         return;
     }
 
-    const q = questions[currentIndex];
+    const q=questions[currentQuestion];
 
-    if(!q){
+    document.getElementById("questionNumber")
+        .textContent=currentQuestion+1;
 
-        endGame();
-        return;
-    }
+    const img=document.getElementById("playerImage");
 
-    isAnswered = false;
+    img.onerror=function(){
 
-    const img = document.getElementById("playerImage");
-
-    img.onerror = function(){
-
-        this.onerror = null;
-
-        this.src =
-            "https://i.pravatar.cc/300?img=12";
+        this.onerror=null;
+        this.style.display="none";
     };
 
-    img.src = q.image;
+    img.onload=function(){
 
-    document.getElementById("questionCounter").textContent =
-        `${currentIndex+1} / ${questions.length}`;
+        this.style.display="block";
+    };
 
-    document.getElementById("streakDisplay").textContent =
-        `🔥 ${streak}`;
+    img.src=q.image;
 
-    document.getElementById("gameProgress").style.width =
-        `${(currentIndex / questions.length) * 100}%`;
+    generateOptions(q);
 
-    const result =
-        document.getElementById("resultBox");
+    document.getElementById("hintBox")
+        .style.display="none";
 
-    result.className = "result";
-    result.textContent = "";
+    document.getElementById("hintBox")
+        .textContent="";
 
-    const options = generateOptions(q);
+    startTimer();
 
-    const container =
-        document.getElementById("answers");
+    if(settings.animation){
 
-    container.innerHTML = "";
+        const card=document.getElementById("questionCard");
 
-    const letters = ["أ","ب","ج","د"];
+        card.classList.remove("fade");
 
-    options.forEach((player,index)=>{
+        void card.offsetWidth;
 
-        const button =
-            document.createElement("button");
-
-        button.className = "answer";
-
-        button.innerHTML = `
-            <span class="answer-letter">${letters[index]}</span>
-            <span>${escapeHTML(player.name)}</span>
-        `;
-
-        button.dataset.id = String(player.id);
-
-        button.onclick = function(){
-
-            checkAnswer(
-                button,
-                player.id,
-                q.id
-            );
-
-        };
-
-        container.appendChild(button);
-    });
-
-    startTimer(timeLimit);
+        card.classList.add("fade");
+    }
 }
-
-
-/* =========================================================
-   ANSWER OPTIONS
-========================================================= */
 
 function generateOptions(correctPlayer){
 
-    const others = players.filter(
-        p => String(p.id) !== String(correctPlayer.id)
-    );
+    const others=shuffle(
+        players.filter(p=>p.id!==correctPlayer.id)
+    ).slice(0,3);
 
-    const selected = shuffle(others).slice(0,3);
-
-    return shuffle([
+    const options=shuffle([
         correctPlayer,
-        ...selected
+        ...others
     ]);
+
+    const container=document.getElementById("options");
+
+    container.innerHTML="";
+
+    options.forEach(player=>{
+
+        const button=document.createElement("button");
+
+        button.className="option";
+        button.textContent=player.name;
+
+        button.onclick=()=>answer(
+            player.id===correctPlayer.id,
+            button
+        );
+
+        container.appendChild(button);
+    });
 }
 
+function startTimer(){
 
-/* =========================================================
-   TIMER
-========================================================= */
+    const config=configs[currentMode];
 
-function startTimer(seconds){
+    timeLeft=config.time;
 
-    clearInterval(timer);
+    document.getElementById("timer")
+        .textContent=timeLeft;
 
-    timeLeft = seconds;
-
-    const timerEl =
-        document.getElementById("timer");
-
-    const text =
-        document.getElementById("timerText");
-
-    const ring =
-        document.getElementById("timerRing");
-
-    timerEl.classList.remove("danger");
-
-    text.textContent = timeLeft;
-
-    ring.style.setProperty(
-        "--progress",
-        "100%"
-    );
-
-    ring.style.background =
-        "conic-gradient(var(--green) 100%,rgba(255,255,255,.04) 0)";
-
-    timer = setInterval(()=>{
+    timerInterval=setInterval(()=>{
 
         timeLeft--;
 
-        text.textContent =
-            Math.max(0,timeLeft);
+        document.getElementById("timer")
+            .textContent=timeLeft;
 
-        const percent =
-            Math.max(0,(timeLeft / seconds) * 100);
+        if(timeLeft<=0){
 
-        ring.style.setProperty(
-            "--progress",
-            `${percent}%`
-        );
+            clearInterval(timerInterval);
 
-        if(timeLeft <= 3){
-
-            timerEl.classList.add("danger");
-
-            ring.style.background =
-                `conic-gradient(var(--red) ${percent}%,rgba(255,255,255,.04) 0)`;
-        }
-
-        if(timeLeft <= 0){
-
-            clearInterval(timer);
-
-            if(!isAnswered){
-
-                isAnswered = true;
-
-                wrong++;
-                streak = 0;
-
-                vibrate(80);
-
-                showResult(
-                    false,
-                    "⏰ انتهى الوقت!"
-                );
-
-                disableAnswers();
-
-                highlightCorrect();
-
-                setTimeout(
-                    nextQuestion,
-                    1300
-                );
-            }
+            answer(false,null,true);
         }
 
     },1000);
 }
 
+function answer(isCorrect,button,timeout=false){
 
-/* =========================================================
-   CHECK ANSWER
-========================================================= */
+    if(timerInterval===null) return;
 
-function checkAnswer(
-    button,
-    selectedId,
-    correctId
-){
+    clearInterval(timerInterval);
+    timerInterval=null;
 
-    if(isAnswered || gameFinished){
-        return;
-    }
+    const buttons=document.querySelectorAll(".option");
 
-    clearInterval(timer);
+    buttons.forEach(b=>b.disabled=true);
 
-    isAnswered = true;
-
-    disableAnswers();
-
-    const config =
-        getModeConfig(gameMode);
-
-    if(String(selectedId) === String(correctId)){
-
-        button.classList.add("correct");
+    if(isCorrect){
 
         correct++;
         streak++;
 
-        sessionBestStreak =
-            Math.max(
-                sessionBestStreak,
-                streak
-            );
+        const config=configs[currentMode];
 
-        const streakBonus =
-            Math.floor(streak / 5) * 2;
-
-        const earned =
-            10 +
+        score += 10 +
             config.bonus +
-            streakBonus;
+            Math.floor(streak/5)*2;
 
-        score += earned;
+        if(button){
+            button.classList.add("correct");
+        }
 
-        document.getElementById("gameScore").textContent =
-            score;
-
-        document.getElementById("streakDisplay").textContent =
-            `🔥 ${streak}`;
-
-        showResult(
-            true,
-            `✅ إجابة صحيحة! +${earned} XP`
-        );
-
-        vibrate(35);
+        vibrate(60);
 
     }else{
 
-        button.classList.add("wrong");
-
         wrong++;
+        streak=0;
 
-        streak = 0;
+        if(button){
+            button.classList.add("wrong");
+        }
 
-        document.getElementById("streakDisplay").textContent =
-            "🔥 0";
-
-        showResult(
-            false,
-            "❌ إجابة خاطئة"
-        );
-
-        highlightCorrect();
-
-        vibrate(100);
+        vibrate([80,50,80]);
     }
 
-    setTimeout(
-        nextQuestion,
-        1300
-    );
+    document.getElementById("score")
+        .textContent=score;
+
+    playSound(isCorrect);
+
+    setTimeout(()=>{
+
+        currentQuestion++;
+
+        renderQuestion();
+
+    },700);
 }
-
-
-/* =========================================================
-   ANSWER HELPERS
-========================================================= */
-
-function disableAnswers(){
-
-    document
-        .querySelectorAll(".answer")
-        .forEach(btn=>{
-            btn.classList.add("disabled");
-        });
-
-    document.getElementById("hintBtn").disabled = true;
-    document.getElementById("skipBtn").disabled = true;
-}
-
-
-function highlightCorrect(){
-
-    const q = questions[currentIndex];
-
-    if(!q){
-        return;
-    }
-
-    document
-        .querySelectorAll(".answer")
-        .forEach(btn=>{
-
-            if(
-                String(btn.dataset.id) ===
-                String(q.id)
-            ){
-                btn.classList.add("correct");
-            }
-
-        });
-}
-
-
-/* =========================================================
-   RESULT
-========================================================= */
-
-function showResult(good,message){
-
-    const box =
-        document.getElementById("resultBox");
-
-    box.textContent = message;
-
-    box.className =
-        `result show ${good ? "good" : "bad"}`;
-}
-
-
-/* =========================================================
-   NEXT
-========================================================= */
-
-function nextQuestion(){
-
-    if(gameFinished){
-        return;
-    }
-
-    currentIndex++;
-
-    renderQuestion();
-}
-
-
-/* =========================================================
-   HINT
-========================================================= */
 
 function useHint(){
 
-    if(isAnswered){
-        return;
-    }
+    if(currentQuestion>=questions.length) return;
 
-    if(hints <= 0){
+    const q=questions[currentQuestion];
 
-        showToast("💡 انتهت التلميحات");
-        return;
-    }
+    const box=document.getElementById("hintBox");
 
-    hints--;
+    box.textContent="🌍 الجنسية: "+q.nationality;
+    box.style.display="block";
 
-    const q =
-        questions[currentIndex];
-
-    showToast(
-        `💡 الجنسية: ${q.nationality || "غير معروفة"}`
-    );
-
-    const btn =
-        document.getElementById("hintBtn");
-
-    btn.textContent =
-        `💡 تلميح (${hints})`;
-
-    if(hints <= 0){
-        btn.disabled = true;
-    }
+    vibrate(30);
 }
-
-
-/* =========================================================
-   SKIP
-========================================================= */
-
-function skipQuestion(){
-
-    if(isAnswered){
-        return;
-    }
-
-    clearInterval(timer);
-
-    isAnswered = true;
-
-    wrong++;
-    streak = 0;
-
-    showResult(
-        false,
-        "⏭ تم تخطي السؤال"
-    );
-
-    disableAnswers();
-
-    highlightCorrect();
-
-    setTimeout(
-        nextQuestion,
-        1300
-    );
-}
-
-
-/* =========================================================
-   END GAME
-========================================================= */
 
 function endGame(){
 
-    if(gameFinished){
-        return;
-    }
+    clearInterval(timerInterval);
+    timerInterval=null;
 
-    gameFinished = true;
+    const old=JSON.parse(
+        localStorage.getItem("gameStats") ||
+        '{"games":0,"best":0,"correct":0}'
+    );
 
-    clearInterval(timer);
+    const best=Math.max(old.best,score);
 
-    document.getElementById("endScore").textContent =
-        score;
-
-    document.getElementById("endCorrect").textContent =
-        correct;
-
-    document.getElementById("endWrong").textContent =
-        wrong;
-
-    document.getElementById("endBestStreak").textContent =
-        sessionBestStreak;
-
-    /*
-      يتم حفظ الإحصائيات مرة واحدة فقط
-      عند نهاية المباراة.
-    */
-
-    stats.games++;
-    stats.correct += correct;
-    stats.wrong += wrong;
-    stats.xp += score;
-
-    stats.bestStreak =
-        Math.max(
-            stats.bestStreak,
-            sessionBestStreak
-        );
-
-    saveStats();
-
-    updateUI();
-
-    navigate("endPage");
-}
-
-
-function playAgain(){
-
-    startGame(gameMode);
-}
-
-
-function goHome(){
-
-    clearInterval(timer);
-
-    navigate("homePage");
-
-    updateUI();
-}
-
-
-function confirmExit(){
-
-    if(
-        confirm("هل تريد الخروج من المباراة؟")
-    ){
-
-        clearInterval(timer);
-
-        gameFinished = true;
-
-        navigate("homePage");
-
-        updateUI();
-    }
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function navigate(page){
-
-    document
-        .querySelectorAll(".page")
-        .forEach(p=>{
-            p.classList.remove("active");
-        });
-
-    const target =
-        document.getElementById(page);
-
-    if(target){
-        target.classList.add("active");
-    }
-
-    const map = {
-        homePage:0,
-        modesPage:1,
-        profilePage:2,
-        settingsPage:3
+    const stats={
+        games:old.games+1,
+        best:best,
+        correct:old.correct+correct
     };
 
-    document
-        .querySelectorAll(".nav-btn")
-        .forEach(b=>{
-            b.classList.remove("active");
-        });
-
-    if(map[page] !== undefined){
-
-        const buttons =
-            document.querySelectorAll(".nav-btn");
-
-        if(buttons[map[page]]){
-            buttons[map[page]]
-                .classList.add("active");
-        }
-    }
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-    if(page === "profilePage"){
-        renderAchievements();
-    }
-}
-
-
-/* =========================================================
-   UI
-========================================================= */
-
-function updateUI(){
-
-    const s = stats;
-
-    document.getElementById("homeGames").textContent =
-        s.games;
-
-    document.getElementById("homeCorrect").textContent =
-        s.correct;
-
-    document.getElementById("homeBest").textContent =
-        s.bestStreak;
-
-    document.getElementById("headerXP").textContent =
-        `${s.xp} XP`;
-
-    const level =
-        Math.floor(s.xp / 100) + 1;
-
-    const xpInLevel =
-        s.xp % 100;
-
-    document.getElementById("profileLevel").textContent =
-        `المستوى ${level}`;
-
-    document.getElementById("profileXP").textContent =
-        `${xpInLevel} / 100 XP`;
-
-    document.getElementById("levelProgress").style.width =
-        `${xpInLevel}%`;
-}
-
-
-/* =========================================================
-   ACHIEVEMENTS
-========================================================= */
-
-function renderAchievements(){
-
-    const list = [
-        {
-            icon:"🎯",
-            title:"أول إجابة",
-            desc:"أجب بشكل صحيح",
-            unlocked:stats.correct >= 1
-        },
-        {
-            icon:"🔥",
-            title:"ستريك 5",
-            desc:"5 إجابات متتالية",
-            unlocked:stats.bestStreak >= 5
-        },
-        {
-            icon:"🏆",
-            title:"10 مباريات",
-            desc:"العب 10 مباريات",
-            unlocked:stats.games >= 10
-        },
-        {
-            icon:"⭐",
-            title:"1000 XP",
-            desc:"اجمع 1000 XP",
-            unlocked:stats.xp >= 1000
-        },
-        {
-            icon:"💎",
-            title:"خبير",
-            desc:"50 إجابة صحيحة",
-            unlocked:stats.correct >= 50
-        },
-        {
-            icon:"👑",
-            title:"أسطورة",
-            desc:"100 إجابة صحيحة",
-            unlocked:stats.correct >= 100
-        }
-    ];
-
-    const container =
-        document.getElementById(
-            "achievementsContainer"
-        );
-
-    container.innerHTML = "";
-
-    let unlocked = 0;
-
-    list.forEach(a=>{
-
-        if(a.unlocked){
-            unlocked++;
-        }
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            `achievement ${a.unlocked ? "unlocked" : ""}`;
-
-        item.innerHTML = `
-            <div class="achievement-icon">${a.icon}</div>
-            <h3>${a.title}</h3>
-            <p>${a.desc}</p>
-        `;
-
-        container.appendChild(item);
-    });
-
-    document.getElementById(
-        "achievementCount"
-    ).textContent =
-        `${unlocked} / ${list.length}`;
-}
-
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-function toggleSetting(id){
-
-    settings[id] =
-        !settings[id];
-
-    saveSettings();
-
-    const sw =
-        document.getElementById(
-            id + "Switch"
-        );
-
-    if(sw){
-        sw.classList.toggle(
-            "on",
-            settings[id]
-        );
-    }
-
-    showToast(
-        settings[id]
-        ? "✅ تم التفعيل"
-        : "🔕 تم التعطيل"
+    localStorage.setItem(
+        "gameStats",
+        JSON.stringify(stats)
     );
+
+    document.getElementById("finalScore")
+        .textContent=score;
+
+    document.getElementById("finalCorrect")
+        .textContent=correct;
+
+    document.getElementById("finalWrong")
+        .textContent=wrong;
+
+    document.getElementById("finalBest")
+        .textContent=best;
+
+    showScreen("result");
 }
 
-
-function applySettings(){
-
-    ["sound","vibration","animation"]
-        .forEach(id=>{
-
-            const sw =
-                document.getElementById(
-                    id + "Switch"
-                );
-
-            if(sw){
-                sw.classList.toggle(
-                    "on",
-                    settings[id]
-                );
-            }
-
-        });
-}
-
-
-/* =========================================================
-   VIBRATION
-========================================================= */
-
-function vibrate(ms){
+function vibrate(pattern){
 
     if(
         settings.vibration &&
         navigator.vibrate
     ){
-        navigator.vibrate(ms);
+        navigator.vibrate(pattern);
     }
 }
 
+function playSound(correctAnswer){
 
-/* =========================================================
-   TOAST
-========================================================= */
+    if(!settings.sound) return;
 
-function showToast(message){
+    try{
 
-    const toast =
-        document.getElementById("toast");
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
 
-    toast.textContent = message;
+        if(!AudioContext) return;
 
-    toast.classList.add("show");
+        const ctx=new AudioContext();
+        const oscillator=ctx.createOscillator();
+        const gain=ctx.createGain();
 
-    clearTimeout(toast._timer);
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
 
-    toast._timer =
+        oscillator.frequency.value =
+            correctAnswer ? 700 : 180;
+
+        gain.gain.value=.06;
+
+        oscillator.start();
+
         setTimeout(()=>{
-            toast.classList.remove("show");
-        },2200);
+            oscillator.stop();
+            ctx.close();
+        },120);
+
+    }catch(e){}
 }
 
+function toggleSetting(name){
 
-/* =========================================================
-   SECURITY / TEXT
-========================================================= */
+    settings[name]=!settings[name];
 
-function escapeHTML(value){
+    saveSettings();
 
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    updateSettingUI();
 }
 
+function updateSettingUI(){
 
-/* =========================================================
-   STARTUP
-========================================================= */
+    const map={
+        sound:"soundSwitch",
+        vibration:"vibrationSwitch",
+        animation:"animationSwitch"
+    };
 
-window.addEventListener(
-    "load",
-    async ()=>{
+    Object.keys(map).forEach(name=>{
 
-        applySettings();
+        const el=document.getElementById(map[name]);
 
-        updateUI();
+        if(settings[name]){
+            el.classList.add("on");
+        }else{
+            el.classList.remove("on");
+        }
+    });
+}
 
-        renderAchievements();
+document.addEventListener("DOMContentLoaded",()=>{
 
-        navigate("homePage");
+    updateSettingUI();
+    updateStats();
+    loadPlayers();
 
-        await loadPlayers();
-    }
-);
+});
 
 </script>
 
