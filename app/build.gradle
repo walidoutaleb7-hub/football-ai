@@ -2,14 +2,19 @@ plugins {
     id 'com.android.application'
 }
 
+repositories {
+    google()
+    mavenCentral()
+}
+
 android {
     namespace 'com.footballai'
-    compileSdk 33
+    compileSdk 34   // ✅ غيرناها من 33 إلى 34
 
     defaultConfig {
         applicationId "com.footballai"
         minSdk 21
-        targetSdk 33
+        targetSdk 34  // ✅ غيرناها من 33 إلى 34
         versionCode 1
         versionName "1.0"
     }
