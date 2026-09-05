@@ -50,12 +50,29 @@
         .stats-bar {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background: #0f172a;
             padding: 8px 12px;
             border-radius: 10px;
+        }
+
+        .xp-container {
+            background: #0f172a;
+            border-radius: 10px;
+            height: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        .xp-bar {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s ease;
         }
 
         .player-img-container {
@@ -128,9 +145,14 @@
 
     <div class="container">
         <h1>مين اللاعب؟ ⚽</h1>
+        
         <div class="stats-bar">
             <span id="score-text">النقاط: 0</span>
-            <span id="level-text">المستوى: 1</span>
+            <span id="level-text">المستوى: 1 (مبتدئ)</span>
+        </div>
+
+        <div class="xp-container">
+            <div class="xp-bar" id="xp-progress"></div>
         </div>
 
         <div id="game-board">
@@ -146,44 +168,68 @@
     </div>
 
     <script>
-        // قاعدة بيانات أولية مصغرة للتجربة (سنقوم بتوسيعها لاحقاً)
         const playersPool = [
-            { id: 1, name: "كريستيانو رونالدو", club: "النصر", league: "الدوري السعودي", image: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Cristiano_Ronaldo_in_Al_Nassr_%28cropped%29.jpg" },
-            { id: 2, name: "ليونيل ميسي", club: "إنتر ميامي", league: "الدوري الأمريكي", image: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022_FIFA_World_Cup_%28cropped%29.jpg" },
-            { id: 3, name: "كيليان مبابي", club: "ريال مدريد", league: "الدوري الإسباني", image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Kylian_Mbapp%C3%A9_2018_%28cropped%29.jpg" },
-            { id: 4, name: "إيرلينغ هالاند", club: "مانشستر سيتي", league: "الدوري الإنجليزي", image: "https://upload.wikimedia.org/wikipedia/commons/0/07/Erling_Haaland_2023_%28cropped%29.jpg" }
+            { id: 1, name: "كريستيانو رونالدو", image: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Cristiano_Ronaldo_in_Al_Nassr_%28cropped%29.jpg" },
+            { id: 2, name: "ليونيل ميسي", image: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022_FIFA_World_Cup_%28cropped%29.jpg" },
+            { id: 3, name: "كيليان مبابي", image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Kylian_Mbapp%C3%A9_2018_%28cropped%29.jpg" },
+            { id: 4, name: "إيرلينغ هالاند", image: "https://upload.wikimedia.org/wikipedia/commons/0/07/Erling_Haaland_2023_%28cropped%29.jpg" },
+            { id: 5, name: "كيفين دي بروين", image: "https://upload.wikimedia.org/wikipedia/commons/2/23/Kevin_De_Bruyne_2018.jpg" },
+            { id: 6, name: "محمد صلاح", image: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Mohamed_Salah_2018.jpg" }
         ];
 
         let score = 0;
+        let level = 1;
+        let xp = 0;
         let currentQuestion = null;
         let askedIds = [];
 
+        function updateUI() {
+            document.getElementById('score-text').textContent = `النقاط: ${score}`;
+            
+            let title = "مبتدئ";
+            if (level >= 5) title = "مشجع";
+            if (level >= 10) title = "عاشق كرة القدم";
+            
+            document.getElementById('level-text').textContent = `المستوى: ${level} (${title})`;
+            
+            let requiredXP = level * 50;
+            let percentage = (xp / requiredXP) * 100;
+            if (percentage > 100) percentage = 100;
+            document.getElementById('xp-progress').style.width = percentage + '%';
+        }
+
+        function addXP(amount) {
+            xp += amount;
+            let requiredXP = level * 50;
+            if (xp >= requiredXP) {
+                xp -= requiredXP;
+                level++;
+                document.getElementById('feedback-msg').textContent = `🎉 مبروك! صعدت للمستوى ${level}!`;
+            }
+            updateUI();
+        }
+
         function loadNewQuestion() {
-            // تصفية اللاعبين غير المسأولين
             const available = playersPool.filter(p => !askedIds.includes(p.id));
             
             if (available.length === 0) {
-                document.getElementById('game-board').innerHTML = `<h2>🎉 انتهت الجولة!</h2><p>مجموع نقاطك: ${score}</p>`;
-                document.getElementById('feedback-msg').textContent = 'أداء ممتاز يا وليد!';
+                document.getElementById('game-board').innerHTML = `<h2>🎉 انتهت الجولة!</h2><p>مجموع نقاطك: ${score}</p><p>مستواك الحالي: ${level}</p>`;
+                document.getElementById('feedback-msg').textContent = 'أداء رائع يا وليد!';
                 return;
             }
 
-            // اختيار لاعب عشوائي
             const correctPlayer = available[Math.floor(Math.random() * available.length)];
             askedIds.push(correctPlayer.id);
 
-            // اختيار الخيارات الخاطئة
             const wrongOptions = playersPool.filter(p => p.id !== correctPlayer.id);
             const shuffledWrong = wrongOptions.sort(() => 0.5 - Math.random()).slice(0, 3);
             const options = [...shuffledWrong, correctPlayer].sort(() => 0.5 - Math.random());
 
             currentQuestion = { correct: correctPlayer, options: options };
 
-            // عرض الصورة
             const imgBox = document.getElementById('img-box');
             imgBox.innerHTML = `<img src="${correctPlayer.image}" alt="اللاعب" onerror="this.parentElement.textContent='⚽'">`;
 
-            // بناء الأزرار
             const container = document.getElementById('options-container');
             container.innerHTML = '';
             
@@ -199,18 +245,16 @@
         }
 
         function checkAnswer(selectedId, btnElement) {
-            // تعطيل جميع الأزرار بعد الاختيار لمنع الضغط المزدوج
             const allButtons = document.querySelectorAll('.btn-option');
             allButtons.forEach(b => b.style.pointerEvents = 'none');
 
             if (selectedId === currentQuestion.correct.id) {
                 btnElement.classList.add('correct');
                 score += 100;
-                document.getElementById('score-text').textContent = `النقاط: ${score}`;
-                document.getElementById('feedback-msg').textContent = '✅ إجابة صحيحة!';
+                addXP(25); // إضافة XP عند الإجابة الصحيحة
+                document.getElementById('feedback-msg').textContent = '✅ إجابة صحيحة! (+25 XP)';
             } else {
                 btnElement.classList.add('wrong');
-                // إظهار الإجابة الصحيحة مباشرة
                 allButtons.forEach(b => {
                     if (b.textContent === currentQuestion.correct.name) {
                         b.classList.add('correct');
@@ -219,13 +263,12 @@
                 document.getElementById('feedback-msg').textContent = `❌ خطأ! اللاعب هو ${currentQuestion.correct.name}`;
             }
 
-            // الانتقال للسؤال الموالي بعد ثانيتين تلقائياً
             setTimeout(() => {
                 loadNewQuestion();
             }, 2000);
         }
 
-        // بدء اللعبة لأول مرة
+        updateUI();
         loadNewQuestion();
     </script>
 </body>
