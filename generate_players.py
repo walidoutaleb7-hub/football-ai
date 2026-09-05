@@ -1,7 +1,7 @@
 import json
-import requests
 import os
 import time
+import requests
 
 # ============================================================
 # الإعدادات
@@ -21,7 +21,7 @@ HEADERS = {
 }
 
 # ============================================================
-# تصنيف اللاعبين
+# مستويات اللاعبين المشهورين
 # ============================================================
 
 EASY_PLAYERS = {
@@ -80,77 +80,6 @@ HARD_PLAYERS = {
 }
 
 # ============================================================
-# أساطير - بيانات ثابتة
-# لأنهم معتزلون ولن يظهروا في موسم 2026
-# ============================================================
-
-LEGENDS = [
-    {
-        "id": 900001,
-        "name": "زين الدين زيدان",
-        "nationality": "فرنسا",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/865.png"
-    },
-    {
-        "id": 900002,
-        "name": "رونالدينيو",
-        "nationality": "البرازيل",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/276.png"
-    },
-    {
-        "id": 900003,
-        "name": "رونالدو نازاريو",
-        "nationality": "البرازيل",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/308.png"
-    },
-    {
-        "id": 900004,
-        "name": "كاكا",
-        "nationality": "البرازيل",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/220.png"
-    },
-    {
-        "id": 900005,
-        "name": "أندريا بيرلو",
-        "nationality": "إيطاليا",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/290.png"
-    },
-    {
-        "id": 900006,
-        "name": "تشافي",
-        "nationality": "إسبانيا",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/172.png"
-    },
-    {
-        "id": 900007,
-        "name": "أندريس إنييستا",
-        "nationality": "إسبانيا",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/153.png"
-    },
-    {
-        "id": 900008,
-        "name": "فرانك لامبارد",
-        "nationality": "إنجلترا",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/250.png"
-    },
-    {
-        "id": 900009,
-        "name": "ستيفن جيرارد",
-        "nationality": "إنجلترا",
-        "level": "legend",
-        "image": "https://media.api-sports.io/football/players/338.png"
-    }
-]
-
-# ============================================================
 # الدوريات
 # ============================================================
 
@@ -161,14 +90,15 @@ LEAGUES = [
     {"id": 78, "name": "الدوري الألماني"},
     {"id": 61, "name": "الدوري الفرنسي"},
     {"id": 307, "name": "الدوري السعودي"},
-    {"id": 253, "الدوري الأمريكي"},
+    {"id": 253, "name": "الدوري الأمريكي"}
 ]
 
 # ============================================================
-# دالة تحديد المستوى
+# تحديد مستوى اللاعب
 # ============================================================
 
 def get_level(name):
+
     if name in EASY_PLAYERS:
         return "easy"
 
@@ -178,6 +108,8 @@ def get_level(name):
     if name in HARD_PLAYERS:
         return "hard"
 
+    # اللاعب غير الموجود في القوائم
+    # يعتبر صعب حتى لا تصبح اللعبة سهلة
     return "hard"
 
 
@@ -192,19 +124,6 @@ print("🚀 بدء تحميل اللاعبين...")
 print(f"📅 الموسم: {SEASON}")
 print(f"🎯 الهدف: {TARGET_PLAYERS} لاعب")
 
-# إضافة الأساطير أولاً
-for legend in LEGENDS:
-    if legend["id"] not in seen_ids:
-        all_players.append(legend)
-        seen_ids.add(legend["id"])
-
-print(f"🏆 تمت إضافة {len(LEGENDS)} أساطير")
-
-
-# ============================================================
-# جلب اللاعبين من API-Football
-# ============================================================
-
 for league in LEAGUES:
 
     if len(all_players) >= TARGET_PLAYERS:
@@ -214,7 +133,7 @@ for league in LEAGUES:
     league_name = league["name"]
 
     print()
-    print(f"📥 {league_name}")
+    print(f"📥 تحميل {league_name}")
 
     page = 1
 
@@ -236,40 +155,28 @@ for league in LEAGUES:
             )
 
             print(
-                f"   صفحة {page} | HTTP {response.status_code}"
+                f"   📄 صفحة {page} | HTTP {response.status_code}"
             )
 
             if response.status_code != 200:
-                print(
-                    f"   ⚠️ فشل الطلب في {league_name}"
-                )
+                print("   ❌ فشل الطلب")
                 break
 
             data = response.json()
 
-            # ------------------------------------------------
-            # التحقق من API
-            # ------------------------------------------------
-
             if data.get("errors"):
-                print(
-                    f"   ❌ API Error: {data['errors']}"
-                )
+                print(f"   ❌ API Error: {data['errors']}")
                 break
 
-            players = data.get("response", [])
+            results = data.get("response", [])
 
-            if not players:
-                print("   ℹ️ لا توجد نتائج إضافية.")
+            if not results:
+                print("   🏁 لا توجد نتائج إضافية")
                 break
 
-            added_this_page = 0
+            added = 0
 
-            # ------------------------------------------------
-            # معالجة اللاعبين
-            # ------------------------------------------------
-
-            for item in players:
+            for item in results:
 
                 player = item.get("player", {})
 
@@ -281,143 +188,110 @@ for league in LEAGUES:
                 )
                 photo = player.get("photo")
 
-                if not player_id:
+                if not player_id or not name or not photo:
                     continue
 
-                if not name:
-                    continue
-
-                if not photo:
-                    continue
-
-                # منع التكرار
                 if player_id in seen_ids:
                     continue
 
                 seen_ids.add(player_id)
 
-                level = get_level(name)
-
                 all_players.append({
                     "id": player_id,
                     "name": name,
                     "nationality": nationality,
-                    "level": level,
+                    "level": get_level(name),
                     "image": photo
                 })
 
-                added_this_page += 1
+                added += 1
 
                 if len(all_players) >= TARGET_PLAYERS:
                     break
 
             print(
-                f"   ✅ أضيف: {added_this_page} "
-                f"| المجموع: {len(all_players)}"
+                f"   ✅ أضيف {added} | المجموع {len(all_players)}"
             )
 
-            # ------------------------------------------------
-            # معرفة آخر صفحة
-            # ------------------------------------------------
-
+            # آخر صفحة
             paging = data.get("paging", {})
 
-            current_page = paging.get("current", page)
-            total_pages = paging.get("total", page)
+            current = paging.get("current", page)
+            total = paging.get("total", page)
 
-            if current_page >= total_pages:
-                print("   🏁 انتهت صفحات هذا الدوري.")
+            if current >= total:
+                print("   🏁 انتهى الدوري")
                 break
 
             page += 1
 
-            # انتظار صغير لتجنب الضغط على API
-            time.sleep(0.2)
+            # توقف بسيط بين الطلبات
+            time.sleep(0.15)
 
-        except requests.RequestException as e:
+        except requests.RequestException as error:
 
-            print(
-                f"   ❌ خطأ في الاتصال: {e}"
-            )
+            print(f"   ❌ خطأ اتصال: {error}")
             break
 
-        except Exception as e:
+        except Exception as error:
 
-            print(
-                f"   ❌ خطأ غير متوقع: {e}"
-            )
+            print(f"   ❌ خطأ: {error}")
             break
 
 
 # ============================================================
-# التأكد من العدد
+# النتيجة
 # ============================================================
+
+all_players = all_players[:TARGET_PLAYERS]
 
 print()
-print("=" * 55)
-print(f"📊 عدد اللاعبين النهائي: {len(all_players)}")
-print("=" * 55)
+print("=" * 50)
+print(f"👥 عدد اللاعبين: {len(all_players)}")
+print("=" * 50)
 
 if len(all_players) < TARGET_PLAYERS:
     print(
-        f"⚠️ تم الحصول على {len(all_players)} فقط "
-        f"بدل {TARGET_PLAYERS}."
+        f"⚠️ لم يتم الوصول إلى {TARGET_PLAYERS} لاعب"
     )
-else:
-    all_players = all_players[:TARGET_PLAYERS]
-    print(f"🎯 تم الوصول إلى {TARGET_PLAYERS} لاعب!")
-
 
 # ============================================================
-# إعادة ترتيب IDs
+# الإحصائيات
 # ============================================================
 
-for index, player in enumerate(all_players, 1):
-    player["id"] = index
+levels = {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0
+}
 
+for player in all_players:
+
+    level = player["level"]
+
+    if level in levels:
+        levels[level] += 1
+
+print(f"🟢 سهل: {levels['easy']}")
+print(f"🔵 متوسط: {levels['medium']}")
+print(f"🟠 صعب: {levels['hard']}")
 
 # ============================================================
-# حفظ JSON
+# حفظ قاعدة البيانات
 # ============================================================
 
 with open(
     "popular_players.json",
     "w",
     encoding="utf-8"
-) as f:
+) as file:
 
     json.dump(
         all_players,
-        f,
+        file,
         ensure_ascii=False,
         indent=2
     )
 
-
-# ============================================================
-# إحصائيات
-# ============================================================
-
-levels = {
-    "easy": 0,
-    "medium": 0,
-    "hard": 0,
-    "legend": 0
-}
-
-for player in all_players:
-    level = player.get("level")
-
-    if level in levels:
-        levels[level] += 1
-
-
 print()
-print("🎉 تم إنشاء popular_players.json")
-print(f"👥 اللاعبين: {len(all_players)}")
-print(f"🟢 سهل: {levels['easy']}")
-print(f"🔵 متوسط: {levels['medium']}")
-print(f"🟠 صعب: {levels['hard']}")
-print(f"🔴 أسطوري: {levels['legend']}")
-print()
-print("✅ انتهى التوليد بنجاح!")
+print("🎉 تم إنشاء popular_players.json بنجاح!")
