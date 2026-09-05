@@ -6,183 +6,171 @@
     <title>مين اللاعب؟ - أسطورة</title>
     <style>
         /* =========================================================
-           BASE STYLES (مضغوط لكن كامل)
+           CSS أسطوري مضغوط لكن كامل
         ========================================================= */
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif}
-        body{background:#0a0e17;color:#fff;min-height:100vh;transition:background 0.5s}
+        body{background:#0a0e17;color:#fff;min-height:100vh;transition:background .5s}
         body.light-mode{background:#f0f4fa;color:#0a0e17}
         body.light-mode .header,body.light-mode .hero,body.light-mode .mode-card,
         body.light-mode .stat-card,body.light-mode .profile-card,body.light-mode .settings-list,
         body.light-mode .premium-card,body.light-mode .large-mode,body.light-mode .bottom-nav,
-        body.light-mode .answer-btn{background:rgba(255,255,255,0.8)!important;border-color:rgba(0,0,0,0.05)!important;color:#0a0e17!important}
+        body.light-mode .answer-btn{background:rgba(255,255,255,.85)!important;border-color:rgba(0,0,0,.06)!important;color:#0a0e17!important}
         body.light-mode .hero p,body.light-mode .mode-card p,body.light-mode .stat-card .label,
         body.light-mode .profile-card .level,body.light-mode .settings-list span{color:#555!important}
         .app{max-width:480px;margin:0 auto;padding:16px 12px 90px}
-        .page{display:none;animation:fadeSlide 0.5s cubic-bezier(0.2,0.8,0.2,1)}
+        .page{display:none;animation:fadeSlide .4s cubic-bezier(.2,.8,.2,1)}
         .page.active{display:block}
-        @keyframes fadeSlide{0%{opacity:0;transform:translateY(20px) scale(0.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
-        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;background:rgba(255,255,255,0.02);padding:10px 14px;border-radius:30px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.04)}
-        .brand{display:flex;align-items:center;gap:12px}
-        .brand-icon{width:46px;height:46px;border-radius:16px;background:linear-gradient(145deg,rgba(46,204,113,0.2),transparent);border:1px solid rgba(46,204,113,0.25);display:grid;place-items:center;font-size:22px}
-        .brand h1{font-size:17px;font-weight:900;background:linear-gradient(135deg,#2ecc71,#f1c40f);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .brand span{display:block;font-size:9px;color:#8896ab;letter-spacing:2px;-webkit-text-fill-color:#8896ab}
-        .xp-badge{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);padding:6px 14px;border-radius:30px;font-size:12px;font-weight:700;color:#f1c40f;display:flex;align-items:center;gap:6px}
-        .daily-reward{background:linear-gradient(135deg,rgba(241,196,15,0.05),rgba(46,204,113,0.05));border:1px solid rgba(241,196,15,0.08);border-radius:20px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;cursor:pointer}
-        .daily-reward:active{transform:scale(0.98)}
-        .daily-reward .info{display:flex;align-items:center;gap:12px}
-        .daily-reward .info .icon{font-size:28px}
-        .daily-reward .info .text{font-size:13px;font-weight:700}
-        .daily-reward .info .text small{display:block;color:#8896ab;font-size:10px;font-weight:400}
-        .daily-reward .reward{background:rgba(241,196,15,0.1);padding:6px 14px;border-radius:30px;font-size:12px;font-weight:800;color:#f1c40f}
-        .hero{background:linear-gradient(145deg,#121b2a,#0a111e);border-radius:30px;padding:24px 20px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.04);position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-        .hero::after{content:'⚽';position:absolute;left:-20px;bottom:-40px;font-size:120px;opacity:0.04;transform:rotate(-12deg)}
-        .hero-badge{display:inline-block;background:rgba(46,204,113,0.1);color:#2ecc71;padding:4px 14px;border-radius:30px;font-size:10px;font-weight:700;margin-bottom:12px}
-        .hero h2{font-size:26px;font-weight:900;line-height:1.3}
+        @keyframes fadeSlide{0%{opacity:0;transform:translateY(18px) scale(.97)}100%{opacity:1;transform:translateY(0) scale(1)}}
+        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;background:rgba(255,255,255,.02);padding:8px 14px;border-radius:30px;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.04)}
+        .brand{display:flex;align-items:center;gap:10px}
+        .brand-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,rgba(46,204,113,.2),transparent);border:1px solid rgba(46,204,113,.2);display:grid;place-items:center;font-size:20px}
+        .brand h1{font-size:16px;font-weight:900;background:linear-gradient(135deg,#2ecc71,#f1c40f);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .brand span{display:block;font-size:8px;color:#8896ab;letter-spacing:2px;-webkit-text-fill-color:#8896ab}
+        .xp-badge{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:4px 12px;border-radius:30px;font-size:11px;font-weight:700;color:#f1c40f;display:flex;align-items:center;gap:4px}
+        .daily-reward{background:linear-gradient(135deg,rgba(241,196,15,.05),rgba(46,204,113,.05));border:1px solid rgba(241,196,15,.08);border-radius:18px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;cursor:pointer}
+        .daily-reward:active{transform:scale(.98)}
+        .daily-reward .info{display:flex;align-items:center;gap:10px}
+        .daily-reward .info .icon{font-size:24px}
+        .daily-reward .info .text{font-size:12px;font-weight:700}
+        .daily-reward .info .text small{display:block;color:#8896ab;font-size:9px;font-weight:400}
+        .daily-reward .reward{background:rgba(241,196,15,.1);padding:4px 12px;border-radius:30px;font-size:11px;font-weight:800;color:#f1c40f}
+        .hero{background:linear-gradient(145deg,#121b2a,#0a111e);border-radius:28px;padding:20px 18px;margin-bottom:18px;border:1px solid rgba(255,255,255,.04);position:relative;overflow:hidden;box-shadow:0 16px 50px rgba(0,0,0,.3)}
+        .hero::after{content:'⚽';position:absolute;left:-20px;bottom:-40px;font-size:100px;opacity:.04;transform:rotate(-12deg)}
+        .hero-badge{display:inline-block;background:rgba(46,204,113,.1);color:#2ecc71;padding:3px 12px;border-radius:30px;font-size:9px;font-weight:700;margin-bottom:8px}
+        .hero h2{font-size:24px;font-weight:900;line-height:1.3}
         .hero h2 span{color:#2ecc71;background:linear-gradient(135deg,#2ecc71,#f1c40f);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .hero p{color:#8896ab;font-size:13px;margin-top:6px}
-        .section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}
-        .section-title h3{font-size:16px;font-weight:800;position:relative}
-        .section-title h3::after{content:'';position:absolute;bottom:-4px;right:0;width:30%;height:2px;background:linear-gradient(90deg,#2ecc71,transparent);border-radius:10px}
-        .section-title span{color:#8896ab;font-size:11px;background:rgba(255,255,255,0.03);padding:4px 12px;border-radius:20px}
-        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-        .mode-card{background:rgba(20,28,43,0.8);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:16px;cursor:pointer;transition:all 0.3s cubic-bezier(0.2,0.8,0.2,1);position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.15)}
-        .mode-card::before{content:'';position:absolute;inset:0;border-radius:22px;padding:1px;background:linear-gradient(135deg,rgba(46,204,113,0.1),transparent,rgba(241,196,15,0.05));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-        .mode-card:active{transform:scale(0.97)}
-        .mode-card .tag{background:rgba(255,255,255,0.05);color:#8896ab;font-size:8px;padding:2px 10px;border-radius:20px;display:inline-block}
-        .mode-card .icon{width:40px;height:40px;background:rgba(46,204,113,0.06);border-radius:14px;display:grid;place-items:center;font-size:20px;margin:10px 0 8px}
-        .mode-card h4{font-size:15px;font-weight:800}
-        .mode-card p{color:#8896ab;font-size:10px;margin-top:2px}
-        .stat-card{background:rgba(20,28,43,0.6);backdrop-filter:blur(8px);border-radius:18px;padding:14px 6px;text-align:center;border:1px solid rgba(255,255,255,0.03);box-shadow:0 4px 20px rgba(0,0,0,0.1)}
-        .stat-card .stat-icon{font-size:20px}
-        .stat-card .value{font-size:20px;font-weight:900;color:#2ecc71;margin-top:2px}
-        .stat-card .label{color:#8896ab;font-size:9px}
-        .btn-primary{width:100%;padding:16px;background:linear-gradient(135deg,#2ecc71,#1a9c54);border-radius:16px;font-weight:800;font-size:14px;color:#04130a;border:none;box-shadow:0 8px 30px rgba(46,204,113,0.2);cursor:pointer}
-        .btn-primary:active{transform:scale(0.98)}
-        .btn-secondary{width:100%;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;color:#fff;font-weight:700;font-size:13px;cursor:pointer}
-        .btn-secondary:active{background:rgba(255,255,255,0.08)}
-        .game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-        .game-back{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);color:#fff;font-size:20px;cursor:pointer}
+        .hero p{color:#8896ab;font-size:12px;margin-top:4px}
+        .section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px}
+        .section-title h3{font-size:15px;font-weight:800;position:relative}
+        .section-title h3::after{content:'';position:absolute;bottom:-3px;right:0;width:25%;height:2px;background:linear-gradient(90deg,#2ecc71,transparent);border-radius:10px}
+        .section-title span{color:#8896ab;font-size:10px;background:rgba(255,255,255,.02);padding:3px 10px;border-radius:20px}
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+        .mode-card{background:rgba(20,28,43,.8);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:14px;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden;box-shadow:0 6px 25px rgba(0,0,0,.12)}
+        .mode-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,rgba(46,204,113,.1),transparent,rgba(241,196,15,.05));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+        .mode-card:active{transform:scale(.97)}
+        .mode-card .tag{background:rgba(255,255,255,.04);color:#8896ab;font-size:7px;padding:2px 8px;border-radius:20px;display:inline-block}
+        .mode-card .icon{width:36px;height:36px;background:rgba(46,204,113,.06);border-radius:12px;display:grid;place-items:center;font-size:18px;margin:8px 0 6px}
+        .mode-card h4{font-size:14px;font-weight:800}
+        .mode-card p{color:#8896ab;font-size:9px;margin-top:2px}
+        .stat-card{background:rgba(20,28,43,.6);backdrop-filter:blur(8px);border-radius:16px;padding:12px 4px;text-align:center;border:1px solid rgba(255,255,255,.03);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+        .stat-card .stat-icon{font-size:18px}
+        .stat-card .value{font-size:18px;font-weight:900;color:#2ecc71;margin-top:2px}
+        .stat-card .label{color:#8896ab;font-size:8px}
+        .btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,#2ecc71,#1a9c54);border-radius:16px;font-weight:800;font-size:13px;color:#04130a;border:none;box-shadow:0 6px 25px rgba(46,204,113,.2);cursor:pointer}
+        .btn-primary:active{transform:scale(.98)}
+        .btn-secondary{width:100%;padding:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:16px;color:#fff;font-weight:700;font-size:12px;cursor:pointer}
+        .btn-secondary:active{background:rgba(255,255,255,.08)}
+        .game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+        .game-back{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:#fff;font-size:18px;cursor:pointer}
         .game-mode-label{text-align:center}
-        .game-mode-label strong{font-size:13px;display:block;font-weight:800}
-        .game-mode-label span{color:#8896ab;font-size:10px}
+        .game-mode-label strong{font-size:12px;display:block;font-weight:800}
+        .game-mode-label span{color:#8896ab;font-size:9px}
         .game-score{text-align:left}
-        .game-score strong{color:#2ecc71;font-size:18px;display:block;font-weight:900}
-        .game-score span{color:#8896ab;font-size:9px}
-        .progress-wrap{margin-bottom:16px}
-        .progress-info{display:flex;justify-content:space-between;font-size:10px;color:#8896ab;font-weight:600}
-        .progress-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:20px;margin-top:6px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,0.2)}
-        .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#2ecc71,#7df0a0);border-radius:inherit;transition:width 0.4s cubic-bezier(0.2,0.8,0.2,1)}
-        .timer{width:76px;height:76px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 40% 30%,#1a2635,#0a0e17);box-shadow:0 8px 40px rgba(0,0,0,0.4),inset 0 -2px 10px rgba(0,0,0,0.3)}
-        .timer::before{content:'';position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(255,255,255,0.06)}
-        .timer .ring{position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(#2ecc71 var(--timer-progress,100%),rgba(255,255,255,0.04) 0);-webkit-mask:radial-gradient(circle at center,transparent 58%,black 59%);mask:radial-gradient(circle at center,transparent 58%,black 59%);transition:background 0.2s}
-        .timer.danger .ring{background:conic-gradient(#e74c3c var(--timer-progress,100%),rgba(255,255,255,0.04) 0)}
-        .timer span{position:relative;z-index:2;font-size:22px;font-weight:900;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.3)}
+        .game-score strong{color:#2ecc71;font-size:17px;display:block;font-weight:900}
+        .game-score span{color:#8896ab;font-size:8px}
+        .progress-wrap{margin-bottom:14px}
+        .progress-info{display:flex;justify-content:space-between;font-size:9px;color:#8896ab;font-weight:600}
+        .progress-bar{height:3px;background:rgba(255,255,255,.06);border-radius:20px;margin-top:5px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.2)}
+        .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#2ecc71,#7df0a0);border-radius:inherit;transition:width .4s cubic-bezier(.2,.8,.2,1)}
+        .timer{width:68px;height:68px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 40% 30%,#1a2635,#0a0e17);box-shadow:0 6px 30px rgba(0,0,0,.4),inset 0 -2px 8px rgba(0,0,0,.3)}
+        .timer::before{content:'';position:absolute;inset:3px;border-radius:50%;border:1px solid rgba(255,255,255,.05)}
+        .timer .ring{position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(#2ecc71 var(--timer-progress,100%),rgba(255,255,255,.04) 0);-webkit-mask:radial-gradient(circle at center,transparent 58%,black 59%);mask:radial-gradient(circle at center,transparent 58%,black 59%);transition:background .2s}
+        .timer.danger .ring{background:conic-gradient(#e74c3c var(--timer-progress,100%),rgba(255,255,255,.04) 0)}
+        .timer span{position:relative;z-index:2;font-size:20px;font-weight:900;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.3)}
         .timer.danger span{color:#ff6b7a}
-        .player-frame{width:100%;height:280px;background:linear-gradient(180deg,#14202e,#0a101b);border-radius:28px;overflow:hidden;display:flex;justify-content:center;align-items:flex-end;margin-bottom:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 60px rgba(0,0,0,0.3);position:relative}
-        .player-frame img{height:95%;width:auto;max-width:85%;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5));transition:transform 0.4s ease}
-        .answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-        .answer-btn{background:rgba(20,28,43,0.8);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:12px 10px;display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s cubic-bezier(0.2,0.8,0.2,1);box-shadow:0 4px 15px rgba(0,0,0,0.1)}
-        .answer-btn:active{transform:scale(0.97)}
-        .answer-btn .letter{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,0.04);display:grid;place-items:center;font-size:11px;color:#8896ab;font-weight:800}
-        .answer-btn.correct{background:rgba(46,204,113,0.12);border-color:rgba(46,204,113,0.4);box-shadow:0 0 30px rgba(46,204,113,0.05)}
+        .player-frame{width:100%;height:250px;background:linear-gradient(180deg,#14202e,#0a101b);border-radius:24px;overflow:hidden;display:flex;justify-content:center;align-items:flex-end;margin-bottom:10px;border:1px solid rgba(255,255,255,.03);box-shadow:0 16px 50px rgba(0,0,0,.3)}
+        .player-frame img{height:92%;width:auto;max-width:82%;object-fit:contain;filter:drop-shadow(0 16px 25px rgba(0,0,0,.5));transition:transform .3s ease}
+        .answers{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+        .answer-btn{background:rgba(20,28,43,.8);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:10px 8px;display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:12px;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+        .answer-btn:active{transform:scale(.97)}
+        .answer-btn .letter{width:22px;height:22px;border-radius:7px;background:rgba(255,255,255,.04);display:grid;place-items:center;font-size:10px;color:#8896ab;font-weight:800}
+        .answer-btn.correct{background:rgba(46,204,113,.12);border-color:rgba(46,204,113,.4);box-shadow:0 0 25px rgba(46,204,113,.05)}
         .answer-btn.correct .letter{background:#2ecc71;color:#04130a}
-        .answer-btn.wrong{background:rgba(231,76,60,0.12);border-color:rgba(231,76,60,0.4);box-shadow:0 0 30px rgba(231,76,60,0.05)}
+        .answer-btn.wrong{background:rgba(231,76,60,.12);border-color:rgba(231,76,60,.4);box-shadow:0 0 25px rgba(231,76,60,.05)}
         .answer-btn.wrong .letter{background:#e74c3c;color:#fff}
-        .answer-btn.disabled{pointer-events:none;opacity:0.6}
-        .result-box{margin-top:12px;padding:12px;border-radius:14px;text-align:center;font-weight:800;font-size:14px;display:none;animation:popResult 0.4s cubic-bezier(0.2,0.8,0.2,1)}
+        .answer-btn.disabled{pointer-events:none;opacity:.6}
+        .result-box{margin-top:10px;padding:10px;border-radius:12px;text-align:center;font-weight:800;font-size:13px;display:none;animation:popResult .4s cubic-bezier(.2,.8,.2,1)}
         .result-box.show{display:block}
-        .result-box.correct{background:rgba(46,204,113,0.08);color:#2ecc71;border:1px solid rgba(46,204,113,0.1)}
-        .result-box.wrong{background:rgba(231,76,60,0.08);color:#e74c3c;border:1px solid rgba(231,76,60,0.1)}
-        @keyframes popResult{0%{transform:scale(0.9);opacity:0}100%{transform:scale(1);opacity:1}}
-        .tools{display:flex;gap:8px;margin-top:12px}
-        .tools button{flex:1;padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;color:#8896ab;font-weight:700;font-size:10px;cursor:pointer}
-        .tools button:active{background:rgba(255,255,255,0.06)}
-        .tools button:disabled{opacity:0.3;cursor:not-allowed}
-        .leaderboard{background:rgba(20,28,43,0.6);backdrop-filter:blur(8px);border-radius:24px;padding:16px;border:1px solid rgba(255,255,255,0.03);margin-top:12px}
-        .leaderboard .entry{display:flex;justify-content:space-between;align-items:center;padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.03)}
+        .result-box.correct{background:rgba(46,204,113,.08);color:#2ecc71;border:1px solid rgba(46,204,113,.1)}
+        .result-box.wrong{background:rgba(231,76,60,.08);color:#e74c3c;border:1px solid rgba(231,76,60,.1)}
+        @keyframes popResult{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+        .tools{display:flex;gap:6px;margin-top:10px}
+        .tools button{flex:1;padding:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;color:#8896ab;font-weight:700;font-size:9px;cursor:pointer}
+        .tools button:active{background:rgba(255,255,255,.06)}
+        .tools button:disabled{opacity:.3;cursor:not-allowed}
+        .leaderboard{background:rgba(20,28,43,.6);backdrop-filter:blur(8px);border-radius:20px;padding:14px;border:1px solid rgba(255,255,255,.03);margin-top:10px}
+        .leaderboard .entry{display:flex;justify-content:space-between;align-items:center;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.03)}
         .leaderboard .entry:last-child{border-bottom:none}
-        .leaderboard .rank{font-weight:900;color:#f1c40f;width:30px}
-        .leaderboard .name{flex:1;font-weight:700;font-size:13px}
-        .leaderboard .score{font-weight:800;color:#2ecc71}
-        .end-screen{text-align:center;padding-top:20px}
-        .end-icon{width:80px;height:80px;border-radius:30px;background:radial-gradient(circle at 40% 30%,rgba(46,204,113,0.1),transparent);display:grid;place-items:center;margin:0 auto 14px;font-size:38px;border:1px solid rgba(46,204,113,0.05);box-shadow:0 0 60px rgba(46,204,113,0.03)}
-        .final-score{background:rgba(20,28,43,0.6);backdrop-filter:blur(8px);border-radius:24px;padding:20px;margin:16px 0;border:1px solid rgba(255,255,255,0.03)}
-        .final-score strong{font-size:42px;color:#2ecc71;display:block;font-weight:900}
-        .final-score span{color:#8896ab;font-size:11px}
-        .large-mode{background:rgba(20,28,43,0.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:14px;width:100%;margin-bottom:8px;color:#fff;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 20px rgba(0,0,0,0.1)}
-        .large-mode:active{transform:scale(0.98)}
-        .large-mode .icon{width:48px;height:48px;border-radius:16px;background:rgba(46,204,113,0.04);display:grid;place-items:center;font-size:24px;flex-shrink:0}
+        .leaderboard .rank{font-weight:900;color:#f1c40f;width:28px;font-size:13px}
+        .leaderboard .name{flex:1;font-weight:700;font-size:12px}
+        .leaderboard .score{font-weight:800;color:#2ecc71;font-size:12px}
+        .end-screen{text-align:center;padding-top:16px}
+        .end-icon{width:72px;height:72px;border-radius:26px;background:radial-gradient(circle at 40% 30%,rgba(46,204,113,.1),transparent);display:grid;place-items:center;margin:0 auto 12px;font-size:34px;border:1px solid rgba(46,204,113,.05);box-shadow:0 0 50px rgba(46,204,113,.03)}
+        .final-score{background:rgba(20,28,43,.6);backdrop-filter:blur(8px);border-radius:20px;padding:16px;margin:14px 0;border:1px solid rgba(255,255,255,.03)}
+        .final-score strong{font-size:36px;color:#2ecc71;display:block;font-weight:900}
+        .final-score span{color:#8896ab;font-size:10px}
+        .large-mode{background:rgba(20,28,43,.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px;width:100%;margin-bottom:6px;color:#fff;cursor:pointer;transition:all .25s ease;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+        .large-mode:active{transform:scale(.98)}
+        .large-mode .icon{width:42px;height:42px;border-radius:14px;background:rgba(46,204,113,.04);display:grid;place-items:center;font-size:20px;flex-shrink:0}
         .large-mode .content{flex:1;text-align:right}
-        .large-mode .content h3{font-size:14px;font-weight:800}
-        .large-mode .content p{color:#8896ab;font-size:10px;margin-top:2px}
-        .profile-card{background:rgba(20,28,43,0.6);backdrop-filter:blur(8px);border-radius:28px;padding:24px;text-align:center;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 40px rgba(0,0,0,0.15)}
-        .profile-card .avatar{width:80px;height:80px;border-radius:24px;background:radial-gradient(circle at 40% 30%,rgba(46,204,113,0.06),transparent);display:grid;place-items:center;margin:0 auto 12px;font-size:36px;border:1px solid rgba(46,204,113,0.05)}
-        .profile-card h2{font-size:20px;font-weight:900}
-        .profile-card .level{color:#8896ab;font-size:12px;margin-top:2px}
-        .level-bar{margin-top:16px}
-        .level-bar .head{display:flex;justify-content:space-between;font-size:11px;color:#8896ab}
-        .level-bar .track{height:6px;background:rgba(255,255,255,0.04);border-radius:20px;overflow:hidden;margin-top:4px;box-shadow:inset 0 1px 2px rgba(0,0,0,0.2)}
-        .level-bar .track .fill{height:100%;width:0%;background:linear-gradient(90deg,#2ecc71,#7df0a0);border-radius:inherit;transition:width 0.6s ease}
-        .achievements{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-        .achievement{background:rgba(20,28,43,0.4);backdrop-filter:blur(4px);border-radius:18px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,0.03)}
-        .achievement .achievement-icon{font-size:24px}
-        .achievement h4{font-size:12px;font-weight:800;margin-top:4px}
-        .achievement p{color:#8896ab;font-size:9px}
-        .settings-list{background:rgba(20,28,43,0.4);backdrop-filter:blur(8px);border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
-        .setting-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer}
-        .setting-row:hover{background:rgba(255,255,255,0.02)}
+        .large-mode .content h3{font-size:13px;font-weight:800}
+        .large-mode .content p{color:#8896ab;font-size:9px;margin-top:2px}
+        .profile-card{background:rgba(20,28,43,.6);backdrop-filter:blur(8px);border-radius:24px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,.03);box-shadow:0 6px 30px rgba(0,0,0,.12)}
+        .profile-card .avatar{width:72px;height:72px;border-radius:20px;background:radial-gradient(circle at 40% 30%,rgba(46,204,113,.06),transparent);display:grid;place-items:center;margin:0 auto 10px;font-size:32px;border:1px solid rgba(46,204,113,.05)}
+        .profile-card h2{font-size:18px;font-weight:900}
+        .profile-card .level{color:#8896ab;font-size:11px;margin-top:2px}
+        .level-bar{margin-top:14px}
+        .level-bar .head{display:flex;justify-content:space-between;font-size:10px;color:#8896ab}
+        .level-bar .track{height:5px;background:rgba(255,255,255,.04);border-radius:20px;overflow:hidden;margin-top:3px;box-shadow:inset 0 1px 2px rgba(0,0,0,.2)}
+        .level-bar .track .fill{height:100%;width:0%;background:linear-gradient(90deg,#2ecc71,#7df0a0);border-radius:inherit;transition:width .5s ease}
+        .achievements{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+        .achievement{background:rgba(20,28,43,.4);backdrop-filter:blur(4px);border-radius:16px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.03)}
+        .achievement .achievement-icon{font-size:20px}
+        .achievement h4{font-size:11px;font-weight:800;margin-top:3px}
+        .achievement p{color:#8896ab;font-size:8px}
+        .settings-list{background:rgba(20,28,43,.4);backdrop-filter:blur(8px);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.03)}
+        .setting-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer}
         .setting-row:last-child{border-bottom:none}
-        .setting-row .info{display:flex;align-items:center;gap:10px}
-        .setting-row .info .icon{width:34px;height:34px;border-radius:12px;background:rgba(255,255,255,0.02);display:grid;place-items:center;font-size:16px}
-        .setting-row .info strong{font-size:12px;font-weight:800;display:block}
-        .setting-row .info span{color:#8896ab;font-size:9px;display:block}
-        .switch{width:40px;height:22px;border-radius:30px;background:#252d39;position:relative;transition:background 0.3s;cursor:pointer}
-        .switch.on{background:rgba(46,204,113,0.25)}
-        .switch::after{content:'';position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#87909d;transition:all 0.3s cubic-bezier(0.2,0.8,0.2,1)}
-        .switch.on::after{right:21px;background:#2ecc71;box-shadow:0 0 20px rgba(46,204,113,0.2)}
-        .dev-card{margin-top:16px;padding:18px;background:linear-gradient(135deg,rgba(46,204,113,0.04),rgba(46,204,113,0.01));border-radius:22px;text-align:center;border:1px solid rgba(255,255,255,0.03)}
-        .dev-card small{color:#8896ab;font-size:9px}
-        .dev-card strong{display:block;font-size:16px;color:#2ecc71;margin-top:2px;font-weight:900}
-        .dev-card span{color:#8896ab;font-size:10px}
-        .premium-card{background:radial-gradient(circle at 50% 0%,rgba(241,196,15,0.03),transparent 60%);background-color:rgba(20,28,43,0.4);backdrop-filter:blur(8px);border-radius:28px;padding:24px;text-align:center;border:1px solid rgba(241,196,15,0.05);box-shadow:0 8px 40px rgba(0,0,0,0.15)}
-        .premium-card .icon{font-size:44px}
-        .premium-card h2{font-size:22px;font-weight:900}
-        .premium-card p{color:#8896ab;font-size:12px;margin:8px 0 16px;line-height:1.6}
-        .coming-soon{display:inline-block;background:rgba(241,196,15,0.06);color:#f1c40f;padding:6px 14px;border-radius:30px;font-size:11px;font-weight:800;margin-top:12px;border:1px solid rgba(241,196,15,0.05)}
-        .bottom-nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:460px;background:rgba(10,14,23,0.85);backdrop-filter:blur(20px);border-radius:24px;padding:8px 4px;display:grid;grid-template-columns:repeat(5,1fr);z-index:100;border:1px solid rgba(255,255,255,0.04);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
-        .nav-btn{padding:6px 0;background:transparent;color:#8896ab;font-size:9px;font-weight:700;border:none;border-radius:14px;cursor:pointer;transition:all 0.2s}
-        .nav-btn .icon{display:block;font-size:18px;margin-bottom:2px}
-        .nav-btn.active{background:rgba(46,204,113,0.06);color:#2ecc71}
-        .nav-btn:hover{color:#fff}
-        .toast{position:fixed;top:16px;left:50%;transform:translate(-50%, -120px);background:rgba(10,14,23,0.95);backdrop-filter:blur(16px);border-radius:16px;padding:12px 24px;color:#fff;font-weight:700;font-size:13px;z-index:999;transition:transform 0.4s cubic-bezier(0.2,0.8,0.2,1),opacity 0.3s;border:1px solid rgba(255,255,255,0.04);box-shadow:0 12px 50px rgba(0,0,0,0.4);text-align:center;min-width:200px;max-width:90%}
-        .toast.show{transform:translate(-50%, 0)}
-        @media (max-width:360px){.hero h2{font-size:22px}.player-frame{height:220px}.answers{grid-template-columns:1fr 1fr;gap:8px}.answer-btn{font-size:11px;padding:10px 8px}}
-        @media (min-width:480px){.app{padding:20px 16px 100px}}
+        .setting-row .info{display:flex;align-items:center;gap:8px}
+        .setting-row .info .icon{width:30px;height:30px;border-radius:10px;background:rgba(255,255,255,.02);display:grid;place-items:center;font-size:14px}
+        .setting-row .info strong{font-size:11px;font-weight:800;display:block}
+        .setting-row .info span{color:#8896ab;font-size:8px;display:block}
+        .switch{width:36px;height:20px;border-radius:30px;background:#252d39;position:relative;transition:background .3s;cursor:pointer}
+        .switch.on{background:rgba(46,204,113,.25)}
+        .switch::after{content:'';position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#87909d;transition:all .3s cubic-bezier(.2,.8,.2,1)}
+        .switch.on::after{right:18px;background:#2ecc71;box-shadow:0 0 16px rgba(46,204,113,.2)}
+        .dev-card{margin-top:14px;padding:16px;background:linear-gradient(135deg,rgba(46,204,113,.04),rgba(46,204,113,.01));border-radius:20px;text-align:center;border:1px solid rgba(255,255,255,.03)}
+        .dev-card small{color:#8896ab;font-size:8px}
+        .dev-card strong{display:block;font-size:14px;color:#2ecc71;margin-top:2px;font-weight:900}
+        .dev-card span{color:#8896ab;font-size:9px}
+        .premium-card{background:radial-gradient(circle at 50% 0%,rgba(241,196,15,.03),transparent 60%);background-color:rgba(20,28,43,.4);backdrop-filter:blur(8px);border-radius:24px;padding:20px;text-align:center;border:1px solid rgba(241,196,15,.05);box-shadow:0 6px 30px rgba(0,0,0,.12)}
+        .premium-card .icon{font-size:38px}
+        .premium-card h2{font-size:20px;font-weight:900}
+        .premium-card p{color:#8896ab;font-size:11px;margin:6px 0 14px;line-height:1.5}
+        .coming-soon{display:inline-block;background:rgba(241,196,15,.06);color:#f1c40f;padding:5px 12px;border-radius:30px;font-size:10px;font-weight:800;margin-top:10px;border:1px solid rgba(241,196,15,.05)}
+        .bottom-nav{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;background:rgba(10,14,23,.88);backdrop-filter:blur(18px);border-radius:22px;padding:6px 4px;display:grid;grid-template-columns:repeat(5,1fr);z-index:100;border:1px solid rgba(255,255,255,.04);box-shadow:0 6px 30px rgba(0,0,0,.25)}
+        .nav-btn{padding:5px 0;background:transparent;color:#8896ab;font-size:8px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all .2s}
+        .nav-btn .icon{display:block;font-size:16px;margin-bottom:1px}
+        .nav-btn.active{background:rgba(46,204,113,.06);color:#2ecc71}
+        .toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-120px);background:rgba(10,14,23,.95);backdrop-filter:blur(14px);border-radius:14px;padding:10px 20px;color:#fff;font-weight:700;font-size:12px;z-index:999;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .3s;border:1px solid rgba(255,255,255,.04);box-shadow:0 10px 40px rgba(0,0,0,.35);text-align:center;min-width:160px;max-width:85%}
+        .toast.show{transform:translate(-50%,0)}
+        @media(max-width:360px){.hero h2{font-size:20px}.player-frame{height:200px}.answers{grid-template-columns:1fr 1fr;gap:6px}.answer-btn{font-size:11px;padding:8px 6px}}
+        @media(min-width:480px){.app{padding:20px 16px 100px}}
     </style>
 </head>
 <body>
 <div class="app">
     <!-- HOME -->
     <section id="homePage" class="page active">
-        <div class="header">
-            <div class="brand"><div class="brand-icon">⚽</div><div><h1>مين اللاعب؟</h1><span>FOOTBALL QUIZ</span></div></div>
-            <div class="xp-badge">⭐ <span id="headerXP">0 XP</span></div>
-        </div>
-        <div class="daily-reward" onclick="claimDailyReward()" id="dailyReward">
-            <div class="info"><div class="icon">🎁</div><div class="text">مكافأة يومية <small id="dailyStatus">تسجيل الدخول يمنحك +10 XP</small></div></div>
-            <div class="reward" id="dailyRewardBtn">استلام</div>
-        </div>
-        <div class="hero">
-            <div class="hero-badge">🔥 تحدي معرفتك الكروية</div>
-            <h2>هل تعرف <span>اللاعب</span> من الصورة؟</h2>
-            <p>خمّن اسم اللاعب قبل انتهاء الوقت واجمع النقاط والمستويات.</p>
-        </div>
+        <div class="header"><div class="brand"><div class="brand-icon">⚽</div><div><h1>مين اللاعب؟</h1><span>FOOTBALL QUIZ</span></div></div><div class="xp-badge">⭐ <span id="headerXP">0 XP</span></div></div>
+        <div class="daily-reward" onclick="claimDailyReward()" id="dailyReward"><div class="info"><div class="icon">🎁</div><div class="text">مكافأة يومية <small id="dailyStatus">+10 XP يومياً</small></div></div><div class="reward" id="dailyRewardBtn">استلام</div></div>
+        <div class="hero"><div class="hero-badge">🔥 تحدي معرفتك الكروية</div><h2>هل تعرف <span>اللاعب</span> من الصورة؟</h2><p>خمّن اسم اللاعب قبل انتهاء الوقت واجمع النقاط والمستويات.</p></div>
         <div class="section-title"><h3>أنماط اللعب</h3><span>اختر</span></div>
         <div class="grid-2">
-            <div class="mode-card" onclick="startGame('classic')"><div class="tag">الأكثر لعباً</div><div class="icon">🎯</div><h4>الكلاسيكي</h4><p>50 سؤال • 15 ثانية</p></div>
-            <div class="mode-card" onclick="startGame('speed')"><div class="tag">سريع</div><div class="icon">⚡</div><h4>السرعة</h4><p>30 سؤال • 10 ثوانٍ</p></div>
-            <div class="mode-card" onclick="startGame('streak')"><div class="tag">تحدي</div><div class="icon">🔥</div><h4>الستريك</h4><p>لا تخطئ! حافظ على السلسلة</p></div>
+            <div class="mode-card" onclick="startGame('classic')"><div class="tag">الأكثر لعباً</div><div class="icon">🎯</div><h4>الكلاسيكي</h4><p>50 سؤال • 15 ث</p></div>
+            <div class="mode-card" onclick="startGame('speed')"><div class="tag">سريع</div><div class="icon">⚡</div><h4>السرعة</h4><p>30 سؤال • 10 ث</p></div>
+            <div class="mode-card" onclick="startGame('streak')"><div class="tag">تحدي</div><div class="icon">🔥</div><h4>الستريك</h4><p>لا تخطئ!</p></div>
             <div class="mode-card" onclick="startGame('rare')"><div class="tag">نادر</div><div class="icon">💎</div><h4>اللاعب النادر</h4><p>مكافآت أكبر</p></div>
         </div>
         <div class="section-title"><h3>إحصائياتك</h3><span>مسيرتك</span></div>
@@ -192,7 +180,7 @@
             <div class="stat-card"><div class="stat-icon">🔥</div><div class="value" id="homeBest">0</div><div class="label">أفضل ستريك</div></div>
         </div>
         <div class="section-title"><h3>🏆 المتصدرين</h3><span>أفضل اللاعبين</span></div>
-        <div class="leaderboard" id="leaderboard"><div style="text-align:center;padding:16px;color:#8896ab;font-size:12px;">جاري التحميل...</div></div>
+        <div class="leaderboard" id="leaderboard"><div style="text-align:center;padding:12px;color:#8896ab;font-size:11px;">جاري التحميل...</div></div>
     </section>
 
     <!-- GAME -->
@@ -202,13 +190,10 @@
             <div class="game-mode-label"><strong id="gameModeName">كلاسيكي</strong><span id="gameDifficulty">تحدي</span></div>
             <div class="game-score"><strong id="gameScore">0</strong><span>نقاط</span></div>
         </div>
-        <div class="progress-wrap">
-            <div class="progress-info"><span id="questionCounter">1 / 50</span><span id="streakDisplay">🔥 0</span></div>
-            <div class="progress-bar"><div class="progress-fill" id="gameProgress"></div></div>
-        </div>
+        <div class="progress-wrap"><div class="progress-info"><span id="questionCounter">1 / 50</span><span id="streakDisplay">🔥 0</span></div><div class="progress-bar"><div class="progress-fill" id="gameProgress"></div></div></div>
         <div class="timer" id="timer"><div class="ring" id="timerRing"></div><span id="timerText">15</span></div>
         <div class="player-frame"><img id="playerImage" src="" alt="لاعب"></div>
-        <div style="text-align:center;font-size:18px;font-weight:900;margin:8px 0;">من هو هذا اللاعب؟</div>
+        <div style="text-align:center;font-size:17px;font-weight:900;margin:6px 0;">من هو هذا اللاعب؟</div>
         <div class="answers" id="answers"></div>
         <div class="result-box" id="resultBox"></div>
         <div class="tools">
@@ -220,30 +205,26 @@
 
     <!-- END -->
     <section id="endPage" class="page">
-        <div class="end-screen">
-            <div class="end-icon">🏁</div>
-            <h2>انتهت المباراة</h2>
-            <p>إليك إحصائياتك</p>
-            <div class="final-score"><strong id="endScore">0</strong><span>نقاط</span></div>
-            <div class="grid-3">
-                <div class="stat-card"><div class="stat-icon">✅</div><div class="value" id="endCorrect">0</div><div class="label">صحيح</div></div>
-                <div class="stat-card"><div class="stat-icon">❌</div><div class="value" id="endWrong">0</div><div class="label">خطأ</div></div>
-                <div class="stat-card"><div class="stat-icon">⭐</div><div class="value" id="endXP">0</div><div class="label">XP</div></div>
+        <div class="end-screen"><div class="end-icon">🏁</div><h2>انتهت المباراة</h2><p>إليك إحصائياتك</p>
+        <div class="final-score"><strong id="endScore">0</strong><span>نقاط</span></div>
+        <div class="grid-3">
+            <div class="stat-card"><div class="stat-icon">✅</div><div class="value" id="endCorrect">0</div><div class="label">صحيح</div></div>
+            <div class="stat-card"><div class="stat-icon">❌</div><div class="value" id="endWrong">0</div><div class="label">خطأ</div></div>
+            <div class="stat-card"><div class="stat-icon">⭐</div><div class="value" id="endXP">0</div><div class="label">XP</div></div>
+        </div>
+        <div style="background:rgba(20,28,43,.4);border-radius:16px;padding:10px;margin:10px 0;border:1px solid rgba(255,255,255,.03);">
+            <div style="display:flex;justify-content:space-around;font-size:10px;color:#8896ab;">
+                <div><span style="color:#2ecc71;">✔️</span> نسبة النجاح: <strong id="endRatio" style="color:#fff;">0%</strong></div>
+                <div><span style="color:#f1c40f;">⭐</span> المتوسط: <strong id="endAvg" style="color:#fff;">0</strong></div>
             </div>
-            <div style="background:rgba(20,28,43,0.4);border-radius:18px;padding:12px;margin:12px 0;border:1px solid rgba(255,255,255,0.03);">
-                <div style="display:flex;justify-content:space-around;font-size:11px;color:#8896ab;">
-                    <div><span style="color:#2ecc71;">✔️</span> نسبة النجاح: <strong id="endRatio" style="color:#fff;">0%</strong></div>
-                    <div><span style="color:#f1c40f;">⭐</span> المتوسط: <strong id="endAvg" style="color:#fff;">0</strong></div>
-                </div>
-            </div>
-            <button class="btn-primary" onclick="playAgain()" style="margin-bottom:10px;">🔄 العب مجدداً</button>
-            <button class="btn-secondary" onclick="goHome()">🏠 الرئيسية</button>
+        </div>
+        <button class="btn-primary" onclick="playAgain()" style="margin-bottom:8px;">🔄 العب مجدداً</button>
+        <button class="btn-secondary" onclick="goHome()">🏠 الرئيسية</button>
         </div>
     </section>
 
     <!-- MODES -->
-    <section id="modesPage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">أنماط اللعب</h2><p style="color:#8896ab;font-size:12px;">اختر النمط المناسب لك</p></div>
+    <section id="modesPage" class="page"><div style="margin-bottom:14px;"><h2 style="font-size:20px;font-weight:900;">أنماط اللعب</h2><p style="color:#8896ab;font-size:11px;">اختر النمط المناسب لك</p></div>
         <button class="large-mode" onclick="startGame('classic')"><div class="icon">🎯</div><div class="content"><h3>الكلاسيكي</h3><p>50 سؤال • 15 ثانية</p></div></button>
         <button class="large-mode" onclick="startGame('speed')"><div class="icon">⚡</div><div class="content"><h3>السرعة</h3><p>30 سؤال • 10 ثوانٍ</p></div></button>
         <button class="large-mode" onclick="startGame('streak')"><div class="icon">🔥</div><div class="content"><h3>الستريك</h3><p>لا تخطئ! حافظ على السلسلة</p></div></button>
@@ -252,22 +233,19 @@
     </section>
 
     <!-- PREMIUM -->
-    <section id="premiumPage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">بريميوم</h2><p style="color:#8896ab;font-size:12px;">مزايا حصرية</p></div>
-        <div class="premium-card"><div class="icon">👑</div><h2>مين اللاعب؟ بريميوم</h2><p>مزايا إضافية قادمة قريباً لتجعل تجربتك أكثر متعة واحترافية.</p><div style="text-align:right;margin:12px 0;"><div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;"><span style="color:#f1c40f;">✓</span> أنماط لعب حصرية</div><div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;"><span style="color:#f1c40f;">✓</span> إحصائيات متقدمة</div><div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;"><span style="color:#f1c40f;">✓</span> تحديات خاصة</div><div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;"><span style="color:#f1c40f;">✓</span> مكافآت XP إضافية</div></div><div class="coming-soon">🚀 قريباً</div></div>
+    <section id="premiumPage" class="page"><div style="margin-bottom:14px;"><h2 style="font-size:20px;font-weight:900;">بريميوم</h2><p style="color:#8896ab;font-size:11px;">مزايا حصرية</p></div>
+        <div class="premium-card"><div class="icon">👑</div><h2>مين اللاعب؟ بريميوم</h2><p>مزايا إضافية قادمة قريباً لتجعل تجربتك أكثر متعة واحترافية.</p><div style="text-align:right;margin:10px 0;"><div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> أنماط لعب حصرية</div><div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> إحصائيات متقدمة</div><div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> تحديات خاصة</div><div style="display:flex;align-items:center;gap:8px;padding:3px 0;color:#d9dee6;font-size:11px;"><span style="color:#f1c40f;">✓</span> مكافآت XP إضافية</div></div><div class="coming-soon">🚀 قريباً</div></div>
     </section>
 
     <!-- PROFILE -->
-    <section id="profilePage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">ملفي</h2><p style="color:#8896ab;font-size:12px;">تقدمك وإنجازاتك</p></div>
+    <section id="profilePage" class="page"><div style="margin-bottom:14px;"><h2 style="font-size:20px;font-weight:900;">ملفي</h2><p style="color:#8896ab;font-size:11px;">تقدمك وإنجازاتك</p></div>
         <div class="profile-card"><div class="avatar">🏆</div><h2>لاعب كرة القدم</h2><div class="level" id="profileLevel">المستوى 1</div><div class="level-bar"><div class="head"><span>التقدم للمستوى التالي</span><strong id="profileXP">0 / 100 XP</strong></div><div class="track"><div class="fill" id="levelProgress"></div></div></div></div>
         <div class="section-title"><h3>الإنجازات</h3></div>
         <div class="achievements" id="achievementsContainer"></div>
     </section>
 
     <!-- SETTINGS -->
-    <section id="settingsPage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">الإعدادات</h2><p style="color:#8896ab;font-size:12px;">خصص تجربتك</p></div>
+    <section id="settingsPage" class="page"><div style="margin-bottom:14px;"><h2 style="font-size:20px;font-weight:900;">الإعدادات</h2><p style="color:#8896ab;font-size:11px;">خصص تجربتك</p></div>
         <div class="settings-list">
             <div class="setting-row" onclick="toggleSetting('sound')"><div class="info"><div class="icon">🔊</div><div><strong>الأصوات</strong><span>المؤثرات الصوتية</span></div></div><div class="switch on" id="soundSwitch"></div></div>
             <div class="setting-row" onclick="toggleSetting('vibration')"><div class="info"><div class="icon">📳</div><div><strong>الاهتزاز</strong><span>اهتزاز عند الإجابة</span></div></div><div class="switch on" id="vibrationSwitch"></div></div>
@@ -289,14 +267,14 @@
 
 <script>
 // ============================================================
-//  CONFIGURATION
+//  الإعدادات العامة
 // ============================================================
 const API_KEY = '__API_KEY__';
 const LEAGUE_ID = 39;
 const SEASON = 2024;
 
 // ============================================================
-//  STATE & FALLBACK (بيانات جاهزة فوراً)
+//  الحالة العامة والبيانات الاحتياطية (متطابقة)
 // ============================================================
 let players = [];
 let questions = [];
@@ -304,19 +282,23 @@ let idx = 0, score = 0, streak = 0, bestStreak = 0, correct = 0, wrong = 0, hint
 let answered = false, mode = 'classic', timer = null, timeLeft = 15, eliminateUsed = false, dailyClaimed = false;
 let leaderboard = [];
 
+// بيانات احتياطية (الأسماء والصور متطابقة 100%)
 const FALLBACK_PLAYERS = [
-    { id:1, name:"كريستيانو رونالدو", nationality:"البرتغال", level:"easy", image:"https://media.api-sports.io/football/players/257.png" },
-    { id:2, name:"ليونيل ميسي", nationality:"الأرجنتين", level:"easy", image:"https://media.api-sports.io/football/players/457.png" },
-    { id:3, name:"كيليان مبابي", nationality:"فرنسا", level:"easy", image:"https://media.api-sports.io/football/players/1495.png" },
-    { id:4, name:"إيرلينغ هالاند", nationality:"النرويج", level:"easy", image:"https://media.api-sports.io/football/players/10035.png" },
-    { id:5, name:"محمد صلاح", nationality:"مصر", level:"easy", image:"https://media.api-sports.io/football/players/1502.png" },
-    { id:6, name:"فينيسيوس جونيور", nationality:"البرازيل", level:"easy", image:"https://media.api-sports.io/football/players/9964.png" },
-    { id:7, name:"جود بيلينغهام", nationality:"إنجلترا", level:"easy", image:"https://media.api-sports.io/football/players/14947.png" },
-    { id:8, name:"بوكايو ساكا", nationality:"إنجلترا", level:"medium", image:"https://media.api-sports.io/football/players/14947.png" },
-    { id:9, name:"نيكولو باريلا", nationality:"إيطاليا", level:"hard", image:"https://media.api-sports.io/football/players/10035.png" },
-    { id:10, name:"زين الدين زيدان", nationality:"فرنسا", level:"legend", image:"https://media.api-sports.io/football/players/1000.png" }
+    { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", image: "https://media.api-sports.io/football/players/257.png" },
+    { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", image: "https://media.api-sports.io/football/players/457.png" },
+    { id: 3, name: "كيليان مبابي", nationality: "فرنسا", level: "easy", image: "https://media.api-sports.io/football/players/1495.png" },
+    { id: 4, name: "إيرلينغ هالاند", nationality: "النرويج", level: "easy", image: "https://media.api-sports.io/football/players/10035.png" },
+    { id: 5, name: "محمد صلاح", nationality: "مصر", level: "easy", image: "https://media.api-sports.io/football/players/1502.png" },
+    { id: 6, name: "فينيسيوس جونيور", nationality: "البرازيل", level: "easy", image: "https://media.api-sports.io/football/players/9964.png" },
+    { id: 7, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", image: "https://media.api-sports.io/football/players/14947.png" },
+    { id: 8, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/14947.png" },
+    { id: 9, name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard", image: "https://media.api-sports.io/football/players/10035.png" },
+    { id: 10, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", image: "https://media.api-sports.io/football/players/1000.png" }
 ];
 
+// ============================================================
+//  الإنجازات
+// ============================================================
 const ACHIEVEMENTS = [
     { id:'first_correct', name:'🎯 أول إجابة', desc:'أجب بشكل صحيح', condition:(s)=>s.correct>=1 },
     { id:'streak_5', name:'🔥 ستريك 5', desc:'5 إجابات متتالية', condition:(s)=>s.bestStreak>=5 },
@@ -332,30 +314,33 @@ const ACHIEVEMENTS = [
 ];
 
 // ============================================================
-//  LOAD PLAYERS (تحميل سريع + خلفي)
+//  تحميل اللاعبين (بيانات أولية فورية + تحديث خلفي)
 // ============================================================
 function loadPlayers() {
-    // 1. استخدم البيانات الاحتياطية فوراً
-    players = FALLBACK_PLAYERS.map(p => ({...p, image: p.image || `https://i.pravatar.cc/300?img=${p.id}`}));
+    // بيانات احتياطية فورية
+    players = FALLBACK_PLAYERS.map(p => ({ ...p, image: p.image || `https://i.pravatar.cc/300?img=${p.id}` }));
     updateUI();
     loadLeaderboard();
     updateDailyReward();
     renderAchievements();
 
-    // 2. حاول تحميل ملف JSON المحلي في الخلفية
+    // جلب الملف المحلي
     fetch('popular_players.json')
         .then(res => res.ok ? res.json() : null)
         .then(data => {
             if (Array.isArray(data) && data.length > 0) {
-                players = data.map(p => ({...p, image: p.image || `https://i.pravatar.cc/300?img=${p.id}`}));
-                updateUI();
-                renderAchievements();
-                console.log('✅ تم تحديث البيانات من الملف المحلي');
+                const valid = data.map(p => ({
+                    id: p.id || Math.random(),
+                    name: p.name || 'لاعب',
+                    nationality: p.nationality || 'غير معروف',
+                    level: p.level || 'easy',
+                    image: p.image || `https://i.pravatar.cc/300?img=${p.id || Math.floor(Math.random()*100)}`
+                }));
+                if (valid.length > 0) { players = valid; updateUI(); renderAchievements(); }
             }
-        })
-        .catch(() => {});
+        }).catch(()=>{});
 
-    // 3. حاول جلب API في الخلفية (مهلة 5 ثوانٍ)
+    // جلب API
     const controller = new AbortController();
     setTimeout(() => controller.abort(), 5000);
     fetch(`https://v3.football.api-sports.io/players?league=${LEAGUE_ID}&season=${SEASON}`, {
@@ -364,27 +349,21 @@ function loadPlayers() {
     })
     .then(res => res.ok ? res.json() : null)
     .then(data => {
-        if (data && data.response && data.response.length > 0) {
-            const apiPlayers = data.response.map(p => ({
+        if (data && data.response && data.response.length) {
+            const api = data.response.map(p => ({
                 id: p.player.id,
                 name: p.player.name,
                 nationality: p.player.nationality || 'غير معروف',
                 level: 'easy',
                 image: p.player.photo || ''
             })).filter(p => p.image);
-            if (apiPlayers.length > 0) {
-                players = apiPlayers;
-                updateUI();
-                renderAchievements();
-                console.log(`✅ تم تحديث البيانات من API (${players.length} لاعب)`);
-            }
+            if (api.length > 0) { players = api; updateUI(); renderAchievements(); }
         }
-    })
-    .catch(() => {});
+    }).catch(()=>{});
 }
 
 // ============================================================
-//  بقية الدوال (مختصرة لكنها كاملة)
+//  دوال اللعبة الأساسية (محسّنة)
 // ============================================================
 function startGame(m, isDaily = false) {
     if (!players.length) { showToast('⚠️ انتظر التحميل'); return; }
@@ -396,7 +375,7 @@ function startGame(m, isDaily = false) {
     else if (m === 'rare') { total = 40; limit = 18; filterLevel = ['hard','legend']; }
 
     let pool = players;
-    if (filterLevel) { pool = players.filter(p => filterLevel.includes(p.level)); if (!pool.length) { pool = players; } }
+    if (filterLevel) { pool = players.filter(p => filterLevel.includes(p.level)); if (!pool.length) pool = players; }
 
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
     questions = shuffled.slice(0, Math.min(total, shuffled.length));
@@ -406,19 +385,25 @@ function startGame(m, isDaily = false) {
     document.getElementById('gameModeName').textContent = isDaily ? 'التحدي اليومي' : ({classic:'كلاسيكي', speed:'السرعة', streak:'الستريك', rare:'نادر'}[m] || 'كلاسيكي');
     document.getElementById('gameDifficulty').textContent = isDaily ? '🌟 مضاعف' : 'تحدي';
     document.getElementById('gameScore').textContent = '0';
+    document.getElementById('eliminateBtn').disabled = false;
     navigate('gamePage');
     renderQuestion();
 }
+
 function renderQuestion() {
     if (idx >= questions.length) { endGame(); return; }
-    const q = questions[idx]; if (!q) { endGame(); return; }
+    const q = questions[idx];
+    if (!q || !q.name || !q.image) { showToast('⚠️ خطأ في بيانات السؤال'); nextQuestion(); return; }
+
     answered = false;
     document.getElementById('playerImage').src = q.image;
+    document.getElementById('playerImage').alt = q.name;
     document.getElementById('resultBox').className = 'result-box';
     document.getElementById('resultBox').textContent = '';
     document.getElementById('questionCounter').textContent = `${idx+1} / ${questions.length}`;
     document.getElementById('gameProgress').style.width = `${(idx/questions.length)*100}%`;
     document.getElementById('streakDisplay').textContent = `🔥 ${streak}`;
+
     const opts = generateOptions(q);
     const container = document.getElementById('answers');
     container.innerHTML = '';
@@ -431,18 +416,23 @@ function renderQuestion() {
         btn.onclick = () => checkAnswer(btn, p.id, q.id);
         container.appendChild(btn);
     });
+
     let limit = 15; if (mode === 'speed') limit = 10; else if (mode === 'streak') limit = 12; else if (mode === 'rare') limit = 18;
     startTimer(limit);
     document.getElementById('hintBtn').disabled = false;
     document.getElementById('skipBtn').disabled = false;
     document.getElementById('eliminateBtn').disabled = false;
 }
+
 function generateOptions(correct) {
+    if (!correct || !correct.id) { showToast('⚠️ خطأ في بيانات اللاعب'); return []; }
     const others = players.filter(p => p.id !== correct.id);
     const shuffled = others.sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, 3);
-    return [correct, ...selected].sort(() => Math.random() - 0.5);
+    const opts = [correct, ...selected];
+    return opts.sort(() => Math.random() - 0.5);
 }
+
 function startTimer(sec) {
     clearInterval(timer);
     timeLeft = sec;
@@ -466,12 +456,14 @@ function startTimer(sec) {
         }
     }, 1000);
 }
-function checkAnswer(btn, selected, correct) {
+
+function checkAnswer(btn, selected, correctId) {
     if (answered) return;
     clearInterval(timer);
     answered = true;
     document.querySelectorAll('.answer-btn').forEach(b => b.classList.add('disabled'));
-    if (selected === correct) {
+
+    if (selected === correctId) {
         btn.classList.add('correct');
         correct++;
         streak++;
@@ -498,22 +490,30 @@ function checkAnswer(btn, selected, correct) {
     disableButtons();
     setTimeout(nextQuestion, 1500);
 }
+
 function highlightCorrectAnswer() {
     const q = questions[idx];
     document.querySelectorAll('.answer-btn').forEach(b => { if (parseInt(b.dataset.id) === q.id) b.classList.add('correct'); });
 }
+
 function disableButtons() {
     document.querySelectorAll('.answer-btn').forEach(b => b.classList.add('disabled'));
     document.getElementById('hintBtn').disabled = true;
     document.getElementById('skipBtn').disabled = true;
     document.getElementById('eliminateBtn').disabled = true;
 }
+
 function showResult(correct, msg) {
     const box = document.getElementById('resultBox');
     box.textContent = msg;
     box.className = `result-box show ${correct ? 'correct' : 'wrong'}`;
 }
+
 function nextQuestion() { idx++; renderQuestion(); }
+
+// ============================================================
+//  الأدوات (تلميح، تخطي، إزالة خيارين)
+// ============================================================
 function useHint() {
     if (hints <= 0) { showToast('💡 لا توجد تلميحات'); return; }
     if (answered) return;
@@ -523,6 +523,7 @@ function useHint() {
     document.getElementById('hintBtn').textContent = `💡 ${hints}`;
     if (hints <= 0) document.getElementById('hintBtn').disabled = true;
 }
+
 function skipQuestion() {
     if (answered) return;
     clearInterval(timer);
@@ -534,6 +535,7 @@ function skipQuestion() {
     highlightCorrectAnswer();
     setTimeout(nextQuestion, 1500);
 }
+
 function eliminateOptions() {
     if (answered || eliminateUsed) { if (!eliminateUsed) showToast('✂️ تم استخدام هذه الخاصية بالفعل'); return; }
     eliminateUsed = true;
@@ -546,11 +548,16 @@ function eliminateOptions() {
     shuffled.slice(0, 2).forEach(b => { b.style.opacity = '0.3'; b.style.pointerEvents = 'none'; b.classList.add('disabled'); });
     showToast('✂️ تم إزالة خيارين!');
 }
+
+// ============================================================
+//  المؤثرات الصوتية والوضع الليلي
+// ============================================================
 function playSound(correct) {
     const setting = document.getElementById('soundSwitch');
     if (!setting || !setting.classList.contains('on')) return;
     try { new Audio(correct ? 'data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACBhYqFhYWFiYWJhYmFiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhQ==' : 'data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACBhYqFhYWFiYWJhYmFiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhQ==').play(); } catch(e) {}
 }
+
 function toggleTheme() {
     const sw = document.getElementById('themeSwitch');
     document.body.classList.toggle('light-mode');
@@ -558,6 +565,10 @@ function toggleTheme() {
     const icon = document.querySelector('.setting-row .icon');
     if (document.body.classList.contains('light-mode')) { icon.textContent = '☀️'; showToast('🌞 وضع نهاري'); } else { icon.textContent = '🌙'; showToast('🌙 وضع ليلي'); }
 }
+
+// ============================================================
+//  إنهاء اللعبة وحفظ الإحصائيات
+// ============================================================
 function endGame() {
     clearInterval(timer);
     document.getElementById('endScore').textContent = score;
@@ -574,19 +585,28 @@ function endGame() {
     if (name) addToLeaderboard(name, score);
     renderAchievements();
 }
+
 function playAgain() { const isDaily = document.getElementById('gameModeName').textContent === 'التحدي اليومي'; startGame(mode, isDaily); }
 function goHome() { navigate('homePage'); updateUI(); }
 function confirmExit() { if (confirm('هل تريد الخروج؟')) { clearInterval(timer); navigate('homePage'); updateUI(); } }
+
+// ============================================================
+//  التخزين المحلي والمتصدرين
+// ============================================================
 function saveStats() {
-    let s = JSON.parse(localStorage.getItem('footballStats')) || { games:0, correct:0, bestStreak:0, xp:0, level:1, rarePlayed: false };
-    s.games = (s.games || 0) + 1; s.correct = (s.correct || 0) + correct;
+    let s = JSON.parse(localStorage.getItem('footballStats')) || { games:0, correct:0, bestStreak:0, xp:0, level:1, rarePlayed:false };
+    s.games = (s.games || 0) + 1;
+    s.correct = (s.correct || 0) + correct;
     if (streak > (s.bestStreak || 0)) s.bestStreak = streak;
-    s.xp = (s.xp || 0) + score; s.level = Math.floor(s.xp / 100) + 1;
+    s.xp = (s.xp || 0) + score;
+    s.level = Math.floor(s.xp / 100) + 1;
     if (mode === 'rare') s.rarePlayed = true;
     localStorage.setItem('footballStats', JSON.stringify(s));
     updateUI();
 }
-function loadStats() { return JSON.parse(localStorage.getItem('footballStats')) || { games:0, correct:0, bestStreak:0, xp:0, level:1, rarePlayed: false }; }
+
+function loadStats() { return JSON.parse(localStorage.getItem('footballStats')) || { games:0, correct:0, bestStreak:0, xp:0, level:1, rarePlayed:false }; }
+
 function updateUI() {
     const s = loadStats();
     document.getElementById('homeGames').textContent = s.games;
@@ -598,11 +618,19 @@ function updateUI() {
     document.getElementById('profileXP').textContent = `${xpInLevel} / 100 XP`;
     document.getElementById('levelProgress').style.width = `${(xpInLevel / 100) * 100}%`;
 }
+
 function renderAchievements() {
     const s = loadStats();
     const container = document.getElementById('achievementsContainer');
-    container.innerHTML = ACHIEVEMENTS.map(a => `<div class="achievement" style="${a.condition(s) ? 'border-color:rgba(46,204,113,0.2);' : 'opacity:0.4;'}"><div class="achievement-icon">${a.condition(s) ? a.name.split(' ')[0] : '🔒'}</div><h4>${a.name}</h4><p>${a.condition(s) ? '✅ تم فتحه' : a.desc}</p></div>`).join('');
+    container.innerHTML = ACHIEVEMENTS.map(a => `
+        <div class="achievement" style="${a.condition(s) ? 'border-color:rgba(46,204,113,0.2);' : 'opacity:0.4;'}">
+            <div class="achievement-icon">${a.condition(s) ? a.name.split(' ')[0] : '🔒'}</div>
+            <h4>${a.name}</h4>
+            <p>${a.condition(s) ? '✅ تم فتحه' : a.desc}</p>
+        </div>
+    `).join('');
 }
+
 function loadLeaderboard() {
     leaderboard = JSON.parse(localStorage.getItem('footballLeaderboard')) || [];
     renderLeaderboard();
@@ -611,30 +639,58 @@ function saveLeaderboard() { localStorage.setItem('footballLeaderboard', JSON.st
 function renderLeaderboard() {
     const container = document.getElementById('leaderboard');
     const sorted = [...leaderboard].sort((a,b) => b.score - a.score).slice(0,10);
-    if (!sorted.length) { container.innerHTML = `<div style="text-align:center;padding:16px;color:#8896ab;font-size:12px;">لا يوجد لاعبين بعد، كن أول من يتصدر!</div>`; return; }
-    container.innerHTML = sorted.map((e,i) => `<div class="entry"><div class="rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`}</div><div class="name">${e.name||'لاعب'}</div><div class="score">${e.score} XP</div></div>`).join('');
+    if (!sorted.length) { container.innerHTML = `<div style="text-align:center;padding:12px;color:#8896ab;font-size:11px;">لا يوجد لاعبين بعد، كن أول من يتصدر!</div>`; return; }
+    container.innerHTML = sorted.map((e,i) => `
+        <div class="entry">
+            <div class="rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`}</div>
+            <div class="name">${e.name||'لاعب'}</div>
+            <div class="score">${e.score} XP</div>
+        </div>
+    `).join('');
 }
 function addToLeaderboard(name, score) { leaderboard.push({ name: name || 'لاعب', score: score }); saveLeaderboard(); renderLeaderboard(); }
+
+// ============================================================
+//  المكافأة اليومية والتحدي اليومي
+// ============================================================
 function updateDailyReward() {
     const lastClaim = localStorage.getItem('dailyRewardDate');
     const today = new Date().toDateString();
-    if (lastClaim === today) { dailyClaimed = true; document.getElementById('dailyStatus').textContent = '✅ تم الاستلام اليوم'; document.getElementById('dailyRewardBtn').textContent = 'تم ✅'; document.getElementById('dailyRewardBtn').style.opacity = '0.5'; }
-    else { dailyClaimed = false; document.getElementById('dailyStatus').textContent = 'تسجيل الدخول يمنحك +10 XP'; document.getElementById('dailyRewardBtn').textContent = 'استلام'; document.getElementById('dailyRewardBtn').style.opacity = '1'; }
+    if (lastClaim === today) {
+        dailyClaimed = true;
+        document.getElementById('dailyStatus').textContent = '✅ تم الاستلام اليوم';
+        document.getElementById('dailyRewardBtn').textContent = 'تم ✅';
+        document.getElementById('dailyRewardBtn').style.opacity = '0.5';
+    } else {
+        dailyClaimed = false;
+        document.getElementById('dailyStatus').textContent = '+10 XP يومياً';
+        document.getElementById('dailyRewardBtn').textContent = 'استلام';
+        document.getElementById('dailyRewardBtn').style.opacity = '1';
+    }
 }
 function claimDailyReward() {
     if (dailyClaimed) { showToast('🎁 استلمت اليوم بالفعل!'); return; }
-    const stats = loadStats(); stats.xp = (stats.xp || 0) + 10;
+    const stats = loadStats();
+    stats.xp = (stats.xp || 0) + 10;
     localStorage.setItem('footballStats', JSON.stringify(stats));
     localStorage.setItem('dailyRewardDate', new Date().toDateString());
-    dailyClaimed = true; updateDailyReward(); updateUI(); showToast('🎁 +10 XP مكافأة يومية!');
+    dailyClaimed = true;
+    updateDailyReward();
+    updateUI();
+    showToast('🎁 +10 XP مكافأة يومية!');
 }
 function startDailyChallenge() { showToast('📅 التحدي اليومي: 10 أسئلة، مكافأة مضاعفة!'); startGame('classic', true); }
+
+// ============================================================
+//  التنقل والإشعارات
+// ============================================================
 function navigate(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(page).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     const map = { homePage:0, modesPage:1, premiumPage:2, profilePage:3, settingsPage:4 };
-    const idx = map[page]; if (idx !== undefined) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+    const idx = map[page];
+    if (idx !== undefined) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
     window.scrollTo({ top:0, behavior:'smooth' });
 }
 function toggleSetting(id) {
@@ -647,13 +703,4 @@ function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.classList.remove('show'), 2500);
-}
-window.onload = function() {
-    loadPlayers();
-    navigate('homePage');
-};
-</script>
-</body>
-</html>
+    clear
