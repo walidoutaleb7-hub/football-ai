@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GOAT QUIZ - النسخة الأسطورية الخارقة</title>
+    <title>GOAT QUIZ - النسخة الأسطورية الكاملة</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 
@@ -106,13 +106,8 @@
             padding: 4px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             box-shadow: 0 0 25px var(--primary-glow);
-        }
-
-        .hero-avatar {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            background: #000;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 45px; background-color: #111;
         }
 
         .btn-primary {
@@ -143,24 +138,6 @@
             margin-top: 10px;
         }
 
-        .level-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 16px; margin: 10px 0;
-            border-radius: 18px;
-            background: var(--bg-card-hover);
-            border: 1px solid var(--border);
-        }
-        .level-item.locked { opacity: 0.5; filter: grayscale(0.8); }
-        .level-info h4 { font-size: 15px; font-weight: 800; }
-        .level-info p { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
-
-        .level-btn {
-            background: var(--primary); color: #041008;
-            padding: 8px 18px; border: none; border-radius: 12px;
-            font-weight: 800; font-size: 13px; cursor: pointer;
-        }
-        .level-item.locked .level-btn { background: #2a3447; color: var(--text-muted); cursor: not-allowed; }
-
         .game-stats {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 14px;
@@ -172,22 +149,15 @@
             font-size: 13px; font-weight: 800; color: var(--primary);
         }
 
-        .player-box-4k {
-            width: 100%; height: 260px;
+        .club-box-4k {
+            width: 100%; height: 240px;
             border-radius: 24px;
             background: radial-gradient(circle, #121e33 0%, #060910 100%);
             border: 2px solid rgba(0, 255, 136, 0.3);
             box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
             display: flex; align-items: center; justify-content: center;
             margin-bottom: 16px; position: relative; overflow: hidden;
-        }
-
-        .player-box-4k img {
-            width: 180px; height: 180px;
-            border-radius: 50%; object-fit: cover;
-            border: 4px solid var(--primary);
-            box-shadow: 0 0 25px var(--primary-glow);
-            background: #000;
+            font-size: 80px;
         }
 
         .options-grid { display: grid; gap: 10px; }
@@ -209,25 +179,6 @@
             text-align: center; box-shadow: 0 0 30px var(--gold-glow);
             margin-bottom: 16px;
         }
-
-        .setting-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 0; border-bottom: 1px solid var(--border);
-        }
-        .setting-item:last-child { border-bottom: none; }
-
-        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #1a2338; transition: .3s; border-radius: 26px; border: 1px solid var(--border);
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-            background-color: white; transition: .3s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(24px); }
 
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
@@ -269,18 +220,10 @@
         <!-- الشاشة الرئيسية -->
         <section id="home" class="screen active">
             <div class="card hero-card">
-                <div class="hero-avatar-container">
-                    <img src="https://media.api-sports.io/football/players/257.png" class="hero-avatar" alt="RONALDO">
-                </div>
-                <h1 style="font-size: 24px; margin-bottom: 6px;">تحدي أساطير الكرة</h1>
-                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">العب، اكتشف شعارات الأندية، واقضِ على كل التحديات!</p>
-                <button class="btn-primary" onclick="showScreen('modes')">⚡ اختر نمط اللعب</button>
-            </div>
-
-            <div class="card" style="background: linear-gradient(145deg, #0d2218, #112d22); text-align: center; padding: 20px; border-color: rgba(0,255,136,0.3);" onclick="startClubsMode()">
-                <div style="font-size: 32px; margin-bottom: 6px;">🛡️</div>
-                <h3 style="font-size: 17px; margin-bottom: 4px; color: var(--primary);">تحدي شعارات أندية العالم</h3>
-                <p style="color: var(--text-muted); font-size: 12px;">ميزة جديدة: خمن النادي من شعاره الأسطوري واربح نقاط مضاعفة!</p>
+                <div class="hero-avatar-container">⚽</div>
+                <h1 style="font-size: 24px; margin-bottom: 6px;">تحدي 60+ نادي أسطوري</h1>
+                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">بدون إنترنت وبدون API خارجي، قاعدة بيانات ضخمة بين يديك!</p>
+                <button class="btn-primary" onclick="startClubsGame()">⚡ ابدأ التحدي الآن</button>
             </div>
 
             <div class="card" style="background: linear-gradient(145deg, #0d1b2a, #1b263b); text-align: center; padding: 20px;" onclick="openDailyTrivia()">
@@ -290,72 +233,34 @@
             </div>
         </section>
 
-        <!-- مستويات اللاعبين -->
-        <section id="modes" class="screen">
-            <div class="card">
-                <h2 style="font-size: 19px; margin-bottom: 4px;">مراحل اللاعبين المتدرجة</h2>
-                <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 16px;">تجاوز المراحل لفتح التحديات الكبرى</p>
-
-                <div class="level-item" id="lvl-easy">
-                    <div class="level-info">
-                        <h4>🟢 المرحلة السهلة (النجوم الكبار)</h4>
-                        <p>رونالدو، ميسي، مبابي، هالاند...</p>
-                    </div>
-                    <button class="level-btn" onclick="startLevel('easy')">العب</button>
-                </div>
-
-                <div class="level-item locked" id="lvl-medium">
-                    <div class="level-info">
-                        <h4>🟡 المرحلة المتوسطة</h4>
-                        <p>محرز، ساكا، موسيالا، فودين...</p>
-                    </div>
-                    <button class="level-btn" id="btn-medium" onclick="startLevel('medium')">🔒 مقفل</button>
-                </div>
-
-                <div class="level-item locked" id="lvl-hard">
-                    <div class="level-info">
-                        <h4>🟠 المرحلة الصعبة</h4>
-                        <p>فالفيردي، ساليبا، رايس، لياو...</p>
-                    </div>
-                    <button class="level-btn" id="btn-hard" onclick="startLevel('hard')">🔒 مقفل</button>
-                </div>
-
-                <div class="level-item locked" id="lvl-legend">
-                    <div class="level-info">
-                        <h4>👑 مرحلة الأساطير الخالدة</h4>
-                        <p>زيدان، رونالدينيو، إنييستا، كاكا...</p>
-                    </div>
-                    <button class="level-btn" id="btn-legend" onclick="startLevel('legend')">🔒 مقفل</button>
-                </div>
-
-                <button class="btn-secondary" onclick="showScreen('home')">الرجوع للرئيسية</button>
-            </div>
-        </section>
-
         <!-- شاشة اللعب الحماسية -->
         <section id="game" class="screen">
             <div class="game-stats">
-                <div class="stat-badge">السؤال <span id="qIndex">1</span>/<span id="qTotal">10</span></div>
+                <div class="stat-badge">السؤال <span id="qIndex">1</span>/<span id="qTotal">15</span></div>
                 <div class="stat-badge" style="color: var(--danger);">⏱ <span id="timer">15</span>ث</div>
                 <div class="stat-badge" style="color: var(--gold);">❤️ <span id="livesCount">3</span></div>
             </div>
 
             <div class="card">
-                <div class="player-box-4k">
-                    <img id="playerImage" alt="الصورة بدقة عالية">
-                </div>
+                <div class="club-box-4k" id="clubEmoji">🛡️</div>
+                <h3 style="text-align: center; margin-bottom: 16px; font-size: 18px; color: var(--primary);">ما هو هذا النادي الشهير؟</h3>
                 <div class="options-grid" id="optionsGrid"></div>
             </div>
         </section>
 
-        <!-- متجر البريميوم -->
+        <!-- متجر البريميوم 1$ -->
         <section id="premium" class="screen">
             <div class="premium-banner">
                 <div style="font-size: 40px; margin-bottom: 6px;">👑</div>
                 <h2 style="font-size: 22px; color: var(--gold); margin-bottom: 4px;">عضوية الأساطير VIP</h2>
-                <p style="font-size: 12px; color: #fff; margin-bottom: 12px;">افتح جميع المراحل بضغطة زر واحدة</p>
-                <p style="font-size: 14px; color: var(--gold); font-weight: 800; margin-bottom: 16px;">التكلفة: 200 قطعة ذهبية 🪙</p>
-                <button class="btn-primary btn-gold" onclick="buyPremium()">🚀 شراء وترقية VIP</button>
+                <p style="font-size: 12px; color: #fff; margin-bottom: 12px;">استمتع بتجربة أسطورية بلا إعلانات نهائياً</p>
+                <ul style="text-align: right; font-size: 13px; color: #ddd; margin-bottom: 16px; list-style: inside; line-height: 1.8;">
+                    <li>قلوب ومحاولات بلا نهاية (ما تنفدش خلاص)</li>
+                    <li>إلغاء نهائي لجميع الإعلانات</li>
+                    <li>فتح جميع التلميحات والمساعدات</li>
+                </ul>
+                <p style="font-size: 16px; color: var(--gold); font-weight: 900; margin-bottom: 16px;">السعر الرمزي: 1 دولار فقط ($1)</p>
+                <button class="btn-primary btn-gold" onclick="buyVip()">🚀 ترقية إلى VIP الآن ($1)</button>
             </div>
         </section>
 
@@ -363,18 +268,10 @@
         <section id="settings" class="screen">
             <div class="card">
                 <h2 style="font-size: 19px; margin-bottom: 16px;">⚙️ إعدادات اللعبة</h2>
-                
-                <div class="setting-item">
-                    <span>🔊 أصوات التفاعل</span>
-                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                <div style="padding: 10px 0; color: var(--text-muted); font-size: 14px;">
+                    حالة العضوية: <span id="vipStatusText" style="color: var(--primary); font-weight: 850;">عضوية عادية</span>
                 </div>
-
-                <div class="setting-item">
-                    <span>📳 الاهتزاز عند الخطأ</span>
-                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
-                </div>
-
-                <button class="btn-secondary" onclick="resetProgress()">🔄 إعادة ضبط التقدم والمستويات</button>
+                <button class="btn-secondary" onclick="resetProgress()">🔄 إعادة ضبط البيانات</button>
             </div>
         </section>
 
@@ -385,79 +282,46 @@
         <button class="nav-item active" onclick="showScreen('home')" data-screen="home">
             <span class="icon">🏠</span>الرئيسية
         </button>
-        <button class="nav-item" onclick="showScreen('modes')" data-screen="modes">
-            <span class="icon">🎮</span>المستويات
-        </button>
         <button class="nav-item" onclick="showScreen('premium')" data-screen="premium">
-            <span class="icon">👑</span>بريميوم
+            <span class="icon">👑</span>بريميوم 1$
         </button>
         <button class="nav-item" onclick="showScreen('settings')" data-screen="settings">
             <span class="icon">⚙️</span>الإعدادات
         </button>
     </nav>
 
-    <!-- الكود البرمجي وقاعدة البيانات الداخلية المدمجة خصيصاً لتطبيقات الأندرويد -->
     <script>
         "use strict";
 
-        const DB_PLAYERS = {
-            easy: [
-                { name: "كريستيانو رونالدو", image: "https://media.api-sports.io/football/players/257.png" },
-                { name: "ليونيل ميسي", image: "https://media.api-sports.io/football/players/154.png" },
-                { name: "كيليان مبابي", image: "https://media.api-sports.io/football/players/278.png" },
-                { name: "إيرلينغ هالاند", image: "https://media.api-sports.io/football/players/1100.png" },
-                { name: "محمد صلاح", image: "https://media.api-sports.io/football/players/306.png" },
-                { name: "كيفن دي بروين", image: "https://media.api-sports.io/football/players/886.png" },
-                { name: "جود بيلينغهام", image: "https://media.api-sports.io/football/players/22828.png" },
-                { name: "نيمار جونيور", image: "https://media.api-sports.io/football/players/212.png" },
-                { name: "فينيسيوس جونيور", image: "https://media.api-sports.io/football/players/39715.png" },
-                { name: "روبرت ليفاندوفسكي", image: "https://media.api-sports.io/football/players/521.png" }
-            ],
-            medium: [
-                { name: "رياض محرز", image: "https://media.api-sports.io/football/players/1712.png" },
-                { name: "بوكايو ساكا", image: "https://media.api-sports.io/football/players/1465.png" },
-                { name: "جمال موسيالا", image: "https://media.api-sports.io/football/players/158223.png" },
-                { name: "فيل فودين", image: "https://media.api-sports.io/football/players/648.png" },
-                { name: "لامين يامال", image: "https://media.api-sports.io/football/players/309971.png" },
-                { name: "أنطوان غريزمان", image: "https://media.api-sports.io/football/players/229.png" },
-                { name: "برونو فرنانديز", image: "https://media.api-sports.io/football/players/905.png" },
-                { name: "سون هيونغ مين", image: "https://media.api-sports.io/football/players/192.png" }
-            ],
-            hard: [
-                { name: "فيدي فالفيردي", image: "https://media.api-sports.io/football/players/22904.png" },
-                { name: "ويليام ساليبا", image: "https://media.api-sports.io/football/players/1458.png" },
-                { name: "ديكلان رايس", image: "https://media.api-sports.io/football/players/18928.png" },
-                { name: "رافائيل لياو", image: "https://media.api-sports.io/football/players/28929.png" },
-                { name: "نيكولو باريلا", image: "https://media.api-sports.io/football/players/139.png" },
-                { name: "مارتن أوديغارد", image: "https://media.api-sports.io/football/players/359.png" }
-            ],
-            legend: [
-                { name: "زين الدين زيدان", image: "https://media.api-sports.io/football/players/114979.png" },
-                { name: "رونالدينيو", image: "https://media.api-sports.io/football/players/115000.png" },
-                { name: "أندريس إنييستا", image: "https://media.api-sports.io/football/players/115010.png" },
-                { name: "كاكا", image: "https://media.api-sports.io/football/players/114995.png" },
-                { name: "رونالدو نازاريو", image: "https://media.api-sports.io/football/players/114990.png" }
-            ]
-        };
-
-        const DB_CLUBS = [
-            { name: "ريال مدريد", image: "https://media.api-sports.io/football/teams/541.png" },
-            { name: "برشلونة", image: "https://media.api-sports.io/football/teams/529.png" },
-            { name: "مانشستر سيتي", image: "https://media.api-sports.io/football/teams/50.png" },
-            { name: "بايرن ميونخ", image: "https://media.api-sports.io/football/teams/157.png" },
-            { name: "ليفربول", image: "https://media.api-sports.io/football/teams/40.png" },
-            { name: "باريس سان جيرمان", image: "https://media.api-sports.io/football/teams/85.png" },
-            { name: "يوفنتوس", image: "https://media.api-sports.io/football/teams/496.png" },
-            { name: "إي سي ميلان", image: "https://media.api-sports.io/football/teams/489.png" }
+        // قاعدة بيانات داخلية ضخمة تضم أكثر من 60 نادياً أسطورياً ومشهوراً
+        const DB_CLUBS_60 = [
+            { name: "ريال مدريد", emoji: "👑" }, { name: "برشلونة", emoji: "🔴" }, { name: "مانشستر سيتي", emoji: "⚡" },
+            { name: "بايرن ميونخ", emoji: "🔴" }, { name: "ليفربول", emoji: "🦅" }, { name: "باريس سان جيرمان", emoji: "🗼" },
+            { name: "يوفنتوس", emoji: "🦓" }, { name: "إي سي ميلان", emoji: "🔴" }, { name: "إنتر ميلان", emoji: "🐍" },
+            { name: "مانشستر يونايتد", emoji: "👹" }, { name: "أرسنال", emoji: "🎯" }, { name: "تشيلسي", emoji: "🦁" },
+            { name: "أتلتيكو مدريد", emoji: "🐻" }, { name: "بوروسيا دورتموند", emoji: "🐝" }, { name: "توتنهام", emoji: "🐓" },
+            { name: "أياكس أمستردام", emoji: "❌" }, { name: "بورتو", emoji: "🐉" }, { name: "بنفيكا", emoji: "🦅" },
+            { name: "غلطة سراي", emoji: "🦁" }, { name: "فنربخشة", emoji: "🟡" }, { name: "الهلال السعودي", emoji: "💙" },
+            { name: "النصر السعودي", emoji: "💛" }, { name: "الاتحاد السعودي", emoji: "🐅" }, { name: "الأهلي السعودي", emoji: "💚" },
+            { name: "الأهلي المصري", emoji: "🦅" }, { name: "الزمالك المصري", emoji: "🏹" }, { name: "الرجاء الرياضي", emoji: "🦅" },
+            { name: "الوداد الرياضي", emoji: "🔴" }, { name: "الترجي التونسي", emoji: "🟡" }, { name: "النجم الساحلي", emoji: "⭐" },
+            { name: "شبيبة القبائل", emoji: "🟢" }, { name: "مولودية الجزائر", emoji: "🟢" }, { name: "اتحاد الجزائر", emoji: "🔴" },
+            { name: "برسيبوليس", emoji: "🔴" }, { name: "السد القطري", emoji: "🤍" }, { name: "العين الإماراتي", emoji: "💜" },
+            { name: "بوكا جونيورز", emoji: "💙" }, { name: "ريفربليت", emoji: "🔴" }, { name: "فلامينغو", emoji: "🖤" },
+            { name: "بالميراس", emoji: "🟢" }, { name: "نادي روما", emoji: "🐺" }, { name: "نابولي", emoji: "⛰️" },
+            { name: "لاتسيو", emoji: "🦅" }, { name: "أتلانتا", emoji: "🔷" }, { name: "باير ليفركوزن", emoji: "💊" },
+            { name: "لايبزيغ", emoji: "🐂" }, { name: "أستون فيلا", emoji: "🦁" }, { name: "وستهام يونايتد", emoji: "⚒️" },
+            { name: "نيوكاسل يونايتد", emoji: "🕊️" }, { name: "مارسيليا", emoji: "⚪" }, { name: "ليون", emoji: "🦁" },
+            { name: "موناكو", emoji: "🏎️" }, { name: "إشبيلية", emoji: "🏰" }, { name: "فالنسيا", emoji: "🦇" },
+            { name: "فياريال", emoji: "🟡" }, { name: "أتلتيك بلباو", emoji: "🦁" }, { name: "سلتيك", emoji: "🍀" },
+            { name: "رينجرز", emoji: "🔵" }, { name: "شاختار دونيتسك", emoji: "⛏️" }, { name: "آنتويرب", emoji: "🔴" }
         ];
 
         let coins = 100;
         let lives = 3;
-        let unlockedLevels = { medium: false, hard: false, legend: false };
+        let isVip = false;
         let currentQuestions = [];
         let currentIndex = 0;
-        let activeMode = 'easy';
-        let isClubMode = false;
         let timer = null;
         let timeLeft = 15;
 
@@ -469,27 +333,11 @@
             });
         }
 
-        function startLevel(mode) {
-            if (mode !== 'easy' && !unlockedLevels[mode]) {
-                showToast('🔒 هذه المرحلة مغلقة، أكمل المرحلة السهلة أو افتحها بـ VIP!');
-                return;
-            }
-            activeMode = mode;
-            isClubMode = false;
-            currentQuestions = shuffle([...DB_PLAYERS[mode]]).slice(0, 8);
-            initGameSession();
-        }
-
-        function startClubsMode() {
-            isClubMode = true;
-            currentQuestions = shuffle([...DB_CLUBS]).slice(0, 6);
-            initGameSession();
-        }
-
-        function initGameSession() {
+        function startClubsGame() {
+            currentQuestions = shuffle([...DB_CLUBS_60]).slice(0, 15);
             currentIndex = 0;
-            lives = 3;
-            document.getElementById('livesCount').textContent = lives;
+            lives = isVip ? 999 : 3;
+            document.getElementById('livesCount').textContent = isVip ? '♾️' : lives;
             document.getElementById('qTotal').textContent = currentQuestions.length;
             showScreen('game');
             loadQuestion();
@@ -498,12 +346,8 @@
         function loadQuestion() {
             clearInterval(timer);
             if (currentIndex >= currentQuestions.length) {
-                if (isClubMode) {
-                    showToast('🏆 أحسنت! أنهيت تحدي شعارات الأندية بنجاح!');
-                    showScreen('home');
-                } else {
-                    passLevel(activeMode);
-                }
+                showToast('🏆 مبروك! أتممت التحدي الأسطوري بنجاح!');
+                showScreen('home');
                 return;
             }
 
@@ -512,7 +356,7 @@
             document.getElementById('qIndex').textContent = currentIndex + 1;
 
             const currentObj = currentQuestions[currentIndex];
-            document.getElementById('playerImage').src = currentObj.image;
+            document.getElementById('clubEmoji').textContent = currentObj.emoji;
 
             generateOptions(currentObj);
 
@@ -527,8 +371,7 @@
         }
 
         function generateOptions(correctObj) {
-            let sourceArray = isClubMode ? DB_CLUBS : [...DB_PLAYERS.easy, ...DB_PLAYERS.medium, ...DB_PLAYERS.hard, ...DB_PLAYERS.legend];
-            let others = sourceArray.filter(p => p.name !== correctObj.name);
+            let others = DB_CLUBS_60.filter(c => c.name !== correctObj.name);
             let selectedOthers = shuffle(others).slice(0, 3);
             let options = shuffle([correctObj, ...selectedOthers]);
 
@@ -551,9 +394,9 @@
 
             if (isCorrect) {
                 btn.classList.add('correct');
-                coins += isClubMode ? 10 : 5;
+                coins += 10;
                 updateCoinsUI();
-                showToast(isClubMode ? '✅ صحيح! (+10🪙)' : '✅ إجابة صحيحة! (+5🪙)');
+                showToast('✅ إجابة صحيحة! (+10🪙)');
                 setTimeout(nextQuestionDelay, 1100);
             } else {
                 btn.classList.add('wrong');
@@ -563,11 +406,13 @@
         }
 
         function handleWrongAnswer(correctName) {
-            lives--;
-            document.getElementById('livesCount').textContent = lives;
+            if (!isVip) {
+                lives--;
+                document.getElementById('livesCount').textContent = lives;
+            }
             showToast(`❌ خطأ! الإجابة هي: ${correctName}`);
             
-            if (lives <= 0) {
+            if (!isVip && lives <= 0) {
                 setTimeout(() => {
                     showToast('💔 انتهت أرواحك!');
                     showScreen('home');
@@ -582,38 +427,18 @@
             loadQuestion();
         }
 
-        function passLevel(mode) {
-            showToast('🏆 مبروك، أنهيت المرحلة بنجاح وتم فتح المرحلة التالية!');
-            if (mode === 'easy') { unlockedLevels.medium = true; unlockUI('medium'); }
-            else if (mode === 'medium') { unlockedLevels.hard = true; unlockUI('hard'); }
-            else if (mode === 'hard') { unlockedLevels.legend = true; unlockUI('legend'); }
-            showScreen('modes');
-        }
-
-        function unlockUI(mode) {
-            const el = document.getElementById(`lvl-${mode}`);
-            el.classList.remove('locked');
-            document.getElementById(`btn-${mode}`).textContent = 'العب';
-        }
-
-        function buyPremium() {
-            if (coins >= 200) {
-                coins -= 200;
-                updateCoinsUI();
-                unlockedLevels = { medium: true, hard: true, legend: true };
-                ['medium', 'hard', 'legend'].forEach(m => unlockUI(m));
-                showToast('👑 تم تفعيل عضوية VIP وفتح كافة المراحل!');
-                showScreen('modes');
-            } else {
-                showToast('❌ رصيدك غير كافٍ! تحتاج 200🪙');
-            }
+        function buyVip() {
+            isVip = true;
+            lives = 999;
+            document.getElementById('vipStatusText').textContent = 'VIP نشط (قلوب بلا نهاية + بدون إعلانات)';
+            showToast('👑 مبروك! تم تفعيل عضوية VIP الأسطورية بنجاح!');
+            showScreen('home');
         }
 
         function openDailyTrivia() {
-            coins += 20;
-            updateCoinsUri(); // fixed minor typo inside function calls
+            coins += 50;
             updateCoinsUI();
-            showToast('🎯 أجبت عن السؤال اليومي بنجاح! ربحت 20🪙');
+            showToast('🎯 أجبت عن السؤال اليومي! ربحت 50🪙');
         }
 
         function updateCoinsUI() {
@@ -621,12 +446,11 @@
         }
 
         function resetProgress() {
-            unlockedLevels = { medium: false, hard: false, legend: false };
-            ['medium', 'hard', 'legend'].forEach(m => {
-                document.getElementById(`lvl-${m}`).classList.add('locked');
-                document.getElementById(`btn-${m}`).textContent = '🔒 مقفل';
-            });
-            showToast('🔄 تم إعادة ضبط المراحل');
+            isVip = false;
+            coins = 100;
+            updateCoinsUI();
+            document.getElementById('vipStatusText').textContent = 'عضوية عادية';
+            showToast('🔄 تمت الإعادة بنجاح');
         }
 
         function shuffle(arr) {
