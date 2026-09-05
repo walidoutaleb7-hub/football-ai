@@ -3,217 +3,1339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مين اللاعب؟</title>
+    <title>مين اللاعب؟ - أسطورة كرة القدم</title>
     <style>
-        /* ====== كود CSS الكامل (محسّن) ====== */
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
-
-        :root {
-            --bg: #0a0e17;
-            --card: #141c2b;
-            --border: rgba(255,255,255,0.06);
-            --primary: #2ecc71;
-            --primary-dark: #1a9c54;
-            --text: #f0f4fa;
-            --muted: #8896ab;
-            --radius: 24px;
-            --shadow: 0 20px 60px rgba(0,0,0,0.5);
+        /* =========================================================
+           BASE STYLES
+        ========================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-        body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; min-height: 100vh; overflow-x: hidden; }
-        button { font-family: inherit; border: none; cursor: pointer; background: none; }
-        img { max-width: 100%; display: block; }
+        body {
+            background: #0a0e17;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-        .app { max-width: 480px; margin: 0 auto; padding: 16px 12px 90px; }
-        .page { display: none; animation: fadeUp 0.35s ease; }
-        .page.active { display: block; }
-        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        /* =========================================================
+           SPLASH SCREEN
+        ========================================================= */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: radial-gradient(circle at center, #0f1a2b, #05080e);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
 
-        .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
-        .brand { display:flex; align-items:center; gap:12px; }
-        .brand-icon { width:48px; height:48px; border-radius:16px; background:linear-gradient(145deg, rgba(46,204,113,0.2), transparent); border:1px solid rgba(46,204,113,0.25); display:grid; place-items:center; font-size:24px; }
-        .brand h1 { font-size:18px; font-weight:900; }
-        .brand span { display:block; font-size:10px; color:var(--muted); margin-top:-2px; }
-        .xp-badge { background:rgba(255,255,255,0.05); border:1px solid var(--border); padding:6px 14px; border-radius:30px; font-size:13px; font-weight:800; display:flex; align-items:center; gap:6px; }
+        #splash.hide {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
 
-        .hero { background:linear-gradient(145deg, #121b2a, #0a111e); border:1px solid var(--border); border-radius:30px; padding:24px 20px; margin-bottom:20px; position:relative; overflow:hidden; }
-        .hero::after { content:"⚽"; position:absolute; left:-20px; bottom:-40px; font-size:120px; opacity:0.04; transform:rotate(-12deg); }
-        .hero-badge { display:inline-block; background:rgba(46,204,113,0.1); color:var(--primary); padding:4px 12px; border-radius:30px; font-size:10px; font-weight:800; margin-bottom:12px; }
-        .hero h2 { font-size:26px; font-weight:900; line-height:1.3; }
-        .hero h2 span { color:var(--primary); }
-        .hero p { color:var(--muted); font-size:13px; margin-top:6px; }
+        .splash-logo {
+            font-size: 80px;
+            animation: bounce 1.5s infinite alternate ease-in-out;
+            filter: drop-shadow(0 0 40px rgba(46, 204, 113, 0.3));
+        }
 
-        .section-title { display:flex; justify-content:space-between; align-items:center; margin:20px 0 12px; }
-        .section-title h3 { font-size:16px; font-weight:800; }
-        .section-title span { color:var(--muted); font-size:11px; }
+        .splash-title {
+            font-size: 42px;
+            font-weight: 900;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #2ecc71, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            animation: pulseText 2s infinite alternate;
+        }
 
-        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-        .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+        .splash-sub {
+            color: #8896ab;
+            font-size: 14px;
+            margin-top: 6px;
+            letter-spacing: 4px;
+        }
 
-        .mode-card { background:var(--card); border:1px solid var(--border); border-radius:22px; padding:16px; transition:0.2s; position:relative; overflow:hidden; cursor:pointer; }
-        .mode-card:active { transform:scale(0.97); }
-        .mode-card .tag { position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.05); color:var(--muted); font-size:8px; padding:2px 8px; border-radius:20px; }
-        .mode-card .icon { width:40px; height:40px; background:rgba(46,204,113,0.08); border-radius:14px; display:grid; place-items:center; font-size:20px; margin-bottom:10px; }
-        .mode-card h4 { font-size:15px; font-weight:900; }
-        .mode-card p { color:var(--muted); font-size:10px; margin-top:2px; }
+        .splash-loader {
+            margin-top: 30px;
+            width: 60px;
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-        .stat-card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:14px 6px; text-align:center; }
-        .stat-card .icon { font-size:22px; }
-        .stat-card .value { font-size:20px; font-weight:900; margin-top:2px; }
-        .stat-card .label { color:var(--muted); font-size:9px; }
+        .splash-loader::after {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 40%;
+            background: linear-gradient(90deg, #2ecc71, #f1c40f);
+            border-radius: 10px;
+            animation: loadBar 1.8s infinite ease-in-out;
+        }
 
-        .btn-primary { width:100%; padding:16px; background:linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius:16px; font-weight:900; font-size:14px; color:#04130a; box-shadow:0 8px 28px rgba(46,204,113,0.25); transition:0.2s; }
-        .btn-primary:active { transform:scale(0.98); }
-        .btn-secondary { width:100%; padding:14px; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:16px; font-weight:800; font-size:13px; color:var(--text); }
+        @keyframes bounce {
+            0% { transform: translateY(-8px) scale(1); }
+            100% { transform: translateY(8px) scale(1.05); }
+        }
 
-        .game-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
-        .game-back { width:44px; height:44px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:white; font-size:20px; }
-        .game-mode-label { text-align:center; }
-        .game-mode-label strong { display:block; font-size:13px; }
-        .game-mode-label span { color:var(--muted); font-size:10px; }
-        .game-score { text-align:left; }
-        .game-score strong { display:block; color:var(--primary); font-size:18px; }
-        .game-score span { color:var(--muted); font-size:9px; }
+        @keyframes pulseText {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
 
-        .progress-wrap { margin-bottom:16px; }
-        .progress-info { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); }
-        .progress-bar { height:4px; background:rgba(255,255,255,0.07); border-radius:20px; margin-top:6px; overflow:hidden; }
-        .progress-fill { height:100%; width:0%; background:linear-gradient(90deg, var(--primary), #7df0a0); border-radius:inherit; transition:width 0.3s; }
+        @keyframes loadBar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
+        }
 
-        .timer { width:72px; height:72px; border-radius:50%; margin:0 auto 16px; display:grid; place-items:center; position:relative; background:radial-gradient(circle at center, #121b2a 60%, transparent 61%), conic-gradient(var(--primary) var(--timer-progress,100%), rgba(255,255,255,0.06) 0); }
-        .timer::before { content:''; position:absolute; inset:5px; border-radius:50%; border:1px solid rgba(255,255,255,0.05); }
-        .timer span { position:relative; font-size:20px; font-weight:900; }
-        .timer.danger { background:radial-gradient(circle at center, #121b2a 60%, transparent 61%), conic-gradient(#e74c3c var(--timer-progress,100%), rgba(255,255,255,0.06) 0); }
+        /* =========================================================
+           MAIN APP
+        ========================================================= */
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px 12px 90px;
+            position: relative;
+            z-index: 1;
+        }
 
-        .player-frame { width:100%; height:280px; background:linear-gradient(180deg, #14202e, #0a101b); border:1px solid var(--border); border-radius:28px; overflow:hidden; display:flex; justify-content:center; align-items:flex-end; margin-bottom:12px; }
-        .player-frame img { height:95%; width:auto; max-width:85%; object-fit:contain; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
+        /* Floating background animation */
+        .bg-particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-        .answers { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-        .answer-btn { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:12px 10px; display:flex; align-items:center; gap:10px; color:var(--text); font-weight:700; font-size:13px; transition:0.15s; }
-        .answer-btn:active { transform:scale(0.97); }
-        .answer-btn .letter { width:26px; height:26px; border-radius:8px; background:rgba(255,255,255,0.06); display:grid; place-items:center; font-size:11px; color:var(--muted); }
-        .answer-btn.correct { background:rgba(46,204,113,0.12); border-color:rgba(46,204,113,0.4); }
-        .answer-btn.correct .letter { background:var(--primary); color:#04130a; }
-        .answer-btn.wrong { background:rgba(231,76,60,0.12); border-color:rgba(231,76,60,0.4); }
-        .answer-btn.wrong .letter { background:#e74c3c; color:white; }
-        .answer-btn.disabled { pointer-events:none; opacity:0.7; }
+        .bg-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(46, 204, 113, 0.04);
+            animation: floatParticle 20s infinite alternate ease-in-out;
+        }
 
-        .result-box { margin-top:12px; padding:12px; border-radius:14px; text-align:center; font-weight:800; font-size:14px; display:none; }
-        .result-box.show { display:block; animation:pop 0.3s ease; }
-        .result-box.correct { background:rgba(46,204,113,0.08); color:var(--primary); border:1px solid rgba(46,204,113,0.15); }
-        .result-box.wrong { background:rgba(231,76,60,0.08); color:#e74c3c; border:1px solid rgba(231,76,60,0.15); }
-        @keyframes pop { from { transform:scale(0.95); opacity:0; } to { transform:scale(1); opacity:1; } }
+        .bg-particle:nth-child(1) { width: 120px; height: 120px; top: 10%; left: -30px; animation-duration: 18s; }
+        .bg-particle:nth-child(2) { width: 200px; height: 200px; bottom: 20%; right: -50px; animation-duration: 25s; background: rgba(241, 196, 15, 0.03); }
+        .bg-particle:nth-child(3) { width: 80px; height: 80px; top: 50%; left: 20%; animation-duration: 22s; background: rgba(46, 204, 113, 0.02); }
+        .bg-particle:nth-child(4) { width: 150px; height: 150px; bottom: 10%; left: 10%; animation-duration: 20s; background: rgba(241, 196, 15, 0.02); }
 
-        .tools { display:flex; gap:8px; margin-top:12px; }
-        .tools button { flex:1; padding:10px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:14px; color:var(--muted); font-weight:800; font-size:10px; }
-        .tools button:disabled { opacity:0.3; }
+        @keyframes floatParticle {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(40px, -30px) rotate(20deg); }
+        }
 
-        .end-screen { text-align:center; padding-top:20px; }
-        .end-icon { width:80px; height:80px; border-radius:30px; background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.15); display:grid; place-items:center; margin:0 auto 14px; font-size:38px; }
-        .end-screen h2 { font-size:24px; font-weight:900; }
-        .end-screen p { color:var(--muted); font-size:12px; margin-top:2px; }
-        .final-score { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:20px; margin:16px 0; }
-        .final-score strong { font-size:42px; color:var(--primary); font-weight:900; display:block; }
-        .final-score span { color:var(--muted); font-size:11px; }
+        /* =========================================================
+           PAGES
+        ========================================================= */
+        .page {
+            display: none;
+            animation: fadeSlide 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
 
-        .large-mode { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:14px 16px; display:flex; align-items:center; gap:14px; width:100%; margin-bottom:8px; color:var(--text); }
-        .large-mode .icon { width:48px; height:48px; border-radius:16px; background:rgba(46,204,113,0.06); display:grid; place-items:center; font-size:24px; flex-shrink:0; }
-        .large-mode .content { flex:1; text-align:right; }
-        .large-mode .content h3 { font-size:14px; font-weight:900; }
-        .large-mode .content p { color:var(--muted); font-size:10px; margin-top:2px; }
-        .large-mode .arrow { color:var(--muted); font-size:18px; }
+        .page.active {
+            display: block;
+        }
 
-        .profile-card { background:var(--card); border:1px solid var(--border); border-radius:28px; padding:24px; text-align:center; }
-        .profile-card .avatar { width:80px; height:80px; border-radius:24px; background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.15); display:grid; place-items:center; margin:0 auto 12px; font-size:36px; }
-        .profile-card h2 { font-size:20px; font-weight:900; }
-        .profile-card .level { color:var(--muted); font-size:12px; }
-        .level-bar { margin-top:16px; }
-        .level-bar .head { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
-        .level-bar .track { height:6px; background:rgba(255,255,255,0.05); border-radius:20px; overflow:hidden; margin-top:4px; }
-        .level-bar .track .fill { height:100%; width:0%; background:linear-gradient(90deg, var(--primary), #7df0a0); border-radius:inherit; }
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-        .achievements { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
-        .achievement { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:14px; text-align:center; }
-        .achievement .icon { font-size:24px; }
-        .achievement h4 { font-size:12px; font-weight:800; margin-top:4px; }
-        .achievement p { color:var(--muted); font-size:9px; }
+        /* =========================================================
+           HEADER
+        ========================================================= */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.02);
+            padding: 10px 14px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.04);
+        }
 
-        .settings-list { background:var(--card); border:1px solid var(--border); border-radius:24px; overflow:hidden; }
-        .setting-row { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-bottom:1px solid var(--border); cursor:pointer; }
-        .setting-row:last-child { border-bottom:none; }
-        .setting-row .info { display:flex; align-items:center; gap:10px; }
-        .setting-row .info .icon { width:34px; height:34px; border-radius:12px; background:rgba(255,255,255,0.04); display:grid; place-items:center; font-size:16px; }
-        .setting-row .info strong { display:block; font-size:12px; }
-        .setting-row .info span { color:var(--muted); font-size:9px; }
-        .switch { width:40px; height:22px; border-radius:30px; background:#252d39; position:relative; transition:0.2s; }
-        .switch.on { background:rgba(46,204,113,0.25); }
-        .switch::after { content:''; position:absolute; top:3px; right:3px; width:16px; height:16px; border-radius:50%; background:#87909d; transition:0.2s; }
-        .switch.on::after { right:21px; background:var(--primary); }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-        .dev-card { margin-top:16px; padding:18px; background:linear-gradient(135deg, rgba(46,204,113,0.06), rgba(46,204,113,0.01)); border:1px solid rgba(255,255,255,0.04); border-radius:22px; text-align:center; }
-        .dev-card small { color:var(--muted); font-size:9px; }
-        .dev-card strong { display:block; font-size:16px; color:var(--primary); margin-top:2px; }
-        .dev-card span { color:var(--muted); font-size:10px; }
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(46,204,113,0.2), transparent);
+            border: 1px solid rgba(46,204,113,0.25);
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            box-shadow: 0 0 30px rgba(46,204,113,0.06);
+        }
 
-        .premium-card { background:var(--card); border:1px solid rgba(255,200,87,0.1); border-radius:28px; padding:24px; text-align:center; }
-        .premium-card .icon { font-size:44px; margin-bottom:8px; }
-        .premium-card h2 { font-size:22px; font-weight:900; }
-        .premium-card p { color:var(--muted); font-size:12px; margin:8px 0 16px; line-height:1.6; }
-        .premium-features { text-align:right; }
-        .premium-feature { display:flex; align-items:center; gap:10px; padding:6px 0; color:#d9dee6; font-size:12px; }
-        .premium-feature .check { color:#f1c40f; }
-        .coming-soon { display:inline-block; background:rgba(255,200,87,0.08); color:#f1c40f; padding:6px 14px; border-radius:30px; font-size:11px; font-weight:800; margin-top:12px; }
+        .brand h1 {
+            font-size: 17px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #2ecc71, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .bottom-nav { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); width:calc(100% - 24px); max-width:460px; background:rgba(10,14,23,0.92); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.06); border-radius:24px; padding:8px 4px; display:grid; grid-template-columns:repeat(5,1fr); z-index:100; }
-        .nav-btn { padding:6px 0; background:transparent; color:var(--muted); font-size:9px; font-weight:700; border-radius:14px; transition:0.2s; }
-        .nav-btn .icon { display:block; font-size:18px; margin-bottom:2px; }
-        .nav-btn.active { background:rgba(46,204,113,0.08); color:var(--primary); }
+        .brand span {
+            display: block;
+            font-size: 9px;
+            color: #8896ab;
+            letter-spacing: 2px;
+            -webkit-text-fill-color: #8896ab;
+        }
 
-        .toast { position:fixed; top:16px; left:50%; transform:translate(-50%, -120px); background:rgba(10,14,23,0.95); border:1px solid var(--border); border-radius:16px; padding:12px 20px; color:white; font-weight:800; font-size:13px; z-index:999; transition:0.3s; box-shadow:0 12px 40px rgba(0,0,0,0.4); }
-        .toast.show { transform:translate(-50%, 0); }
+        .xp-badge {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #f1c40f;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 20px rgba(241,196,15,0.04);
+        }
 
-        .loading-overlay { position:fixed; inset:0; background:var(--bg); display:none; flex-direction:column; align-items:center; justify-content:center; z-index:1000; gap:16px; }
-        .loading-overlay.active { display:flex; }
-        .loading-overlay .spinner { width:40px; height:40px; border:3px solid rgba(255,255,255,0.06); border-top-color:var(--primary); border-radius:50%; animation:spin 0.8s linear infinite; }
-        @keyframes spin { to { transform:rotate(360deg); } }
-        .loading-overlay p { color:var(--muted); font-size:14px; }
+        /* =========================================================
+           HERO
+        ========================================================= */
+        .hero {
+            background: linear-gradient(145deg, #121b2a, #0a111e);
+            border-radius: 30px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.04);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .hero::after {
+            content: '⚽';
+            position: absolute;
+            left: -20px;
+            bottom: -40px;
+            font-size: 120px;
+            opacity: 0.04;
+            transform: rotate(-12deg);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(46,204,113,0.1);
+            color: #2ecc71;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .hero h2 {
+            font-size: 26px;
+            font-weight: 900;
+            line-height: 1.3;
+        }
+
+        .hero h2 span {
+            color: #2ecc71;
+            background: linear-gradient(135deg, #2ecc71, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #8896ab;
+            font-size: 13px;
+            margin-top: 6px;
+            opacity: 0.9;
+        }
+
+        /* =========================================================
+           SECTIONS & CARDS
+        ========================================================= */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 24px 0 12px;
+        }
+
+        .section-title h3 {
+            font-size: 16px;
+            font-weight: 800;
+            position: relative;
+        }
+
+        .section-title h3::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            width: 30%;
+            height: 2px;
+            background: linear-gradient(90deg, #2ecc71, transparent);
+            border-radius: 10px;
+        }
+
+        .section-title span {
+            color: #8896ab;
+            font-size: 11px;
+            background: rgba(255,255,255,0.03);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        /* Mode Cards */
+        .mode-card {
+            background: rgba(20, 28, 43, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 22px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 22px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(46,204,113,0.1), transparent, rgba(241,196,15,0.05));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-3px) scale(1.01);
+            border-color: rgba(46,204,113,0.15);
+            box-shadow: 0 12px 40px rgba(46,204,113,0.05);
+        }
+
+        .mode-card:active {
+            transform: scale(0.97);
+        }
+
+        .mode-card .tag {
+            background: rgba(255,255,255,0.05);
+            color: #8896ab;
+            font-size: 8px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .mode-card .icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(46,204,113,0.06);
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            margin: 10px 0 8px;
+        }
+
+        .mode-card h4 {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .mode-card p {
+            color: #8896ab;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            background: rgba(20, 28, 43, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 18px;
+            padding: 14px 6px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.2s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 20px;
+        }
+
+        .stat-card .value {
+            font-size: 20px;
+            font-weight: 900;
+            color: #2ecc71;
+            margin-top: 2px;
+        }
+
+        .stat-card .label {
+            color: #8896ab;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+        }
+
+        /* =========================================================
+           BUTTONS
+        ========================================================= */
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2ecc71, #1a9c54);
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 14px;
+            color: #04130a;
+            border: none;
+            box-shadow: 0 8px 30px rgba(46,204,113,0.2);
+            transition: transform 0.15s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:active {
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* =========================================================
+           GAME
+        ========================================================= */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .game-back {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .game-back:active {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .game-mode-label {
+            text-align: center;
+        }
+
+        .game-mode-label strong {
+            font-size: 13px;
+            display: block;
+            font-weight: 800;
+        }
+
+        .game-mode-label span {
+            color: #8896ab;
+            font-size: 10px;
+        }
+
+        .game-score {
+            text-align: left;
+        }
+
+        .game-score strong {
+            color: #2ecc71;
+            font-size: 18px;
+            display: block;
+            font-weight: 900;
+        }
+
+        .game-score span {
+            color: #8896ab;
+            font-size: 9px;
+        }
+
+        .progress-wrap {
+            margin-bottom: 16px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #8896ab;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            margin-top: 6px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2ecc71, #7df0a0);
+            border-radius: inherit;
+            transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Timer - 3D Style */
+        .timer {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: grid;
+            place-items: center;
+            position: relative;
+            background: radial-gradient(circle at 40% 30%, #1a2635, #0a0e17);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 -2px 10px rgba(0,0,0,0.3);
+            transition: background 0.3s;
+        }
+
+        .timer::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .timer .ring {
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: conic-gradient(#2ecc71 var(--timer-progress, 100%), rgba(255,255,255,0.04) 0);
+            -webkit-mask: radial-gradient(circle at center, transparent 58%, black 59%);
+            mask: radial-gradient(circle at center, transparent 58%, black 59%);
+            transition: background 0.2s;
+        }
+
+        .timer.danger .ring {
+            background: conic-gradient(#e74c3c var(--timer-progress, 100%), rgba(255,255,255,0.04) 0);
+        }
+
+        .timer span {
+            position: relative;
+            z-index: 2;
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .timer.danger span {
+            color: #ff6b7a;
+        }
+
+        /* Player Image */
+        .player-frame {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(180deg, #14202e, #0a101b);
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .player-frame img {
+            height: 95%;
+            width: auto;
+            max-width: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+            transition: transform 0.4s ease;
+        }
+
+        .player-frame img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Answers */
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .answer-btn {
+            background: rgba(20, 28, 43, 0.8);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 12px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .answer-btn:active {
+            transform: scale(0.97);
+        }
+
+        .answer-btn .letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            color: #8896ab;
+            font-weight: 800;
+        }
+
+        .answer-btn.correct {
+            background: rgba(46,204,113,0.12);
+            border-color: rgba(46,204,113,0.4);
+            box-shadow: 0 0 30px rgba(46,204,113,0.05);
+        }
+
+        .answer-btn.correct .letter {
+            background: #2ecc71;
+            color: #04130a;
+        }
+
+        .answer-btn.wrong {
+            background: rgba(231,76,60,0.12);
+            border-color: rgba(231,76,60,0.4);
+            box-shadow: 0 0 30px rgba(231,76,60,0.05);
+        }
+
+        .answer-btn.wrong .letter {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .answer-btn.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Result Box */
+        .result-box {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 14px;
+            display: none;
+            animation: popResult 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .result-box.show {
+            display: block;
+        }
+
+        .result-box.correct {
+            background: rgba(46,204,113,0.08);
+            color: #2ecc71;
+            border: 1px solid rgba(46,204,113,0.1);
+        }
+
+        .result-box.wrong {
+            background: rgba(231,76,60,0.08);
+            color: #e74c3c;
+            border: 1px solid rgba(231,76,60,0.1);
+        }
+
+        @keyframes popResult {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Tools */
+        .tools {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .tools button {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            color: #8896ab;
+            font-weight: 700;
+            font-size: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .tools button:active {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .tools button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* =========================================================
+           END SCREEN
+        ========================================================= */
+        .end-screen {
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .end-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 30px;
+            background: radial-gradient(circle at 40% 30%, rgba(46,204,113,0.1), transparent);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 14px;
+            font-size: 38px;
+            border: 1px solid rgba(46,204,113,0.05);
+            box-shadow: 0 0 60px rgba(46,204,113,0.03);
+        }
+
+        .final-score {
+            background: rgba(20, 28, 43, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 20px;
+            margin: 16px 0;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .final-score strong {
+            font-size: 42px;
+            color: #2ecc71;
+            display: block;
+            font-weight: 900;
+        }
+
+        .final-score span {
+            color: #8896ab;
+            font-size: 11px;
+        }
+
+        /* =========================================================
+           LARGE MODE CARDS
+        ========================================================= */
+        .large-mode {
+            background: rgba(20, 28, 43, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            margin-bottom: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .large-mode:hover {
+            transform: translateX(-4px);
+            border-color: rgba(46,204,113,0.1);
+            box-shadow: 0 8px 30px rgba(46,204,113,0.03);
+        }
+
+        .large-mode:active {
+            transform: scale(0.98);
+        }
+
+        .large-mode .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: rgba(46,204,113,0.04);
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .large-mode .content {
+            flex: 1;
+            text-align: right;
+        }
+
+        .large-mode .content h3 {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .large-mode .content p {
+            color: #8896ab;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* =========================================================
+           PROFILE
+        ========================================================= */
+        .profile-card {
+            background: rgba(20, 28, 43, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+        }
+
+        .profile-card .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            background: radial-gradient(circle at 40% 30%, rgba(46,204,113,0.06), transparent);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 12px;
+            font-size: 36px;
+            border: 1px solid rgba(46,204,113,0.05);
+        }
+
+        .profile-card h2 {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .profile-card .level {
+            color: #8896ab;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .level-bar {
+            margin-top: 16px;
+        }
+
+        .level-bar .head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #8896ab;
+        }
+
+        .level-bar .track {
+            height: 6px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 4px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .level-bar .track .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2ecc71, #7df0a0);
+            border-radius: inherit;
+            transition: width 0.6s ease;
+        }
+
+        /* Achievements */
+        .achievements {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .achievement {
+            background: rgba(20, 28, 43, 0.4);
+            backdrop-filter: blur(4px);
+            border-radius: 18px;
+            padding: 14px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.2s;
+        }
+
+        .achievement .achievement-icon {
+            font-size: 24px;
+        }
+
+        .achievement h4 {
+            font-size: 12px;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+
+        .achievement p {
+            color: #8896ab;
+            font-size: 9px;
+        }
+
+        /* =========================================================
+           SETTINGS
+        ========================================================= */
+        .settings-list {
+            background: rgba(20, 28, 43, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .setting-row:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-row .info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-row .info .icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            display: grid;
+            place-items: center;
+            font-size: 16px;
+        }
+
+        .setting-row .info strong {
+            font-size: 12px;
+            font-weight: 800;
+            display: block;
+        }
+
+        .setting-row .info span {
+            color: #8896ab;
+            font-size: 9px;
+            display: block;
+        }
+
+        .switch {
+            width: 40px;
+            height: 22px;
+            border-radius: 30px;
+            background: #252d39;
+            position: relative;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .switch.on {
+            background: rgba(46,204,113,0.25);
+        }
+
+        .switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #87909d;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .switch.on::after {
+            right: 21px;
+            background: #2ecc71;
+            box-shadow: 0 0 20px rgba(46,204,113,0.2);
+        }
+
+        .dev-card {
+            margin-top: 16px;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(46,204,113,0.04), rgba(46,204,113,0.01));
+            border-radius: 22px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .dev-card small {
+            color: #8896ab;
+            font-size: 9px;
+        }
+
+        .dev-card strong {
+            display: block;
+            font-size: 16px;
+            color: #2ecc71;
+            margin-top: 2px;
+            font-weight: 900;
+        }
+
+        .dev-card span {
+            color: #8896ab;
+            font-size: 10px;
+        }
+
+        /* =========================================================
+           PREMIUM
+        ========================================================= */
+        .premium-card {
+            background: radial-gradient(circle at 50% 0%, rgba(241,196,15,0.03), transparent 60%);
+            background-color: rgba(20, 28, 43, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(241,196,15,0.05);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+        }
+
+        .premium-card .icon {
+            font-size: 44px;
+        }
+
+        .premium-card h2 {
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .premium-card p {
+            color: #8896ab;
+            font-size: 12px;
+            margin: 8px 0 16px;
+            line-height: 1.6;
+        }
+
+        .coming-soon {
+            display: inline-block;
+            background: rgba(241,196,15,0.06);
+            color: #f1c40f;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-top: 12px;
+            border: 1px solid rgba(241,196,15,0.05);
+        }
+
+        /* =========================================================
+           BOTTOM NAV
+        ========================================================= */
+        .bottom-nav {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 24px);
+            max-width: 460px;
+            background: rgba(10,14,23,0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 8px 4px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn {
+            padding: 6px 0;
+            background: transparent;
+            color: #8896ab;
+            font-size: 9px;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn .icon {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .nav-btn.active {
+            background: rgba(46,204,113,0.06);
+            color: #2ecc71;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+        }
+
+        /* =========================================================
+           TOAST
+        ========================================================= */
+        .toast {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translate(-50%, -120px);
+            background: rgba(10,14,23,0.95);
+            backdrop-filter: blur(16px);
+            border-radius: 16px;
+            padding: 12px 24px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            z-index: 999;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 12px 50px rgba(0,0,0,0.4);
+            text-align: center;
+            min-width: 200px;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            transform: translate(-50%, 0);
+        }
+
+        /* =========================================================
+           LOADING OVERLAY
+        ========================================================= */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0a0e17;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            gap: 16px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-overlay .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.04);
+            border-top-color: #2ecc71;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .loading-overlay p {
+            color: #8896ab;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+        @media (max-width: 360px) {
+            .hero h2 { font-size: 22px; }
+            .player-frame { height: 220px; }
+            .answers { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .answer-btn { font-size: 11px; padding: 10px 8px; }
+        }
+
+        @media (min-width: 480px) {
+            .app { padding: 20px 16px 100px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-    <p id="loadingText">جاري تحميل لاعبي الدوري الإنجليزي...</p>
+<!-- ============================================================
+     SPLASH SCREEN
+     ============================================================ -->
+<div id="splash">
+    <div class="splash-logo">⚽</div>
+    <div class="splash-title">مين اللاعب؟</div>
+    <div class="splash-sub">FOOTBALL QUIZ</div>
+    <div class="splash-loader"></div>
 </div>
 
+<!-- ============================================================
+     BACKGROUND PARTICLES
+     ============================================================ -->
+<div class="bg-particles">
+    <div class="bg-particle"></div>
+    <div class="bg-particle"></div>
+    <div class="bg-particle"></div>
+    <div class="bg-particle"></div>
+</div>
+
+<!-- ============================================================
+     LOADING OVERLAY
+     ============================================================ -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p>جاري تحميل اللاعبين...</p>
+</div>
+
+<!-- ============================================================
+     MAIN APP
+     ============================================================ -->
 <div class="app">
+
     <!-- HOME -->
     <section id="homePage" class="page active">
         <div class="header">
             <div class="brand">
                 <div class="brand-icon">⚽</div>
-                <div><h1>مين اللاعب؟</h1><span>FOOTBALL QUIZ</span></div>
+                <div>
+                    <h1>مين اللاعب؟</h1>
+                    <span>FOOTBALL QUIZ</span>
+                </div>
             </div>
             <div class="xp-badge">⭐ <span id="headerXP">0 XP</span></div>
         </div>
+
         <div class="hero">
             <div class="hero-badge">🔥 تحدي معرفتك الكروية</div>
             <h2>هل تعرف <span>اللاعب</span> من الصورة؟</h2>
             <p>خمّن اسم اللاعب قبل انتهاء الوقت واجمع النقاط والمستويات.</p>
         </div>
+
         <div class="section-title"><h3>أنماط اللعب</h3><span>اختر</span></div>
         <div class="grid-2">
-            <div class="mode-card" onclick="startGame('classic')"><span class="tag">الأكثر لعباً</span><div class="icon">🎯</div><h4>الكلاسيكي</h4><p>50 سؤال • 15 ثانية</p></div>
-            <div class="mode-card" onclick="startGame('speed')"><span class="tag">سريع</span><div class="icon">⚡</div><h4>السرعة</h4><p>30 سؤال • 10 ثوانٍ</p></div>
-            <div class="mode-card" onclick="startGame('streak')"><span class="tag">تحدي</span><div class="icon">🔥</div><h4>الستريك</h4><p>لا تخطئ! حافظ على السلسلة</p></div>
-            <div class="mode-card" onclick="startGame('rare')"><span class="tag">نادر</span><div class="icon">💎</div><h4>اللاعب النادر</h4><p>مكافآت أكبر • لاعبون أقل شهرة</p></div>
+            <div class="mode-card" onclick="startGame('classic')">
+                <div class="tag">الأكثر لعباً</div>
+                <div class="icon">🎯</div>
+                <h4>الكلاسيكي</h4>
+                <p>50 سؤال • 15 ثانية</p>
+            </div>
+            <div class="mode-card" onclick="startGame('speed')">
+                <div class="tag">سريع</div>
+                <div class="icon">⚡</div>
+                <h4>السرعة</h4>
+                <p>30 سؤال • 10 ثوانٍ</p>
+            </div>
+            <div class="mode-card" onclick="startGame('streak')">
+                <div class="tag">تحدي</div>
+                <div class="icon">🔥</div>
+                <h4>الستريك</h4>
+                <p>لا تخطئ! حافظ على السلسلة</p>
+            </div>
+            <div class="mode-card" onclick="startGame('rare')">
+                <div class="tag">نادر</div>
+                <div class="icon">💎</div>
+                <h4>اللاعب النادر</h4>
+                <p>مكافآت أكبر</p>
+            </div>
         </div>
+
         <div class="section-title"><h3>إحصائياتك</h3><span>مسيرتك</span></div>
         <div class="grid-3">
-            <div class="stat-card"><div class="icon">🏆</div><div class="value" id="homeGames">0</div><div class="label">مباريات</div></div>
-            <div class="stat-card"><div class="icon">🎯</div><div class="value" id="homeCorrect">0</div><div class="label">إجابات صحيحة</div></div>
-            <div class="stat-card"><div class="icon">🔥</div><div class="value" id="homeBest">0</div><div class="label">أفضل ستريك</div></div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="value" id="homeGames">0</div>
+                <div class="label">مباريات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="value" id="homeCorrect">0</div>
+                <div class="label">إجابات صحيحة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="value" id="homeBest">0</div>
+                <div class="label">أفضل ستريك</div>
+            </div>
         </div>
     </section>
 
@@ -221,18 +1343,40 @@
     <section id="gamePage" class="page">
         <div class="game-header">
             <button class="game-back" onclick="confirmExit()">→</button>
-            <div class="game-mode-label"><strong id="gameModeName">كلاسيكي</strong><span id="gameDifficulty">تحدي</span></div>
-            <div class="game-score"><strong id="gameScore">0</strong><span>نقاط</span></div>
+            <div class="game-mode-label">
+                <strong id="gameModeName">كلاسيكي</strong>
+                <span id="gameDifficulty">تحدي</span>
+            </div>
+            <div class="game-score">
+                <strong id="gameScore">0</strong>
+                <span>نقاط</span>
+            </div>
         </div>
+
         <div class="progress-wrap">
-            <div class="progress-info"><span id="questionCounter">1 / 50</span><span id="streakDisplay">🔥 0</span></div>
-            <div class="progress-bar"><div class="progress-fill" id="gameProgress"></div></div>
+            <div class="progress-info">
+                <span id="questionCounter">1 / 50</span>
+                <span id="streakDisplay">🔥 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="gameProgress"></div>
+            </div>
         </div>
-        <div class="timer" id="timer"><span id="timerText">15</span></div>
-        <div class="player-frame"><img id="playerImage" src="" alt="لاعب"></div>
-        <div class="question-text" style="text-align:center;font-size:18px;font-weight:900;">من هو هذا اللاعب؟</div>
+
+        <div class="timer" id="timer">
+            <div class="ring" id="timerRing"></div>
+            <span id="timerText">15</span>
+        </div>
+
+        <div class="player-frame">
+            <img id="playerImage" src="" alt="لاعب">
+        </div>
+
+        <div style="text-align:center;font-size:18px;font-weight:900;margin:8px 0;">من هو هذا اللاعب؟</div>
+
         <div class="answers" id="answers"></div>
         <div class="result-box" id="resultBox"></div>
+
         <div class="tools">
             <button id="hintBtn" onclick="useHint()">💡 تلميح</button>
             <button id="skipBtn" onclick="skipQuestion()">⏭ تخطي</button>
@@ -245,11 +1389,26 @@
             <div class="end-icon">🏁</div>
             <h2>انتهت المباراة</h2>
             <p>إليك إحصائياتك</p>
-            <div class="final-score"><strong id="endScore">0</strong><span>نقاط</span></div>
+            <div class="final-score">
+                <strong id="endScore">0</strong>
+                <span>نقاط</span>
+            </div>
             <div class="grid-3" style="margin:12px 0;">
-                <div class="stat-card"><div class="icon">✅</div><div class="value" id="endCorrect">0</div><div class="label">صحيح</div></div>
-                <div class="stat-card"><div class="icon">❌</div><div class="value" id="endWrong">0</div><div class="label">خطأ</div></div>
-                <div class="stat-card"><div class="icon">⭐</div><div class="value" id="endXP">0</div><div class="label">XP</div></div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="value" id="endCorrect">0</div>
+                    <div class="label">صحيح</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">❌</div>
+                    <div class="value" id="endWrong">0</div>
+                    <div class="label">خطأ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="value" id="endXP">0</div>
+                    <div class="label">XP</div>
+                </div>
             </div>
             <button class="btn-primary" onclick="playAgain()" style="margin-bottom:10px;">🔄 العب مجدداً</button>
             <button class="btn-secondary" onclick="goHome()">🏠 الرئيسية</button>
@@ -258,26 +1417,70 @@
 
     <!-- MODES -->
     <section id="modesPage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">أنماط اللعب</h2><p style="color:var(--muted);font-size:12px;">اختر النمط المناسب لك</p></div>
-        <button class="large-mode" onclick="startGame('classic')"><div class="icon">🎯</div><div class="content"><h3>الكلاسيكي</h3><p>50 سؤال • 15 ثانية</p></div><div class="arrow">‹</div></button>
-        <button class="large-mode" onclick="startGame('speed')"><div class="icon">⚡</div><div class="content"><h3>السرعة</h3><p>30 سؤال • 10 ثوانٍ</p></div><div class="arrow">‹</div></button>
-        <button class="large-mode" onclick="startGame('streak')"><div class="icon">🔥</div><div class="content"><h3>الستريك</h3><p>لا تخطئ! حافظ على السلسلة</p></div><div class="arrow">‹</div></button>
-        <button class="large-mode" onclick="startGame('rare')"><div class="icon">💎</div><div class="content"><h3>اللاعب النادر</h3><p>مكافآت أكبر</p></div><div class="arrow">‹</div></button>
-        <button class="large-mode" onclick="showToast('🚧 قريباً')"><div class="icon">📅</div><div class="content"><h3>التحدي اليومي</h3><p>تحدٍ جديد كل يوم</p></div><div class="arrow">‹</div></button>
+        <div style="margin-bottom:16px;">
+            <h2 style="font-size:22px;font-weight:900;">أنماط اللعب</h2>
+            <p style="color:#8896ab;font-size:12px;">اختر النمط المناسب لك</p>
+        </div>
+        <button class="large-mode" onclick="startGame('classic')">
+            <div class="icon">🎯</div>
+            <div class="content">
+                <h3>الكلاسيكي</h3>
+                <p>50 سؤال • 15 ثانية</p>
+            </div>
+        </button>
+        <button class="large-mode" onclick="startGame('speed')">
+            <div class="icon">⚡</div>
+            <div class="content">
+                <h3>السرعة</h3>
+                <p>30 سؤال • 10 ثوانٍ</p>
+            </div>
+        </button>
+        <button class="large-mode" onclick="startGame('streak')">
+            <div class="icon">🔥</div>
+            <div class="content">
+                <h3>الستريك</h3>
+                <p>لا تخطئ! حافظ على السلسلة</p>
+            </div>
+        </button>
+        <button class="large-mode" onclick="startGame('rare')">
+            <div class="icon">💎</div>
+            <div class="content">
+                <h3>اللاعب النادر</h3>
+                <p>مكافآت أكبر</p>
+            </div>
+        </button>
+        <button class="large-mode" onclick="showToast('🚧 قريباً')">
+            <div class="icon">📅</div>
+            <div class="content">
+                <h3>التحدي اليومي</h3>
+                <p>تحدٍ جديد كل يوم</p>
+            </div>
+        </button>
     </section>
 
     <!-- PREMIUM -->
     <section id="premiumPage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">بريميوم</h2><p style="color:var(--muted);font-size:12px;">مزايا حصرية</p></div>
+        <div style="margin-bottom:16px;">
+            <h2 style="font-size:22px;font-weight:900;">بريميوم</h2>
+            <p style="color:#8896ab;font-size:12px;">مزايا حصرية</p>
+        </div>
         <div class="premium-card">
             <div class="icon">👑</div>
             <h2>مين اللاعب؟ بريميوم</h2>
             <p>مزايا إضافية قادمة قريباً لتجعل تجربتك أكثر متعة واحترافية.</p>
-            <div class="premium-features">
-                <div class="premium-feature"><span class="check">✓</span> أنماط لعب حصرية</div>
-                <div class="premium-feature"><span class="check">✓</span> إحصائيات متقدمة</div>
-                <div class="premium-feature"><span class="check">✓</span> تحديات خاصة</div>
-                <div class="premium-feature"><span class="check">✓</span> مكافآت XP إضافية</div>
+            <div style="text-align:right;margin:12px 0;">
+                <div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;">
+                    <span style="color:#f1c40f;">✓</span> أنماط لعب حصرية
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;">
+                    <span style="color:#f1c40f;">✓</span> إحصائيات متقدمة
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;">
+                    <span style="color:#f1c40f;">✓</span> تحديات خاصة
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:4px 0;color:#d9dee6;font-size:12px;">
+                    <span style="color:#f1c40f;">✓</span> مكافآت XP إضافية
+                </div>
             </div>
             <div class="coming-soon">🚀 قريباً</div>
         </div>
@@ -285,374 +1488,142 @@
 
     <!-- PROFILE -->
     <section id="profilePage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">ملفي</h2><p style="color:var(--muted);font-size:12px;">تقدمك وإنجازاتك</p></div>
+        <div style="margin-bottom:16px;">
+            <h2 style="font-size:22px;font-weight:900;">ملفي</h2>
+            <p style="color:#8896ab;font-size:12px;">تقدمك وإنجازاتك</p>
+        </div>
         <div class="profile-card">
             <div class="avatar">🏆</div>
             <h2>لاعب كرة القدم</h2>
             <div class="level" id="profileLevel">المستوى 1</div>
             <div class="level-bar">
-                <div class="head"><span>التقدم للمستوى التالي</span><strong id="profileXP">0 / 100 XP</strong></div>
-                <div class="track"><div class="fill" id="levelProgress"></div></div>
+                <div class="head">
+                    <span>التقدم للمستوى التالي</span>
+                    <strong id="profileXP">0 / 100 XP</strong>
+                </div>
+                <div class="track">
+                    <div class="fill" id="levelProgress"></div>
+                </div>
             </div>
         </div>
+
         <div class="section-title"><h3>الإنجازات</h3></div>
         <div class="achievements">
-            <div class="achievement"><div class="icon">🎯</div><h4>أول إجابة</h4><p>أجب بشكل صحيح</p></div>
-            <div class="achievement"><div class="icon">🔥</div><h4>ستريك 5</h4><p>5 إجابات متتالية</p></div>
-            <div class="achievement"><div class="icon">🏆</div><h4>100 إجابة</h4><p>إجمالي 100 صحيحة</p></div>
-            <div class="achievement"><div class="icon">⭐</div><h4>1000 XP</h4><p>اجمع 1000 نقطة</p></div>
+            <div class="achievement">
+                <div class="achievement-icon">🎯</div>
+                <h4>أول إجابة</h4>
+                <p>أجب بشكل صحيح</p>
+            </div>
+            <div class="achievement">
+                <div class="achievement-icon">🔥</div>
+                <h4>ستريك 5</h4>
+                <p>5 إجابات متتالية</p>
+            </div>
+            <div class="achievement">
+                <div class="achievement-icon">🏆</div>
+                <h4>100 إجابة</h4>
+                <p>إجمالي 100 صحيحة</p>
+            </div>
+            <div class="achievement">
+                <div class="achievement-icon">⭐</div>
+                <h4>1000 XP</h4>
+                <p>اجمع 1000 نقطة</p>
+            </div>
         </div>
     </section>
 
     <!-- SETTINGS -->
     <section id="settingsPage" class="page">
-        <div style="margin-bottom:16px;"><h2 style="font-size:22px;font-weight:900;">الإعدادات</h2><p style="color:var(--muted);font-size:12px;">خصص تجربتك</p></div>
-        <div class="settings-list">
-            <div class="setting-row" onclick="toggleSetting('sound')"><div class="info"><div class="icon">🔊</div><div><strong>الأصوات</strong><span>المؤثرات الصوتية</span></div></div><div class="switch on" id="soundSwitch"></div></div>
-            <div class="setting-row" onclick="toggleSetting('vibration')"><div class="info"><div class="icon">📳</div><div><strong>الاهتزاز</strong><span>اهتزاز عند الإجابة</span></div></div><div class="switch on" id="vibrationSwitch"></div></div>
-            <div class="setting-row" onclick="toggleSetting('animation')"><div class="info"><div class="icon">✨</div><div><strong>الحركات</strong><span>تأثيرات بصرية</span></div></div><div class="switch on" id="animationSwitch"></div></div>
+        <div style="margin-bottom:16px;">
+            <h2 style="font-size:22px;font-weight:900;">الإعدادات</h2>
+            <p style="color:#8896ab;font-size:12px;">خصص تجربتك</p>
         </div>
-        <div class="dev-card"><small>تم التطوير بواسطة</small><strong>Walid Outaleb</strong><span>مطور • Football Quiz</span></div>
+        <div class="settings-list">
+            <div class="setting-row" onclick="toggleSetting('sound')">
+                <div class="info">
+                    <div class="icon">🔊</div>
+                    <div>
+                        <strong>الأصوات</strong>
+                        <span>المؤثرات الصوتية</span>
+                    </div>
+                </div>
+                <div class="switch on" id="soundSwitch"></div>
+            </div>
+            <div class="setting-row" onclick="toggleSetting('vibration')">
+                <div class="info">
+                    <div class="icon">📳</div>
+                    <div>
+                        <strong>الاهتزاز</strong>
+                        <span>اهتزاز عند الإجابة</span>
+                    </div>
+                </div>
+                <div class="switch on" id="vibrationSwitch"></div>
+            </div>
+            <div class="setting-row" onclick="toggleSetting('animation')">
+                <div class="info">
+                    <div class="icon">✨</div>
+                    <div>
+                        <strong>الحركات</strong>
+                        <span>تأثيرات بصرية</span>
+                    </div>
+                </div>
+                <div class="switch on" id="animationSwitch"></div>
+            </div>
+        </div>
+        <div class="dev-card">
+            <small>تم التطوير بواسطة</small>
+            <strong>Walid Outaleb</strong>
+            <span>مطور • Football Quiz</span>
+        </div>
     </section>
+
 </div>
 
-<!-- Bottom Nav -->
+<!-- ============================================================
+     BOTTOM NAVIGATION
+     ============================================================ -->
 <nav class="bottom-nav">
-    <button class="nav-btn active" onclick="navigate('homePage')"><span class="icon">🏠</span>الرئيسية</button>
-    <button class="nav-btn" onclick="navigate('modesPage')"><span class="icon">🎮</span>الأنماط</button>
-    <button class="nav-btn" onclick="navigate('premiumPage')"><span class="icon">👑</span>بريميوم</button>
-    <button class="nav-btn" onclick="navigate('profilePage')"><span class="icon">👤</span>ملفي</button>
-    <button class="nav-btn" onclick="navigate('settingsPage')"><span class="icon">⚙️</span>الإعدادات</button>
+    <button class="nav-btn active" onclick="navigate('homePage')">
+        <span class="icon">🏠</span>الرئيسية
+    </button>
+    <button class="nav-btn" onclick="navigate('modesPage')">
+        <span class="icon">🎮</span>الأنماط
+    </button>
+    <button class="nav-btn" onclick="navigate('premiumPage')">
+        <span class="icon">👑</span>بريميوم
+    </button>
+    <button class="nav-btn" onclick="navigate('profilePage')">
+        <span class="icon">👤</span>ملفي
+    </button>
+    <button class="nav-btn" onclick="navigate('settingsPage')">
+        <span class="icon">⚙️</span>الإعدادات
+    </button>
 </nav>
 
-<!-- Toast -->
+<!-- ============================================================
+     TOAST
+     ============================================================ -->
 <div class="toast" id="toast"></div>
 
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
 <script>
 // ============================================================
-//  🚀 إعدادات API-Football (سيتم استبدال __API_KEY__ تلقائياً)
+//  CONFIGURATION
 // ============================================================
-const API_KEY = '__API_KEY__'; // ⚠️ لا تغير هذا السطر، سيستبدله GitHub Actions
-const LEAGUE_ID = 39; // 39 = الدوري الإنجليزي الممتاز
+const API_KEY = '__API_KEY__';
+const LEAGUE_ID = 39;
 const SEASON = 2024;
 
 // ============================================================
-//  المتغيرات العامة
+//  SPLASH SCREEN
 // ============================================================
-let players = [];
-let currentQuestions = [];
-let currentIndex = 0;
-let score = 0;
-let streak = 0;
-let bestStreak = 0;
-let totalCorrect = 0;
-let totalWrong = 0;
-let hints = 3;
-let isAnswered = false;
-let mode = 'classic';
-let timerInterval = null;
-let timeLeft = 15;
-
-// ============================================================
-//  البيانات الاحتياطية (في حال فشل API)
-// ============================================================
-const FALLBACK_PLAYERS = [
-    { id:1, name:"كريستيانو رونالدو", nationality:"البرتغال", image:"https://media.api-sports.io/football/players/257.png" },
-    { id:2, name:"ليونيل ميسي", nationality:"الأرجنتين", image:"https://media.api-sports.io/football/players/457.png" },
-    { id:3, name:"كيليان مبابي", nationality:"فرنسا", image:"https://media.api-sports.io/football/players/1495.png" },
-    { id:4, name:"إيرلينغ هالاند", nationality:"النرويج", image:"https://media.api-sports.io/football/players/10035.png" },
-    { id:5, name:"محمد صلاح", nationality:"مصر", image:"https://media.api-sports.io/football/players/1502.png" }
-];
-
-// ============================================================
-//  تحميل اللاعبين من API-Football
-// ============================================================
-async function loadPlayers() {
-    const overlay = document.getElementById('loadingOverlay');
-    overlay.classList.add('active');
-    document.getElementById('loadingText').textContent = 'جاري تحميل لاعبي الدوري الإنجليزي...';
-
-    try {
-        const url = `https://v3.football.api-sports.io/players?league=${LEAGUE_ID}&season=${SEASON}`;
-        const response = await fetch(url, {
-            headers: {
-                'x-apisports-key': API_KEY
-            }
-        });
-
-        if (!response.ok) throw new Error('فشل الاتصال بالـ API');
-        const data = await response.json();
-
-        if (data.response && data.response.length > 0) {
-            players = data.response.map(p => ({
-                id: p.player.id,
-                name: p.player.name,
-                nationality: p.player.nationality || 'غير معروف',
-                image: p.player.photo || ''
-            })).filter(p => p.image);
-            
-            console.log(`✅ تم تحميل ${players.length} لاعباً`);
-        } else {
-            throw new Error('لا يوجد لاعبين');
-        }
-    } catch (error) {
-        console.error('فشل API، استخدام البيانات الاحتياطية:', error);
-        players = FALLBACK_PLAYERS;
-        showToast('⚠️ تم تحميل بيانات تجريبية');
-    }
-
-    // إذا كانت الصور فارغة
-    players = players.map(p => ({
-        ...p,
-        image: p.image || `https://i.pravatar.cc/300?img=${p.id || 1}`
-    }));
-
-    overlay.classList.remove('active');
-    updateUI();
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.getElementById('splash').classList.add('hide');
+        setTimeout(function() {
+            document.getElementById('splash').style.display = 'none';
+        }, 900);
+    }, 2200);
 }
-
-// ============================================================
-//  دوال اللعبة الأساسية (مختصرة للاختصار لكنها كاملة)
-// ============================================================
-function startGame(m) {
-    if (players.length === 0) { showToast('⚠️ انتظر التحميل'); return; }
-    mode = m;
-    let total = 50, limit = 15;
-    if (m === 'speed') { total = 30; limit = 10; }
-    else if (m === 'streak') { total = 100; limit = 12; }
-    else if (m === 'rare') { total = 40; limit = 18; }
-
-    const shuffled = [...players].sort(() => Math.random() - 0.5);
-    currentQuestions = shuffled.slice(0, Math.min(total, shuffled.length));
-    if (m === 'streak' && currentQuestions.length < 100) {
-        while (currentQuestions.length < 100) currentQuestions = currentQuestions.concat(shuffled);
-        currentQuestions = currentQuestions.slice(0, 100);
-    }
-
-    currentIndex = 0; score = 0; streak = 0; totalCorrect = 0; totalWrong = 0; hints = 3; isAnswered = false;
-    document.getElementById('gameModeName').textContent = { classic:'كلاسيكي', speed:'السرعة', streak:'الستريك', rare:'نادر' }[m] || 'كلاسيكي';
-    document.getElementById('gameScore').textContent = '0';
-    navigate('gamePage');
-    renderQuestion();
-}
-
-function renderQuestion() {
-    if (currentIndex >= currentQuestions.length) { endGame(); return; }
-    const q = currentQuestions[currentIndex];
-    if (!q) { endGame(); return; }
-
-    isAnswered = false;
-    document.getElementById('resultBox').className = 'result-box';
-    document.getElementById('resultBox').textContent = '';
-    document.getElementById('playerImage').src = q.image;
-    document.getElementById('playerImage').alt = q.name;
-
-    document.getElementById('questionCounter').textContent = `${currentIndex+1} / ${currentQuestions.length}`;
-    document.getElementById('gameProgress').style.width = `${(currentIndex/currentQuestions.length)*100}%`;
-    document.getElementById('streakDisplay').textContent = `🔥 ${streak}`;
-
-    const opts = generateOptions(q);
-    const container = document.getElementById('answers');
-    container.innerHTML = '';
-    const letters = ['أ', 'ب', 'ج', 'د'];
-    opts.forEach((p, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'answer-btn';
-        btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${p.name}</span>`;
-        btn.dataset.id = p.id;
-        btn.onclick = () => checkAnswer(btn, p.id, q.id);
-        container.appendChild(btn);
-    });
-
-    let limit = 15; if (mode === 'speed') limit = 10; else if (mode === 'streak') limit = 12; else if (mode === 'rare') limit = 18;
-    startTimer(limit);
-    document.getElementById('hintBtn').disabled = false;
-    document.getElementById('skipBtn').disabled = false;
-}
-
-function generateOptions(correct) {
-    const others = players.filter(p => p.id !== correct.id);
-    const shuffled = others.sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, 3);
-    const opts = [correct, ...selected];
-    return opts.sort(() => Math.random() - 0.5);
-}
-
-function startTimer(sec) {
-    clearInterval(timerInterval);
-    timeLeft = sec;
-    const el = document.getElementById('timer');
-    const txt = document.getElementById('timerText');
-    txt.textContent = timeLeft;
-    el.style.setProperty('--timer-progress', '100%');
-    el.classList.remove('danger');
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        txt.textContent = timeLeft;
-        const prog = (timeLeft / sec) * 100;
-        el.style.setProperty('--timer-progress', `${prog}%`);
-        if (timeLeft <= 3) el.classList.add('danger');
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            if (!isAnswered) {
-                totalWrong++; streak = 0;
-                document.getElementById('streakDisplay').textContent = '🔥 0';
-                showResult(false, '⏰ انتهى الوقت!');
-                disableButtons();
-                highlightCorrectAnswer();
-                setTimeout(nextQuestion, 1800);
-            }
-        }
-    }, 1000);
-}
-
-function checkAnswer(btn, selected, correct) {
-    if (isAnswered) return;
-    clearInterval(timerInterval);
-    isAnswered = true;
-    document.querySelectorAll('.answer-btn').forEach(b => b.classList.add('disabled'));
-
-    if (selected === correct) {
-        btn.classList.add('correct');
-        totalCorrect++;
-        streak++;
-        const bonus = mode === 'rare' ? 5 : (mode === 'speed' ? 3 : 0);
-        const streakBonus = Math.floor(streak / 5) * 2;
-        const earned = 10 + bonus + streakBonus;
-        score += earned;
-        document.getElementById('gameScore').textContent = score;
-        document.getElementById('streakDisplay').textContent = `🔥 ${streak}`;
-        if (streak > bestStreak) bestStreak = streak;
-        showResult(true, `✅ صحيح! +${earned} XP`);
-        saveStats();
-    } else {
-        btn.classList.add('wrong');
-        totalWrong++;
-        streak = 0;
-        document.getElementById('streakDisplay').textContent = '🔥 0';
-        showResult(false, '❌ خطأ');
-        highlightCorrectAnswer();
-    }
-    disableButtons();
-    setTimeout(nextQuestion, 1500);
-}
-
-function highlightCorrectAnswer() {
-    const q = currentQuestions[currentIndex];
-    document.querySelectorAll('.answer-btn').forEach(b => {
-        if (parseInt(b.dataset.id) === q.id) b.classList.add('correct');
-    });
-}
-
-function disableButtons() {
-    document.querySelectorAll('.answer-btn').forEach(b => b.classList.add('disabled'));
-    document.getElementById('hintBtn').disabled = true;
-    document.getElementById('skipBtn').disabled = true;
-}
-
-function showResult(correct, msg) {
-    const box = document.getElementById('resultBox');
-    box.textContent = msg;
-    box.className = `result-box show ${correct ? 'correct' : 'wrong'}`;
-}
-
-function nextQuestion() { currentIndex++; renderQuestion(); }
-
-function useHint() {
-    if (hints <= 0) { showToast('💡 لا توجد تلميحات'); return; }
-    if (isAnswered) return;
-    hints--;
-    const q = currentQuestions[currentIndex];
-    showToast(`💡 الجنسية: ${q.nationality || 'غير معروفة'}`);
-    document.getElementById('hintBtn').textContent = `💡 ${hints}`;
-    if (hints <= 0) document.getElementById('hintBtn').disabled = true;
-}
-
-function skipQuestion() {
-    if (isAnswered) return;
-    clearInterval(timerInterval);
-    isAnswered = true;
-    totalWrong++; streak = 0;
-    document.getElementById('streakDisplay').textContent = '🔥 0';
-    showResult(false, '⏭ تم التخطي');
-    disableButtons();
-    highlightCorrectAnswer();
-    setTimeout(nextQuestion, 1500);
-}
-
-function endGame() {
-    clearInterval(timerInterval);
-    document.getElementById('endScore').textContent = score;
-    document.getElementById('endCorrect').textContent = totalCorrect;
-    document.getElementById('endWrong').textContent = totalWrong;
-    document.getElementById('endXP').textContent = score;
-    navigate('endPage');
-    saveStats();
-}
-
-function playAgain() { startGame(mode); }
-function goHome() { navigate('homePage'); updateUI(); }
-function confirmExit() {
-    if (confirm('هل تريد الخروج؟ سيضيع التقدم.')) { clearInterval(timerInterval); navigate('homePage'); updateUI(); }
-}
-
-function saveStats() {
-    let s = JSON.parse(localStorage.getItem('footballStats')) || { games:0, correct:0, bestStreak:0, xp:0, level:1 };
-    s.games = (s.games || 0) + 1;
-    s.correct = (s.correct || 0) + totalCorrect;
-    if (streak > (s.bestStreak || 0)) s.bestStreak = streak;
-    s.xp = (s.xp || 0) + score;
-    s.level = Math.floor(s.xp / 100) + 1;
-    localStorage.setItem('footballStats', JSON.stringify(s));
-    updateUI();
-}
-
-function loadStats() {
-    return JSON.parse(localStorage.getItem('footballStats')) || { games:0, correct:0, bestStreak:0, xp:0, level:1 };
-}
-
-function updateUI() {
-    const s = loadStats();
-    document.getElementById('homeGames').textContent = s.games;
-    document.getElementById('homeCorrect').textContent = s.correct;
-    document.getElementById('homeBest').textContent = s.bestStreak;
-    document.getElementById('headerXP').textContent = s.xp + ' XP';
-    document.getElementById('profileLevel').textContent = `المستوى ${s.level}`;
-    const xpInLevel = s.xp % 100;
-    document.getElementById('profileXP').textContent = `${xpInLevel} / 100 XP`;
-    document.getElementById('levelProgress').style.width = `${(xpInLevel / 100) * 100}%`;
-}
-
-function navigate(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(page).classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    const map = { homePage:0, modesPage:1, premiumPage:2, profilePage:3, settingsPage:4 };
-    const idx = map[page];
-    if (idx !== undefined) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
-    window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-function toggleSetting(id) {
-    const sw = document.getElementById(id + 'Switch');
-    if (!sw) return;
-    sw.classList.toggle('on');
-    showToast(`✅ تم ${sw.classList.contains('on') ? 'تفعيل' : 'تعطيل'} ${id}`);
-}
-
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-window.onload = function() {
-    loadPlayers();
-    updateUI();
-    navigate('homePage');
-};
-</script>
-</body>
-</html>
