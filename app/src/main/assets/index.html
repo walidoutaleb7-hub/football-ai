@@ -1,789 +1,4245 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>من اللاعب؟ | النسخة الشاملة والمتطورة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-main: #060913;
-            --bg-card: #0f172a;
-            --bg-hover: #1e293b;
-            --primary: #00ff88;
-            --primary-glow: rgba(0, 255, 136, 0.25);
-            --accent: #3b82f6;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --radius: 20px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
-        [data-theme="light"] {
-            --bg-main: #f1f5f9;
-            --bg-card: #ffffff;
-            --bg-hover: #e2e8f0;
-            --primary: #2563eb;
-            --primary-glow: rgba(37, 99, 235, 0.2);
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-        }
+<title>مين اللاعب؟</title>
 
-        [data-theme="champions"] {
-            --bg-main: #020817;
-            --bg-card: #0b192c;
-            --bg-hover: #1e3e62;
-            --primary: #00d2ff;
-            --primary-glow: rgba(0, 210, 255, 0.3);
-            --text-main: #ffffff;
-            --text-muted: #93c5fd;
-            --border: #144272;
-        }
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
 
-        [data-theme="algeria"] {
-            --bg-main: #05190f;
-            --bg-card: #0c2d1b;
-            --bg-hover: #174c31;
-            --primary: #10b981;
-            --primary-glow: rgba(16, 185, 129, 0.3);
-            --text-main: #ffffff;
-            --text-muted: #a7f3d0;
-            --border: #047857;
-        }
+:root{
+    --bg:#070b14;
+    --bg2:#0d1322;
+    --card:#111a2c;
+    --card2:#16223a;
+    --text:#f7f9ff;
+    --muted:#8d9ab2;
+    --primary:#6c63ff;
+    --primary2:#8b7cff;
+    --green:#24d68a;
+    --red:#ff5268;
+    --yellow:#ffc857;
+    --blue:#3fa9ff;
+    --border:rgba(255,255,255,.08);
+    --shadow:0 15px 40px rgba(0,0,0,.35);
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+body.light{
+    --bg:#f2f5fb;
+    --bg2:#ffffff;
+    --card:#ffffff;
+    --card2:#eef2fa;
+    --text:#111827;
+    --muted:#687386;
+    --border:rgba(0,0,0,.08);
+}
 
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            overflow-x: hidden;
-        }
+body.algeria{
+    --primary:#00966e;
+    --primary2:#00c48c;
+}
 
-        .app-shell {
-            width: 100%;
-            max-width: 500px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            min-height: 760px;
-        }
+body.champions{
+    --primary:#e5ad3f;
+    --primary2:#ffe27a;
+}
 
-        .view-screen {
-            display: none;
-            flex: 1;
-            flex-direction: column;
-            padding: 24px;
-            animation: fadeInView 0.35s ease-in-out;
-        }
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Arial,
+        "Noto Sans Arabic",
+        sans-serif;
+    overflow:hidden;
+}
 
-        .view-screen.active {
-            display: flex;
-        }
+button{
+    font-family:inherit;
+    border:0;
+    cursor:pointer;
+}
 
-        @keyframes fadeInView {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+#app{
+    width:100%;
+    height:100%;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 90% 0%,rgba(108,99,255,.15),transparent 30%),
+        radial-gradient(circle at 0% 100%,rgba(0,190,255,.08),transparent 30%),
+        var(--bg);
+}
 
-        .header-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
+/* =========================
+   COMMON
+========================= */
 
-        .user-pill {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--bg-hover);
-            padding: 6px 14px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-            font-weight: 700;
-            font-size: 13px;
-        }
+.hidden{
+    display:none!important;
+}
 
-        .currency-box {
-            display: flex;
-            gap: 12px;
-        }
+.screen{
+    position:absolute;
+    inset:0;
+    padding:18px 16px 100px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    opacity:0;
+    transform:translateY(60px);
+    pointer-events:none;
+    transition:
+        opacity .28s ease,
+        transform .38s cubic-bezier(.2,.8,.2,1);
+}
 
-        .btn-futuristic {
-            width: 100%;
-            padding: 15px;
-            margin: 7px 0;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #060913;
-            border: none;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 10px 25px var(--primary-glow);
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
+.screen.active{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
 
-        .btn-futuristic:active {
-            transform: scale(0.97);
-        }
+.screen::-webkit-scrollbar{
+    width:0;
+}
 
-        .btn-sub {
-            background: var(--bg-hover);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            box-shadow: none;
-        }
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:18px;
+}
 
-        .coach-container {
-            background: var(--primary-glow);
-            border-right: 4px solid var(--primary);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            line-height: 1.6;
-        }
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
-        .game-status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-            font-size: 14px;
-            font-weight: 700;
-        }
+.logo-icon{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    font-size:23px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 8px 25px rgba(108,99,255,.3);
+}
 
-        .time-line-track {
-            width: 100%;
-            height: 8px;
-            background: var(--bg-hover);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 18px;
-        }
+.logo h1{
+    font-size:19px;
+    margin:0;
+}
 
-        .time-line-fill {
-            width: 100%;
-            height: 100%;
-            background: var(--primary);
-            transition: width 0.1s linear;
-        }
+.logo small{
+    color:var(--muted);
+    display:block;
+    margin-top:3px;
+}
 
-        .visual-frame {
-            width: 100%;
-            height: 230px;
-            background: var(--bg-hover);
-            border-radius: var(--radius);
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 18px;
-            border: 2px solid var(--border);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    background:var(--card);
+    color:var(--text);
+    border:1px solid var(--border);
+    font-size:18px;
+}
 
-        .visual-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: filter 0.5s ease;
-        }
+.card{
+    background:linear-gradient(
+        145deg,
+        var(--card),
+        var(--bg2)
+    );
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:16px;
+    box-shadow:var(--shadow);
+}
 
-        .blur-fx { filter: blur(15px); }
-        .silhouette-fx { filter: brightness(0); }
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:20px 2px 12px;
+}
 
-        .hints-panel-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 16px;
-        }
+.section-title h2{
+    font-size:17px;
+    margin:0;
+}
 
-        .hint-badge-btn {
-            background: var(--bg-hover);
-            border: 1px solid var(--border);
-            padding: 8px 4px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-muted);
-            cursor: pointer;
-            text-align: center;
-            transition: 0.2s;
-        }
+.section-title span{
+    color:var(--muted);
+    font-size:12px;
+}
 
-        .hint-badge-btn:hover {
-            color: var(--text-main);
-            border-color: var(--primary);
-        }
+.primary-btn{
+    width:100%;
+    padding:15px;
+    border-radius:16px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    box-shadow:0 10px 25px rgba(108,99,255,.25);
+}
 
-        .options-action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+.secondary-btn{
+    padding:12px 16px;
+    border-radius:14px;
+    background:var(--card2);
+    color:var(--text);
+    border:1px solid var(--border);
+    font-weight:bold;
+}
 
-        .option-choice-card {
-            background: var(--bg-hover);
-            border: 2px solid var(--border);
-            padding: 15px;
-            border-radius: 14px;
-            color: var(--text-main);
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.2s;
-        }
+/* =========================
+   HOME
+========================= */
 
-        .option-choice-card:hover:not(:disabled) {
-            border-color: var(--primary);
-            background: var(--primary-glow);
-        }
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:20px;
+    border-radius:26px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(108,99,255,.25),
+            rgba(20,30,55,.85)
+        );
+    border:1px solid var(--border);
+}
 
-        .option-choice-card.correct-ans {
-            background: #10b981 !important;
-            border-color: #10b981 !important;
-            color: #fff !important;
-        }
+.hero:after{
+    content:"⚽";
+    position:absolute;
+    left:-10px;
+    bottom:-35px;
+    font-size:130px;
+    opacity:.07;
+    transform:rotate(-15deg);
+}
 
-        .option-choice-card.wrong-ans {
-            background: var(--danger) !important;
-            border-color: var(--danger) !important;
-            color: #fff !important;
-        }
+.hero-title{
+    font-size:27px;
+    font-weight:900;
+    margin:0 0 8px;
+}
 
-        .tab-navigation-bar {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
-            background: var(--bg-hover);
-            padding: 4px;
-            border-radius: 12px;
-        }
+.hero-text{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:13px;
+    margin-bottom:18px;
+}
 
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 8px;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
 
-        .tab-btn.active {
-            background: var(--card-bg, var(--bg-card));
-            color: var(--primary);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+.stat{
+    background:rgba(255,255,255,.05);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:12px 8px;
+    text-align:center;
+}
 
-        .tab-content-pane {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 380px;
-            overflow-y: auto;
-            padding-left: 4px;
-        }
+.stat-icon{
+    font-size:19px;
+}
 
-        .tab-content-pane.active {
-            display: flex;
-        }
+.stat strong{
+    display:block;
+    margin-top:5px;
+    font-size:17px;
+}
 
-        .item-row-card {
-            background: var(--bg-hover);
-            border: 1px solid var(--border);
-            padding: 14px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.stat span{
+    color:var(--muted);
+    font-size:10px;
+}
 
-        .item-row-card h4 { font-size: 14px; margin-bottom: 2px; }
-        .item-row-card p { font-size: 11px; color: var(--text-muted); }
+.level-card{
+    margin-top:14px;
+}
 
-        .modes-selection-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            padding-left: 4px;
-        }
+.level-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    margin-bottom:8px;
+}
 
-        .mode-box-card {
-            background: var(--bg-hover);
-            border: 1px solid var(--border);
-            padding: 14px;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: right;
-            transition: 0.2s;
-        }
+.level-row span{
+    color:var(--muted);
+}
 
-        .mode-box-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
+.progress{
+    height:9px;
+    background:var(--card2);
+    border-radius:20px;
+    overflow:hidden;
+}
 
-        .mode-box-card h3 { font-size: 14px; margin-bottom: 4px; color: var(--primary); }
-        .mode-box-card p { font-size: 11px; color: var(--text-muted); }
-    </style>
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--primary),var(--primary2));
+    border-radius:20px;
+    transition:width .5s;
+}
+
+/* =========================
+   QUICK GAME
+========================= */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+
+.quick-game{
+    min-height:120px;
+    padding:16px;
+    border-radius:20px;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text);
+    text-align:right;
+    position:relative;
+    overflow:hidden;
+}
+
+.quick-game .emoji{
+    font-size:28px;
+}
+
+.quick-game strong{
+    display:block;
+    margin-top:8px;
+}
+
+.quick-game small{
+    color:var(--muted);
+    display:block;
+    margin-top:4px;
+}
+
+/* =========================
+   GAMES
+========================= */
+
+.games-grid{
+    display:grid;
+    gap:12px;
+}
+
+.game-card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    color:var(--text);
+    text-align:right;
+    position:relative;
+    overflow:hidden;
+}
+
+.game-card:active{
+    transform:scale(.98);
+}
+
+.game-icon{
+    width:54px;
+    height:54px;
+    border-radius:17px;
+    display:grid;
+    place-items:center;
+    font-size:25px;
+    background:linear-gradient(
+        135deg,
+        rgba(108,99,255,.25),
+        rgba(108,99,255,.05)
+    );
+    flex:none;
+}
+
+.game-info{
+    flex:1;
+}
+
+.game-info strong{
+    display:block;
+    font-size:15px;
+}
+
+.game-info small{
+    display:block;
+    color:var(--muted);
+    line-height:1.5;
+    margin-top:4px;
+}
+
+.lock{
+    font-size:18px;
+    opacity:.7;
+}
+
+/* =========================
+   CHALLENGES
+========================= */
+
+.challenge-card{
+    padding:18px;
+    border-radius:22px;
+    background:
+        linear-gradient(135deg,
+        rgba(255,200,87,.15),
+        var(--card));
+    border:1px solid var(--border);
+    margin-bottom:12px;
+}
+
+.challenge-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.challenge-icon{
+    font-size:30px;
+}
+
+.challenge-head strong{
+    font-size:17px;
+}
+
+.challenge-head small{
+    display:block;
+    color:var(--muted);
+    margin-top:4px;
+}
+
+.challenge-progress{
+    margin:15px 0;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-head{
+    text-align:center;
+    padding:25px 15px;
+}
+
+.avatar{
+    width:82px;
+    height:82px;
+    margin:auto;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-size:38px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    box-shadow:0 10px 35px rgba(108,99,255,.3);
+}
+
+.profile-name{
+    font-size:22px;
+    font-weight:900;
+    margin-top:12px;
+}
+
+.rank{
+    color:var(--yellow);
+    font-weight:bold;
+    margin-top:4px;
+}
+
+.profile-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:18px;
+}
+
+.profile-stat{
+    padding:14px;
+    background:var(--card2);
+    border-radius:16px;
+}
+
+.profile-stat strong{
+    display:block;
+    font-size:20px;
+}
+
+.profile-stat span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* =========================
+   ACHIEVEMENTS
+========================= */
+
+.achievement-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.achievement{
+    padding:15px;
+    border-radius:18px;
+    background:var(--card);
+    border:1px solid var(--border);
+}
+
+.achievement.locked{
+    opacity:.42;
+    filter:grayscale(1);
+}
+
+.achievement-icon{
+    font-size:28px;
+}
+
+.achievement strong{
+    display:block;
+    margin-top:7px;
+    font-size:13px;
+}
+
+.achievement small{
+    color:var(--muted);
+    display:block;
+    line-height:1.5;
+    margin-top:4px;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav{
+    position:absolute;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    height:70px;
+    z-index:100;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    padding:7px;
+    background:rgba(13,19,34,.92);
+    backdrop-filter:blur(18px);
+    border:1px solid var(--border);
+    border-radius:23px;
+    box-shadow:0 10px 35px rgba(0,0,0,.4);
+}
+
+body.light .bottom-nav{
+    background:rgba(255,255,255,.94);
+}
+
+.nav-btn{
+    background:transparent;
+    color:var(--muted);
+    border-radius:17px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:4px;
+    font-size:10px;
+}
+
+.nav-btn span:first-child{
+    font-size:20px;
+}
+
+.nav-btn.active{
+    background:rgba(108,99,255,.16);
+    color:var(--primary2);
+}
+
+/* =========================
+   GAME SCREEN
+========================= */
+
+#gameScreen{
+    padding-bottom:18px;
+}
+
+.game-top{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.back-btn{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    background:var(--card);
+    color:var(--text);
+    border:1px solid var(--border);
+    font-size:19px;
+}
+
+.game-title{
+    flex:1;
+}
+
+.game-title strong{
+    display:block;
+}
+
+.game-title small{
+    color:var(--muted);
+}
+
+.timer{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:var(--card);
+    border:3px solid var(--primary);
+    font-weight:900;
+}
+
+.game-progress{
+    margin:18px 0;
+}
+
+.question-card{
+    padding:21px;
+    border-radius:25px;
+    background:linear-gradient(145deg,var(--card),var(--card2));
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+}
+
+.question-number{
+    color:var(--primary2);
+    font-size:12px;
+    font-weight:bold;
+}
+
+.question{
+    font-size:22px;
+    line-height:1.55;
+    font-weight:900;
+    margin:15px 0 20px;
+}
+
+.difficulty{
+    display:inline-flex;
+    padding:5px 9px;
+    border-radius:9px;
+    background:rgba(255,200,87,.1);
+    color:var(--yellow);
+    font-size:10px;
+    margin-bottom:10px;
+}
+
+.answers{
+    display:grid;
+    gap:10px;
+    margin-top:16px;
+}
+
+.answer{
+    width:100%;
+    padding:15px;
+    text-align:right;
+    border-radius:16px;
+    color:var(--text);
+    background:var(--card);
+    border:1px solid var(--border);
+    font-size:14px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.answer.correct{
+    background:rgba(36,214,138,.16);
+    border-color:var(--green);
+    color:var(--green);
+}
+
+.answer.wrong{
+    background:rgba(255,82,104,.16);
+    border-color:var(--red);
+    color:var(--red);
+}
+
+.answer:disabled{
+    cursor:default;
+}
+
+.combo-box{
+    text-align:center;
+    margin:14px 0;
+    min-height:25px;
+    color:var(--yellow);
+    font-weight:bold;
+}
+
+.hints{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:15px;
+}
+
+.hint{
+    padding:10px 5px;
+    border-radius:13px;
+    background:var(--card2);
+    color:var(--text);
+    border:1px solid var(--border);
+    font-size:10px;
+}
+
+.hint small{
+    display:block;
+    color:var(--yellow);
+    margin-top:3px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:absolute;
+    inset:0;
+    z-index:300;
+    display:flex;
+    align-items:flex-end;
+    background:rgba(0,0,0,.65);
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+}
+
+.modal.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.modal-box{
+    width:100%;
+    max-height:90%;
+    overflow:auto;
+    background:var(--bg2);
+    border-radius:30px 30px 0 0;
+    padding:22px 18px 28px;
+    transform:translateY(100%);
+    transition:.35s cubic-bezier(.2,.8,.2,1);
+}
+
+.modal.show .modal-box{
+    transform:translateY(0);
+}
+
+.modal-handle{
+    width:45px;
+    height:5px;
+    border-radius:20px;
+    background:var(--muted);
+    margin:0 auto 20px;
+    opacity:.4;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result-icon{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    margin:20px auto;
+    display:grid;
+    place-items:center;
+    font-size:45px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+}
+
+.result-title{
+    text-align:center;
+    font-size:27px;
+    font-weight:900;
+}
+
+.result-sub{
+    text-align:center;
+    color:var(--muted);
+    margin:8px 0 20px;
+}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.result-stat{
+    padding:16px;
+    border-radius:17px;
+    background:var(--card);
+    text-align:center;
+    border:1px solid var(--border);
+}
+
+.result-stat strong{
+    display:block;
+    font-size:22px;
+}
+
+.result-stat span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:absolute;
+    z-index:500;
+    left:18px;
+    right:18px;
+    bottom:92px;
+    padding:14px 17px;
+    border-radius:15px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    transform:translateY(30px);
+    opacity:0;
+    pointer-events:none;
+    text-align:center;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(min-width:700px){
+    .screen{
+        max-width:700px;
+        left:50%;
+        right:auto;
+        width:100%;
+        transform:translate(-50%,60px);
+    }
+
+    .screen.active{
+        transform:translate(-50%,0);
+    }
+
+    .bottom-nav{
+        max-width:680px;
+        left:50%;
+        right:auto;
+        width:calc(100% - 20px);
+        transform:translateX(-50%);
+    }
+}
+</style>
 </head>
-<body data-theme="dark">
 
-    <div class="app-shell">
-        
-        <!-- 1. القائمة الرئيسية الأسطورية -->
-        <div id="screen-home" class="view-screen active">
-            <div class="header-panel">
-                <div class="user-pill">
-                    <span>⚽ وليد</span>
-                </div>
-                <div class="currency-box">
-                    <div class="user-pill">🪙 <span id="lbl-coins">450</span></div>
-                    <div class="user-pill">⚡ <span id="lbl-xp">300</span></div>
-                </div>
-            </div>
+<body>
 
-            <div style="text-align: center; margin: 5px 0 15px 0;">
-                <h1 style="font-size: 25px; font-weight: 900; color: var(--primary); margin-bottom: 4px;">مين اللاعب؟</h1>
-                <p style="color: var(--text-muted); font-size: 12px;">النسخة الشاملة مع المتجر والتحدي اليومي</p>
-            </div>
+<div id="app">
 
-            <div class="coach-container">
-                <span>🧠</span>
-                <span id="home-coach-msg">المدرب: "أهلاً بك يا بطل! جاهز تسيطر على قمة المحترفين اليوم؟"</span>
-            </div>
+<!-- =========================
+     HOME
+========================= -->
 
-            <button class="btn-futuristic" onclick="launchGameMode('classic')">🚀 التحدي السريع (Classic)</button>
-            <button class="btn-futuristic btn-sub" onclick="launchDailyChallenge()">📅 التحدي اليومي (Daily)</button>
-            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-modes')">🎮 أوضاع اللعب المتعددة</button>
-            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-shop')">🛒 المتجر والثيمات البصرية</button>
-            <button class="btn-futuristic btn-sub" onclick="navigateTo('screen-hub')">👤 الملف الشخصي والإنجازات</button>
-        </div>
+<section id="homeScreen" class="screen active">
 
-        <!-- 2. شاشة أوضاع اللعب -->
-        <div id="screen-modes" class="view-screen">
-            <div class="header-panel">
-                <h2>أضاع اللعب الكروية</h2>
-                <button class="btn-sub" style="padding: 6px 12px; border-radius: 8px; font-size: 12px;" onclick="navigateTo('screen-home')">الرجوع</button>
-            </div>
-            <div class="modes-selection-grid">
-                <div class="mode-box-card" onclick="launchGameMode('classic')">
-                    <h3>🟢 Classic</h3>
-                    <p>10 أسئلة كلاسيكية تنافسية.</p>
-                </div>
-                <div class="mode-box-card" onclick="launchGameMode('speed')">
-                    <h3>⚡ Speed</h3>
-                    <p>سرعة بديهة ووقت قياسي ضيق.</p>
-                </div>
-                <div class="mode-box-card" onclick="launchGameMode('detective')">
-                    <h3>🕵️ محقق</h3>
-                    <p>معلومات النادي والجنسية بدون صورة.</p>
-                </div>
-                <div class="mode-box-card" onclick="launchGameMode('silhouette')">
-                    <h3>👤 Silhouette</h3>
-                    <p>تخمين اللاعب من ظله فقط.</p>
-                </div>
-                <div class="mode-box-card" onclick="launchGameMode('blur')">
-                    <h3>🔍 صورة مشوشة</h3>
-                    <p>الصورة تبدأ ضبابية وتتضح.</p>
-                </div>
-                <div class="mode-box-card" onclick="launchGameMode('hardcore')">
-                    <h3>🧠 Hardcore</h3>
-                    <p>صعوبة عالية بدون مساعدات.</p>
-                </div>
+    <div class="topbar">
+
+        <div class="logo">
+            <div class="logo-icon">⚽</div>
+
+            <div>
+                <h1>مين اللاعب؟</h1>
+                <small>اختبر معرفتك الكروية</small>
             </div>
         </div>
 
-        <!-- 3. شاشة المتجر (Shop) -->
-        <div id="screen-shop" class="view-screen">
-            <div class="header-panel">
-                <h2>🛒 متجر الثيمات</h2>
-                <button class="btn-sub" style="padding: 6px 12px; border-radius: 8px; font-size: 12px;" onclick="navigateTo('screen-home')">الرجوع</button>
+        <button class="icon-btn" onclick="openSettings()">⚙️</button>
+
+    </div>
+
+    <div class="hero">
+
+        <div class="hero-title">
+            جاهز للتحدي؟ 🔥
+        </div>
+
+        <div class="hero-text">
+            اختبر معلوماتك عن أشهر لاعبي كرة القدم،
+            ارتقِ بالمستويات وافتح ألعاباً جديدة.
+        </div>
+
+        <button class="primary-btn" onclick="startGame('classic')">
+            🎮 لعب سريع
+        </button>
+
+        <div class="stats-grid" style="margin-top:15px">
+
+            <div class="stat">
+                <div class="stat-icon">⭐</div>
+                <strong id="homeLevel">1</strong>
+                <span>المستوى</span>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto;">
-                <div class="item-row-card">
-                    <div>
-                        <h4>☀️ الثيم الفاتح (Light)</h4>
-                        <p>مظهر ساطع ومريح للعين.</p>
-                    </div>
-                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('light')">تفعيل</button>
-                </div>
-                <div class="item-row-card">
-                    <div>
-                        <h4>🏆 ثيم دوري الأبطال (Champions)</h4>
-                        <p>أجواء الليالي الأوروبية الساحرة.</p>
-                    </div>
-                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('champions')">تفعيل</button>
-                </div>
-                <div class="item-row-card">
-                    <div>
-                        <h4>🇩🇿 الثيم الجزائري (Algeria)</h4>
-                        <p>ألوان الخضراء الوطنية الأصيلة.</p>
-                    </div>
-                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('algeria')">تفعيل</button>
-                </div>
-                <div class="item-row-card">
-                    <div>
-                        <h4>🌑 الثيم الداكن (Dark)</h4>
-                        <p>المظهر الافتراضي الأنيق.</p>
-                    </div>
-                    <button class="btn-sub" style="padding: 6px 12px; font-size: 12px;" onclick="applyTheme('dark')">تفعيل</button>
+
+            <div class="stat">
+                <div class="stat-icon">🪙</div>
+                <strong id="homeCoins">100</strong>
+                <span>العملات</span>
+            </div>
+
+            <div class="stat">
+                <div class="stat-icon">🔥</div>
+                <strong id="homeStreak">0</strong>
+                <span>المتتالية</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card level-card">
+
+        <div class="level-row">
+            <b id="levelName">مبتدئ</b>
+            <span>
+                <span id="xpCurrent">0</span> /
+                <span id="xpNeed">300</span> XP
+            </span>
+        </div>
+
+        <div class="progress">
+            <div id="xpBar" class="progress-fill"></div>
+        </div>
+
+    </div>
+
+    <div class="section-title">
+        <h2>⚡ لعب سريع</h2>
+        <span>ابدأ الآن</span>
+    </div>
+
+    <div class="quick-grid">
+
+        <button class="quick-game" onclick="startGame('classic')">
+            <div class="emoji">🎯</div>
+            <strong>كلاسيكي</strong>
+            <small>اختبر معلوماتك</small>
+        </button>
+
+        <button class="quick-game" onclick="startGame('speed')">
+            <div class="emoji">⚡</div>
+            <strong>السرعة</strong>
+            <small>جاوب قبل انتهاء الوقت</small>
+        </button>
+
+        <button class="quick-game" onclick="startGame('truefalse')">
+            <div class="emoji">✅</div>
+            <strong>صح أم خطأ</strong>
+            <small>قرارات سريعة</small>
+        </button>
+
+        <button class="quick-game" onclick="startGame('millionaire')">
+            <div class="emoji">💰</div>
+            <strong>المليون الكروي</strong>
+            <small>أسئلة تصعد بالصعوبة</small>
+        </button>
+
+    </div>
+
+    <div class="section-title">
+        <h2>🔥 تحدي اليوم</h2>
+        <span id="dailyStatus">جاهز</span>
+    </div>
+
+    <div class="challenge-card">
+
+        <div class="challenge-head">
+
+            <div class="challenge-icon">🏆</div>
+
+            <div>
+                <strong>التحدي اليومي</strong>
+                <small>5 أسئلة • مكافآت مضاعفة</small>
+            </div>
+
+        </div>
+
+        <div class="challenge-progress">
+            <div class="progress">
+                <div id="dailyBar"
+                     class="progress-fill"
+                     style="width:0%">
                 </div>
             </div>
         </div>
 
-        <!-- 4. شاشة ساحة التخمين الحية -->
-        <div id="screen-gameplay" class="view-screen">
-            <div class="game-status-bar">
-                <span>🎯 السؤال: <span id="game-q-cur">1</span>/<span id="game-q-tot">10</span></span>
-                <span>🔥 كومبو: <span id="game-combo-val">0</span></span>
-                <span>⭐ النقاط: <span id="game-score-val">0</span></span>
-            </div>
+        <button class="secondary-btn"
+                style="width:100%"
+                onclick="startGame('daily')">
+            ابدأ التحدي
+        </button>
 
-            <div class="time-line-track">
-                <div class="time-line-fill" id="game-timer-fill"></div>
-            </div>
+    </div>
 
-            <div class="coach-container" id="game-coach-msg">
-                <span>🧠</span>
-                <span>المدرب: "دقق النظر في ملامح اللاعب أو البيانات الحيوية!"</span>
-            </div>
+</section>
 
-            <div class="visual-frame" id="visual-frame-box">
-                <img id="target-player-img" src="" alt="صورة اللاعب">
-                <div id="detective-info-box" style="display: none; padding: 15px; font-weight: 700; text-align: center; line-height: 1.9; font-size: 13px;"></div>
-            </div>
 
-            <div class="hints-panel-grid">
-                <div class="hint-badge-btn" onclick="triggerHint('nationality')">🌍 الجنسية</div>
-                <div class="hint-badge-btn" onclick="triggerHint('position')">⚽ المركز</div>
-                <div class="hint-badge-btn" onclick="triggerHint('club')">🏟️ النادي</div>
-                <div class="hint-badge-btn" onclick="triggerHint('fifty')">✂️ حذف 2</div>
-            </div>
+<!-- =========================
+     GAMES
+========================= -->
 
-            <div class="options-action-grid" id="options-buttons-grid"></div>
+<section id="gamesScreen" class="screen">
+
+    <div class="topbar">
+        <div>
+            <h1 style="margin:0">🎮 الألعاب</h1>
+            <small style="color:var(--muted)">
+                اختر طريقتك المفضلة
+            </small>
+        </div>
+    </div>
+
+    <div id="gamesList" class="games-grid"></div>
+
+</section>
+
+
+<!-- =========================
+     CHALLENGES
+========================= -->
+
+<section id="challengesScreen" class="screen">
+
+    <div class="topbar">
+        <div>
+            <h1 style="margin:0">🔥 التحديات</h1>
+            <small style="color:var(--muted)">
+                تحديات خاصة ومكافآت
+            </small>
+        </div>
+    </div>
+
+    <div class="challenge-card">
+
+        <div class="challenge-head">
+            <div class="challenge-icon">📅</div>
+
+            <div>
+                <strong>التحدي اليومي</strong>
+                <small>يتجدد كل يوم</small>
+            </div>
         </div>
 
-        <!-- 5. شاشة النتائج الختامية -->
-        <div id="screen-results" class="view-screen">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="font-size: 24px; color: var(--primary);">🏆 تقرير المباراة الأسطوري</h2>
-                <p style="color: var(--text-muted); font-size: 12px;">أداء مميز يرفع من مستواك الكروي</p>
-            </div>
+        <p style="color:var(--muted);line-height:1.7">
+            5 أسئلة متدرجة. أكملها كلها للحصول على
+            XP وعملات إضافية.
+        </p>
 
-            <div style="background: var(--bg-hover); padding: 20px; border-radius: var(--radius); margin-bottom: 20px; text-align: center; line-height: 2.2; border: 1px solid var(--border);">
-                <p>🎯 دقة الإجابات: <span id="res-accuracy-val">0%</span></p>
-                <p>⭐ مجموع النقاط: <span id="res-score-val">0</span></p>
-                <p>🔥 أفضل كومبو: <span id="res-combo-val">0</span></p>
-                <p>🎁 مكاسب الـ XP: +<span id="res-xp-val">0</span> XP</p>
-                <p>🪙 مكاسب العملات: +<span id="res-coins-val">0</span> 🪙</p>
-            </div>
+        <button class="primary-btn"
+                onclick="startGame('daily')">
+            ابدأ
+        </button>
 
-            <button class="btn-futuristic" onclick="navigateTo('screen-home')">🏠 العودة للقائمة الرئيسية</button>
+    </div>
+
+
+    <div class="challenge-card">
+
+        <div class="challenge-head">
+            <div class="challenge-icon">👑</div>
+
+            <div>
+                <strong>Boss Challenge</strong>
+                <small>للمستويات المتقدمة</small>
+            </div>
         </div>
 
-        <!-- 6. مركز اللاعب (الملف والإنجازات) -->
-        <div id="screen-hub" class="view-screen">
-            <div class="header-panel">
-                <h2>مركز اللاعب المتطور</h2>
-                <button class="btn-sub" style="padding: 6px 12px; border-radius: 8px; font-size: 12px;" onclick="navigateTo('screen-home')">الرجوع</button>
+        <p style="color:var(--muted);line-height:1.7">
+            10 أسئلة صعبة جداً بدون أخطاء.
+        </p>
+
+        <button id="bossButton"
+                class="primary-btn"
+                onclick="startGame('boss')">
+            🔒 افتح عند المستوى 15
+        </button>
+
+    </div>
+
+
+    <div class="challenge-card">
+
+        <div class="challenge-head">
+            <div class="challenge-icon">♾️</div>
+
+            <div>
+                <strong>الوضع اللانهائي</strong>
+                <small>كم سؤالاً تستطيع الإجابة عليه؟</small>
+            </div>
+        </div>
+
+        <button class="secondary-btn"
+                style="width:100%"
+                onclick="startGame('endless')">
+            لعب بلا نهاية
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ACHIEVEMENTS
+========================= -->
+
+<section id="achievementsScreen" class="screen">
+
+    <div class="topbar">
+
+        <div>
+            <h1 style="margin:0">🏆 الإنجازات</h1>
+            <small style="color:var(--muted)">
+                اجمعها كلها
+            </small>
+        </div>
+
+    </div>
+
+    <div id="achievementGrid"
+         class="achievement-grid">
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PROFILE
+========================= -->
+
+<section id="profileScreen" class="screen">
+
+    <div class="card profile-head">
+
+        <div class="avatar">⚽</div>
+
+        <div class="profile-name">
+            لاعب كرة القدم
+        </div>
+
+        <div id="profileRank" class="rank">
+            مبتدئ
+        </div>
+
+        <div class="profile-stats">
+
+            <div class="profile-stat">
+                <strong id="profileGames">0</strong>
+                <span>المباريات</span>
             </div>
 
-            <div class="tab-navigation-bar">
-                <button class="tab-btn active" onclick="switchHubTab('tab-profile')">الملف الشخصي</button>
-                <button class="tab-btn" onclick="switchHubTab('tab-achievements')">الإنجازات</button>
+            <div class="profile-stat">
+                <strong id="profileCorrect">0</strong>
+                <span>الإجابات الصحيحة</span>
             </div>
 
-            <div id="tab-profile" class="tab-content-pane active">
-                <div style="background: var(--bg-hover); padding: 20px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border);">
-                    <h3 style="font-size: 20px; color: var(--primary); margin-bottom: 4px;">وليد</h3>
-                    <p style="color: var(--text-muted); font-size: 12px;">مستوى اللاعب: محلل كروي محترف (سنة أولى ثانوي)</p>
-                </div>
-                <div style="background: var(--bg-hover); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); line-height: 2; font-size: 13px;">
-                    <p>⚡ إجمالي الـ XP: <span id="hub-xp-val">300</span></p>
-                    <p>🪙 رصيد العملات: <span id="hub-coins-val">450</span></p>
-                    <p>🔥 أقصى سلسلة انتصارات: <span id="hub-streak-val">0</span></p>
-                </div>
+            <div class="profile-stat">
+                <strong id="profileBest">0</strong>
+                <span>أفضل نتيجة</span>
             </div>
 
-            <div id="tab-achievements" class="tab-content-pane">
-                <div class="item-row-card">
-                    <div>
-                        <h4>🏅 الانطلاقة الأولى</h4>
-                        <p>أكمل مباراتك الأولى بنجاح.</p>
-                    </div>
-                    <span style="color: var(--primary); font-weight: 700;">مكتمل ✅</span>
-                </div>
-                <div class="item-row-card">
-                    <div>
-                        <h4>🔥 قاهر الكومبو</h4>
-                        <p>تحقيق 5 إجابات صحيحة متتالية.</p>
-                    </div>
-                    <span style="color: var(--text-muted); font-weight: 700;">قيد التنفيذ ⏳</span>
-                </div>
-                <div class="item-row-card">
-                    <div>
-                        <h4>👑 أسطورة الملاعب</h4>
-                        <p>الوصول إلى 1000 نقطة خبرة.</p>
-                    </div>
-                    <span style="color: var(--text-muted); font-weight: 700;">مقفل 🔒</span>
-                </div>
+            <div class="profile-stat">
+                <strong id="profileXP">0</strong>
+                <span>XP</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section-title">
+        <h2>🎨 المظهر</h2>
+    </div>
+
+    <div class="quick-grid">
+
+        <button class="quick-game"
+                onclick="setTheme('dark')">
+            <div class="emoji">🌙</div>
+            <strong>داكن</strong>
+        </button>
+
+        <button class="quick-game"
+                onclick="setTheme('light')">
+            <div class="emoji">☀️</div>
+            <strong>فاتح</strong>
+        </button>
+
+        <button class="quick-game"
+                onclick="setTheme('champions')">
+            <div class="emoji">🏆</div>
+            <strong>Champions</strong>
+        </button>
+
+        <button class="quick-game"
+                onclick="setTheme('algeria')">
+            <div class="emoji">🇩🇿</div>
+            <strong>Algeria</strong>
+        </button>
+
+    </div>
+
+
+    <div class="section-title">
+        <h2>📊 التقدم</h2>
+    </div>
+
+    <div class="card">
+
+        <div class="level-row">
+            <b>المستوى <span id="profileLevel">1</span></b>
+            <span id="profileXPText">0 XP</span>
+        </div>
+
+        <div class="progress">
+            <div id="profileXPBar"
+                 class="progress-fill">
             </div>
         </div>
 
     </div>
 
-    <script>
-        const globalPlayersRepo = [
-            { name: "ليونيل ميسي", nationality: "الأرجنتين 🇦🇷", position: "مهاجم", club: "إنتر ميامي", image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop&q=80" },
-            { name: "كريستيانو رونالدو", nationality: "البرتغال 🇵🇹", position: "مهاجم", club: "النصر السعودي", image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=500&auto=format&fit=crop&q=80" },
-            { name: "كيليان مبابي", nationality: "فرنسا 🇫🇷", position: "مهاجم", club: "ريال مدريد", image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=500&auto=format&fit=crop&q=80" },
-            { name: "كيفين دي بروين", nationality: "بلجيكا 🇧🇪", position: "وسط ميدان", club: "مانشستر سيتي", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=500&auto=format&fit=crop&q=80" },
-            { name: "محمد صلاح", nationality: "مصر 🇪🇬", position: "جناح أيمن", club: "ليفربول", image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&auto=format&fit=crop&q=80" },
-            { name: "جود بيلينغهام", nationality: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿", position: "وسط ميدان", club: "ريال مدريد", image: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80" },
-            { name: "فينيسيوس جونيور", nationality: "البرازيل 🇧🇷", position: "جناح أيسر", club: "ريال مدريد", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80" }
-        ];
+</section>
 
-        let gameSession = {
-            currentMode: 'classic',
-            score: 0,
-            xp: parseInt(localStorage.getItem('fut_xp')) || 300,
-            coins: parseInt(localStorage.getItem('fut_coins')) || 450,
-            streak: parseInt(localStorage.getItem('fut_streak')) || 0,
-            questionIndex: 0,
-            totalLimit: 10,
-            comboCount: 0,
-            correctAnswers: 0,
-            activePlayer: null,
-            timerObj: null,
-            timeLeftValue: 100
+
+<!-- =========================
+     GAME
+========================= -->
+
+<section id="gameScreen" class="screen">
+
+    <div class="game-top">
+
+        <button class="back-btn"
+                onclick="quitGame()">
+            ←
+        </button>
+
+        <div class="game-title">
+
+            <strong id="gameModeName">
+                اللعبة
+            </strong>
+
+            <small>
+                سؤال <span id="questionIndex">1</span>
+                / <span id="questionTotal">10</span>
+            </small>
+
+        </div>
+
+        <div id="timer"
+             class="timer">
+            20
+        </div>
+
+    </div>
+
+
+    <div class="game-progress">
+
+        <div class="progress">
+            <div id="questionBar"
+                 class="progress-fill">
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <div id="difficulty"
+             class="difficulty">
+            سهل
+        </div>
+
+        <div id="questionText"
+             class="question">
+            السؤال...
+        </div>
+
+        <div id="answers"
+             class="answers">
+        </div>
+
+        <div id="comboBox"
+             class="combo-box">
+        </div>
+
+    </div>
+
+
+    <div class="hints">
+
+        <button class="hint"
+                onclick="useHint('fifty')">
+            ✂️ 50/50
+            <small>25 🪙</small>
+        </button>
+
+        <button class="hint"
+                onclick="useHint('clue')">
+            💡 تلميح
+            <small>20 🪙</small>
+        </button>
+
+        <button class="hint"
+                onclick="useHint('skip')">
+            ⏭️ تخطي
+            <small>35 🪙</small>
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     RESULT
+========================= -->
+
+<section id="resultScreen" class="screen">
+
+    <div class="result-icon" id="resultIcon">
+        🏆
+    </div>
+
+    <div class="result-title"
+         id="resultTitle">
+        ممتاز!
+    </div>
+
+    <div class="result-sub"
+         id="resultSub">
+        أداء رائع
+    </div>
+
+    <div class="result-grid">
+
+        <div class="result-stat">
+            <strong id="resultScore">0</strong>
+            <span>النقاط</span>
+        </div>
+
+        <div class="result-stat">
+            <strong id="resultCorrect">0</strong>
+            <span>صحيح</span>
+        </div>
+
+        <div class="result-stat">
+            <strong id="resultXP">+0</strong>
+            <span>XP</span>
+        </div>
+
+        <div class="result-stat">
+            <strong id="resultCoins">+0</strong>
+            <span>عملات</span>
+        </div>
+
+    </div>
+
+    <div style="margin-top:20px">
+
+        <button class="primary-btn"
+                onclick="restartLastGame()">
+            🔄 لعب مرة أخرى
+        </button>
+
+        <button class="secondary-btn"
+                style="width:100%;margin-top:10px"
+                onclick="showScreen('homeScreen')">
+            🏠 الرئيسية
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     BOTTOM NAV
+========================= -->
+
+<nav id="bottomNav" class="bottom-nav">
+
+    <button class="nav-btn active"
+            data-screen="homeScreen"
+            onclick="showScreen('homeScreen')">
+        <span>🏠</span>
+        <span>الرئيسية</span>
+    </button>
+
+    <button class="nav-btn"
+            data-screen="gamesScreen"
+            onclick="showScreen('gamesScreen')">
+        <span>🎮</span>
+        <span>الألعاب</span>
+    </button>
+
+    <button class="nav-btn"
+            data-screen="challengesScreen"
+            onclick="showScreen('challengesScreen')">
+        <span>🔥</span>
+        <span>التحديات</span>
+    </button>
+
+    <button class="nav-btn"
+            data-screen="achievementsScreen"
+            onclick="showScreen('achievementsScreen')">
+        <span>🏆</span>
+        <span>الإنجازات</span>
+    </button>
+
+    <button class="nav-btn"
+            data-screen="profileScreen"
+            onclick="showScreen('profileScreen')">
+        <span>👤</span>
+        <span>الملف</span>
+    </button>
+
+</nav>
+
+
+<!-- =========================
+     SETTINGS MODAL
+========================= -->
+
+<div id="settingsModal"
+     class="modal"
+     onclick="closeModal(event)">
+
+    <div class="modal-box">
+
+        <div class="modal-handle"></div>
+
+        <h2>⚙️ الإعدادات</h2>
+
+        <div class="card" style="margin-top:15px">
+
+            <div class="level-row">
+                <b>🔊 المؤثرات</b>
+
+                <button class="secondary-btn"
+                        id="soundButton"
+                        onclick="toggleSound()">
+                    تشغيل
+                </button>
+            </div>
+
+        </div>
+
+        <div class="card" style="margin-top:10px">
+
+            <div class="level-row">
+                <b>🔔 الاهتزاز</b>
+
+                <button class="secondary-btn"
+                        id="vibrationButton"
+                        onclick="toggleVibration()">
+                    تشغيل
+                </button>
+            </div>
+
+        </div>
+
+        <button class="secondary-btn"
+                style="width:100%;margin-top:20px;color:var(--red)"
+                onclick="resetProgress()">
+            🗑️ حذف التقدم
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="toast"
+     class="toast">
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   FALLBACK PLAYER DATABASE
+   إذا كان popular_players.json موجوداً يمكن تحميله
+   ========================================================= */
+
+const FALLBACK_PLAYERS = [
+
+{
+ id:"messi",
+ name:"ليونيل ميسي",
+ nationality:"الأرجنتين",
+ position:"جناح",
+ club:"إنتر ميامي",
+ previousClubs:["برشلونة","باريس سان جيرمان"],
+ foot:"يسرى",
+ number:10,
+ birth:"24 يونيو 1987",
+ height:170,
+ style:"صانع ألعاب",
+ league:"الدوري الأمريكي",
+ champions:true,
+ worldcup:true
+},
+
+{
+ id:"ronaldo",
+ name:"كريستيانو رونالدو",
+ nationality:"البرتغال",
+ position:"مهاجم",
+ club:"النصر",
+ previousClubs:["سبورتينغ لشبونة","مانشستر يونايتد","ريال مدريد","يوفنتوس"],
+ foot:"يمنى",
+ number:7,
+ birth:"5 فبراير 1985",
+ height:187,
+ style:"مهاجم",
+ league:"الدوري السعودي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"mbappe",
+ name:"كيليان مبابي",
+ nationality:"فرنسا",
+ position:"مهاجم",
+ club:"ريال مدريد",
+ previousClubs:["موناكو","باريس سان جيرمان"],
+ foot:"يمنى",
+ number:9,
+ birth:"20 ديسمبر 1998",
+ height:178,
+ style:"مهاجم سريع",
+ league:"الدوري الإسباني",
+ champions:false,
+ worldcup:true
+},
+
+{
+ id:"salah",
+ name:"محمد صلاح",
+ nationality:"مصر",
+ position:"جناح",
+ club:"ليفربول",
+ previousClubs:["المقاولون العرب","بازل","تشيلسي","فيورنتينا","روما"],
+ foot:"يسرى",
+ number:11,
+ birth:"15 يونيو 1992",
+ height:175,
+ style:"جناح هجومي",
+ league:"الدوري الإنجليزي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"haaland",
+ name:"إيرلينغ هالاند",
+ nationality:"النرويج",
+ position:"مهاجم",
+ club:"مانشستر سيتي",
+ previousClubs:["مولده","ريد بول سالزبورغ","بوروسيا دورتموند"],
+ foot:"يسرى",
+ number:9,
+ birth:"21 يوليو 2000",
+ height:195,
+ style:"مهاجم صندوق",
+ league:"الدوري الإنجليزي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"vinicius",
+ name:"فينيسيوس جونيور",
+ nationality:"البرازيل",
+ position:"جناح",
+ club:"ريال مدريد",
+ previousClubs:[],
+ foot:"يمنى",
+ number:7,
+ birth:"12 يوليو 2000",
+ height:176,
+ style:"جناح سريع",
+ league:"الدوري الإسباني",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"bellingham",
+ name:"جود بيلينغهام",
+ nationality:"إنجلترا",
+ position:"وسط",
+ club:"ريال مدريد",
+ previousClubs:["برمنغهام","بوروسيا دورتموند"],
+ foot:"يمنى",
+ number:5,
+ birth:"29 يونيو 2003",
+ height:186,
+ style:"وسط متكامل",
+ league:"الدوري الإسباني",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"debruyne",
+ name:"كيفن دي بروين",
+ nationality:"بلجيكا",
+ position:"وسط",
+ club:"مانشستر سيتي",
+ previousClubs:["جينك","تشيلسي","فيردر بريمن","فولفسبورغ"],
+ foot:"يمنى",
+ number:17,
+ birth:"28 يونيو 1991",
+ height:181,
+ style:"صانع ألعاب",
+ league:"الدوري الإنجليزي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"neymar",
+ name:"نيمار",
+ nationality:"البرازيل",
+ position:"جناح",
+ club:"الهلال",
+ previousClubs:["سانتوس","برشلونة","باريس سان جيرمان"],
+ foot:"يمنى",
+ number:10,
+ birth:"5 فبراير 1992",
+ height:175,
+ style:"مراوغ",
+ league:"الدوري السعودي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"modric",
+ name:"لوكا مودريتش",
+ nationality:"كرواتيا",
+ position:"وسط",
+ club:"ريال مدريد",
+ previousClubs:["دينامو زغرب","توتنهام"],
+ foot:"يمنى",
+ number:10,
+ birth:"9 سبتمبر 1985",
+ height:172,
+ style:"صانع ألعاب",
+ league:"الدوري الإسباني",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"lewandowski",
+ name:"روبرت ليفاندوفسكي",
+ nationality:"بولندا",
+ position:"مهاجم",
+ club:"برشلونة",
+ previousClubs:["ليخ بوزنان","بوروسيا دورتموند","بايرن ميونخ"],
+ foot:"يمنى",
+ number:9,
+ birth:"21 أغسطس 1988",
+ height:185,
+ style:"مهاجم صندوق",
+ league:"الدوري الإسباني",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"griezmann",
+ name:"أنطوان غريزمان",
+ nationality:"فرنسا",
+ position:"مهاجم",
+ club:"أتلتيكو مدريد",
+ previousClubs:["ريال سوسيداد","برشلونة"],
+ foot:"يسرى",
+ number:7,
+ birth:"21 مارس 1991",
+ height:176,
+ style:"مهاجم متحرك",
+ league:"الدوري الإسباني",
+ champions:false,
+ worldcup:true
+},
+
+{
+ id:"kane",
+ name:"هاري كين",
+ nationality:"إنجلترا",
+ position:"مهاجم",
+ club:"بايرن ميونخ",
+ previousClubs:["توتنهام"],
+ foot:"يمنى",
+ number:9,
+ birth:"28 يوليو 1993",
+ height:188,
+ style:"مهاجم وصانع لعب",
+ league:"الدوري الألماني",
+ champions:false,
+ worldcup:false
+},
+
+{
+ id:"son",
+ name:"سون هيونغ مين",
+ nationality:"كوريا الجنوبية",
+ position:"جناح",
+ club:"توتنهام",
+ previousClubs:["هامبورغ","باير ليفركوزن"],
+ foot:"يمنى",
+ number:7,
+ birth:"8 يوليو 1992",
+ height:183,
+ style:"جناح سريع",
+ league:"الدوري الإنجليزي",
+ champions:false,
+ worldcup:false
+},
+
+{
+ id:"rodri",
+ name:"رودري",
+ nationality:"إسبانيا",
+ position:"وسط",
+ club:"مانشستر سيتي",
+ previousClubs:["فياريال","أتلتيكو مدريد"],
+ foot:"يمنى",
+ number:16,
+ birth:"22 يونيو 1996",
+ height:191,
+ style:"محور",
+ league:"الدوري الإنجليزي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"saka",
+ name:"بوكايو ساكا",
+ nationality:"إنجلترا",
+ position:"جناح",
+ club:"أرسنال",
+ previousClubs:[],
+ foot:"يسرى",
+ number:7,
+ birth:"5 سبتمبر 2001",
+ height:178,
+ style:"جناح هجومي",
+ league:"الدوري الإنجليزي",
+ champions:false,
+ worldcup:false
+},
+
+{
+ id:"osimhen",
+ name:"فيكتور أوسيمين",
+ nationality:"نيجيريا",
+ position:"مهاجم",
+ club:"غلطة سراي",
+ previousClubs:["شارلروا","ليل","نابولي"],
+ foot:"يمنى",
+ number:9,
+ birth:"29 ديسمبر 1998",
+ height:186,
+ style:"مهاجم سريع",
+ league:"الدوري التركي",
+ champions:false,
+ worldcup:false
+},
+
+{
+ id:"vanDijk",
+ name:"فيرجيل فان دايك",
+ nationality:"هولندا",
+ position:"مدافع",
+ club:"ليفربول",
+ previousClubs:["غرونينغن","سلتيك","ساوثهامبتون"],
+ foot:"يمنى",
+ number:4,
+ birth:"8 يوليو 1991",
+ height:193,
+ style:"قلب دفاع",
+ league:"الدوري الإنجليزي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"alisson",
+ name:"أليسون بيكر",
+ nationality:"البرازيل",
+ position:"حارس",
+ club:"ليفربول",
+ previousClubs:["إنترناسيونال","روما"],
+ foot:"يمنى",
+ number:1,
+ birth:"2 أكتوبر 1992",
+ height:191,
+ style:"حارس",
+ league:"الدوري الإنجليزي",
+ champions:true,
+ worldcup:false
+},
+
+{
+ id:"bernardo",
+ name:"برناردو سيلفا",
+ nationality:"البرتغال",
+ position:"وسط",
+ club:"مانشستر سيتي",
+ previousClubs:["بنفيكا","موناكو"],
+ foot:"يسرى",
+ number:20,
+ birth:"10 أغسطس 1994",
+ height:173,
+ style:"صانع ألعاب",
+ league:"الدوري الإنجليزي",
+ champions:true,
+ worldcup:false
+}
+
+];
+
+let players = [...FALLBACK_PLAYERS];
+
+
+/* =========================================================
+   LOAD JSON IF AVAILABLE
+   ========================================================= */
+
+async function loadPlayers(){
+
+    try{
+
+        const response =
+            await fetch("popular_players.json");
+
+        if(!response.ok)
+            throw new Error("JSON unavailable");
+
+        const data =
+            await response.json();
+
+        if(Array.isArray(data) && data.length >= 5){
+
+            players = data;
+
+            toast("تم تحميل قاعدة اللاعبين ⚽");
+
+            renderGames();
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "Using built-in player database."
+        );
+
+    }
+
+}
+
+loadPlayers();
+
+
+/* =========================================================
+   GAME MODES
+   ========================================================= */
+
+const GAME_MODES = {
+
+classic:{
+ name:"كلاسيكي",
+ icon:"🎯",
+ desc:"اختبار متوازن من أسئلة متنوعة",
+ unlock:1,
+ questions:10,
+ time:20
+},
+
+speed:{
+ name:"السرعة",
+ icon:"⚡",
+ desc:"لديك وقت قصير جداً لكل سؤال",
+ unlock:1,
+ questions:10,
+ time:8
+},
+
+truefalse:{
+ name:"صح أم خطأ",
+ icon:"✅",
+ desc:"هل المعلومة صحيحة أم خاطئة؟",
+ unlock:2,
+ questions:12,
+ time:12
+},
+
+compare:{
+ name:"المقارنة",
+ icon:"⚖️",
+ desc:"قارن بين لاعبين واكتشف الصحيح",
+ unlock:3,
+ questions:10,
+ time:18
+},
+
+career:{
+ name:"المسيرة",
+ icon:"🛣️",
+ desc:"اختبر معرفتك بمسيرة اللاعبين",
+ unlock:5,
+ questions:10,
+ time:20
+},
+
+nationality:{
+ name:"الجنسيات",
+ icon:"🌍",
+ desc:"خمن اللاعب من جنسيته",
+ unlock:4,
+ questions:10,
+ time:15
+},
+
+jersey:{
+ name:"رقم القميص",
+ icon:"👕",
+ desc:"من يرتدي هذا الرقم؟",
+ unlock:6,
+ questions:10,
+ time:15
+},
+
+millionaire:{
+ name:"المليون الكروي",
+ icon:"💰",
+ desc:"كل سؤال أصعب من السابق",
+ unlock:8,
+ questions:12,
+ time:25
+},
+
+detective:{
+ name:"المحقق",
+ icon:"🕵️",
+ desc:"اكتشف اللاعب من مجموعة أدلة",
+ unlock:10,
+ questions:10,
+ time:25
+},
+
+knowledge:{
+ name:"المعرفة",
+ icon:"🧠",
+ desc:"أسئلة معلومات كروية عميقة",
+ unlock:12,
+ questions:12,
+ time:25
+},
+
+hardcore:{
+ name:"Hardcore",
+ icon:"☠️",
+ desc:"بدون تلميحات وأخطاء قليلة",
+ unlock:15,
+ questions:15,
+ time:15
+},
+
+boss:{
+ name:"Boss Challenge",
+ icon:"👑",
+ desc:"أصعب تحديات اللعبة",
+ unlock:15,
+ questions:10,
+ time:18
+},
+
+daily:{
+ name:"التحدي اليومي",
+ icon:"📅",
+ desc:"5 أسئلة خاصة كل يوم",
+ unlock:1,
+ questions:5,
+ time:20
+},
+
+endless:{
+ name:"اللانهائي",
+ icon:"♾️",
+ desc:"استمر حتى تخطئ",
+ unlock:1,
+ questions:999,
+ time:18
+}
+
+};
+
+
+/* =========================================================
+   QUESTION TEMPLATES
+   ========================================================= */
+
+const QUESTION_TYPES = [
+
+{
+ id:"nationality",
+ min:1,
+ text:p=>`ما جنسية ${p.name}؟`,
+ answer:p=>p.nationality
+},
+
+{
+ id:"position",
+ min:1,
+ text:p=>`ما مركز ${p.name}؟`,
+ answer:p=>p.position
+},
+
+{
+ id:"club",
+ min:1,
+ text:p=>`مع أي نادٍ يلعب ${p.name}؟`,
+ answer:p=>p.club
+},
+
+{
+ id:"foot",
+ min:4,
+ text:p=>`ما القدم التي يعتمد عليها ${p.name} أكثر؟`,
+ answer:p=>p.foot
+},
+
+{
+ id:"number",
+ min:5,
+ text:p=>`ما رقم قميص ${p.name}؟`,
+ answer:p=>String(p.number)
+},
+
+{
+ id:"birth",
+ min:6,
+ text:p=>`متى وُلد ${p.name}؟`,
+ answer:p=>p.birth
+},
+
+{
+ id:"height",
+ min:7,
+ text:p=>`كم يبلغ طول ${p.name} تقريباً؟`,
+ answer:p=>`${p.height} سم`
+},
+
+{
+ id:"style",
+ min:8,
+ text:p=>`كيف يمكن وصف أسلوب لعب ${p.name}؟`,
+ answer:p=>p.style
+},
+
+{
+ id:"league",
+ min:8,
+ text:p=>`في أي دوري يلعب ${p.name}؟`,
+ answer:p=>p.league
+},
+
+{
+ id:"previousClub",
+ min:10,
+ text:p=>`أي نادٍ لعب له ${p.name} في مسيرته؟`,
+ answer:p=>p.previousClubs?.[0] || p.club
+},
+
+{
+ id:"champions",
+ min:12,
+ text:p=>`هل حقق ${p.name} دوري أبطال أوروبا؟`,
+ answer:p=>p.champions ? "نعم" : "لا"
+},
+
+{
+ id:"worldcup",
+ min:14,
+ text:p=>`هل فاز ${p.name} بكأس العالم؟`,
+ answer:p=>p.worldcup ? "نعم" : "لا"
+}
+
+];
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+const defaultState = {
+
+xp:0,
+coins:100,
+level:1,
+
+games:0,
+correct:0,
+bestScore:0,
+
+streak:0,
+maxCombo:0,
+
+sound:true,
+vibration:true,
+
+theme:"dark",
+
+recentQuestions:[],
+recentPlayers:[],
+
+achievements:[],
+
+dailyDate:"",
+dailyCompleted:false,
+dailyProgress:0
+
+};
+
+let state =
+    JSON.parse(
+        localStorage.getItem("minPlayerState")
+    ) || {...defaultState};
+
+
+/* =========================================================
+   SAVE
+   ========================================================= */
+
+function save(){
+
+    localStorage.setItem(
+        "minPlayerState",
+        JSON.stringify(state)
+    );
+
+}
+
+
+/* =========================================================
+   LEVEL SYSTEM
+   ========================================================= */
+
+function xpForLevel(level){
+
+    return Math.floor(
+        300 *
+        Math.pow(level,1.45)
+    );
+
+}
+
+function getLevelFromXP(xp){
+
+    let level = 1;
+
+    while(
+        xp >= xpForLevel(level) &&
+        level < 100
+    ){
+        xp -= xpForLevel(level);
+        level++;
+    }
+
+    return level;
+
+}
+
+function updateLevel(){
+
+    const oldLevel =
+        state.level;
+
+    state.level =
+        getLevelFromXP(state.xp);
+
+    if(state.level > oldLevel){
+
+        state.coins +=
+            50 * (state.level-oldLevel);
+
+        toast(
+            `🎉 وصلت إلى المستوى ${state.level}! +${50*(state.level-oldLevel)} 🪙`
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RANK
+   ========================================================= */
+
+function getRank(level){
+
+    if(level >= 50)
+        return "أسطورة كروية";
+
+    if(level >= 35)
+        return "عبقري كروي";
+
+    if(level >= 25)
+        return "محترف عالمي";
+
+    if(level >= 15)
+        return "محترف";
+
+    if(level >= 10)
+        return "خبير";
+
+    if(level >= 5)
+        return "متقدم";
+
+    return "مبتدئ";
+
+}
+
+
+/* =========================================================
+   RANDOM HELPERS
+   ========================================================= */
+
+function random(arr){
+
+    return arr[
+        Math.floor(
+            Math.random()*arr.length
+        )
+    ];
+
+}
+
+function shuffle(arr){
+
+    return [...arr].sort(
+        ()=>Math.random()-.5
+    );
+
+}
+
+
+/* =========================================================
+   UNIQUE PLAYER
+   ========================================================= */
+
+function choosePlayer(){
+
+    let available =
+        players.filter(
+            p =>
+            !state.recentPlayers.includes(p.id)
+        );
+
+    if(available.length < 4){
+
+        state.recentPlayers = [];
+
+        available = [...players];
+
+    }
+
+    const player =
+        random(available);
+
+    state.recentPlayers.push(player.id);
+
+    if(state.recentPlayers.length > 35)
+        state.recentPlayers.shift();
+
+    return player;
+
+}
+
+
+/* =========================================================
+   UNIQUE QUESTION TYPE
+   ========================================================= */
+
+let usedTypes = [];
+
+function chooseQuestionType(){
+
+    let level =
+        state.level;
+
+    let available =
+        QUESTION_TYPES.filter(
+            q=>q.min<=level
+        );
+
+    available =
+        available.filter(
+            q=>!usedTypes.includes(q.id)
+        );
+
+    if(!available.length){
+
+        usedTypes = [];
+
+        available =
+            QUESTION_TYPES.filter(
+                q=>q.min<=level
+            );
+
+    }
+
+    const type =
+        random(available);
+
+    usedTypes.push(type.id);
+
+    return type;
+
+}
+
+
+/* =========================================================
+   CREATE DISTRACTORS
+   ========================================================= */
+
+function getDistractors(correct,field,count=3){
+
+    let values =
+        players
+        .map(p=>{
+
+            let value = p[field];
+
+            if(Array.isArray(value))
+                value=value[0];
+
+            return value;
+
+        })
+        .filter(Boolean)
+        .filter(
+            v=>String(v)!==String(correct)
+        );
+
+    values =
+        [...new Set(values)];
+
+    return shuffle(values)
+        .slice(0,count);
+
+}
+
+
+/* =========================================================
+   CREATE QUESTION
+   ========================================================= */
+
+function generateQuestion(mode){
+
+    const player =
+        choosePlayer();
+
+    let type;
+
+    if(mode==="nationality"){
+
+        type={
+            id:"nationality",
+            min:1,
+            text:p=>`أي لاعب يحمل هذه الجنسية؟`,
+            answer:p=>p.name
         };
 
-        function applyTheme(themeName) {
-            document.body.setAttribute('data-theme', themeName);
-            localStorage.setItem('fut_theme', themeName);
+    }
+
+    else if(mode==="jersey"){
+
+        type={
+            id:"number",
+            min:1,
+            text:p=>`من يرتدي الرقم ${p.number}؟`,
+            answer:p=>p.name
+        };
+
+    }
+
+    else if(mode==="career"){
+
+        type={
+            id:"previousClub",
+            min:1,
+            text:p=>
+                `أي نادٍ لعب له ${p.name} قبل ناديه الحالي؟`,
+            answer:p=>p.previousClubs?.[0] || p.club
+        };
+
+    }
+
+    else{
+
+        type =
+            chooseQuestionType();
+
+    }
+
+
+    const correct =
+        type.answer(player);
+
+    let choices;
+
+    let field =
+        type.id;
+
+    if(
+        type.id==="previousClub"
+    )
+        field="previousClubs";
+
+    if(
+        type.id==="nationality"
+    )
+        field="nationality";
+
+    if(
+        type.id==="position"
+    )
+        field="position";
+
+    if(
+        type.id==="club"
+    )
+        field="club";
+
+    if(
+        type.id==="foot"
+    )
+        field="foot";
+
+    if(
+        type.id==="number"
+    )
+        field="number";
+
+    if(
+        type.id==="birth"
+    )
+        field="birth";
+
+    if(
+        type.id==="height"
+    )
+        field="height";
+
+    if(
+        type.id==="style"
+    )
+        field="style";
+
+    if(
+        type.id==="league"
+    )
+        field="league";
+
+    if(
+        type.id==="champions"
+    )
+        field="champions";
+
+    if(
+        type.id==="worldcup"
+    )
+        field="worldcup";
+
+
+    if(
+        mode==="nationality" ||
+        mode==="jersey"
+    ){
+
+        const wrongPlayers =
+            shuffle(
+                players.filter(
+                    p=>p.id!==player.id
+                )
+            ).slice(0,3);
+
+        choices =
+            shuffle([
+                player.name,
+                ...wrongPlayers.map(
+                    p=>p.name
+                )
+            ]);
+
+    }
+
+    else{
+
+        let distractors =
+            getDistractors(
+                correct,
+                field,
+                3
+            );
+
+        if(distractors.length<3){
+
+            const extra =
+                players
+                .filter(
+                    p=>p.id!==player.id
+                )
+                .map(
+                    p=>type.answer(p)
+                )
+                .filter(Boolean);
+
+            distractors =
+                [
+                    ...distractors,
+                    ...shuffle(extra)
+                ]
+                .filter(
+                    (v,i,a)=>
+                        a.indexOf(v)===i &&
+                        String(v)!==
+                        String(correct)
+                )
+                .slice(0,3);
+
         }
 
-        const savedTheme = localStorage.getItem('fut_theme');
-        if (savedTheme) applyTheme(savedTheme);
+        choices =
+            shuffle([
+                correct,
+                ...distractors
+            ]);
 
-        function navigateTo(targetScreenId) {
-            document.querySelectorAll('.view-screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(targetScreenId).classList.add('active');
-            refreshGlobalIndicators();
+    }
+
+
+    let difficulty =
+        "سهل";
+
+    if(state.level>=5)
+        difficulty="متوسط";
+
+    if(state.level>=12)
+        difficulty="صعب";
+
+    if(state.level>=25)
+        difficulty="خبير";
+
+    if(
+        mode==="boss" ||
+        state.level>=50
+    )
+        difficulty="أسطوري";
+
+
+    return {
+
+        id:
+            `${player.id}_${type.id}_${Date.now()}_${Math.random()}`,
+
+        player,
+        type:type.id,
+
+        text:type.text(player),
+
+        answer:String(correct),
+
+        choices:
+            choices.map(
+                String
+            ),
+
+        difficulty,
+
+        explanation:
+            `الإجابة الصحيحة هي: ${correct}`
+
+    };
+
+}
+
+
+/* =========================================================
+   GAME STATE
+   ========================================================= */
+
+let game = {
+
+    mode:"classic",
+
+    questions:[],
+
+    index:0,
+
+    score:0,
+
+    correct:0,
+
+    combo:0,
+
+    maxCombo:0,
+
+    timeLeft:20,
+
+    timer:null,
+
+    hintsUsed:0,
+
+    answered:false
+
+};
+
+let lastMode="classic";
+
+
+/* =========================================================
+   START GAME
+   ========================================================= */
+
+function startGame(mode){
+
+    const data =
+        GAME_MODES[mode];
+
+    if(!data)
+        return;
+
+    if(state.level < data.unlock){
+
+        toast(
+            `🔒 تحتاج المستوى ${data.unlock}`
+        );
+
+        return;
+
+    }
+
+    if(mode==="boss" && state.level<15){
+
+        toast("👑 الـBoss يفتح في المستوى 15");
+
+        return;
+
+    }
+
+    lastMode=mode;
+
+    usedTypes=[];
+
+    game = {
+
+        mode,
+
+        questions:[],
+
+        index:0,
+
+        score:0,
+
+        correct:0,
+
+        combo:0,
+
+        maxCombo:0,
+
+        timeLeft:data.time,
+
+        timer:null,
+
+        hintsUsed:0,
+
+        answered:false
+
+    };
+
+
+    const count =
+        Math.min(
+            data.questions,
+            mode==="endless"
+                ? 999
+                : data.questions
+        );
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        game.questions.push(
+            generateQuestion(mode)
+        );
+
+    }
+
+
+    document
+        .getElementById("bottomNav")
+        .style.display="none";
+
+    showScreen("gameScreen");
+
+    document
+        .getElementById("gameModeName")
+        .textContent=data.name;
+
+    document
+        .getElementById("questionTotal")
+        .textContent=
+            mode==="endless"
+            ? "∞"
+            : count;
+
+    showQuestion();
+
+}
+
+
+/* =========================================================
+   SHOW QUESTION
+   ========================================================= */
+
+function showQuestion(){
+
+    clearInterval(game.timer);
+
+    const q =
+        game.questions[game.index];
+
+    if(!q){
+
+        finishGame();
+
+        return;
+
+    }
+
+
+    game.answered=false;
+
+    document
+        .getElementById("questionIndex")
+        .textContent=
+            game.index+1;
+
+    document
+        .getElementById("questionText")
+        .textContent=q.text;
+
+    document
+        .getElementById("difficulty")
+        .textContent=q.difficulty;
+
+
+    const bar =
+        document
+        .getElementById("questionBar");
+
+    if(game.mode==="endless"){
+
+        bar.style.width="50%";
+
+    }else{
+
+        bar.style.width=
+            (
+                game.index /
+                game.questions.length
+            )*100+"%";
+
+    }
+
+
+    const answers =
+        document
+        .getElementById("answers");
+
+    answers.innerHTML="";
+
+
+    q.choices.forEach(
+        choice=>{
+
+            const button =
+                document.createElement("button");
+
+            button.className="answer";
+
+            button.textContent=choice;
+
+            button.onclick=()=>{
+                answerQuestion(
+                    choice,
+                    button
+                );
+            };
+
+            answers.appendChild(button);
+
         }
+    );
 
-        function switchHubTab(targetTabId) {
-            document.querySelectorAll('.tab-content-pane').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(targetTabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
 
-        function refreshGlobalIndicators() {
-            document.getElementById('lbl-coins').innerText = gameSession.coins;
-            document.getElementById('lbl-xp').innerText = gameSession.xp;
-            document.getElementById('hub-coins-val').innerText = gameSession.coins;
-            document.getElementById('hub-xp-val').innerText = gameSession.xp;
-            document.getElementById('hub-streak-val').innerText = gameSession.streak;
-        }
+    document
+        .getElementById("comboBox")
+        .textContent=
+            game.combo>=2
+            ? `🔥 Combo ×${game.combo}`
+            : "";
 
-        function launchGameMode(modeName) {
-            gameSession.currentMode = modeName;
-            gameSession.questionIndex = 0;
-            gameSession.score = 0;
-            gameSession.comboCount = 0;
-            gameSession.correctAnswers = 0;
-            gameSession.totalLimit = 10;
-            navigateTo('screen-gameplay');
-            loadNextChallengeItem();
-        }
 
-        function launchDailyChallenge() {
-            gameSession.currentMode = 'classic';
-            gameSession.questionIndex = 0;
-            gameSession.score = 0;
-            gameSession.comboCount = 0;
-            gameSession.correctAnswers = 0;
-            gameSession.totalLimit = 5; // التحدي اليومي مكون من 5 أسئلة ثابتة
-            navigateTo('screen-gameplay');
-            loadNextChallengeItem();
-        }
+    let time =
+        GAME_MODES[game.mode].time;
 
-        function loadNextChallengeItem() {
-            if (gameSession.questionIndex >= gameSession.totalLimit) {
-                concludeGameSession();
-                return;
-            }
+    if(
+        game.mode==="millionaire"
+    ){
 
-            gameSession.questionIndex++;
-            document.getElementById('game-q-cur').innerText = gameSession.questionIndex;
-            document.getElementById('game-q-tot').innerText = gameSession.totalLimit;
-            document.getElementById('game-combo-val').innerText = gameSession.comboCount;
-            document.getElementById('game-score-val').innerText = gameSession.score;
+        time =
+            Math.max(
+                10,
+                time -
+                game.index
+            );
 
-            const chosen = globalPlayersRepo[Math.floor(Math.random() * globalPlayersRepo.length)];
-            gameSession.activePlayer = chosen;
+    }
 
-            const pictureNode = document.getElementById('target-player-img');
-            const infoTextNode = document.getElementById('detective-info-box');
-            pictureNode.className = "";
-            pictureNode.src = chosen.image;
-            infoTextNode.style.display = "none";
-            pictureNode.style.display = "block";
+    game.timeLeft=time;
 
-            if (gameSession.currentMode === 'detective') {
-                pictureNode.style.display = "none";
-                infoTextNode.style.display = "block";
-                infoTextNode.innerHTML = `🕵️ كشف الهوية:<br>🌍 الجنسية: ${chosen.nationality}<br>⚽ المركز: ${chosen.position}<br>🏟️ النادي: ${chosen.club}`;
-            } else if (gameSession.currentMode === 'silhouette') {
-                pictureNode.classList.add('silhouette-fx');
-            } else if (gameSession.currentMode === 'blur') {
-                pictureNode.classList.add('blur-fx');
-                setTimeout(() => pictureNode.classList.remove('blur-fx'), 2200);
-            }
+    updateTimer();
 
-            let optionsList = [chosen.name];
-            while (optionsList.length < 4) {
-                let randomOpt = globalPlayersRepo[Math.floor(Math.random() * globalPlayersRepo.length)].name;
-                if (!optionsList.includes(randomOpt)) optionsList.push(randomOpt);
-            }
-            optionsList.sort(() => Math.random() - 0.5);
+    game.timer =
+        setInterval(
+            ()=>{
 
-            const gridContainer = document.getElementById('options-buttons-grid');
-            gridContainer.innerHTML = '';
-            optionsList.forEach(optName => {
-                const choiceBtn = document.createElement('button');
-                choiceBtn.className = 'option-choice-card';
-                choiceBtn.innerText = optName;
-                choiceBtn.onclick = () => evaluatePlayerChoice(optName, choiceBtn);
-                gridContainer.appendChild(choiceBtn);
-            });
+                game.timeLeft--;
 
-            beginCountdownTimer();
-        }
+                updateTimer();
 
-        function beginCountdownTimer() {
-            clearInterval(gameSession.timerObj);
-            gameSession.timeLeftValue = 100;
-            const progressLine = document.getElementById('game-timer-fill');
-            
-            gameSession.timerObj = setInterval(() => {
-                gameSession.timeLeftValue -= (gameSession.currentMode === 'speed' ? 4 : 1.5);
-                progressLine.style.width = gameSession.timeLeftValue + '%';
-                
-                if (gameSession.timeLeftValue <= 0) {
-                    clearInterval(gameSession.timerObj);
-                    handleTimeOutPenalty();
+                if(game.timeLeft<=0){
+
+                    clearInterval(game.timer);
+
+                    answerQuestion(
+                        "__TIMEOUT__",
+                        null
+                    );
+
                 }
-            }, 100);
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function updateTimer(){
+
+    document
+        .getElementById("timer")
+        .textContent=
+            game.timeLeft;
+
+}
+
+
+/* =========================================================
+   ANSWER
+   ========================================================= */
+
+function answerQuestion(choice,button){
+
+    if(game.answered)
+        return;
+
+    game.answered=true;
+
+    clearInterval(game.timer);
+
+    const q =
+        game.questions[game.index];
+
+    const buttons =
+        document.querySelectorAll(
+            "#answers .answer"
+        );
+
+    buttons.forEach(
+        b=>b.disabled=true
+    );
+
+
+    const correct =
+        choice !== "__TIMEOUT__" &&
+        String(choice)===
+        String(q.answer);
+
+
+    if(correct){
+
+        if(button)
+            button.classList.add("correct");
+
+        game.correct++;
+
+        game.combo++;
+
+        game.maxCombo =
+            Math.max(
+                game.maxCombo,
+                game.combo
+            );
+
+        let base=10;
+
+        if(q.difficulty==="متوسط")
+            base=15;
+
+        if(q.difficulty==="صعب")
+            base=25;
+
+        if(q.difficulty==="خبير")
+            base=40;
+
+        if(q.difficulty==="أسطوري")
+            base=60;
+
+
+        const speedBonus =
+            Math.max(
+                0,
+                game.timeLeft
+            );
+
+        game.score +=
+            base +
+            speedBonus +
+            game.combo*2;
+
+        state.correct++;
+
+        state.streak++;
+
+        if(
+            game.combo >
+            state.maxCombo
+        ){
+
+            state.maxCombo=
+                game.combo;
+
         }
 
-        function evaluatePlayerChoice(selectedName, btnNode) {
-            clearInterval(gameSession.timerObj);
-            const allChoiceCards = document.querySelectorAll('.option-choice-card');
-            allChoiceCards.forEach(c => c.style.pointerEvents = 'none');
+        showFeedback(
+            `🔥 صحيح! +${base+speedBonus} نقطة`
+        );
 
-            if (selectedName === gameSession.activePlayer.name) {
-                btnNode.classList.add('correct-ans');
-                gameSession.score += 100 + (gameSession.comboCount * 30);
-                gameSession.comboCount++;
-                gameSession.correctAnswers++;
-                if (gameSession.comboCount > gameSession.streak) gameSession.streak = gameSession.comboCount;
-                document.getElementById('game-coach-msg').innerHTML = `<span>🔥</span><span>المدرب: "إجابة خارقة ودقيقة يا بطل!"</span>`;
-            } else {
-                btnNode.classList.add('wrong-ans');
-                gameSession.comboCount = 0;
-                allChoiceCards.forEach(c => {
-                    if (c.innerText === gameSession.activePlayer.name) c.classList.add('correct-ans');
-                });
-                document.getElementById('game-coach-msg').innerHTML = `<span>❌</span><span>المدرب: "لا بأس، استعد للسؤال القادم وركز!"</span>`;
+        playSound("correct");
+
+    }
+
+    else{
+
+        if(button)
+            button.classList.add("wrong");
+
+        game.combo=0;
+
+        state.streak=0;
+
+        buttons.forEach(
+            b=>{
+                if(
+                    String(b.textContent)===
+                    String(q.answer)
+                )
+                    b.classList.add("correct");
+            }
+        );
+
+        showFeedback(
+            `❌ ${q.explanation}`
+        );
+
+        playSound("wrong");
+
+    }
+
+
+    setTimeout(
+        ()=>{
+
+            game.index++;
+
+            if(
+                game.mode==="endless" &&
+                !correct
+            ){
+
+                finishGame();
+
+                return;
+
             }
 
-            setTimeout(loadNextChallengeItem, 1500);
-        }
 
-        function handleTimeOutPenalty() {
-            gameSession.comboCount = 0;
-            loadNextChallengeItem();
-        }
+            if(
+                game.index >=
+                game.questions.length
+            ){
 
-        function triggerHint(hintType) {
-            const ply = gameSession.activePlayer;
-            let helperText = "";
-            if (hintType === 'nationality') helperText = `🌍 الجنسية: ${ply.nationality}`;
-            if (hintType === 'position') helperText = `⚽ المركز: ${ply.position}`;
-            if (hintType === 'club') helperText = `🏟️ النادي: ${ply.club}`;
-            if (hintType === 'fifty') {
-                const incorrectButtons = Array.from(document.querySelectorAll('.option-choice-card')).filter(b => b.innerText !== ply.name);
-                incorrectButtons[0].style.visibility = 'hidden';
-                incorrectButtons[1].style.visibility = 'hidden';
-                helperText = `✂️ تم استبعاد خيارين خاطئين!`;
+                finishGame();
+
+            }else{
+
+                showQuestion();
+
             }
-            document.getElementById('game-coach-msg').innerHTML = `<span>💡</span><span>تلميح المدرب: "${helperText}"</span>`;
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================================================
+   FEEDBACK
+   ========================================================= */
+
+function showFeedback(text){
+
+    document
+        .getElementById("comboBox")
+        .textContent=text;
+
+}
+
+
+/* =========================================================
+   HINTS
+   ========================================================= */
+
+function useHint(type){
+
+    if(game.answered)
+        return;
+
+    if(game.mode==="hardcore"){
+
+        toast(
+            "☠️ التلميحات ممنوعة في Hardcore"
+        );
+
+        return;
+
+    }
+
+    const costs={
+        fifty:25,
+        clue:20,
+        skip:35
+    };
+
+    const cost =
+        costs[type];
+
+    if(state.coins<cost){
+
+        toast("🪙 ما عندكش عملات كافية");
+
+        return;
+
+    }
+
+    state.coins-=cost;
+
+    game.hintsUsed++;
+
+    const q =
+        game.questions[game.index];
+
+    if(type==="fifty"){
+
+        const wrong =
+            [...document.querySelectorAll(
+                "#answers .answer"
+            )]
+            .filter(
+                b=>
+                String(b.textContent)!==
+                String(q.answer)
+            );
+
+        shuffle(wrong)
+            .slice(0,2)
+            .forEach(
+                b=>{
+                    b.disabled=true;
+                    b.style.opacity=".2";
+                }
+            );
+
+        toast("✂️ تم حذف إجابتين");
+
+    }
+
+    if(type==="clue"){
+
+        toast(
+            `💡 تلميح: ${q.player.position} — ${q.player.nationality}`
+        );
+
+    }
+
+    if(type==="skip"){
+
+        game.answered=true;
+
+        clearInterval(game.timer);
+
+        game.index++;
+
+        showQuestion();
+
+        toast("⏭️ تم تخطي السؤال");
+
+    }
+
+    save();
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   FINISH
+   ========================================================= */
+
+function finishGame(){
+
+    clearInterval(game.timer);
+
+    const total =
+        game.mode==="endless"
+        ? game.index
+        : game.questions.length;
+
+
+    let xp =
+        game.correct*15;
+
+    let coins =
+        Math.floor(game.score/20);
+
+
+    if(
+        game.correct===total &&
+        total>0
+    ){
+
+        xp+=50;
+        coins+=30;
+
+    }
+
+
+    if(game.mode==="daily"){
+
+        xp*=2;
+        coins*=2;
+
+        state.dailyCompleted=true;
+        state.dailyProgress=5;
+
+    }
+
+
+    if(game.mode==="boss"){
+
+        xp*=2;
+        coins*=3;
+
+    }
+
+
+    state.xp+=xp;
+
+    state.coins+=coins;
+
+    state.games++;
+
+    state.bestScore =
+        Math.max(
+            state.bestScore,
+            game.score
+        );
+
+
+    updateLevel();
+
+    checkAchievements();
+
+    save();
+
+    updateUI();
+
+
+    document
+        .getElementById("resultScore")
+        .textContent=game.score;
+
+    document
+        .getElementById("resultCorrect")
+        .textContent=
+            `${game.correct}/${total}`;
+
+    document
+        .getElementById("resultXP")
+        .textContent=`+${xp}`;
+
+    document
+        .getElementById("resultCoins")
+        .textContent=`+${coins}`;
+
+
+    let title="جيد جداً!";
+
+    if(
+        total>0 &&
+        game.correct===total
+    )
+        title="🔥 مثالي!";
+
+    else if(
+        game.correct>=total*.8
+    )
+        title="🏆 ممتاز!";
+
+    else if(
+        game.correct>=total*.5
+    )
+        title="👏 أداء جيد";
+
+    else
+        title="💪 حاول مرة أخرى";
+
+
+    document
+        .getElementById("resultTitle")
+        .textContent=title;
+
+
+    document
+        .getElementById("resultSub")
+        .textContent=
+            `أنهيت ${game.correct} إجابة صحيحة`;
+
+    document
+        .getElementById("bottomNav")
+        .style.display="grid";
+
+    showScreen("resultScreen");
+
+}
+
+
+/* =========================================================
+   RESTART
+   ========================================================= */
+
+function restartLastGame(){
+
+    startGame(lastMode);
+
+}
+
+
+/* =========================================================
+   QUIT
+   ========================================================= */
+
+function quitGame(){
+
+    clearInterval(game.timer);
+
+    document
+        .getElementById("bottomNav")
+        .style.display="grid";
+
+    showScreen("homeScreen");
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function showScreen(id){
+
+    if(id==="gameScreen")
+        return;
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(
+            s=>s.classList.remove("active")
+        );
+
+    const screen =
+        document.getElementById(id);
+
+    if(screen)
+        screen.classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(
+            btn=>{
+
+                btn.classList.toggle(
+                    "active",
+                    btn.dataset.screen===id
+                );
+
+            }
+        );
+
+
+    if(id==="gamesScreen")
+        renderGames();
+
+    if(id==="achievementsScreen")
+        renderAchievements();
+
+    if(id==="profileScreen")
+        updateUI();
+
+}
+
+
+/* =========================================================
+   RENDER GAMES
+   ========================================================= */
+
+function renderGames(){
+
+    const container =
+        document.getElementById(
+            "gamesList"
+        );
+
+    container.innerHTML="";
+
+
+    Object.entries(GAME_MODES)
+    .forEach(
+        ([id,mode])=>{
+
+            const unlocked =
+                state.level>=mode.unlock;
+
+            const card =
+                document.createElement("button");
+
+            card.className="game-card";
+
+            card.innerHTML=`
+
+                <div class="game-icon">
+                    ${mode.icon}
+                </div>
+
+                <div class="game-info">
+
+                    <strong>
+                        ${mode.name}
+                    </strong>
+
+                    <small>
+                        ${mode.desc}
+                    </small>
+
+                    <small>
+                        ${unlocked
+                            ? `⏱️ ${mode.time} ثانية`
+                            : `🔒 المستوى ${mode.unlock}`}
+                    </small>
+
+                </div>
+
+                <div class="lock">
+                    ${unlocked ? "›" : "🔒"}
+                </div>
+            `;
+
+
+            card.onclick=()=>{
+
+                if(unlocked)
+                    startGame(id);
+                else
+                    toast(
+                        `🔒 افتحها في المستوى ${mode.unlock}`
+                    );
+
+            };
+
+
+            container.appendChild(card);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+
+const ACHIEVEMENTS=[
+
+{
+ id:"first",
+ icon:"🎮",
+ name:"البداية",
+ desc:"أكمل أول مباراة",
+ check:s=>s.games>=1
+},
+
+{
+ id:"ten",
+ icon:"🔟",
+ name:"10 مباريات",
+ desc:"أكمل 10 مباريات",
+ check:s=>s.games>=10
+},
+
+{
+ id:"correct10",
+ icon:"🎯",
+ name:"قناص",
+ desc:"أجب على 10 أسئلة بشكل صحيح",
+ check:s=>s.correct>=10
+},
+
+{
+ id:"correct100",
+ icon:"💯",
+ name:"خبير",
+ desc:"أجب على 100 سؤال صحيح",
+ check:s=>s.correct>=100
+},
+
+{
+ id:"combo5",
+ icon:"🔥",
+ name:"سلسلة نارية",
+ desc:"حقق Combo ×5",
+ check:s=>s.maxCombo>=5
+},
+
+{
+ id:"combo10",
+ icon:"🌋",
+ name:"لا يمكن إيقافي",
+ desc:"حقق Combo ×10",
+ check:s=>s.maxCombo>=10
+},
+
+{
+ id:"level10",
+ icon:"⭐",
+ name:"متقدم",
+ desc:"الوصول إلى المستوى 10",
+ check:s=>s.level>=10
+},
+
+{
+ id:"level25",
+ icon:"👑",
+ name:"محترف",
+ desc:"الوصول إلى المستوى 25",
+ check:s=>s.level>=25
+},
+
+{
+ id:"level50",
+ icon:"🐐",
+ name:"الأسطورة",
+ desc:"الوصول إلى المستوى 50",
+ check:s=>s.level>=50
+},
+
+{
+ id:"coins1000",
+ icon:"🪙",
+ name:"ثري",
+ desc:"امتلك 1000 عملة",
+ check:s=>s.coins>=1000
+},
+
+{
+ id:"daily",
+ icon:"📅",
+ name:"ملتزم",
+ desc:"أكمل تحدي اليوم",
+ check:s=>s.dailyCompleted
+},
+
+{
+ id:"boss",
+ icon:"👑",
+ name:"سيد الزعماء",
+ desc:"أكمل Boss Challenge",
+ check:s=>s.achievements.includes("bossWin")
+},
+
+{
+ id:"millionaire",
+ icon:"💰",
+ name:"المليونير",
+ desc:"أكمل المليون الكروي",
+ check:s=>s.achievements.includes("millionaireWin")
+},
+
+{
+ id:"perfect",
+ icon:"💎",
+ name:"الكمال",
+ desc:"أنهِ مباراة بدون أخطاء",
+ check:s=>s.achievements.includes("perfect")
+}
+
+];
+
+
+function checkAchievements(){
+
+    ACHIEVEMENTS.forEach(a=>{
+
+        if(
+            !state.achievements.includes(a.id) &&
+            a.check(state)
+        ){
+
+            state.achievements.push(a.id);
+
+            state.xp+=50;
+
+            state.coins+=50;
+
+            toast(
+                `🏆 إنجاز جديد: ${a.name}!`
+            );
+
         }
 
-        function concludeGameSession() {
-            navigateTo('screen-results');
-            const successRatio = Math.round((gameSession.correctAnswers / gameSession.totalLimit) * 100);
-            const rewardXp = gameSession.correctAnswers * 25;
-            const rewardCoins = gameSession.correctAnswers * 15;
+    });
 
-            gameSession.xp += rewardXp;
-            gameSession.coins += rewardCoins;
-            localStorage.setItem('fut_xp', gameSession.xp);
-            localStorage.setItem('fut_coins', gameSession.coins);
-            localStorage.setItem('fut_streak', gameSession.streak);
 
-            document.getElementById('res-accuracy-val').innerText = successRatio + '%';
-            document.getElementById('res-score-val').innerText = gameSession.score;
-            document.getElementById('res-combo-val').innerText = gameSession.streak;
-            document.getElementById('res-xp-val').innerText = rewardXp;
-            document.getElementById('res-coins-val').innerText = rewardCoins;
+    if(
+        game.correct===
+        game.questions.length &&
+        game.questions.length>0
+    ){
+
+        if(
+            !state.achievements.includes("perfect")
+        ){
+
+            state.achievements.push(
+                "perfect"
+            );
+
         }
 
-        refreshGlobalIndicators();
-    </script>
+    }
+
+
+    if(
+        game.mode==="boss" &&
+        game.correct===game.questions.length
+    ){
+
+        if(
+            !state.achievements.includes("bossWin")
+        ){
+
+            state.achievements.push(
+                "bossWin"
+            );
+
+        }
+
+    }
+
+
+    if(
+        game.mode==="millionaire" &&
+        game.correct===game.questions.length
+    ){
+
+        if(
+            !state.achievements.includes("millionaireWin")
+        ){
+
+            state.achievements.push(
+                "millionaireWin"
+            );
+
+        }
+
+    }
+
+}
+
+
+function renderAchievements(){
+
+    const grid =
+        document.getElementById(
+            "achievementGrid"
+        );
+
+    grid.innerHTML="";
+
+
+    ACHIEVEMENTS.forEach(a=>{
+
+        const unlocked =
+            state.achievements
+            .includes(a.id) ||
+            a.check(state);
+
+
+        const div =
+            document.createElement("div");
+
+        div.className=
+            "achievement"+
+            (
+                unlocked
+                ? ""
+                : " locked"
+            );
+
+
+        div.innerHTML=`
+
+            <div class="achievement-icon">
+                ${a.icon}
+            </div>
+
+            <strong>
+                ${a.name}
+            </strong>
+
+            <small>
+                ${a.desc}
+            </small>
+
+            <small style="margin-top:8px">
+                ${unlocked
+                    ? "✅ مكتمل"
+                    : "🔒 غير مكتمل"}
+            </small>
+
+        `;
+
+        grid.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================================================
+   DAILY
+   ========================================================= */
+
+function updateDaily(){
+
+    const today =
+        new Date()
+        .toISOString()
+        .slice(0,10);
+
+    if(state.dailyDate!==today){
+
+        state.dailyDate=today;
+        state.dailyCompleted=false;
+        state.dailyProgress=0;
+
+        save();
+
+    }
+
+
+    const bar =
+        document.getElementById(
+            "dailyBar"
+        );
+
+    if(bar){
+
+        bar.style.width=
+            (
+                state.dailyProgress/5
+            )*100+"%";
+
+    }
+
+
+    const status =
+        document.getElementById(
+            "dailyStatus"
+        );
+
+    if(status){
+
+        status.textContent=
+            state.dailyCompleted
+            ? "مكتمل ✅"
+            : `${state.dailyProgress}/5`;
+
+    }
+
+}
+
+
+/* =========================================================
+   UI UPDATE
+   ========================================================= */
+
+function updateUI(){
+
+    updateLevel();
+
+    const level =
+        state.level;
+
+    const currentBase =
+        level<=1
+        ? 0
+        : xpForLevel(level-1);
+
+    const need =
+        xpForLevel(level);
+
+    let levelXP =
+        state.xp-currentBase;
+
+    if(levelXP<0)
+        levelXP=0;
+
+    const percent =
+        Math.min(
+            100,
+            (levelXP/need)*100
+        );
+
+
+    setText(
+        "homeLevel",
+        level
+    );
+
+    setText(
+        "homeCoins",
+        state.coins
+    );
+
+    setText(
+        "homeStreak",
+        state.streak
+    );
+
+    setText(
+        "xpCurrent",
+        Math.floor(levelXP)
+    );
+
+    setText(
+        "xpNeed",
+        Math.floor(need)
+    );
+
+    setText(
+        "levelName",
+        getRank(level)
+    );
+
+
+    const xpBar =
+        document.getElementById(
+            "xpBar"
+        );
+
+    if(xpBar)
+        xpBar.style.width=
+            percent+"%";
+
+
+    setText(
+        "profileGames",
+        state.games
+    );
+
+    setText(
+        "profileCorrect",
+        state.correct
+    );
+
+    setText(
+        "profileBest",
+        state.bestScore
+    );
+
+    setText(
+        "profileXP",
+        state.xp
+    );
+
+    setText(
+        "profileLevel",
+        level
+    );
+
+    setText(
+        "profileRank",
+        getRank(level)
+    );
+
+    setText(
+        "profileXPText",
+        `${state.xp} XP`
+    );
+
+
+    const profileBar =
+        document.getElementById(
+            "profileXPBar"
+        );
+
+    if(profileBar)
+        profileBar.style.width=
+            percent+"%";
+
+
+    const bossButton =
+        document.getElementById(
+            "bossButton"
+        );
+
+    if(bossButton){
+
+        if(level>=15){
+
+            bossButton.textContent=
+                "👑 ابدأ Boss Challenge";
+
+        }else{
+
+            bossButton.textContent=
+                `🔒 افتح عند المستوى 15`;
+
+        }
+
+    }
+
+
+    applyTheme();
+
+    updateDaily();
+
+}
+
+
+/* =========================================================
+   SET TEXT
+   ========================================================= */
+
+function setText(id,text){
+
+    const el =
+        document.getElementById(id);
+
+    if(el)
+        el.textContent=text;
+
+}
+
+
+/* =========================================================
+   THEMES
+   ========================================================= */
+
+function setTheme(theme){
+
+    state.theme=theme;
+
+    save();
+
+    applyTheme();
+
+    toast("🎨 تم تغيير المظهر");
+
+}
+
+function applyTheme(){
+
+    document.body.classList.remove(
+        "light",
+        "algeria",
+        "champions"
+    );
+
+    if(state.theme!=="dark")
+        document.body.classList.add(
+            state.theme
+        );
+
+}
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+function openSettings(){
+
+    document
+        .getElementById(
+            "settingsModal"
+        )
+        .classList.add("show");
+
+}
+
+function closeModal(event){
+
+    if(
+        event.target.id===
+        "settingsModal"
+    ){
+
+        event.target.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+function toggleSound(){
+
+    state.sound=
+        !state.sound;
+
+    save();
+
+    document
+        .getElementById(
+            "soundButton"
+        )
+        .textContent=
+            state.sound
+            ? "تشغيل"
+            : "إيقاف";
+
+}
+
+
+function toggleVibration(){
+
+    state.vibration=
+        !state.vibration;
+
+    save();
+
+    document
+        .getElementById(
+            "vibrationButton"
+        )
+        .textContent=
+            state.vibration
+            ? "تشغيل"
+            : "إيقاف";
+
+}
+
+
+/* =========================================================
+   SOUND
+   ========================================================= */
+
+function playSound(type){
+
+    if(!state.sound)
+        return;
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        const ctx =
+            new AudioContext();
+
+        const oscillator =
+            ctx.createOscillator();
+
+        const gain =
+            ctx.createGain();
+
+        oscillator.connect(gain);
+
+        gain.connect(ctx.destination);
+
+
+        oscillator.frequency.value =
+            type==="correct"
+            ? 700
+            : 180;
+
+        gain.gain.setValueAtTime(
+            .08,
+            ctx.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            ctx.currentTime+.18
+        );
+
+        oscillator.start();
+
+        oscillator.stop(
+            ctx.currentTime+.18
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =========================================================
+   VIBRATION
+   ========================================================= */
+
+function vibrate(ms=40){
+
+    if(
+        state.vibration &&
+        navigator.vibrate
+    ){
+
+        navigator.vibrate(ms);
+
+    }
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+function toast(text){
+
+    const el =
+        document.getElementById(
+            "toast"
+        );
+
+    el.textContent=text;
+
+    el.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(
+            ()=>{
+                el.classList.remove(
+                    "show"
+                );
+            },
+            2200
+        );
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetProgress(){
+
+    const ok =
+        prompt(
+            "اكتب RESET لتأكيد حذف تقدمك:"
+        );
+
+    if(ok==="RESET"){
+
+        localStorage.removeItem(
+            "minPlayerState"
+        );
+
+        location.reload();
+
+    }else{
+
+        toast(
+            "لم يتم حذف أي شيء"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SPECIAL DAILY/BOSS ACHIEVEMENT
+   ========================================================= */
+
+function markSpecialAchievements(){
+
+    if(
+        game.mode==="boss" &&
+        game.correct===
+        game.questions.length
+    ){
+
+        if(
+            !state.achievements
+            .includes("bossWin")
+        ){
+
+            state.achievements
+            .push("bossWin");
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+updateUI();
+
+renderGames();
+
+renderAchievements();
+
+</script>
+
 </body>
 </html>
