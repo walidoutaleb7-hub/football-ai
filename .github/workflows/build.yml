@@ -18,51 +18,84 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
+      # Generate players database
       - name: Generate players database
         env:
           API_KEY: ${{ secrets.API_KEY }}
         run: |
           python -m pip install --upgrade pip
           pip install requests
+
           python generate_players.py
+
+          if [ ! -f popular_players.json ]; then
+            echo "❌ popular_players.json was not generated"
+            exit 1
+          fi
+
           cp popular_players.json app/src/main/assets/popular_players.json
 
-      - name: Show players count
+      # Check database
+      - name: Check players database
         run: |
-          python -c "import json; data=json.load(open('app/src/main/assets/popular_players.json', encoding='utf-8')); print('Players:', len(data))"
+          python - <<'PY'
+          import json
 
+          path = "app/src/main/assets/popular_players.json"
+
+          with open(path, encoding="utf-8") as f:
+              data = json.load(f)
+
+          print("Players:", len(data))
+
+          if len(data) == 0:
+              raise SystemExit("❌ No players found")
+
+          print("✅ Players database is ready")
+          PY
+
+      # Java
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
+      # Android SDK
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Set up Gradle 8.9
+      # Gradle
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.9'
+          gradle-version: '8.0.2'
 
+      # Build
       - name: Build Debug APK
-        run: gradle assembleDebug --stacktrace
+        run: |
+          gradle assembleDebug --stacktrace
 
+      # Check APK
       - name: Check APK
         run: |
-          if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
+          APK="app/build/outputs/apk/debug/app-debug.apk"
+
+          if [ -f "$APK" ]; then
             echo "✅ APK built successfully!"
-            ls -lh app/build/outputs/apk/debug/app-debug.apk
+            ls -lh "$APK"
           else
             echo "❌ APK was not generated"
             exit 1
           fi
 
+      # Upload
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
