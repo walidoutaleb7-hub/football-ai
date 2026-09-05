@@ -1,1095 +1,940 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>مين اللاعب؟</title>
-<style>
-*{box-sizing:border-box}
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#0b0f14;
-    color:#fff;
-    min-height:100vh;
-    transition:background 0.3s;
-}
-body.light{
-    background:#f0f4fa;
-    color:#0b0f14;
-}
-body.light .card{
-    background:#fff;
-    border-color:#ddd;
-}
-body.light .stat{
-    background:#e8ecf0;
-}
-body.light .option{
-    background:#e8ecf0;
-    border-color:#ccc;
-    color:#0b0f14;
-}
-body.light .mode{
-    background:#e8ecf0;
-    border-color:#ccc;
-}
-body.light .setting{
-    border-color:#ddd;
-}
-button{
-    font-family:inherit;
-    border:0;
-    cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
-}
-button:disabled{
-    cursor:default;
-    opacity:0.5;
-}
-.app{
-    max-width:520px;
-    margin:auto;
-    min-height:100vh;
-    padding:18px 18px 80px;
-}
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
-.logo{
-    font-size:25px;
-    font-weight:bold;
-}
-.logo span{
-    color:#20d46b;
-}
-.icon-btn{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    background:#151b23;
-    color:#fff;
-    font-size:20px;
-}
-.screen{
-    display:none;
-}
-.screen.active{
-    display:block;
-}
-.card{
-    background:#121821;
-    border:1px solid #202936;
-    border-radius:20px;
-    padding:18px;
-    margin-bottom:14px;
-}
-.hero{
-    text-align:center;
-    padding:28px 18px;
-}
-.hero h1{
-    font-size:32px;
-    margin:8px 0;
-}
-.hero p{
-    color:#9ba6b5;
-    line-height:1.7;
-}
-.primary{
-    width:100%;
-    padding:15px;
-    border-radius:14px;
-    background:#20d46b;
-    color:#06130b;
-    font-weight:bold;
-    font-size:17px;
-}
-.secondary{
-    width:100%;
-    padding:13px;
-    border-radius:13px;
-    background:#1b232e;
-    color:#fff;
-    font-weight:bold;
-}
-.mode{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:16px;
-    margin:10px 0;
-    border-radius:15px;
-    background:#171e28;
-    border:1px solid #242e3b;
-}
-.mode b{
-    font-size:17px;
-}
-.mode small{
-    display:block;
-    color:#929dac;
-    margin-top:5px;
-}
-.mode button{
-    background:#20d46b;
-    color:#06130b;
-    padding:10px 14px;
-    border-radius:10px;
-    font-weight:bold;
-}
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-.stat{
-    background:#171e28;
-    padding:14px 5px;
-    text-align:center;
-    border-radius:14px;
-}
-.stat b{
-    display:block;
-    font-size:22px;
-    color:#20d46b;
-}
-.stat span{
-    color:#8f99a7;
-    font-size:12px;
-}
-.question-top{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:15px;
-}
-.badge{
-    background:#1b2733;
-    padding:8px 12px;
-    border-radius:10px;
-    color:#20d46b;
-}
-.timer{
-    background:#2a1c1c;
-    padding:8px 12px;
-    border-radius:10px;
-    color:#ff7373;
-    font-weight:bold;
-}
-.player-box{
-    height:280px;
-    border-radius:18px;
-    background:#171e28;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:15px;
-}
-.player-box img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-.image-error{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    color:#8e98a6;
-    text-align:center;
-    padding:20px;
-}
-.image-error strong{
-    color:#fff;
-}
-.options{
-    display:grid;
-    gap:10px;
-}
-.option{
-    width:100%;
-    padding:15px;
-    border-radius:13px;
-    background:#171e28;
-    color:#fff;
-    border:1px solid #26303c;
-    font-size:16px;
-    text-align:center;
-}
-.option.correct{
-    background:#164b2e;
-    border-color:#20d46b;
-}
-.option.wrong{
-    background:#512020;
-    border-color:#ff5555;
-}
-.option:disabled{
-    opacity:1;
-}
-.hint{
-    margin-top:12px;
-    background:#202936;
-    color:#ffd45a;
-    padding:12px;
-    border-radius:12px;
-    text-align:center;
-}
-.setting{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:16px 4px;
-    border-bottom:1px solid #222b36;
-}
-.setting:last-child{
-    border:0;
-}
-.setting small{
-    display:block;
-    color:#8e98a6;
-    margin-top:4px;
-}
-.switch{
-    width:48px;
-    height:26px;
-    background:#333d49;
-    border-radius:20px;
-    padding:3px;
-}
-.switch i{
-    display:block;
-    width:20px;
-    height:20px;
-    border-radius:50%;
-    background:#fff;
-    transition:.2s;
-}
-.switch.on{
-    background:#20d46b;
-}
-.switch.on i{
-    transform:translateX(22px);
-}
-.result{
-    text-align:center;
-}
-.result-score{
-    font-size:48px;
-    color:#20d46b;
-    font-weight:bold;
-}
-.footer{
-    text-align:center;
-    color:#657080;
-    font-size:12px;
-    margin:25px 0 10px;
-}
-.fade{
-    animation:fade .25s ease;
-}
-@keyframes fade{
-    from{opacity:.2;transform:translateY(5px)}
-    to{opacity:1;transform:translateY(0)}
-}
-
-/* التبويبات الجديدة */
-.achievement-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-.achievement-item{
-    background:#171e28;
-    border:1px solid #202936;
-    border-radius:14px;
-    padding:14px;
-    text-align:center;
-    opacity:0.5;
-    transition:opacity 0.3s;
-}
-.achievement-item.unlocked{
-    opacity:1;
-    border-color:#20d46b;
-}
-.achievement-item .icon{
-    font-size:28px;
-}
-.achievement-item h4{
-    margin:6px 0 2px;
-    font-size:13px;
-}
-.achievement-item p{
-    color:#8f99a7;
-    font-size:10px;
-    margin:0;
-}
-
-.premium-card{
-    text-align:center;
-    padding:30px 20px;
-    background:linear-gradient(145deg,#1a2a1a,#0b0f14);
-    border:2px solid #f1c40f;
-    border-radius:20px;
-}
-.premium-card .icon{
-    font-size:50px;
-}
-.premium-card h2{
-    color:#f1c40f;
-}
-.premium-card p{
-    color:#8f99a7;
-}
-.premium-card .price{
-    font-size:24px;
-    font-weight:bold;
-    color:#20d46b;
-    margin:10px 0;
-}
-.premium-btn{
-    background:#f1c40f;
-    color:#06130b;
-    padding:14px 30px;
-    border-radius:30px;
-    font-weight:bold;
-    font-size:16px;
-}
-
-.profile-card{
-    text-align:center;
-}
-.profile-card .avatar{
-    width:80px;
-    height:80px;
-    border-radius:50%;
-    background:#20d46b;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:40px;
-    margin:0 auto 12px;
-}
-.profile-card .level{
-    font-size:14px;
-    color:#20d46b;
-}
-.profile-card .xp-bar{
-    height:8px;
-    background:#202936;
-    border-radius:10px;
-    margin:10px 0;
-    overflow:hidden;
-}
-.profile-card .xp-bar .fill{
-    height:100%;
-    background:linear-gradient(90deg,#20d46b,#f1c40f);
-    border-radius:10px;
-    transition:width 0.5s;
-}
-
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:#0b0f14;
-    border-top:1px solid #202936;
-    display:flex;
-    justify-content:space-around;
-    padding:8px 0 12px;
-    z-index:100;
-}
-body.light .bottom-nav{
-    background:#f0f4fa;
-    border-top:1px solid #ddd;
-}
-.nav-item{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    background:transparent;
-    color:#8f99a7;
-    font-size:10px;
-    padding:4px 12px;
-    border-radius:10px;
-}
-.nav-item .icon{
-    font-size:22px;
-}
-.nav-item.active{
-    color:#20d46b;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مين اللاعب؟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+        }
+        body {
+            background: #0a0e17;
+            color: #fff;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 16px 14px 20px;
+        }
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .screen.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0 16px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+        }
+        .logo span {
+            color: #20d46b;
+        }
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #171f2a;
+            color: #fff;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .card {
+            background: #121a26;
+            border: 1px solid #1f2a38;
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-bottom: 14px;
+        }
+        .hero-card {
+            text-align: center;
+            padding: 30px 18px;
+            background: linear-gradient(145deg, #141e2c, #0c121c);
+        }
+        .hero-card .icon {
+            font-size: 52px;
+        }
+        .hero-card h1 {
+            font-size: 28px;
+            margin: 8px 0 4px;
+        }
+        .hero-card h1 span {
+            color: #20d46b;
+        }
+        .hero-card p {
+            color: #8a9aaa;
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 320px;
+            margin: 0 auto 16px;
+        }
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #20d46b, #15a852);
+            color: #041008;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: #1b2533;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-secondary:active {
+            background: #2a3648;
+        }
+        .mode-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            margin: 8px 0;
+            border-radius: 14px;
+            background: #121a26;
+            border: 1px solid #1f2a38;
+        }
+        .mode-item .info b {
+            font-size: 16px;
+        }
+        .mode-item .info small {
+            display: block;
+            color: #8a9aaa;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        .mode-item .play-btn {
+            background: #20d46b;
+            color: #041008;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .mode-item .play-btn:active {
+            transform: scale(0.95);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .stat-item {
+            background: #121a26;
+            padding: 14px 6px;
+            text-align: center;
+            border-radius: 14px;
+            border: 1px solid #1f2a38;
+        }
+        .stat-item .num {
+            display: block;
+            font-size: 22px;
+            font-weight: 900;
+            color: #20d46b;
+        }
+        .stat-item .label {
+            color: #8a9aaa;
+            font-size: 11px;
+        }
+        .game-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .game-top .badge {
+            background: #1a2533;
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: #20d46b;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .game-top .timer-box {
+            background: #2a1a1a;
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: #ff6b6b;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        .player-box {
+            height: 260px;
+            border-radius: 16px;
+            background: #0e1622;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+        .player-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .player-box .fallback {
+            text-align: center;
+            color: #6a7a8a;
+            padding: 20px;
+        }
+        .player-box .fallback strong {
+            display: block;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .options-grid {
+            display: grid;
+            gap: 10px;
+        }
+        .option {
+            width: 100%;
+            padding: 14px;
+            border-radius: 13px;
+            background: #121a26;
+            border: 1px solid #1f2a38;
+            color: #fff;
+            font-size: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .option:active {
+            transform: scale(0.97);
+        }
+        .option.correct {
+            background: #164b2e;
+            border-color: #20d46b;
+        }
+        .option.wrong {
+            background: #4a1a1a;
+            border-color: #ff5555;
+        }
+        .option:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+        .hint-box {
+            margin-top: 12px;
+            padding: 12px;
+            background: #1a2533;
+            color: #ffd45a;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+        .result-score {
+            font-size: 48px;
+            color: #20d46b;
+            font-weight: 900;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0a0e17;
+            border-top: 1px solid #1f2a38;
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 0 12px;
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: transparent;
+            color: #6a7a8a;
+            font-size: 10px;
+            padding: 4px 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .nav-item .icon {
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+        .nav-item.active {
+            color: #20d46b;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2533;
+            border: 1px solid #2a3648;
+            border-radius: 12px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
 </head>
 <body>
-<div class="app">
 
-<!-- ======== HEADER ======== -->
-<header class="header">
-    <div class="logo">مين <span>اللاعب؟</span></div>
-    <div>
-        <button class="icon-btn" onclick="showScreen('settings')" aria-label="الإعدادات">⚙️</button>
-    </div>
-</header>
-
-<!-- ======== HOME ======== -->
-<section id="home" class="screen active">
-
-    <div class="card hero">
-        <div style="font-size:50px">⚽</div>
-        <h1>مين اللاعب؟</h1>
-        <p>اختبر معلوماتك الكروية وخمّن اللاعب من صورته.</p>
-        <button class="primary" onclick="showScreen('modes')">🎮 ابدأ اللعب</button>
-    </div>
-
-    <div class="card">
-        <h3>📊 إحصائياتك</h3>
-        <div class="stats">
-            <div class="stat"><b id="statGames">0</b><span>الألعاب</span></div>
-            <div class="stat"><b id="statBest">0</b><span>أفضل نتيجة</span></div>
-            <div class="stat"><b id="statCorrect">0</b><span>إجابات صحيحة</span></div>
-        </div>
-    </div>
-
-</section>
-
-<!-- ======== MODES ======== -->
-<section id="modes" class="screen">
-    <div class="card">
-        <h2>🎮 اختر الوضع</h2>
-
-        <div class="mode">
-            <div><b>الكلاسيكي</b><small>50 سؤال • 15 ثانية</small></div>
-            <button onclick="startGame('classic')">لعب</button>
-        </div>
-
-        <div class="mode">
-            <div><b>⚡ السرعة</b><small>30 سؤال • 10 ثواني</small></div>
-            <button onclick="startGame('speed')">لعب</button>
-        </div>
-
-        <div class="mode">
-            <div><b>🔥 الستريك</b><small>حتى 100 سؤال</small></div>
-            <button onclick="startGame('streak')">لعب</button>
-        </div>
-
-        <div class="mode">
-            <div><b>💎 اللاعب النادر</b><small>لاعبون أصعب في التخمين</small></div>
-            <button onclick="startGame('rare')">لعب</button>
-        </div>
-
-        <button class="secondary" onclick="showScreen('home')">رجوع</button>
-    </div>
-</section>
-
-<!-- ======== GAME ======== -->
-<section id="game" class="screen">
-    <div class="question-top">
-        <div class="badge"><span id="questionNumber">1</span> / <span id="questionTotal">50</span></div>
-        <div class="timer">⏱ <span id="timer">15</span></div>
-    </div>
-
-    <div class="card" id="questionCard">
-        <div class="player-box" id="playerBox">
-            <img id="playerImage" alt="لاعب كرة قدم" loading="eager">
-        </div>
-
-        <div class="options" id="options"></div>
-
-        <div id="hintBox" class="hint" style="display:none"></div>
-
-        <button class="secondary" style="margin-top:12px" onclick="useHint()">💡 تلميح (<span id="hintCount">3</span>)</button>
-    </div>
-
-    <div style="text-align:center;color:#8d98a7">
-        النقاط: <b id="score" style="color:#20d46b">0</b>
-        &nbsp;|&nbsp; 🔥 <b id="streakDisplay">0</b>
-    </div>
-</section>
-
-<!-- ======== RESULT ======== -->
-<section id="result" class="screen">
-    <div class="card result">
-        <div style="font-size:55px">🏆</div>
-        <h2>انتهت اللعبة!</h2>
-        <div class="result-score" id="finalScore">0</div>
-        <p>نقطتك النهائية</p>
-
-        <div class="stats">
-            <div class="stat"><b id="finalCorrect">0</b><span>صحيحة</span></div>
-            <div class="stat"><b id="finalWrong">0</b><span>خاطئة</span></div>
-            <div class="stat"><b id="finalBest">0</b><span>الأفضل</span></div>
-        </div>
-
-        <button class="primary" style="margin-top:18px" onclick="showScreen('modes')">🔄 العب مرة أخرى</button>
-        <button class="secondary" style="margin-top:10px" onclick="showScreen('home')">🏠 الرئيسية</button>
-    </div>
-</section>
-
-<!-- ======== PROFILE (جديد) ======== -->
-<section id="profile" class="screen">
-    <div class="card profile-card">
-        <div class="avatar">🏆</div>
-        <h2>لاعب كرة القدم</h2>
-        <div class="level" id="profileLevel">المستوى 1</div>
-        <div class="xp-bar">
-            <div class="fill" id="profileXPBar" style="width:0%"></div>
-        </div>
-        <p style="color:#8f99a7;font-size:12px;"><span id="profileXP">0</span> / 100 XP</p>
-    </div>
-
-    <div class="card">
-        <h3>🏅 الإنجازات</h3>
-        <div class="achievement-grid" id="achievementGrid">
-            <div class="achievement-item"><div class="icon">🎯</div><h4>أول إجابة</h4><p>أجب بشكل صحيح</p></div>
-            <div class="achievement-item"><div class="icon">🔥</div><h4>ستريك 5</h4><p>5 إجابات متتالية</p></div>
-            <div class="achievement-item"><div class="icon">🏆</div><h4>10 مباريات</h4><p>العب 10 مباريات</p></div>
-            <div class="achievement-item"><div class="icon">⭐</div><h4>1000 XP</h4><p>اجمع 1000 XP</p></div>
-            <div class="achievement-item"><div class="icon">💎</div><h4>خبير</h4><p>50 إجابة صحيحة</p></div>
-            <div class="achievement-item"><div class="icon">👑</div><h4>أسطورة</h4><p>100 إجابة صحيحة</p></div>
-        </div>
-    </div>
-</section>
-
-<!-- ======== PREMIUM (جديد) ======== -->
-<section id="premium" class="screen">
-    <div class="premium-card">
-        <div class="icon">👑</div>
-        <h2>بريميوم</h2>
-        <p>احصل على تجربة مميزة بدون إعلانات وميزات حصرية</p>
-        <div class="price">$4.99</div>
-        <button class="premium-btn" onclick="showToast('🚧 قريباً في الإصدار القادم')">اشتر الآن</button>
-        <p style="color:#8f99a7;font-size:12px;margin-top:10px;">دفعة واحدة • مدى الحياة</p>
-    </div>
-</section>
-
-<!-- ======== SETTINGS ======== -->
-<section id="settings" class="screen">
-    <div class="card">
-        <h2>⚙️ الإعدادات</h2>
-
-        <div class="setting">
-            <div><b>🔊 الصوت</b><small>أصوات الإجابات</small></div>
-            <button class="switch on" id="soundSwitch" onclick="toggleSetting('sound')"><i></i></button>
-        </div>
-
-        <div class="setting">
-            <div><b>📳 الاهتزاز</b><small>اهتزاز عند الإجابة</small></div>
-            <button class="switch on" id="vibrationSwitch" onclick="toggleSetting('vibration')"><i></i></button>
-        </div>
-
-        <div class="setting">
-            <div><b>✨ الأنيميشن</b><small>حركات الواجهة</small></div>
-            <button class="switch on" id="animationSwitch" onclick="toggleSetting('animation')"><i></i></button>
-        </div>
-
-        <button class="secondary" style="margin-top:18px" onclick="showScreen('home')">رجوع</button>
-    </div>
-
-    <div class="card" style="text-align:center">
-        <div style="font-size:35px">⚽</div>
-        <h3>مين اللاعب؟</h3>
-        <p style="color:#8e98a6">الإصدار 2.0</p>
-        <p style="color:#20d46b;font-weight:bold">Developed by Walid Outaleb</p>
-    </div>
-</section>
-
-</div>
-
-<!-- ======== BOTTOM NAV (معدل) ======== -->
-<nav class="bottom-nav" id="bottomNav">
-    <button class="nav-item active" onclick="showScreen('home')" data-screen="home">
-        <span class="icon">🏠</span>الرئيسية
-    </button>
-    <button class="nav-item" onclick="showScreen('modes')" data-screen="modes">
-        <span class="icon">🎮</span>اللعب
-    </button>
-    <button class="nav-item" onclick="showScreen('profile')" data-screen="profile">
-        <span class="icon">👤</span>ملفي
-    </button>
-    <button class="nav-item" onclick="showScreen('premium')" data-screen="premium">
-        <span class="icon">👑</span>بريميوم
-    </button>
-    <button class="nav-item" onclick="showScreen('settings')" data-screen="settings">
-        <span class="icon">⚙️</span>الإعدادات
-    </button>
-</nav>
-
-<script>
-
-"use strict";
-
-/* ============================================================
-   بيانات احتياطية
-   ============================================================ */
-
-const FALLBACK_PLAYERS = [
-    {id:257,name:"كريستيانو رونالدو",nationality:"البرتغال",level:"easy",image:"https://media.api-sports.io/football/players/257.png"},
-    {id:154,name:"ليونيل ميسي",nationality:"الأرجنتين",level:"easy",image:"https://media.api-sports.io/football/players/154.png"},
-    {id:278,name:"كيليان مبابي",nationality:"فرنسا",level:"easy",image:"https://media.api-sports.io/football/players/278.png"},
-    {id:1100,name:"إيرلينغ هالاند",nationality:"النرويج",level:"easy",image:"https://media.api-sports.io/football/players/1100.png"},
-    {id:306,name:"محمد صلاح",nationality:"مصر",level:"easy",image:"https://media.api-sports.io/football/players/306.png"},
-    {id:276,name:"فينيسيوس جونيور",nationality:"البرازيل",level:"easy",image:"https://media.api-sports.io/football/players/276.png"},
-    {id:1000,name:"جود بيلينغهام",nationality:"إنجلترا",level:"easy",image:"https://media.api-sports.io/football/players/1000.png"},
-    {id:1465,name:"بوكايو ساكا",nationality:"إنجلترا",level:"medium",image:"https://media.api-sports.io/football/players/1465.png"},
-    {id:2929,name:"لامين يامال",nationality:"إسبانيا",level:"medium",image:"https://media.api-sports.io/football/players/2929.png"},
-    {id:2000,name:"نيكولو باريلا",nationality:"إيطاليا",level:"hard",image:"https://media.api-sports.io/football/players/2000.png"},
-    {id:3000,name:"زين الدين زيدان",nationality:"فرنسا",level:"legend",image:"https://media.api-sports.io/football/players/3000.png"}
-];
-
-/* ============================================================
-   حالة اللعبة
-   ============================================================ */
-
-let players = [];
-let questions = [];
-let currentQuestion = 0;
-let score = 0;
-let correct = 0;
-let wrong = 0;
-let streak = 0;
-let bestStreak = 0;
-let timerInterval = null;
-let timeLeft = 0;
-let currentMode = "classic";
-let questionLocked = false;
-let hintsRemaining = 3;
-
-const configs = {
-    classic:{name:"الكلاسيكي",total:50,time:15,bonus:0},
-    speed:{name:"السرعة",total:30,time:10,bonus:3},
-    streak:{name:"الستريك",total:100,time:12,bonus:2},
-    rare:{name:"اللاعب النادر",total:40,time:18,bonus:5}
-};
-
-/* ============================================================
-   الإعدادات والإحصائيات
-   ============================================================ */
-
-function loadSettings(){
-    try{
-        const saved = localStorage.getItem("gameSettings");
-        if(!saved) return {sound:true,vibration:true,animation:true};
-        const data = JSON.parse(saved);
-        return {
-            sound:data.sound !== false,
-            vibration:data.vibration !== false,
-            animation:data.animation !== false
-        };
-    }catch{ return {sound:true,vibration:true,animation:true}; }
-}
-
-let settings = loadSettings();
-
-function saveSettings(){
-    try{ localStorage.setItem("gameSettings", JSON.stringify(settings)); }catch{}
-}
-
-function getStats(){
-    try{
-        const saved = localStorage.getItem("gameStats");
-        if(!saved) return {games:0,best:0,correct:0,xp:0,level:1};
-        const data = JSON.parse(saved);
-        return {
-            games:Number(data.games)||0,
-            best:Number(data.best)||0,
-            correct:Number(data.correct)||0,
-            xp:Number(data.xp)||0,
-            level:Number(data.level)||1
-        };
-    }catch{ return {games:0,best:0,correct:0,xp:0,level:1}; }
-}
-
-function saveStats(stats){
-    try{ localStorage.setItem("gameStats", JSON.stringify(stats)); }catch{}
-}
-
-function updateUI(){
-    const stats = getStats();
-    document.getElementById("statGames").textContent = stats.games;
-    document.getElementById("statBest").textContent = stats.best;
-    document.getElementById("statCorrect").textContent = stats.correct;
-    document.getElementById("profileLevel").textContent = "المستوى " + stats.level;
-    const xpInLevel = stats.xp % 100;
-    document.getElementById("profileXP").textContent = xpInLevel;
-    document.getElementById("profileXPBar").style.width = (xpInLevel / 100 * 100) + "%";
-
-    // تحديث الإنجازات
-    const achievements = [
-        { id: "first", unlocked: stats.correct >= 1 },
-        { id: "streak5", unlocked: stats.best >= 5 },
-        { id: "games10", unlocked: stats.games >= 10 },
-        { id: "xp1000", unlocked: stats.xp >= 1000 },
-        { id: "expert", unlocked: stats.correct >= 50 },
-        { id: "legend", unlocked: stats.correct >= 100 }
-    ];
-    document.querySelectorAll(".achievement-item").forEach((item, index) => {
-        if(achievements[index] && achievements[index].unlocked){
-            item.classList.add("unlocked");
-        } else {
-            item.classList.remove("unlocked");
-        }
-    });
-}
-
-/* ============================================================
-   التنقل
-   ============================================================ */
-
-function showScreen(id){
-    clearTimer();
-    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    const screen = document.getElementById(id);
-    if(screen) screen.classList.add("active");
-    questionLocked = false;
-
-    // تحديث التنقل السفلي
-    document.querySelectorAll(".nav-item").forEach(b => {
-        b.classList.toggle("active", b.dataset.screen === id);
-    });
-
-    updateUI();
-}
-
-/* ============================================================
-   تحميل اللاعبين
-   ============================================================ */
-
-async function loadPlayers(){
-    try{
-        const response = await fetch("popular_players.json?x="+Date.now(), {cache:"no-store"});
-        if(!response.ok) throw new Error("HTTP "+response.status);
-        const data = await response.json();
-        if(!Array.isArray(data) || !data.length) throw new Error("empty");
-        players = data.filter(p => p && p.name && p.image).map((p,i) => ({
-            id: p.id || i+1,
-            name: String(p.name),
-            nationality: p.nationality || "غير معروفة",
-            level: p.level || "easy",
-            image: String(p.image)
-        }));
-        if(!players.length) throw new Error("no valid players");
-        console.log("✅ تم تحميل " + players.length + " لاعب");
-    }catch(error){
-        console.warn("⚠️ فشل تحميل JSON، استخدم البيانات الاحتياطية:", error);
-        players = FALLBACK_PLAYERS.map(p => ({...p}));
-    }
-    updateUI();
-}
-
-/* ============================================================
-   خلط
-   ============================================================ */
-
-function shuffle(array){
-    const arr = [...array];
-    for(let i=arr.length-1; i>0; i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-}
-
-/* ============================================================
-   بدء اللعبة
-   ============================================================ */
-
-function startGame(mode){
-    if(questionLocked) return;
-    if(!players.length){
-        alert("جاري تحميل اللاعبين، حاول بعد لحظات.");
-        return;
-    }
-    const config = configs[mode];
-    if(!config) return;
-    currentMode = mode;
-    hintsRemaining = 3;
-    document.getElementById("hintCount").textContent = "3";
-    document.getElementById("hintBtn").disabled = false;
-
-    let pool = [...players];
-    if(mode === "rare"){
-        const hard = players.filter(p => p.level === "hard" || p.level === "legend");
-        if(hard.length >= 4) pool = hard;
-        else pool = [...players];
-    }
-
-    if(!pool.length){ alert("لا توجد قاعدة لاعبين صالحة."); return; }
-
-    questions = shuffle(pool).slice(0, Math.min(config.total, pool.length));
-    currentQuestion = 0;
-    score = 0;
-    correct = 0;
-    wrong = 0;
-    streak = 0;
-    bestStreak = 0;
-    questionLocked = false;
-
-    document.getElementById("questionTotal").textContent = questions.length;
-    document.getElementById("score").textContent = "0";
-    document.getElementById("streakDisplay").textContent = "0";
-
-    showScreen("game");
-    renderQuestion();
-}
-
-/* ============================================================
-   عرض السؤال
-   ============================================================ */
-
-function renderQuestion(){
-    clearTimer();
-    questionLocked = false;
-
-    if(currentQuestion >= questions.length){
-        endGame();
-        return;
-    }
-
-    const q = questions[currentQuestion];
-    document.getElementById("questionNumber").textContent = currentQuestion + 1;
-
-    const box = document.getElementById("playerBox");
-    box.innerHTML = `<img id="playerImage" alt="لاعب كرة قدم" loading="eager">`;
-    const newImg = document.getElementById("playerImage");
-
-    newImg.onerror = function(){
-        this.style.display = "none";
-        box.innerHTML = `
-            <div class="image-error">
-                <div style="font-size:45px">⚽</div>
-                <strong>تعذر تحميل الصورة</strong>
-                <span>يمكنك اختيار إجابة اللاعب</span>
+    <div class="toast" id="toast"></div>
+
+    <div class="app">
+
+        <!-- ======== HEADER ======== -->
+        <header class="header">
+            <div class="logo">مين <span>اللاعب؟</span></div>
+            <button class="icon-btn" onclick="showScreen('settings')" aria-label="الإعدادات">⚙️</button>
+        </header>
+
+        <!-- ======== الرئيسية ======== -->
+        <section id="home" class="screen active">
+            <div class="hero-card">
+                <div class="icon">⚽</div>
+                <h1>مين <span>اللاعب؟</span></h1>
+                <p>اختبر معلوماتك الكروية وخمّن اللاعب من صورته قبل انتهاء الوقت.</p>
+                <button class="btn-primary" onclick="showScreen('modes')">🎮 ابدأ اللعب</button>
             </div>
-        `;
-    };
 
-    newImg.src = q.image;
+            <div class="card">
+                <h3 style="margin-bottom:12px;">📊 إحصائياتك</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="num" id="statGames">0</span>
+                        <span class="label">الألعاب</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="statBest">0</span>
+                        <span class="label">أفضل نتيجة</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="statCorrect">0</span>
+                        <span class="label">إجابات صحيحة</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    generateOptions(q);
+        <!-- ======== أوضاع اللعب ======== -->
+        <section id="modes" class="screen">
+            <div class="card">
+                <h2 style="margin-bottom:6px;">🎮 اختر الوضع</h2>
+                <p style="color:#8a9aaa;font-size:13px;margin-bottom:12px;">كل وضع له تحدٍ مختلف</p>
 
-    document.getElementById("hintBox").style.display = "none";
-    document.getElementById("hintBox").textContent = "";
+                <div class="mode-item">
+                    <div class="info"><b>الكلاسيكي</b><small>50 سؤال • 15 ثانية</small></div>
+                    <button class="play-btn" onclick="startGame('classic')">لعب</button>
+                </div>
 
-    if(settings.animation){
-        const card = document.getElementById("questionCard");
-        card.classList.remove("fade");
-        void card.offsetWidth;
-        card.classList.add("fade");
-    }
+                <div class="mode-item">
+                    <div class="info"><b>⚡ السرعة</b><small>30 سؤال • 10 ثواني</small></div>
+                    <button class="play-btn" onclick="startGame('speed')">لعب</button>
+                </div>
 
-    startTimer();
-}
+                <div class="mode-item">
+                    <div class="info"><b>🔥 الستريك</b><small>حتى 100 سؤال</small></div>
+                    <button class="play-btn" onclick="startGame('streak')">لعب</button>
+                </div>
 
-/* ============================================================
-   إنشاء الاختيارات
-   ============================================================ */
+                <div class="mode-item">
+                    <div class="info"><b>💎 اللاعب النادر</b><small>لاعبون أصعب</small></div>
+                    <button class="play-btn" onclick="startGame('rare')">لعب</button>
+                </div>
 
-function generateOptions(correctPlayer){
-    const others = players.filter(p => p.id !== correctPlayer.id);
-    const shuffled = shuffle(others);
-    const selected = shuffled.slice(0, 3);
-    const options = shuffle([correctPlayer, ...selected]);
+                <button class="btn-secondary" style="margin-top:12px;" onclick="showScreen('home')">رجوع</button>
+            </div>
+        </section>
 
-    const container = document.getElementById("options");
-    container.innerHTML = "";
+        <!-- ======== شاشة اللعبة ======== -->
+        <section id="game" class="screen">
+            <div class="game-top">
+                <div class="badge"><span id="questionNumber">1</span> / <span id="questionTotal">50</span></div>
+                <div class="timer-box">⏱ <span id="timer">15</span></div>
+            </div>
 
-    options.forEach(player => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "option";
-        btn.textContent = player.name;
-        btn.onclick = function(){
-            answer(player.id === correctPlayer.id, this, false, correctPlayer);
+            <div class="card" style="padding:14px;">
+                <div class="player-box" id="playerBox">
+                    <img id="playerImage" alt="لاعب كرة قدم" loading="eager">
+                </div>
+
+                <div class="options-grid" id="optionsGrid"></div>
+
+                <div class="hint-box" id="hintBox"></div>
+
+                <button class="btn-secondary" style="margin-top:12px;" onclick="useHint()">
+                    💡 تلميح (<span id="hintCount">3</span>)
+                </button>
+            </div>
+
+            <div style="text-align:center;color:#8a9aaa;font-size:15px;">
+                النقاط: <b id="score" style="color:#20d46b;">0</b>
+                &nbsp;|&nbsp; 🔥 <b id="streakDisplay">0</b>
+            </div>
+        </section>
+
+        <!-- ======== شاشة النتيجة ======== -->
+        <section id="result" class="screen">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:55px;">🏆</div>
+                <h2>انتهت اللعبة!</h2>
+                <p style="color:#8a9aaa;">إليك نتيجتك النهائية</p>
+                <div class="result-score" id="finalScore">0</div>
+                <p style="color:#8a9aaa;font-size:14px;">نقطة</p>
+
+                <div class="stats-grid" style="margin-top:16px;">
+                    <div class="stat-item">
+                        <span class="num" id="finalCorrect">0</span>
+                        <span class="label">صحيحة</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="finalWrong">0</span>
+                        <span class="label">خاطئة</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="num" id="finalBest">0</span>
+                        <span class="label">أفضل ستريك</span>
+                    </div>
+                </div>
+
+                <button class="btn-primary" style="margin-top:18px;" onclick="showScreen('modes')">🔄 العب مرة أخرى</button>
+                <button class="btn-secondary" style="margin-top:8px;" onclick="showScreen('home')">🏠 الرئيسية</button>
+            </div>
+        </section>
+
+        <!-- ======== الملف الشخصي (مبسط) ======== -->
+        <section id="profile" class="screen">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:50px;">🏆</div>
+                <h2>لاعب كرة القدم</h2>
+                <p style="color:#20d46b;font-size:18px;font-weight:bold;" id="profileLevel">المستوى 1</p>
+                <div style="background:#1a2533;height:8px;border-radius:10px;margin:10px 0;overflow:hidden;">
+                    <div id="profileXPBar" style="height:100%;width:0%;background:linear-gradient(90deg,#20d46b,#ffd45a);border-radius:10px;"></div>
+                </div>
+                <p style="color:#8a9aaa;"><span id="profileXP">0</span> / 100 XP</p>
+            </div>
+        </section>
+
+        <!-- ======== الإعدادات ======== -->
+        <section id="settings" class="screen">
+            <div class="card">
+                <h2 style="margin-bottom:12px;">⚙️ الإعدادات</h2>
+                <button class="btn-secondary" onclick="showScreen('home')">رجوع</button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ======== التنقل السفلي ======== -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-item active" onclick="showScreen('home')" data-screen="home">
+            <span class="icon">🏠</span>الرئيسية
+        </button>
+        <button class="nav-item" onclick="showScreen('modes')" data-screen="modes">
+            <span class="icon">🎮</span>اللعب
+        </button>
+        <button class="nav-item" onclick="showScreen('profile')" data-screen="profile">
+            <span class="icon">👤</span>ملفي
+        </button>
+        <button class="nav-item" onclick="showScreen('settings')" data-screen="settings">
+            <span class="icon">⚙️</span>الإعدادات
+        </button>
+    </nav>
+
+    <script>
+        "use strict";
+
+        // ============================================================
+        //  قاعدة بيانات اللاعبين (مدمجة في الكود - 40 لاعباً)
+        // ============================================================
+        const PLAYERS_DB = [
+            { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy",
+                image: "https://media.api-sports.io/football/players/257.png" },
+            { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy",
+                image: "https://media.api-sports.io/football/players/154.png" },
+            { id: 3, name: "كيليان مبابي", nationality: "فرنسا", level: "easy",
+                image: "https://media.api-sports.io/football/players/278.png" },
+            { id: 4, name: "إيرلينغ هالاند", nationality: "النرويج", level: "easy",
+                image: "https://media.api-sports.io/football/players/1100.png" },
+            { id: 5, name: "محمد صلاح", nationality: "مصر", level: "easy",
+                image: "https://media.api-sports.io/football/players/306.png" },
+            { id: 6, name: "فينيسيوس جونيور", nationality: "البرازيل", level: "easy",
+                image: "https://media.api-sports.io/football/players/276.png" },
+            { id: 7, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 8, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium",
+                image: "https://media.api-sports.io/football/players/1465.png" },
+            { id: 9, name: "لامين يامال", nationality: "إسبانيا", level: "medium",
+                image: "https://media.api-sports.io/football/players/2929.png" },
+            { id: 10, name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard",
+                image: "https://media.api-sports.io/football/players/10035.png" },
+            { id: 11, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 12, name: "رونالدينيو", nationality: "البرازيل", level: "legend",
+                image: "https://media.api-sports.io/football/players/3001.png" },
+            { id: 13, name: "كاكا", nationality: "البرازيل", level: "legend",
+                image: "https://media.api-sports.io/football/players/3002.png" },
+            { id: 14, name: "نيمار", nationality: "البرازيل", level: "easy",
+                image: "https://media.api-sports.io/football/players/212.png" },
+            { id: 15, name: "كيفن دي بروين", nationality: "بلجيكا", level: "easy",
+                image: "https://media.api-sports.io/football/players/886.png" },
+            { id: 16, name: "لوكا مودريتش", nationality: "كرواتيا", level: "easy",
+                image: "https://media.api-sports.io/football/players/886.png" },
+            { id: 17, name: "روبرت ليفاندوفسكي", nationality: "بولندا", level: "easy",
+                image: "https://media.api-sports.io/football/players/10035.png" },
+            { id: 18, name: "سيرجيو راموس", nationality: "إسبانيا", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 19, name: "كريم بنزيما", nationality: "فرنسا", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 20, name: "أنطوان غريزمان", nationality: "فرنسا", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 21, name: "هاري كين", nationality: "إنجلترا", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 22, name: "سون هيونغ مين", nationality: "كوريا الجنوبية", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 23, name: "برونو فيرنانديز", nationality: "البرتغال", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 24, name: "تيبو كورتوا", nationality: "بلجيكا", level: "easy",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 25, name: "برناردو سيلفا", nationality: "البرتغال", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 26, name: "رودري", nationality: "إسبانيا", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 27, name: "فيل فودين", nationality: "إنجلترا", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 28, name: "لاوتارو مارتينيز", nationality: "الأرجنتين", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 29, name: "جمال موسيالا", nationality: "ألمانيا", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 30, name: "رافائيل لياو", nationality: "البرتغال", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 31, name: "فيدي فالفيردي", nationality: "الأوروغواي", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 32, name: "ديكلان رايس", nationality: "إنجلترا", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 33, name: "مارتن أوديغارد", nationality: "النرويج", level: "medium",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 34, name: "دومينيك سوبوسلاي", nationality: "المجر", level: "hard",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 35, name: "ويليام ساليبا", nationality: "فرنسا", level: "hard",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 36, name: "إبراهيما كوناتي", nationality: "فرنسا", level: "hard",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 37, name: "أندريه أونانا", nationality: "الكاميرون", level: "hard",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 38, name: "رونالدو نازاريو", nationality: "البرازيل", level: "legend",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 39, name: "تشافي", nationality: "إسبانيا", level: "legend",
+                image: "https://media.api-sports.io/football/players/1000.png" },
+            { id: 40, name: "أندريس إنييستا", nationality: "إسبانيا", level: "legend",
+                image: "https://media.api-sports.io/football/players/1000.png" }
+        ];
+
+        // ============================================================
+        //  الحالة العامة
+        // ============================================================
+        let players = [];
+        let questions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let correct = 0;
+        let wrong = 0;
+        let streak = 0;
+        let bestStreak = 0;
+        let currentMode = 'classic';
+        let hintsRemaining = 3;
+        let questionLocked = false;
+        let timerInterval = null;
+        let timeLeft = 0;
+
+        const CONFIGS = {
+            classic: { total: 50, time: 15, bonus: 0 },
+            speed: { total: 30, time: 10, bonus: 3 },
+            streak: { total: 100, time: 12, bonus: 2 },
+            rare: { total: 40, time: 18, bonus: 5 }
         };
-        container.appendChild(btn);
-    });
-}
 
-/* ============================================================
-   المؤقت
-   ============================================================ */
-
-function startTimer(){
-    clearTimer();
-    const config = configs[currentMode];
-    timeLeft = config.time;
-    document.getElementById("timer").textContent = timeLeft;
-
-    timerInterval = setInterval(() => {
-        if(questionLocked){ clearTimer(); return; }
-        timeLeft--;
-        document.getElementById("timer").textContent = Math.max(timeLeft, 0);
-        if(timeLeft <= 0){
-            clearTimer();
-            answer(false, null, true, questions[currentQuestion]);
+        // ============================================================
+        //  الإحصائيات (LocalStorage)
+        // ============================================================
+        function getStats() {
+            try {
+                const saved = localStorage.getItem('gameStats');
+                if (!saved) return { games: 0, best: 0, correct: 0, xp: 0, level: 1 };
+                const data = JSON.parse(saved);
+                return {
+                    games: Number(data.games) || 0,
+                    best: Number(data.best) || 0,
+                    correct: Number(data.correct) || 0,
+                    xp: Number(data.xp) || 0,
+                    level: Number(data.level) || 1
+                };
+            } catch { return { games: 0, best: 0, correct: 0, xp: 0, level: 1 }; }
         }
-    },1000);
-}
 
-function clearTimer(){
-    if(timerInterval !== null){
-        clearInterval(timerInterval);
-        timerInterval = null;
-    }
-}
+        function saveStats(stats) {
+            try { localStorage.setItem('gameStats', JSON.stringify(stats)); } catch {}
+        }
 
-/* ============================================================
-   الإجابة
-   ============================================================ */
+        function updateUI() {
+            const stats = getStats();
+            document.getElementById('statGames').textContent = stats.games;
+            document.getElementById('statBest').textContent = stats.best;
+            document.getElementById('statCorrect').textContent = stats.correct;
+            document.getElementById('profileLevel').textContent = 'المستوى ' + stats.level;
+            const xpInLevel = stats.xp % 100;
+            document.getElementById('profileXP').textContent = xpInLevel;
+            document.getElementById('profileXPBar').style.width = (xpInLevel / 100 * 100) + '%';
+        }
 
-function answer(isCorrect, button, timeout, correctPlayer){
-    if(questionLocked) return;
-    questionLocked = true;
-    clearTimer();
+        // ============================================================
+        //  التنقل
+        // ============================================================
+        function showScreen(id) {
+            clearTimer();
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const screen = document.getElementById(id);
+            if (screen) screen.classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(b => {
+                b.classList.toggle('active', b.dataset.screen === id);
+            });
+            if (id === 'home' || id === 'profile') updateUI();
+        }
 
-    const buttons = document.querySelectorAll(".option");
-    buttons.forEach(b => b.disabled = true);
+        // ============================================================
+        //  تحميل اللاعبين (من قاعدة البيانات المدمجة)
+        // ============================================================
+        function loadPlayers() {
+            players = PLAYERS_DB.map(p => ({ ...p }));
+            console.log('✅ تم تحميل ' + players.length + ' لاعب');
+            updateUI();
+        }
 
-    if(isCorrect){
-        correct++;
-        streak++;
-        if(streak > bestStreak) bestStreak = streak;
-        const config = configs[currentMode];
-        score += 10 + config.bonus + Math.floor(streak / 5) * 2;
-        if(button) button.classList.add("correct");
-        vibrate(60);
-    }else{
-        wrong++;
-        streak = 0;
-        if(button) button.classList.add("wrong");
-        if(correctPlayer){
-            buttons.forEach(b => {
-                if(b.textContent === correctPlayer.name) b.classList.add("correct");
+        // ============================================================
+        //  خلط
+        // ============================================================
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        // ============================================================
+        //  بدء اللعبة (تم إصلاحها)
+        // ============================================================
+        function startGame(mode) {
+            if (questionLocked) return;
+            if (!players.length) {
+                showToast('⏳ جاري تحميل اللاعبين...');
+                return;
+            }
+            const config = CONFIGS[mode];
+            if (!config) return;
+
+            currentMode = mode;
+            hintsRemaining = 3;
+            document.getElementById('hintCount').textContent = '3';
+            document.getElementById('hintBtn').disabled = false;
+
+            let pool = [...players];
+            if (mode === 'rare') {
+                const hard = players.filter(p => p.level === 'hard' || p.level === 'legend');
+                if (hard.length >= 4) pool = hard;
+                else pool = [...players];
+            }
+
+            if (!pool.length) {
+                showToast('⚠️ لا توجد لاعبين كافيين');
+                return;
+            }
+
+            questions = shuffle(pool).slice(0, Math.min(config.total, pool.length));
+            currentIndex = 0;
+            score = 0;
+            correct = 0;
+            wrong = 0;
+            streak = 0;
+            bestStreak = 0;
+            questionLocked = false;
+
+            document.getElementById('questionTotal').textContent = questions.length;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('streakDisplay').textContent = '0';
+
+            showScreen('game');
+            renderQuestion();
+            showToast('🎮 بدأت المباراة!');
+        }
+
+        // ============================================================
+        //  عرض السؤال
+        // ============================================================
+        function renderQuestion() {
+            clearTimer();
+            questionLocked = false;
+
+            if (currentIndex >= questions.length) {
+                endGame();
+                return;
+            }
+
+            const q = questions[currentIndex];
+            document.getElementById('questionNumber').textContent = currentIndex + 1;
+
+            const box = document.getElementById('playerBox');
+            box.innerHTML = `<img id="playerImage" alt="لاعب كرة قدم" loading="eager">`;
+            const img = document.getElementById('playerImage');
+            img.onerror = function() {
+                box.innerHTML = `<div class="fallback"><strong>⚽</strong><span>تعذر تحميل الصورة</span></div>`;
+            };
+            img.src = q.image;
+
+            generateOptions(q);
+
+            document.getElementById('hintBox').style.display = 'none';
+            document.getElementById('hintBox').textContent = '';
+
+            startTimer();
+        }
+
+        // ============================================================
+        //  إنشاء الخيارات
+        // ============================================================
+        function generateOptions(correctPlayer) {
+            const others = players.filter(p => p.id !== correctPlayer.id);
+            const shuffled = shuffle(others);
+            const selected = shuffled.slice(0, 3);
+            const options = shuffle([correctPlayer, ...selected]);
+
+            const container = document.getElementById('optionsGrid');
+            container.innerHTML = '';
+
+            options.forEach(player => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.textContent = player.name;
+                btn.onclick = function() {
+                    answer(player.id === correctPlayer.id, this, correctPlayer);
+                };
+                container.appendChild(btn);
             });
         }
-        vibrate([80,50,80]);
-    }
 
-    document.getElementById("score").textContent = score;
-    document.getElementById("streakDisplay").textContent = streak;
-    playSound(isCorrect);
+        // ============================================================
+        //  المؤقت
+        // ============================================================
+        function startTimer() {
+            clearTimer();
+            const config = CONFIGS[currentMode];
+            timeLeft = config.time;
+            document.getElementById('timer').textContent = timeLeft;
 
-    setTimeout(() => {
-        currentQuestion++;
-        renderQuestion();
-    }, 700);
-}
+            timerInterval = setInterval(() => {
+                if (questionLocked) { clearTimer(); return; }
+                timeLeft--;
+                document.getElementById('timer').textContent = Math.max(timeLeft, 0);
+                if (timeLeft <= 0) {
+                    clearTimer();
+                    answer(false, null, questions[currentIndex]);
+                }
+            }, 1000);
+        }
 
-/* ============================================================
-   التلميح
-   ============================================================ */
+        function clearTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
 
-function useHint(){
-    if(questionLocked || currentQuestion >= questions.length) return;
-    if(hintsRemaining <= 0){
-        alert("💡 انتهت التلميحات!");
-        return;
-    }
-    hintsRemaining--;
-    document.getElementById("hintCount").textContent = hintsRemaining;
-    if(hintsRemaining <= 0) document.getElementById("hintBtn").disabled = true;
+        // ============================================================
+        //  الإجابة
+        // ============================================================
+        function answer(isCorrect, button, correctPlayer) {
+            if (questionLocked) return;
+            questionLocked = true;
+            clearTimer();
 
-    const q = questions[currentQuestion];
-    const box = document.getElementById("hintBox");
-    box.textContent = "🌍 الجنسية: " + q.nationality;
-    box.style.display = "block";
-    vibrate(30);
-}
+            const buttons = document.querySelectorAll('.option');
+            buttons.forEach(b => b.disabled = true);
 
-/* ============================================================
-   نهاية اللعبة
-   ============================================================ */
+            if (isCorrect) {
+                correct++;
+                streak++;
+                if (streak > bestStreak) bestStreak = streak;
+                const config = CONFIGS[currentMode];
+                const earned = 10 + config.bonus + Math.floor(streak / 5) * 2;
+                score += earned;
+                if (button) button.classList.add('correct');
+                showToast('✅ صحيح! +' + earned + ' XP');
+                vibrate(60);
+            } else {
+                wrong++;
+                streak = 0;
+                if (button) button.classList.add('wrong');
+                showToast('❌ خطأ');
+                vibrate([80, 50, 80]);
+                if (correctPlayer) {
+                    buttons.forEach(b => {
+                        if (b.textContent === correctPlayer.name) b.classList.add('correct');
+                    });
+                }
+            }
 
-function endGame(){
-    clearTimer();
-    questionLocked = true;
+            document.getElementById('score').textContent = score;
+            document.getElementById('streakDisplay').textContent = streak;
+            playSound(isCorrect);
 
-    const old = getStats();
-    const best = Math.max(old.best, score);
-    const stats = {
-        games: old.games + 1,
-        best: best,
-        correct: old.correct + correct,
-        xp: (old.xp || 0) + score,
-        level: Math.floor(((old.xp || 0) + score) / 100) + 1
-    };
-    saveStats(stats);
+            setTimeout(() => {
+                currentIndex++;
+                renderQuestion();
+            }, 700);
+        }
 
-    document.getElementById("finalScore").textContent = score;
-    document.getElementById("finalCorrect").textContent = correct;
-    document.getElementById("finalWrong").textContent = wrong;
-    document.getElementById("finalBest").textContent = bestStreak;
+        // ============================================================
+        //  التلميح
+        // ============================================================
+        function useHint() {
+            if (questionLocked || currentIndex >= questions.length) return;
+            if (hintsRemaining <= 0) {
+                showToast('💡 انتهت التلميحات!');
+                return;
+            }
+            hintsRemaining--;
+            document.getElementById('hintCount').textContent = hintsRemaining;
+            if (hintsRemaining <= 0) document.getElementById('hintBtn').disabled = true;
 
-    showScreen("result");
-    updateUI();
-}
+            const q = questions[currentIndex];
+            const box = document.getElementById('hintBox');
+            box.textContent = '🌍 الجنسية: ' + q.nationality;
+            box.style.display = 'block';
+            vibrate(30);
+        }
 
-/* ============================================================
-   الاهتزاز والصوت
-   ============================================================ */
+        // ============================================================
+        //  نهاية اللعبة
+        // ============================================================
+        function endGame() {
+            clearTimer();
+            questionLocked = true;
 
-function vibrate(pattern){
-    if(settings.vibration && "vibrate" in navigator){
-        try{ navigator.vibrate(pattern); }catch{}
-    }
-}
+            const old = getStats();
+            const best = Math.max(old.best, score);
+            const stats = {
+                games: old.games + 1,
+                best: best,
+                correct: old.correct + correct,
+                xp: (old.xp || 0) + score,
+                level: Math.floor(((old.xp || 0) + score) / 100) + 1
+            };
+            saveStats(stats);
 
-function playSound(correctAnswer){
-    if(!settings.sound) return;
-    try{
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.value = correctAnswer ? 700 : 180;
-        gain.gain.value = 0.06;
-        osc.start();
-        setTimeout(() => { try{ osc.stop(); ctx.close(); }catch{} }, 120);
-    }catch{}
-}
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalCorrect').textContent = correct;
+            document.getElementById('finalWrong').textContent = wrong;
+            document.getElementById('finalBest').textContent = bestStreak;
 
-/* ============================================================
-   الإعدادات
-   ============================================================ */
+            showScreen('result');
+            updateUI();
+            showToast('🏁 انتهت المباراة!');
+        }
 
-function toggleSetting(name){
-    if(!settings.hasOwnProperty(name)) return;
-    settings[name] = !settings[name];
-    saveSettings();
-    updateSettingUI();
-}
+        // ============================================================
+        //  الاهتزاز والصوت
+        // ============================================================
+        function vibrate(pattern) {
+            try { if (navigator.vibrate) navigator.vibrate(pattern); } catch {}
+        }
 
-function updateSettingUI(){
-    const map = {sound:"soundSwitch", vibration:"vibrationSwitch", animation:"animationSwitch"};
-    Object.keys(map).forEach(name => {
-        const el = document.getElementById(map[name]);
-        if(!el) return;
-        el.classList.toggle("on", settings[name]);
-    });
-}
+        function playSound(correct) {
+            try {
+                const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = correct ? 700 : 180;
+                gain.gain.value = 0.06;
+                osc.start();
+                setTimeout(() => { try { osc.stop();
+                        ctx.close(); } catch {} }, 120);
+            } catch {}
+        }
 
-function showToast(msg){
-    alert(msg); // مؤقتاً، يمكنك استبدالها بـ Toast احترافي لاحقاً
-}
+        // ============================================================
+        //  Toast
+        // ============================================================
+        let toastTimer = null;
 
-/* ============================================================
-   التشغيل
-   ============================================================ */
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                el.classList.remove('show');
+            }, 2000);
+        }
 
-document.addEventListener("DOMContentLoaded", () => {
-    updateSettingUI();
-    loadPlayers();
-    showScreen("home");
-});
-
-</script>
+        // ============================================================
+        //  بدء التشغيل
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPlayers();
+            showScreen('home');
+        });
+    </script>
 </body>
 </html>
