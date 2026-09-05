@@ -5,7 +5,6 @@ import requests
 
 API_KEY = os.environ.get('API_KEY', '')
 
-# قائمة الدوريات (إنجلترا، إسبانيا، إيطاليا، ألمانيا، فرنسا، السعودية، أمريكا)
 LEAGUES = [
     {'id': 39, 'name': 'الدوري الإنجليزي'},
     {'id': 140, 'name': 'الدوري الإسباني'},
@@ -13,12 +12,11 @@ LEAGUES = [
     {'id': 78, 'name': 'الدوري الألماني'},
     {'id': 61, 'name': 'الدوري الفرنسي'},
     {'id': 307, 'name': 'الدوري السعودي'},
-    {'id': 253, 'name': 'الدوري الأمريكي'},   # ✅ تم التصحيح
+    {'id': 253, 'name': 'الدوري الأمريكي'}
 ]
 
 SEASON = 2024
 
-# قوائم التصنيف حسب الشهرة (وليس المهارة)
 EASY = [
     "كريستيانو رونالدو", "ليونيل ميسي", "كيليان مبابي", "إيرلينغ هالاند",
     "نيمار", "محمد صلاح", "فينيسيوس جونيور", "جود بيلينغهام",
@@ -46,7 +44,7 @@ LEGEND = [
 all_players = []
 seen = set()
 
-print('🔄 جاري تحميل اللاعبين من جميع الدوريات...')
+print('🔄 جاري تحميل اللاعبين...')
 
 for league in LEAGUES:
     try:
@@ -64,8 +62,6 @@ for league in LEAGUES:
             if not name or not photo or name in seen:
                 continue
             seen.add(name)
-
-            # تصنيف الصعوبة
             level = 'easy'
             if name in LEGEND:
                 level = 'legend'
@@ -75,7 +71,6 @@ for league in LEAGUES:
                 level = 'medium'
             elif name in EASY:
                 level = 'easy'
-
             all_players.append({
                 'id': player.get('id'),
                 'name': name,
@@ -83,15 +78,13 @@ for league in LEAGUES:
                 'level': level,
                 'image': photo
             })
-        print(f'✅ {league["name"]}: تم إضافة {len(all_players)} لاعب')
+        print(f'✅ {league["name"]}: {len(all_players)} لاعب')
     except Exception as e:
         print(f'❌ خطأ في {league["name"]}: {e}')
 
-# خلط اللاعبين
 random.shuffle(all_players)
 
-# حفظ الملف
 with open('popular_players.json', 'w', encoding='utf-8') as f:
     json.dump(all_players, f, ensure_ascii=False, indent=2)
 
-print(f'✅ تم حفظ {len(all_players)} لاعباً بنجاح!')
+print(f'✅ تم حفظ {len(all_players)} لاعباً!')
