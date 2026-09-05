@@ -37,9 +37,6 @@ body.light .mode{
 body.light .setting{
     border-color:#ddd;
 }
-body.light .footer{
-    color:#888;
-}
 button{
     font-family:inherit;
     border:0;
@@ -301,79 +298,101 @@ button:disabled{
     to{opacity:1;transform:translateY(0)}
 }
 
-/* المكافأة اليومية */
-.daily{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#1a2a1a;
-    border:1px solid #2a4a2a;
-    border-radius:14px;
-    padding:12px 16px;
-    margin-bottom:14px;
-}
-.daily .info{
-    display:flex;
-    align-items:center;
+/* التبويبات الجديدة */
+.achievement-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
     gap:10px;
 }
-.daily .info .icon{
+.achievement-item{
+    background:#171e28;
+    border:1px solid #202936;
+    border-radius:14px;
+    padding:14px;
+    text-align:center;
+    opacity:0.5;
+    transition:opacity 0.3s;
+}
+.achievement-item.unlocked{
+    opacity:1;
+    border-color:#20d46b;
+}
+.achievement-item .icon{
     font-size:28px;
 }
-.daily .info .text{
-    font-weight:bold;
-    font-size:14px;
+.achievement-item h4{
+    margin:6px 0 2px;
+    font-size:13px;
 }
-.daily .info .text small{
-    display:block;
+.achievement-item p{
     color:#8f99a7;
     font-size:10px;
-    font-weight:normal;
+    margin:0;
 }
-.daily .claim{
-    background:#f1c40f;
-    color:#06130b;
-    padding:6px 14px;
-    border-radius:30px;
-    font-weight:bold;
-    font-size:12px;
+
+.premium-card{
+    text-align:center;
+    padding:30px 20px;
+    background:linear-gradient(145deg,#1a2a1a,#0b0f14);
+    border:2px solid #f1c40f;
+    border-radius:20px;
 }
-.daily .claim.claimed{
-    background:#2a3a2a;
+.premium-card .icon{
+    font-size:50px;
+}
+.premium-card h2{
+    color:#f1c40f;
+}
+.premium-card p{
     color:#8f99a7;
 }
-
-/* لوحة المتصدرين */
-.leaderboard{
-    background:#171e28;
-    border-radius:14px;
-    padding:10px;
-}
-.leaderboard .entry{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:8px 6px;
-    border-bottom:1px solid #222b36;
-}
-.leaderboard .entry:last-child{
-    border-bottom:0;
-}
-.leaderboard .rank{
+.premium-card .price{
+    font-size:24px;
     font-weight:bold;
-    color:#f1c40f;
-    width:30px;
-}
-.leaderboard .name{
-    flex:1;
-    font-size:14px;
-}
-.leaderboard .score{
     color:#20d46b;
+    margin:10px 0;
+}
+.premium-btn{
+    background:#f1c40f;
+    color:#06130b;
+    padding:14px 30px;
+    border-radius:30px;
     font-weight:bold;
+    font-size:16px;
 }
 
-/* التنقل السفلي */
+.profile-card{
+    text-align:center;
+}
+.profile-card .avatar{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#20d46b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+    margin:0 auto 12px;
+}
+.profile-card .level{
+    font-size:14px;
+    color:#20d46b;
+}
+.profile-card .xp-bar{
+    height:8px;
+    background:#202936;
+    border-radius:10px;
+    margin:10px 0;
+    overflow:hidden;
+}
+.profile-card .xp-bar .fill{
+    height:100%;
+    background:linear-gradient(90deg,#20d46b,#f1c40f);
+    border-radius:10px;
+    transition:width 0.5s;
+}
+
 .bottom-nav{
     position:fixed;
     bottom:0;
@@ -429,18 +448,6 @@ body.light .bottom-nav{
         <button class="primary" onclick="showScreen('modes')">🎮 ابدأ اللعب</button>
     </div>
 
-    <!-- مكافأة يومية -->
-    <div class="daily" id="dailyReward">
-        <div class="info">
-            <div class="icon">🎁</div>
-            <div class="text">
-                مكافأة يومية
-                <small id="dailyStatus">+10 XP عند الاستلام</small>
-            </div>
-        </div>
-        <button class="claim" id="claimBtn" onclick="claimDailyReward()">استلام</button>
-    </div>
-
     <div class="card">
         <h3>📊 إحصائياتك</h3>
         <div class="stats">
@@ -449,17 +456,6 @@ body.light .bottom-nav{
             <div class="stat"><b id="statCorrect">0</b><span>إجابات صحيحة</span></div>
         </div>
     </div>
-
-    <!-- لوحة المتصدرين -->
-    <div class="card">
-        <h3>🏆 المتصدرين</h3>
-        <div class="leaderboard" id="leaderboard">
-            <div style="text-align:center;color:#8f99a7;padding:10px;">لا يوجد لاعبين بعد</div>
-        </div>
-    </div>
-
-    <!-- زر تبديل الوضع -->
-    <button class="secondary" onclick="toggleTheme()" style="margin-top:8px;">🌓 تبديل الوضع</button>
 
 </section>
 
@@ -536,6 +532,43 @@ body.light .bottom-nav{
     </div>
 </section>
 
+<!-- ======== PROFILE (جديد) ======== -->
+<section id="profile" class="screen">
+    <div class="card profile-card">
+        <div class="avatar">🏆</div>
+        <h2>لاعب كرة القدم</h2>
+        <div class="level" id="profileLevel">المستوى 1</div>
+        <div class="xp-bar">
+            <div class="fill" id="profileXPBar" style="width:0%"></div>
+        </div>
+        <p style="color:#8f99a7;font-size:12px;"><span id="profileXP">0</span> / 100 XP</p>
+    </div>
+
+    <div class="card">
+        <h3>🏅 الإنجازات</h3>
+        <div class="achievement-grid" id="achievementGrid">
+            <div class="achievement-item"><div class="icon">🎯</div><h4>أول إجابة</h4><p>أجب بشكل صحيح</p></div>
+            <div class="achievement-item"><div class="icon">🔥</div><h4>ستريك 5</h4><p>5 إجابات متتالية</p></div>
+            <div class="achievement-item"><div class="icon">🏆</div><h4>10 مباريات</h4><p>العب 10 مباريات</p></div>
+            <div class="achievement-item"><div class="icon">⭐</div><h4>1000 XP</h4><p>اجمع 1000 XP</p></div>
+            <div class="achievement-item"><div class="icon">💎</div><h4>خبير</h4><p>50 إجابة صحيحة</p></div>
+            <div class="achievement-item"><div class="icon">👑</div><h4>أسطورة</h4><p>100 إجابة صحيحة</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== PREMIUM (جديد) ======== -->
+<section id="premium" class="screen">
+    <div class="premium-card">
+        <div class="icon">👑</div>
+        <h2>بريميوم</h2>
+        <p>احصل على تجربة مميزة بدون إعلانات وميزات حصرية</p>
+        <div class="price">$4.99</div>
+        <button class="premium-btn" onclick="showToast('🚧 قريباً في الإصدار القادم')">اشتر الآن</button>
+        <p style="color:#8f99a7;font-size:12px;margin-top:10px;">دفعة واحدة • مدى الحياة</p>
+    </div>
+</section>
+
 <!-- ======== SETTINGS ======== -->
 <section id="settings" class="screen">
     <div class="card">
@@ -569,13 +602,19 @@ body.light .bottom-nav{
 
 </div>
 
-<!-- ======== BOTTOM NAV ======== -->
+<!-- ======== BOTTOM NAV (معدل) ======== -->
 <nav class="bottom-nav" id="bottomNav">
     <button class="nav-item active" onclick="showScreen('home')" data-screen="home">
         <span class="icon">🏠</span>الرئيسية
     </button>
     <button class="nav-item" onclick="showScreen('modes')" data-screen="modes">
         <span class="icon">🎮</span>اللعب
+    </button>
+    <button class="nav-item" onclick="showScreen('profile')" data-screen="profile">
+        <span class="icon">👤</span>ملفي
+    </button>
+    <button class="nav-item" onclick="showScreen('premium')" data-screen="premium">
+        <span class="icon">👑</span>بريميوم
     </button>
     <button class="nav-item" onclick="showScreen('settings')" data-screen="settings">
         <span class="icon">⚙️</span>الإعدادات
@@ -587,7 +626,7 @@ body.light .bottom-nav{
 "use strict";
 
 /* ============================================================
-   بيانات احتياطية محدثة (صور صحيحة)
+   بيانات احتياطية
    ============================================================ */
 
 const FALLBACK_PLAYERS = [
@@ -630,7 +669,7 @@ const configs = {
 };
 
 /* ============================================================
-   الإعدادات
+   الإعدادات والإحصائيات
    ============================================================ */
 
 function loadSettings(){
@@ -652,10 +691,6 @@ function saveSettings(){
     try{ localStorage.setItem("gameSettings", JSON.stringify(settings)); }catch{}
 }
 
-/* ============================================================
-   الإحصائيات
-   ============================================================ */
-
 function getStats(){
     try{
         const saved = localStorage.getItem("gameStats");
@@ -675,94 +710,32 @@ function saveStats(stats){
     try{ localStorage.setItem("gameStats", JSON.stringify(stats)); }catch{}
 }
 
-/* ============================================================
-   المكافأة اليومية
-   ============================================================ */
-
-function getDailyStatus(){
-    try{
-        const last = localStorage.getItem("dailyReward");
-        const today = new Date().toDateString();
-        return last === today;
-    }catch{ return false; }
-}
-
-function setDailyClaimed(){
-    try{ localStorage.setItem("dailyReward", new Date().toDateString()); }catch{}
-}
-
-function updateDailyUI(){
-    const claimed = getDailyStatus();
-    const btn = document.getElementById("claimBtn");
-    const status = document.getElementById("dailyStatus");
-    if(claimed){
-        btn.textContent = "تم ✅";
-        btn.className = "claim claimed";
-        status.textContent = "✅ تم الاستلام اليوم";
-    }else{
-        btn.textContent = "استلام";
-        btn.className = "claim";
-        status.textContent = "+10 XP عند الاستلام";
-    }
-}
-
-function claimDailyReward(){
-    if(getDailyStatus()){
-        alert("🎁 لقد استلمت مكافأتك اليوم بالفعل!");
-        return;
-    }
+function updateUI(){
     const stats = getStats();
-    stats.xp = (stats.xp || 0) + 10;
-    stats.level = Math.floor(stats.xp / 100) + 1;
-    saveStats(stats);
-    setDailyClaimed();
-    updateDailyUI();
-    updateStats();
-    alert("🎁 +10 XP! شكراً لعودتك اليوم.");
-}
+    document.getElementById("statGames").textContent = stats.games;
+    document.getElementById("statBest").textContent = stats.best;
+    document.getElementById("statCorrect").textContent = stats.correct;
+    document.getElementById("profileLevel").textContent = "المستوى " + stats.level;
+    const xpInLevel = stats.xp % 100;
+    document.getElementById("profileXP").textContent = xpInLevel;
+    document.getElementById("profileXPBar").style.width = (xpInLevel / 100 * 100) + "%";
 
-/* ============================================================
-   لوحة المتصدرين
-   ============================================================ */
-
-function getLeaderboard(){
-    try{
-        const data = localStorage.getItem("leaderboard");
-        return data ? JSON.parse(data) : [];
-    }catch{ return []; }
-}
-
-function saveLeaderboard(entries){
-    try{ localStorage.setItem("leaderboard", JSON.stringify(entries)); }catch{}
-}
-
-function addToLeaderboard(name, score){
-    const entries = getLeaderboard();
-    entries.push({name: name || "لاعب", score: score, date: new Date().toISOString()});
-    entries.sort((a,b) => b.score - a.score);
-    if(entries.length > 10) entries.length = 10;
-    saveLeaderboard(entries);
-    renderLeaderboard();
-}
-
-function renderLeaderboard(){
-    const container = document.getElementById("leaderboard");
-    const entries = getLeaderboard();
-    if(!entries.length){
-        container.innerHTML = '<div style="text-align:center;color:#8f99a7;padding:10px;">لا يوجد لاعبين بعد</div>';
-        return;
-    }
-    let html = "";
-    entries.slice(0,5).forEach((e,i) => {
-        const medals = ["🥇","🥈","🥉"];
-        const rank = medals[i] || `#${i+1}`;
-        html += `<div class="entry">
-            <div class="rank">${rank}</div>
-            <div class="name">${e.name}</div>
-            <div class="score">${e.score} XP</div>
-        </div>`;
+    // تحديث الإنجازات
+    const achievements = [
+        { id: "first", unlocked: stats.correct >= 1 },
+        { id: "streak5", unlocked: stats.best >= 5 },
+        { id: "games10", unlocked: stats.games >= 10 },
+        { id: "xp1000", unlocked: stats.xp >= 1000 },
+        { id: "expert", unlocked: stats.correct >= 50 },
+        { id: "legend", unlocked: stats.correct >= 100 }
+    ];
+    document.querySelectorAll(".achievement-item").forEach((item, index) => {
+        if(achievements[index] && achievements[index].unlocked){
+            item.classList.add("unlocked");
+        } else {
+            item.classList.remove("unlocked");
+        }
     });
-    container.innerHTML = html;
 }
 
 /* ============================================================
@@ -775,18 +748,13 @@ function showScreen(id){
     const screen = document.getElementById(id);
     if(screen) screen.classList.add("active");
     questionLocked = false;
-    updateStats();
-    updateDailyUI();
-    renderLeaderboard();
 
+    // تحديث التنقل السفلي
     document.querySelectorAll(".nav-item").forEach(b => {
         b.classList.toggle("active", b.dataset.screen === id);
     });
 
-    if(id === "home"){
-        updateDailyUI();
-        renderLeaderboard();
-    }
+    updateUI();
 }
 
 /* ============================================================
@@ -812,8 +780,7 @@ async function loadPlayers(){
         console.warn("⚠️ فشل تحميل JSON، استخدم البيانات الاحتياطية:", error);
         players = FALLBACK_PLAYERS.map(p => ({...p}));
     }
-    updateStats();
-    renderLeaderboard();
+    updateUI();
 }
 
 /* ============================================================
@@ -921,16 +888,13 @@ function renderQuestion(){
 }
 
 /* ============================================================
-   إنشاء الاختيارات (محسّن لمنع التكرار)
+   إنشاء الاختيارات
    ============================================================ */
 
 function generateOptions(correctPlayer){
-    // استبعاد اللاعب الصحيح من القائمة
     const others = players.filter(p => p.id !== correctPlayer.id);
-    // خلط اللاعبين الآخرين واختيار 3 منهم
     const shuffled = shuffle(others);
     const selected = shuffled.slice(0, 3);
-    // دمج اللاعب الصحيح مع الثلاثة الآخرين وخلطهم
     const options = shuffle([correctPlayer, ...selected]);
 
     const container = document.getElementById("options");
@@ -1063,11 +1027,8 @@ function endGame(){
     document.getElementById("finalWrong").textContent = wrong;
     document.getElementById("finalBest").textContent = bestStreak;
 
-    const name = prompt("أدخل اسمك لظهوره في المتصدرين:", "لاعب");
-    if(name) addToLeaderboard(name, score);
-
     showScreen("result");
-    updateStats();
+    updateUI();
 }
 
 /* ============================================================
@@ -1115,31 +1076,8 @@ function updateSettingUI(){
     });
 }
 
-/* ============================================================
-   تبديل الوضع
-   ============================================================ */
-
-function toggleTheme(){
-    document.body.classList.toggle("light");
-    localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
-}
-
-function loadTheme(){
-    if(localStorage.getItem("theme") === "light"){
-        document.body.classList.add("light");
-    }
-}
-
-/* ============================================================
-   تحديث الواجهة
-   ============================================================ */
-
-function updateStats(){
-    const stats = getStats();
-    document.getElementById("statGames").textContent = stats.games;
-    document.getElementById("statBest").textContent = stats.best;
-    document.getElementById("statCorrect").textContent = stats.correct;
-    updateDailyUI();
+function showToast(msg){
+    alert(msg); // مؤقتاً، يمكنك استبدالها بـ Toast احترافي لاحقاً
 }
 
 /* ============================================================
@@ -1147,12 +1085,9 @@ function updateStats(){
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadTheme();
     updateSettingUI();
-    updateStats();
-    renderLeaderboard();
-    updateDailyUI();
     loadPlayers();
+    showScreen("home");
 });
 
 </script>
