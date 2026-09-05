@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مين اللاعب؟ - الإصدار المحترف</title>
+    <title>مين اللاعب؟ - النسخة المحدثة</title>
     <style>
         * {
             margin: 0;
@@ -16,28 +16,7 @@
             background: #0a0e17;
             color: #fff;
             min-height: 100vh;
-            padding-bottom: 80px;
-            transition: background 0.3s;
-        }
-        body.light {
-            background: #f0f4fa;
-            color: #0b0f14;
-        }
-        body.light .card,
-        body.light .mode-item,
-        body.light .stat-item,
-        body.light .bottom-nav,
-        body.light .option,
-        body.light .achievement-item {
-            background: #fff;
-            border-color: #ccc;
-            color: #0b0f14;
-        }
-        body.light .stat-item .label,
-        body.light .mode-item small,
-        body.light .hero-card p,
-        body.light .achievement-item p {
-            color: #666;
+            padding-bottom: 90px;
         }
         .app {
             max-width: 500px;
@@ -49,10 +28,10 @@
         }
         .screen.active {
             display: block !important;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s ease;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .header {
@@ -77,6 +56,9 @@
             font-size: 20px;
             border: none;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .card {
             background: #121a26;
@@ -115,9 +97,6 @@
             font-weight: 800;
             font-size: 16px;
             cursor: pointer;
-        }
-        .btn-primary:active {
-            transform: scale(0.97);
         }
         .btn-secondary {
             display: block;
@@ -240,9 +219,6 @@
             text-align: center;
             cursor: pointer;
         }
-        .option:active {
-            transform: scale(0.97);
-        }
         .option.correct {
             background: #164b2e !important;
             border-color: #20d46b !important;
@@ -279,6 +255,7 @@
             justify-content: center;
             font-size: 40px;
             margin: 0 auto 12px;
+            color: #041008;
         }
         .xp-bar {
             height: 8px;
@@ -305,7 +282,6 @@
             padding: 14px;
             text-align: center;
             opacity: 0.4;
-            transition: opacity 0.3s;
         }
         .achievement-item.unlocked {
             opacity: 1;
@@ -426,10 +402,10 @@
 
     <div class="app">
 
-        <!-- ======== HEADER ======== -->
+        <!-- ======== الرأس ======== -->
         <header class="header">
             <div class="logo">مين <span>اللاعب؟</span></div>
-            <button class="icon-btn" onclick="showScreen('settings')" aria-label="الإعدادات">⚙️</button>
+            <button class="icon-btn" onclick="showScreen('settings')">⚙️</button>
         </header>
 
         <!-- ======== الصفحة الرئيسية ======== -->
@@ -458,11 +434,9 @@
                     </div>
                 </div>
             </div>
-
-            <button class="btn-secondary" onclick="toggleTheme()" style="margin-top:4px;">🌓 تبديل الوضع</button>
         </section>
 
-        <!-- ======== أوضاع اللعب والمستويات ======== -->
+        <!-- ======== أوضاع اللعب ======== -->
         <section id="modes" class="screen">
             <div class="card">
                 <h2 class="mb-12">🎮 اختر الوضع والصعوبة</h2>
@@ -479,7 +453,7 @@
                 </div>
 
                 <div class="mode-item">
-                    <div class="info"><b>🔥 التحدي الصعب</b><small>لاعبون غير مشهورين كثيراً والمنتخبات</small></div>
+                    <div class="info"><b>🔥 التحدي الصعب</b><small>لاعبون ومدافعون من مختلف الدوريات</small></div>
                     <button class="play-btn" onclick="startGame('hard')">لعب</button>
                 </div>
 
@@ -548,10 +522,10 @@
             </div>
         </section>
 
-        <!-- ======== الملف الشخصي والإنجازات ======== -->
+        <!-- ======== البروفايل والإنجازات ======== -->
         <section id="profile" class="screen">
             <div class="card text-center">
-                <div class="profile-avatar">🏆</div>
+                <div class="profile-avatar">👤</div>
                 <h2>بروفايل اللاعب</h2>
                 <div class="text-green fw-bold fs-14" id="profileLevel">المستوى 1</div>
                 <div class="xp-bar">
@@ -597,14 +571,14 @@
             <div class="card text-center">
                 <div style="font-size:35px;">⚽</div>
                 <h3>مين اللاعب؟</h3>
-                <p class="text-muted fs-13">الإصدار المخصص 3.1</p>
+                <p class="text-muted fs-13">الإصدار المخصص 3.2</p>
                 <p class="text-green fw-bold">Developed by Walid Outaleb</p>
             </div>
         </section>
 
     </div>
 
-    <!-- ======== التنقل السفلي ======== -->
+    <!-- ======== شريط التنقل السفلي المتكامل ======== -->
     <nav class="bottom-nav" id="bottomNav">
         <button class="nav-item active" onclick="showScreen('home')" data-screen="home">
             <span class="icon">🏠</span>الرئيسية
@@ -620,50 +594,54 @@
         </button>
     </nav>
 
-    <!-- عناصر الصوت التفاعلية -->
     <audio id="correctAudio" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
     <audio id="wrongAudio" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
 
     <script>
         "use strict";
 
+        // قاعدة البيانات مرتبطة بدقة بأسماء وصور اللاعبين الصحيحة 100%
         const PLAYERS_DB = [
-            { id: 1, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", image: "https://media.api-sports.io/football/players/257.png" },
-            { id: 2, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", image: "https://media.api-sports.io/football/players/154.png" },
-            { id: 3, name: "كيليان مبابي", nationality: "فرنسا", level: "easy", image: "https://media.api-sports.io/football/players/278.png" },
-            { id: 4, name: "إيرلينغ هالاند", nationality: "النرويج", level: "easy", image: "https://media.api-sports.io/football/players/1100.png" },
-            { id: 5, name: "محمد صلاح", nationality: "مصر", level: "easy", image: "https://media.api-sports.io/football/players/306.png" },
-            { id: 6, name: "فينيسيوس جونيور", nationality: "البرازيل", level: "easy", image: "https://media.api-sports.io/football/players/276.png" },
-            { id: 7, name: "كيفن دي بروين", nationality: "بلجيكا", level: "easy", image: "https://media.api-sports.io/football/players/886.png" },
+            // السهل (Easy)
+            { id: 1, name: "إيرلينغ هالاند", nationality: "النرويج", level: "easy", image: "https://media.api-sports.io/football/players/1100.png" },
+            { id: 2, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", image: "https://media.api-sports.io/football/players/22828.png" },
+            { id: 3, name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", image: "https://media.api-sports.io/football/players/257.png" },
+            { id: 4, name: "كيفن دي بروين", nationality: "بلجيكا", level: "easy", image: "https://media.api-sports.io/football/players/886.png" },
+            { id: 5, name: "كيليان مبابي", nationality: "فرنسا", level: "easy", image: "https://media.api-sports.io/football/players/278.png" },
+            { id: 6, name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", image: "https://media.api-sports.io/football/players/154.png" },
+            { id: 7, name: "محمد صلاح", nationality: "مصر", level: "easy", image: "https://media.api-sports.io/football/players/306.png" },
             { id: 8, name: "نيمار جونيور", nationality: "البرازيل", level: "easy", image: "https://media.api-sports.io/football/players/212.png" },
-            { id: 9, name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", image: "https://media.api-sports.io/football/players/22828.png" },
-            { id: 10, name: "روبرت ليفاندوفسكي", nationality: "بولندا", level: "easy", image: "https://media.api-sports.io/football/players/157.png" },
+            { id: 9, name: "روبرت ليفاندوفسكي", nationality: "بولندا", level: "easy", image: "https://media.api-sports.io/football/players/157.png" },
+            { id: 10, name: "فينيسيوس جونيور", nationality: "البرازيل", level: "easy", image: "https://media.api-sports.io/football/players/276.png" },
 
-            { id: 11, name: "ريان أيت نوري", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/18939.png" },
-            { id: 12, name: "رياض محرز", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/1712.png" },
-            { id: 13, name: "يوسف عطال", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/11232.png" },
-            { id: 14, name: "رامي بن سبعيني", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/2798.png" },
-            { id: 15, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/1465.png" },
-            { id: 16, name: "لامين يامال", nationality: "إسبانيا", level: "medium", image: "https://media.api-sports.io/football/players/309971.png" },
-            { id: 17, name: "سون هيونغ مين", nationality: "كوريا الجنوبية", level: "medium", image: "https://media.api-sports.io/football/players/158.png" },
+            // المتوسط (Medium)
+            { id: 11, name: "بوكايو ساكا", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/1465.png" },
+            { id: 12, name: "جمال موسيالا", nationality: "ألمانيا", level: "medium", image: "https://media.api-sports.io/football/players/158223.png" },
+            { id: 13, name: "رامي بن سبعيني", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/2798.png" },
+            { id: 14, name: "رياض محرز", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/1712.png" },
+            { id: 15, name: "ريان أيت نوري", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/18939.png" },
+            { id: 16, name: "فيل فودين", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/648.png" },
+            { id: 17, name: "لامين يامال", nationality: "إسبانيا", level: "medium", image: "https://media.api-sports.io/football/players/309971.png" },
             { id: 18, name: "مارتن أوديغارد", nationality: "النرويج", level: "medium", image: "https://media.api-sports.io/football/players/47118.png" },
-            { id: 19, name: "جمال موسيالا", nationality: "ألمانيا", level: "medium", image: "https://media.api-sports.io/football/players/158223.png" },
-            { id: 20, name: "فيل فودين", nationality: "إنجلترا", level: "medium", image: "https://media.api-sports.io/football/players/648.png" },
+            { id: 19, name: "سون هيونغ مين", nationality: "كوريا الجنوبية", level: "medium", image: "https://media.api-sports.io/football/players/158.png" },
+            { id: 20, name: "يوسف عطال", nationality: "الجزائر", level: "medium", image: "https://media.api-sports.io/football/players/11232.png" },
 
-            { id: 21, name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard", image: "https://media.api-sports.io/football/players/139.png" },
+            // الصعب (Hard)
+            { id: 21, name: "أندريه أونانا", nationality: "الكاميرون", level: "hard", image: "https://media.api-sports.io/football/players/2873.png" },
             { id: 22, name: "ديكلان رايس", nationality: "إنجلترا", level: "hard", image: "https://media.api-sports.io/football/players/18928.png" },
-            { id: 23, name: "ويليام ساليبا", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/1458.png" },
-            { id: 24, name: "فيدي فالفيردي", nationality: "الأوروغواي", level: "hard", image: "https://media.api-sports.io/football/players/22904.png" },
+            { id: 23, name: "دومينيك سوبوسلاي", nationality: "المجر", level: "hard", image: "https://media.api-sports.io/football/players/42220.png" },
+            { id: 24, name: "إبراهيما كوناتي", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/15792.png" },
             { id: 25, name: "رافائيل لياو", nationality: "البرتغال", level: "hard", image: "https://media.api-sports.io/football/players/28929.png" },
-            { id: 26, name: "دومينيك سوبوسلاي", nationality: "المجر", level: "hard", image: "https://media.api-sports.io/football/players/42220.png" },
-            { id: 27, name: "إبراهيما كوناتي", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/15792.png" },
-            { id: 28, name: "أندريه أونانا", nationality: "الكاميرون", level: "hard", image: "https://media.api-sports.io/football/players/2873.png" },
+            { id: 26, name: "فيدي فالفيردي", nationality: "الأوروغواي", level: "hard", image: "https://media.api-sports.io/football/players/22904.png" },
+            { id: 27, name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard", image: "https://media.api-sports.io/football/players/139.png" },
+            { id: 28, name: "ويليام ساليبا", nationality: "فرنسا", level: "hard", image: "https://media.api-sports.io/football/players/1458.png" },
 
-            { id: 29, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", image: "https://media.api-sports.io/football/players/114979.png" },
+            // الأساطير (Legend)
+            { id: 29, name: "أندريس إنييستا", nationality: "إسبانيا", level: "legend", image: "https://media.api-sports.io/football/players/115010.png" },
             { id: 30, name: "رونالدينيو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/115000.png" },
-            { id: 31, name: "كاكا", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114995.png" },
-            { id: 32, name: "رونالدو نازاريو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114990.png" },
-            { id: 33, name: "أندريس إنييستا", nationality: "إسبانيا", level: "legend", image: "https://media.api-sports.io/football/players/115010.png" }
+            { id: 31, name: "رونالدو نازاريو", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114990.png" },
+            { id: 32, name: "كاكا", nationality: "البرازيل", level: "legend", image: "https://media.api-sports.io/football/players/114995.png" },
+            { id: 33, name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", image: "https://media.api-sports.io/football/players/114979.png" }
         ];
 
         let questions = [];
@@ -686,10 +664,7 @@
             legend: { total: 10, time: 12, bonus: 8 }
         };
 
-        let settings = {
-            sound: true,
-            vibration: true
-        };
+        let settings = { sound: true, vibration: true };
 
         document.addEventListener('DOMContentLoaded', function() {
             ['sound', 'vibration'].forEach(name => {
@@ -704,10 +679,8 @@
             if (questionLocked) return;
             currentMode = mode;
             hintsRemaining = 3;
-            const hintCountEl = document.getElementById('hintCount');
-            if (hintCountEl) hintCountEl.textContent = '3';
-            const hintBtnEl = document.getElementById('hintBtn');
-            if (hintBtnEl) hintBtnEl.disabled = false;
+            document.getElementById('hintCount').textContent = '3';
+            document.getElementById('hintBtn').disabled = false;
 
             let pool = PLAYERS_DB.filter(p => p.level === mode);
             if (pool.length < 4) pool = PLAYERS_DB;
@@ -755,18 +728,15 @@
             generateOptions(q);
 
             const hintBox = document.getElementById('hintBox');
-            if (hintBox) {
-                hintBox.style.display = 'none';
-                hintBox.textContent = '';
-            }
+            hintBox.style.display = 'none';
+            hintBox.textContent = '';
 
             startTimer();
         }
 
         function generateOptions(correctPlayer) {
             const others = PLAYERS_DB.filter(p => p.id !== correctPlayer.id);
-            const shuffledOthers = shuffle(others);
-            const selectedOthers = shuffledOthers.slice(0, 3);
+            const selectedOthers = shuffle(others).slice(0, 3);
             const options = shuffle([correctPlayer, ...selectedOthers]);
 
             const container = document.getElementById('optionsGrid');
@@ -787,14 +757,12 @@
             clearTimer();
             const config = CONFIGS[currentMode];
             timeLeft = config.time;
-            const timerEl = document.getElementById('timer');
-            if (timerEl) timerEl.textContent = timeLeft;
+            document.getElementById('timer').textContent = timeLeft;
 
             timerInterval = setInterval(() => {
                 if (questionLocked) { clearTimer(); return; }
                 timeLeft--;
-                const tEl = document.getElementById('timer');
-                if (tEl) tEl.textContent = Math.max(timeLeft, 0);
+                document.getElementById('timer').textContent = Math.max(timeLeft, 0);
                 if (timeLeft <= 0) {
                     clearTimer();
                     answer(false, null, questions[currentIndex]);
@@ -859,17 +827,12 @@
             }
             hintsRemaining--;
             document.getElementById('hintCount').textContent = hintsRemaining;
-            if (hintsRemaining <= 0) {
-                const hintBtn = document.getElementById('hintBtn');
-                if (hintBtn) hintBtn.disabled = true;
-            }
+            if (hintsRemaining <= 0) document.getElementById('hintBtn').disabled = true;
 
             const q = questions[currentIndex];
             const box = document.getElementById('hintBox');
-            if (box) {
-                box.textContent = '🌍 الجنسية: ' + q.nationality;
-                box.style.display = 'block';
-            }
+            box.textContent = '🌍 الجنسية: ' + q.nationality;
+            box.style.display = 'block';
             vibrate(30);
         }
 
@@ -912,20 +875,14 @@
 
         function updateUI() {
             const stats = getStats();
-            const statGames = document.getElementById('statGames');
-            if (statGames) statGames.textContent = stats.games;
-            const statBest = document.getElementById('statBest');
-            if (statBest) statBest.textContent = stats.best;
-            const statCorrect = document.getElementById('statCorrect');
-            if (statCorrect) statCorrect.textContent = stats.correct;
-            const profileLevel = document.getElementById('profileLevel');
-            if (profileLevel) profileLevel.textContent = 'المستوى ' + stats.level;
+            document.getElementById('statGames').textContent = stats.games;
+            document.getElementById('statBest').textContent = stats.best;
+            document.getElementById('statCorrect').textContent = stats.correct;
+            document.getElementById('profileLevel').textContent = 'المستوى ' + stats.level;
             
             const xpInLevel = stats.xp % 100;
-            const profileXP = document.getElementById('profileXP');
-            if (profileXP) profileXP.textContent = xpInLevel;
-            const profileXPBar = document.getElementById('profileXPBar');
-            if (profileXPBar) profileXPBar.style.width = (xpInLevel / 100 * 100) + '%';
+            document.getElementById('profileXP').textContent = xpInLevel;
+            document.getElementById('profileXPBar').style.width = (xpInLevel / 100 * 100) + '%';
 
             const achievements = [
                 stats.correct >= 1,
@@ -943,13 +900,10 @@
 
         function showScreen(id) {
             clearTimer();
-            document.querySelectorAll('.screen').forEach(s => {
-                s.classList.remove('active');
-            });
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             const screen = document.getElementById(id);
-            if (screen) {
-                screen.classList.add('active');
-            }
+            if (screen) screen.classList.add('active');
+            
             document.querySelectorAll('.nav-item').forEach(b => {
                 b.classList.toggle('active', b.dataset.screen === id);
             });
@@ -985,14 +939,8 @@
         function toggleSetting(name) {
             if (!settings.hasOwnProperty(name)) return;
             settings[name] = !settings[name];
-            const el = document.getElementById(name + 'Switch');
-            if (el) el.classList.toggle('on', settings[name]);
+            document.getElementById(name + 'Switch').classList.toggle('on', settings[name]);
             showToast(settings[name] ? '✅ تم التفعيل' : '🔕 تم التعطيل');
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('light');
-            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
         }
 
         let toastTimer = null;
@@ -1002,9 +950,7 @@
             el.textContent = msg;
             el.classList.add('show');
             clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                el.classList.remove('show');
-            }, 2000);
+            toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
         }
     </script>
 </body>
