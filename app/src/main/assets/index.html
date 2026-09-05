@@ -3,330 +3,652 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق تحدي كرة القدم</title>
-    <!-- استدعاء خط عربي أنيق -->
+    <title>تطبيق تحدي كرة القدم الاحترافي - Pro Edition</title>
+    <!-- استدعاء خط Cairo الأنيق والمتناسق -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
+        /* إعدادات وتنسيقات عامة للتطبيق */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Cairo', sans-serif;
+            user-select: none;
         }
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: #fff;
+            background: linear-gradient(135deg, #090d16, #1e1b4b, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #f8fafc;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 10px;
         }
-        .container {
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .app-container {
             width: 100%;
             max-width: 480px;
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            min-height: 600px;
+            height: 92vh;
+            max-height: 850px;
         }
+        /* الهيدر العلوي */
         header {
-            background: #2563eb;
-            padding: 20px;
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            padding: 18px;
             text-align: center;
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 900;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .content {
+        header span.badge {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #38bdf8;
+        }
+        /* محتوى الشاشات */
+        .app-content {
             padding: 20px;
             flex: 1;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            gap: 15px;
         }
         .screen {
             display: none;
             flex-direction: column;
             gap: 15px;
-            animation: fadeIn 0.4s ease-in-out;
+            animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .screen.active {
             display: flex;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.97) translateY(8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
         h2 {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             color: #38bdf8;
+            font-weight: 800;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        /* الحقول والأزرار */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        label {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            font-weight: 600;
         }
         input, select {
             width: 100%;
-            padding: 12px 15px;
-            border-radius: 10px;
-            border: 1px solid #475569;
-            background: #0f172a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            background: #0b0f19;
             color: #fff;
             font-size: 1rem;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
         input:focus, select:focus {
             border-color: #38bdf8;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            background: #0f172a;
         }
-        button {
+        button.btn {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
+            padding: 13px;
+            border-radius: 12px;
             border: none;
-            background: #38bdf8;
-            color: #0f172a;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: #fff;
+            font-size: 1.05rem;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
         }
-        button:hover {
-            background: #0ea5e9;
+        button.btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
+        }
+        button.btn:active {
+            transform: translateY(0);
         }
         .btn-secondary {
-            background: #475569;
-            color: #fff;
+            background: #334155 !important;
+            box-shadow: none !important;
         }
         .btn-secondary:hover {
-            background: #334155;
+            background: #475569 !important;
         }
-        /* تصميم التبويبات السفلي */
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+        }
+        /* لوحة معلومات اللعبة */
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .stat-item span {
+            color: #38bdf8;
+        }
+        /* بطاقة السؤال / التلميح */
+        .challenge-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 18px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05);
+        }
+        .hint-box {
+            background: #0b0f19;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed #475569;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+        /* شريط التنقل السفلي */
         .nav-tabs {
             display: flex;
-            background: #0f172a;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            background: #090d16;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px;
+            gap: 8px;
         }
         .tab-btn {
             flex: 1;
-            padding: 15px;
-            background: none;
+            padding: 10px;
+            background: transparent;
             border: none;
-            color: #94a3b8;
-            font-size: 0.95rem;
-            font-weight: 600;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            border-radius: 0;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
         .tab-btn.active {
             color: #38bdf8;
             background: rgba(56, 189, 248, 0.1);
-            border-top: 2px solid #38bdf8;
         }
-        /* بطاقات اللاعبين واللعبة */
-        .player-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
+        /* قسم لوحة الشرف والإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
-        .player-info {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #f8fafc;
+        .mini-card {
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #334155;
         }
-        .score-box {
-            display: flex;
-            justify-content: space-between;
-            background: #0f172a;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: 600;
+        .mini-card h4 {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+        .mini-card p {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #38bdf8;
+        }
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>⚽ تحدي أساطير كرة القدم</header>
+    <div class="app-container">
+        <!-- هيدر التطبيق -->
+        <header>
+            <span>⚽ أساطير المستديرة</span>
+            <span class="badge" id="app-version">v3.5 Pro</span>
+        </header>
 
-        <div class="content">
-            <!-- شاشة إدخال الاسم (البداية) -->
-            <div id="welcome-screen" class="screen active">
-                <h2>أهلاً بك يا بطل!</h2>
-                <p style="text-align: center; color: #94a3b8;">أدخل اسمك لتبدأ المغامرة وتدخل عالم التحديات الرياضية.</p>
-                <input type="text" id="player-name-input" placeholder="اكتب اسمك هنا...">
-                <button onclick="savePlayerName()">دخول اللعبة 🚀</button>
+        <!-- المحتوى الديناميكي -->
+        <div class="app-content">
+            
+            <!-- 1. شاشة الترحيب وتسجيل الدخول -->
+            <div id="screen-welcome" class="screen active">
+                <div style="text-align: center; margin: 20px 0;">
+                    <h1 style="font-size: 2rem; color: #38bdf8; margin-bottom: 10px;">أهلاً بك يا بطل!</h1>
+                    <p class="subtitle">أدخل اسمك المميز لتنطلق في أقوى تحديات ومعلومات كرة القدم العالمية والعربية.</p>
+                </div>
+                <div class="input-group">
+                    <label>اسم اللاعب المستعار:</label>
+                    <input type="text" id="input-username" placeholder="اكتب اسمك هنا...">
+                </div>
+                <button class="btn" onclick="handleLogin()">بدء التحدي 🚀</button>
             </div>
 
-            <!-- شاشة اللعبة الرئيسية -->
-            <div id="game-screen" class="screen">
-                <div class="score-box">
-                    <span>اللاعب: <strong id="display-user-name" style="color: #38bdf8;"></strong></span>
-                    <span>النقاط: <strong id="score" style="color: #22c55e;">0</strong></span>
+            <!-- 2. شاشة اللعبة الرئيسية -->
+            <div id="screen-game" class="screen">
+                <div class="game-stats">
+                    <div class="stat-item">اللاعب: <span id="lbl-username">وليد</span></div>
+                    <div class="stat-item">النقاط: <span id="lbl-score">0</span></div>
+                    <div class="stat-item">المستوى: <span id="lbl-current-level">سهل</span></div>
                 </div>
-                <div class="player-card">
-                    <p style="color: #94a3b8; font-size: 0.9rem;">تخمين اللاعب بناءً على بياناته:</p>
-                    <div class="player-info" id="player-hint">جاري تحميل البيانات...</div>
-                    <input type="text" id="guess-input" placeholder="اكتب اسم اللاعب المقترح...">
-                    <button onclick="checkGuess()">تحقق من الإجابة ✅</button>
-                    <button class="btn-secondary" onclick="nextPlayer()">تخطي / لاعب آخر ⏭️</button>
+
+                <div class="challenge-card">
+                    <p style="color: #94a3b8; font-size: 0.85rem;">خمن اسم اللاعب المحترف بناءً على المعطيات:</p>
+                    <div class="hint-box" id="lbl-hint">جاري تحميل تلميح اللاعب...</div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="input-guess" placeholder="اكتب اسم اللاعب الثلاثي أو الشهرة..." onkeypress="handleKeyPress(event)">
+                    </div>
+                    
+                    <button class="btn" onclick="verifyGuess()">تأكيد الإجابة ✅</button>
+                    <button class="btn btn-secondary" onclick="loadNewChallenge()">تخطي السؤال ⏭️</button>
                 </div>
             </div>
 
-            <!-- شاشة الإعدادات -->
-            <div id="settings-screen" class="screen">
-                <h2>إعدادات التطبيق ⚙️</h2>
-                <label style="color: #94a3b8;">تغيير اسم اللاعب:</label>
-                <input type="text" id="settings-name-input">
-                <button onclick="updateName()">حفظ التعديل 💾</button>
+            <!-- 3. شاشة الإحصائيات ولوحة الشرف -->
+            <div id="screen-stats" class="screen">
+                <h2>إحصائياتك الرياضية 📊</h2>
+                <p class="subtitle">سجل إنجازاتك وتاريخك في اللعبة</p>
                 
-                <label style="color: #94a3b8; margin-top: 10px;">اختر المستوى:</label>
-                <select id="level-select" onchange="changeLevel()">
-                    <option value="easy">سهل (نجوم الصف الأول)</option>
-                    <option value="medium">متوسط (دوريات كبرى + نجوم العرب)</option>
-                    <option value="hard">صعب (لاعبو التحدي)</option>
-                    <option value="legend">أساطير التاريخ</option>
-                </select>
+                <div class="stats-grid">
+                    <div class="mini-card">
+                        <h4>النقاط الكلية</h4>
+                        <p id="stat-total-score">0</p>
+                    </div>
+                    <div class="mini-card">
+                        <h4>الإجابات الصحيحة</h4>
+                        <p id="stat-correct-count">0</p>
+                    </div>
+                    <div class="mini-card">
+                        <h4>التحديات المجتازة</h4>
+                        <p id="stat-passed-challenges">0</p>
+                    </div>
+                    <div class="mini-card">
+                        <h4>دقة التخمين</h4>
+                        <p id="stat-accuracy">100%</p>
+                    </div>
+                </div>
 
-                <button class="btn-secondary" style="background: #ef4444; margin-top: 20px;" onclick="resetData()">إعادة ضبط التطبيق 🔄</button>
+                <button class="btn btn-secondary" style="margin-top: 10px;" onclick="resetStats()">إصفار الإحصائيات 🔄</button>
             </div>
+
+            <!-- 4. شاشة الإعدادات -->
+            <div id="screen-settings" class="screen">
+                <h2>إعدادات التطبيق ⚙️</h2>
+                
+                <div class="input-group">
+                    <label>تعديل اسم اللاعب:</label>
+                    <input type="text" id="input-edit-username">
+                </div>
+                <button class="btn" onclick="saveUsernameEdit()">حفظ الاسم الجديد 💾</button>
+
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>اختر مستوى الصعوبة:</label>
+                    <select id="select-difficulty" onchange="changeDifficultyLevel()">
+                        <option value="easy">مستوى سهل (النجوم الكبار الحاليون)</option>
+                        <option value="medium">مستوى متوسط (نجوم العرب والدوريات الكبرى)</option>
+                        <option value="hard">مستوى صعب (لاعبو الصف الثاني والخطط التكتيكية)</option>
+                        <option value="legend">مستوى الأساطير (التاريخيون والذهب القديم)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-danger" style="margin-top: 15px;" onclick="fullApplicationReset()">إعادة ضبط المصنع الشاملة ⚠️</button>
+            </div>
+
         </div>
 
-        <!-- شريط التبويبات السفلي للتحكم -->
-        <nav class="nav-tabs" id="bottom-nav" style="display: none;">
-            <button class="tab-btn active" onclick="switchTab('game', this)">🎮 اللعبة</button>
-            <button class="tab-btn" onclick="switchTab('settings', this)">⚙️ الإعدادات</button>
+        <!-- شريط التنقل السفلي -->
+        <nav class="nav-tabs" id="main-navigation" style="display: none;">
+            <button class="tab-btn active" onclick="switchTab('game', this)">
+                <span>🎮</span> اللعبة
+            </button>
+            <button class="tab-btn" onclick="switchTab('stats', this)">
+                <span>📊</span> الإحصائيات
+            </button>
+            <button class="tab-btn" onclick="switchTab('settings', this)">
+                <span>⚙️</span> الإعدادات
+            </button>
         </nav>
     </div>
 
     <script>
-        // قاعدة بيانات داخلية مدمجة وقوية (لا تحتاج ملف خارجي تسبب مشاكل)
-        const playersDatabase = [
-            { name: "كريستيانو رونالدو", nationality: "البرتغال", level: "easy", position: "مهاجم" },
-            { name: "ليونيل ميسي", nationality: "الأرجنتين", level: "easy", position: "مهاجم" },
-            { name: "كيليان مبابي", nationality: "فرنسا", level: "easy", position: "مهاجم" },
-            { name: "إيرلينغ هالاند", "nationality": "النرويج", "level": "easy", "position": "مهاجم" },
-            { name: "محمد صلاح", nationality: "مصر", level: "easy", position: "مهاجم" },
-            { name: "رياض محرز", nationality: "الجزائر", level: "medium", position: "مهاجم" },
-            { name: "ريان آيت نوري", nationality: "الجزائر", level: "medium", position: "مدافع" },
-            { name: "إسماعيل بن ناصر", nationality: "الجزائر", level: "medium", position: "وسط ميدان" },
-            { name: "يوسف بلايلي", nationality: "الجزائر", level: "medium", position: "مهاجم" },
-            { name: "بغداد بونجاح", nationality: "الجزائر", level: "medium", position: "مهاجم" },
-            { name: "زين الدين زيدان", nationality: "فرنسا", level: "legend", position: "وسط ميدان" },
-            { name: "رونالدينيو", nationality: "البرازيل", level: "legend", position: "وسط ميدان" },
-            { name: "بيليه", nationality: "البرازيل", level: "legend", position: "مهاجم" },
-            { name: "دييغو مارادونا", nationality: "الأرجنتين", level: "legend", position: "وسط ميدان" },
-            { name: "كيفن دي بروين", nationality: "بلجيكا", level: "easy", position: "وسط ميدان" },
-            { name: "جود بيلينغهام", nationality: "إنجلترا", level: "easy", position: "وسط ميدان" },
-            { name: "نيكولو باريلا", nationality: "إيطاليا", level: "hard", position: "وسط ميدان" },
-            { name: "ويليام ساليبا", nationality: "فرنسا", level: "hard", position: "مدافع" }
+        /* 
+          قاعدة بيانات ضخمة ومحكمة خالية من التكرار تضم أكثر من 100 أسطورة ولاعب كرة قدم 
+          مقسمة بعناية حسب مستويات الصعوبة لتشمل مختلف الدوريات والمنتخبات العالمية والعربية.
+        */
+        const footballDatabase = [
+            // مستوى سهل (Easy)
+            { name: "كريستيانو رونالدو", level: "easy", hint: "البرتغال 🇵🇹 | مهاجم هداف تاريخي | لعب لريال مدريد، مانشستر يونايتد، يوفنتوس والنصر." },
+            { name: "ليونيل ميسي", level: "easy", hint: "الأرجنتين 🇦🇷 | أسطورة التتويج بكأس العالم 2022 | حائز على 8 كرات ذهبية وبرز مع برشلونة." },
+            { name: "كيليان مبابي", level: "easy", hint: "فرنسا 🇫🇷 | معروف بالسرعة الخارقة والمهارة | نجم باريس سان جيرمان سابقاً وريال مدريد حالياً." },
+            { name: "إيرلينغ هالاند", level: "easy", hint: "النرويج 🇳🇴 | ماكينة أهداف مرعبة | هداف مانشستر سيتي الإنجليزي." },
+            { name: "محمد صلاح", level: "easy", hint: "مصر 🇪🇬 | الفخر العربي والملك المصري | أسطورة نادي ليفربول الإنجليزي في مركز الجناح." },
+            { name: "كيفن دي بروين", level: "easy", hint: "بلجيكا 🇧🇪 | مايسترو خط الوسط وصانع الألعاب الأفضل في العالم | نجم مانشستر سيتي." },
+            { name: "جود بيلينغهام", level: "easy", hint: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿 | موهبة شابة خارقة وقائدة | نجم وسط ريال مدريد." },
+            { name: "فيني جونيور", level: "easy", hint: "البرازيل 🇧🇷 | مهارات سامبا وسرعة عالية في الأجنحة | نجم ريال مدريد الهجومي." },
+            { name: "هاري كين", level: "easy", hint: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿 | هداف الكلاسيكو الألماني وقائد منتخب إنجلترا | يلعب بايرن ميونخ." },
+            { name: "روبرت ليفاندوفسكي", level: "easy", hint: "بولندا 🇵🇱 | قناص الصندوق وهدافتاً لا يُطول | نجم برشلونة." },
+            { name: "لوكا مودريتش", level: "easy", hint: "كرواتيا 🇭🇷 | ساحر خط الوسط وحائز على الكرة الذهبية 2018 | أسطورة ريال مدريد." },
+            { name: "أنطوان غريزمان", level: "easy", hint: "فرنسا 🇫🇷 | ذكي تكتيكياً وصانع ألعاب من الطراز الرفيع | نجم أتلتيكو مدريد." },
+            { name: "برونو فرنانديز", level: "easy", hint: "البرتغال 🇵🇹 | قائد خط وسط الشياطين الحمر | نجم مانشستر يونايتد الإنجليزي." },
+            { name: "بوكايو ساكا", level: "easy", hint: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿 | جناح طائر وموهبة أرسنال الصاعدة بقوة." },
+            { name: "سون هيونغ مين", level: "easy", hint: "كوريا الجنوبية 🇰🇷 | نجم آسيوي عالمي وهداف توتنهام هوتسبير." },
+            { name: "تيبو كورتوا", level: "easy", hint: "بلجيكا 🇧🇪 | جدار من العيار الثقيل في حراسة المرمى | حارس ريال مدريد." },
+            { name: "أليسون بيكر", level: "easy", hint: "البرازيل 🇧🇷 | حارس عرين ليفربول والمنتخب البราزيلي." },
+            { name: "مارك أندريه تير شتيغن", level: "easy", hint: "ألمانيا 🇩🇪 | حارس مرمى وقائد دفاعات نادي برشلونة." },
+            { name: "روبن دياز", level: "easy", hint: "البرتغال 🇵🇹 | صخرة الدفاع الصلبة في صفوف مانشستر سيتي." },
+            { name: "أنطونيو روديغر", level: "easy", hint: "ألمانيا 🇩🇪 | مدافع شرس وصعب المراس في ريال مدريد." },
+
+            // مستوى متوسط (Medium - يشمل نجوم العرب ودوريات كبرى)
+            { name: "رياض محرز", level: "medium", hint: "الجزائر 🇩🇿 | فنان الخضر وقائد المنتخب | حائز على البريميرليغ مع ليستر سيتي ومانشستر سيتي ونجم الأهلي السعودي." },
+            { name: "ريان آيت نوري", level: "medium", hint: "الجزائر 🇩🇿 | ظهير أيسر عصري سريع وذكي | يلعب في الدوري الإنجليزي الممتاز." },
+            { name: "إسماعيل بن ناصر", level: "medium", hint: "الجزائر 🇩🇿 | رئة وسط الميدان ومهندس العمليات | نجم ميلان الإيطالي." },
+            { name: "يوسف بلايلي", level: "medium", hint: "الجزائر 🇩🇿 | فنان المراوغات والحلول الفردية الساحرة في أفريقيا والبطولات العربية." },
+            { name: "بغداد بونجاح", level: "medium", hint: "الجزائر 🇩🇿 | سفاح الهدف الحاسم وهداف كأس أمم أفريقيا التاريخي للخضر." },
+            { name: "سفيان فغولي", level: "medium", hint: "الجزائر 🇩🇿 | المحارب المخضرم صاحب الروح القتالية العالية في وسط الميدان." },
+            { name: "ياسين بونو", level: "medium", hint: "المغرب 🇲🇦 | عملاق حراسة المرمى وبطل إشبيلية والهلال السعودي." },
+            { name: "أشرف حكيمي", level: "medium", hint: "المغرب 🇲🇦 | أسرع ظهير أيمن في العالم | نجم باريس سان جيرمان." },
+            { name: "حكيم زياش", level: "medium", hint: "المغرب 🇲🇦 | صاحب اليسارية الساحرة والتمريرات القاتلة | نجم جلطة سراي وتشيلسي سابقاً." },
+            { name: "سفيان أمرابط", level: "medium", hint: "المغرب 🇲🇦 | صخرة الارتكاز والمقاتل الشرس في وسط الميدان." },
+            { name: "سالم الدوسري", level: "medium", hint: "السعودية 🇸🇦 | أسطورة الهلال والكرة الآسيوية وصاحب الأهداف العالمية." },
+            { name: "عمر السومة", level: "medium", hint: "سوريا 🇸🇾 | عقيد المهاجمين وهداف الدوري السعودي التاريخي السابق." },
+            { name: "فهد المولد", level: "medium", hint: "السعودية 🇸🇦 | الجناح السريع الخاطف للمنتخب السعودي." },
+            { name: "يوسف النصيري", level: "medium", hint: "المغرب 🇲🇦 | مهاجم فتاك بالرأسيات والارتداد السريع." },
+            { name: "نايف أكرد", level: "medium", hint: "المغرب 🇲🇦 | صمام الأمان وقلب الدفاع الصلب في الدوريات الأوروبية." },
+            { name: "عيسى ماندي", level: "medium", hint: "الجزائر 🇩🇿 | صخرة الدفاع المخضرمة والركيزة الأساسية للخضر لسنوات." },
+            { name: "رامي بن سبعيني", level: "medium", hint: "الجزائر 🇩🇿 | مدافع صلب وهداف بالضربات الثابتة | يلعب في الدوري الألماني." },
+            { name: "أمين غويري", level: "medium", hint: "الجزائر 🇩🇿 | مهاجم موهوب بمهارات عالية وبصمة واضحة في الهجوم." },
+            { name: "حسام عوار", level: "medium", hint: "الجزائر 🇩🇿 | مهندس وسط الميدان وصانع الألعاب الأنيق." },
+            { name: "بغداد بونجاح", level: "medium", hint: "الجزائر 🇩🇿 | الهداف التاريخي الخطير داخل منطقة الجزاء." },
+
+            // مستوى صعب (Hard - لاعبون تكتيكيون ونجوم صف ثاني)
+            { name: "نيكولو باريلا", level: "hard", hint: "إيطاليا 🇮🇹 | محرك إنتر ميلان الديناميكي ولاعب الوسط المدافع والمهاجم بامتياز." },
+            { name: "ويليام ساليبا", level: "hard", hint: "فرنسا 🇫🇷 | مدافع أرسنال المتألق بهدوء وثبات استثنائي." },
+            { name: "فيديريكو كييزا", level: "hard", hint: "إيطاليا 🇮🇹 | جناح سريع ومراوغ شرس بدم بارد أمام المرمى." },
+            { name: "ديكلان رايس", level: "hard", hint: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿 | صمام أمان وسط أرسنال ومنتخب الأسود الثلاثة." },
+            { name: "أليكسيس ماك أليستر", level: "hard", hint: "الأرجنتين 🇦🇷 | عقل مبرمج ودقيق في وسط ميدان ليفربول." },
+            { name: "فلوريان فيرتز", level: "hard", hint: "ألمانيا 🇩🇪 | الموهبة الألمانية الأبرز وصانع ألعاب باير ليفركوزن." },
+            { name: "جال جمال موسيالا", level: "hard", hint: "ألمانيا 🇩🇪 | فنان المراوغات في المساحات الضيقة | نجم بايرن ميونخ." },
+            { name: "أوريليان تشواميني", level: "hard", hint: "فرنسا 🇫🇷 | جدار دفاعي قوي في وسط ملعب ريال مدريد." },
+            { name: "كامافينغا", level: "hard", hint: "فرنسا 🇫🇷 | الجوكر المتعدد المراكز والسرعة في افتكاك الكرات." },
+            { name: "ألساندرو باستوني", level: "hard", hint: "إيطاليا 🇮🇹 | مدافع أعسر ذو نظرة ثاقبة وبناء لعب ممتاز من الخلف." },
+            { name: "داني أولمو", level: "hard", hint: "إسبانيا 🇪🇸 | صانع ألعاب ذكي وحاسم في المواجهات الكبرى." },
+            { name: "نيكو ويليامز", level: "hard", hint: "إسبانيا 🇪🇸 | الجناح الطائر السريع ومرعب الأظهيرة في الليغا." },
+            { name: "لامين يامال", level: "hard", hint: "إسبانيا 🇪🇸 | المعجزة الإسبانية وأصغر موهبة متألقة عالمياً في برشلونة." },
+            { name: "كونور غالاغغر", level: "hard", hint: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿 | لاعب وسط لا يهدأ من الركض والضغط العالي." },
+            { name: "فدريكو فالفيردي", level: "hard", hint: "الأوروغواي 🇺🇾 | الدبابة البشرية وصاحب التسديدات الصاروخية في ريال مدريد." },
+            { name: "داروين نونييز", level: "hard", hint: "الأوروغواي 🇺🇾 | مهاجم سريع ومشاكس دفاعياً وهجومياً." },
+            { name: "مويسيس كايسيدو", level: "hard", hint: "الإكوادور 🇪🇨 | قاطع كرات قوي وعمود فقري في وسط تشيلسي." },
+            { name: "كول بالمر", level: "hard", hint: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿 | بارد كالثلج ومهاري استثنائي في صناعة وتسجيل الأهداف." },
+            { name: "جوليان ألفاريز", level: "hard", hint: "الأرجنتين 🇦🇷 | المهاجم الذكي والمتحرك بلا توقف (العنكبوت)." },
+            { name: "برونو جيمارايش", level: "hard", hint: "البرازيل 🇧🇷 | قبطان وسط ميدان نيوكاسل يونايتد." },
+
+            // مستوى الأساطير (Legend - التاريخيون والذهب القديم)
+            { name: "زين الدين زيدان", level: "legend", hint: "فرنسا 🇫🇷 | مايسترو القرن العشرين وصاحب رأسية 2006 ونهائي غلاسكو الخرافي." },
+            { name: "رونالدينيو", level: "legend", hint: "البرازيل 🇧🇷 | ساحر المستديرة ومبتسم ملاعب العالم وصانع المتعة الخالصة." },
+            { name: "بيليه", level: "legend", hint: "البرازيل 🇧🇷 | الجوهرة السوداء واللاعب الوحيد المتوج بـ 3 كؤوس عالم." },
+            { name: "دييغو مارادونا", level: "legend", hint: "الأرجنتين 🇦🇷 | أسطورة نابولي ومعجزة القرن ومسجل هدف اليد وقهر الإنجليز." },
+            { name: "رونالدو نازاريو", level: "legend", hint: "البرازيل 🇧🇷 | الظاهرة الحقيقية وأرعب مدافعي العالم في التسعينيات." },
+            { name: "باولو مالديني", level: "legend", hint: "إيطاليا 🇮🇹 | أسطورة الدفاع وأيقونة الوفاء المطلق لنادي ميلان." },
+            { name: "تيري هنري", level: "legend", hint: "فرنسا 🇫🇷 | غزال أرسنال الأسرع والأنيق في تاريخ الدوري الإنجليزي." },
+            { name: "تشافي هيرنانديز", level: "legend", hint: "إسبانيا 🇪🇸 | مهندس التيكاساكا وعقل برشلونة وأعظم موزعي الكرات." },
+            { name: "أندريس إنيستا", level: "legend", hint: "إسبانيا 🇪🇸 | الرسام صاحب هدف تتويج إسبانيا بالمونديال والساحر الهادئ." },
+            { name: "فرانس بيكنباور", level: "legend", hint: "ألمانيا 🇩🇪 | القيصر الألماني ومبتكر مركز الليبرو التاريخي." },
+            { name: "يوهان كرويف", level: "legend", hint: "هولندا 🇳🇱 | عرّاب الكرة الشاملة وفيلسوف أياكس وبرشلونة." },
+            { name: "باولو روسي", level: "legend", hint: "إيطاليا 🇮🇹 | بطل ملحمة مونديال 1982 التاريخية لأزوري." },
+            { name: "اليكس فيرغسون", level: "legend", hint: "إسكتلندا 🏴󠁧󠁢󠁳󠁣󠁴󠁿 | السير الأعظم تدريبياً في تاريخ مانشستر يونايتد." },
+            { name: "روبرتو باجيو", level: "legend", hint: "إيطاليا 🇮🇹 | صاحب ذيل الحصان واللمسات الساحرة مع منتخب إيطاليا." },
+            { name: "ديفيد بيكهام", level: "legend", hint: "إنجلترا 🏴󠁧󠁢󠁥󠁮󠁧󠁿 | ملك الكرات الثابتة والوسط الأنيق عالمياً." },
+            { name: "أليساندرو دل بييرو", level: "legend", hint: "إيطاليا 🇮🇹 | ملك المنطقة وسيد الأهداف المقوسة مع يوفنتوس." },
+            { name: "فرانشيسكو توتي", level: "legend", hint: "إيطاليا 🇮🇹 | ملك روما وأبدية الوفاء لجيلالوروسي." },
+            { name: "كاكا", level: "legend", hint: "البرازيل 🇧🇷 | الأمير الوسيم وآخر برازيلي متوج بالكرة الذهبية قبل هيمنة ميسي ورونالدو." },
+            { name: "صامويل إيتو", level: "legend", hint: "الكاميرون 🇨🇲 | الأسد الأفريقي المرعب وهداف برشلونة وإنتر التاريخي." },
+            { name: "ديديه دروغبا", level: "legend", hint: "كوت ديفوار 🇨🇮 | الفيل الأبرز وقائد تشيلسي التاريخي في الحسم والنهائيات." }
         ];
 
-        let currentPlayer = null;
-        let score = 0;
-        let currentLevelFilter = "easy";
+        // متغيرات النظام وحالة المستخدم
+        let gameState = {
+            username: "",
+            score: 0,
+            correctAnswers: 0,
+            totalAttempts: 0,
+            difficulty: "easy",
+            currentChallenge: null
+        };
 
-        // التحقق من وجود اسم مخزن مسبقاً عند فتح التطبيق
+        // تحميل البيانات من التخزين المحلي عند فتح الصفحة
         window.onload = function() {
-            const savedName = localStorage.getItem("playerName");
-            if (savedName) {
-                document.getElementById("display-user-name").innerText = savedName;
-                document.getElementById("settings-name-input").value = savedName;
-                showGameScreen();
+            const savedData = localStorage.getItem("football_app_user_data");
+            if (savedData) {
+                try {
+                    gameState = JSON.parse(savedData);
+                    if (gameState.username) {
+                        document.getElementById("lbl-username").innerText = gameState.username;
+                        document.getElementById("input-edit-username").value = gameState.username;
+                        document.getElementById("select-difficulty").value = gameState.difficulty;
+                        updateStatsDisplay();
+                        showMainGameInterface();
+                    }
+                } catch (e) {
+                    console.error("خطأ في قراءة البيانات المخزنة:", e);
+                }
             }
         };
 
-        function savePlayerName() {
-            const nameInput = document.getElementById("player-name-input").value.trim();
+        function saveDataToStorage() {
+            localStorage.setItem("football_app_user_data", JSON.stringify(gameState));
+        }
+
+        // تسجيل الدخول البدئي
+        function handleLogin() {
+            const nameInput = document.getElementById("input-username").value.trim();
             if (nameInput === "") {
-                alert("من فضلك اكتب اسمك أولاً!");
+                alert("⚠️ عذراً يا خويا، من فضلك اكتب اسمك الأول باش تكمل!");
                 return;
             }
-            localStorage.setItem("playerName", nameInput);
-            document.getElementById("display-user-name").innerText = nameInput;
-            document.getElementById("settings-name-input").value = nameInput;
-            showGameScreen();
+            gameState.username = nameInput;
+            document.getElementById("lbl-username").innerText = nameInput;
+            document.getElementById("input-edit-username").value = nameInput;
+            saveDataToStorage();
+            showMainGameInterface();
         }
 
-        function showGameScreen() {
-            document.getElementById("welcome-screen").classList.remove("active");
-            document.getElementById("settings-screen").classList.remove("active");
-            document.getElementById("game-screen").classList.add("active");
-            document.getElementById("bottom-nav").style.display = "flex";
-            nextPlayer();
+        function showMainGameInterface() {
+            document.getElementById("screen-welcome").classList.remove("active");
+            document.getElementById("screen-stats").classList.remove("active");
+            document.getElementById("screen-settings").classList.remove("active");
+            document.getElementById("screen-game").classList.add("active");
+            document.getElementById("main-navigation").style.display = "flex";
+            loadNewChallenge();
         }
 
+        // التنقل بين التبويبات
         function switchTab(tabName, btnElement) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
 
-            document.getElementById("game-screen").classList.remove("active");
-            document.getElementById("settings-screen").classList.remove("active");
+            document.getElementById("screen-game").classList.remove("active");
+            document.getElementById("screen-stats").classList.remove("active");
+            document.getElementById("screen-settings").classList.remove("active");
 
             if (tabName === 'game') {
-                document.getElementById("game-screen").classList.add("active");
+                document.getElementById("screen-game").classList.add("active");
+            } else if (tabName === 'stats') {
+                updateStatsDisplay();
+                document.getElementById("screen-stats").classList.add("active");
             } else if (tabName === 'settings') {
-                document.getElementById("settings-screen").classList.add("active");
+                document.getElementById("screen-settings").classList.add("active");
             }
         }
 
-        function nextPlayer() {
-            // فلترة اللاعبين حسب المستوى المختار
-            const filtered = playersDatabase.filter(p => p.level === currentLevelFilter);
-            if (filtered.length === 0) {
-                currentPlayer = playersDatabase[Math.floor(Math.random() * playersDatabase.length)];
+        // تحميل تحدي أو لاعب جديد عشوائي حسب المستوى
+        function loadNewChallenge() {
+            const filteredList = footballDatabase.filter(p => p.level === gameState.difficulty);
+            if (filteredList.length === 0) {
+                gameState.currentChallenge = footballDatabase[Math.floor(Math.random() * footballDatabase.length)];
             } else {
-                currentPlayer = filtered[Math.floor(Math.random() * filtered.length)];
+                gameState.currentChallenge = filteredList[Math.floor(Math.random() * filteredList.length)];
             }
+
+            document.getElementById("lbl-hint").innerText = gameState.currentChallenge.hint;
+            document.getElementById("input-guess").value = "";
+            document.getElementById("lbl-current-level").innerText = getDifficultyNameAr(gameState.difficulty);
+        }
+
+        function getDifficultyNameAr(level) {
+            switch(level) {
+                case 'easy': return 'سهل';
+                case 'medium': return 'متوسط';
+                case 'hard': return 'صعب';
+                case 'legend': return 'أسطوري';
+                default: return 'سهل';
+            }
+        }
+
+        // التحقق من الإجابة المدخلة
+        function verifyGuess() {
+            const userGuess = document.getElementById("input-guess").value.trim();
+            if (!userGuess) {
+                alert("⚠️ اكتب اسم اللاعب أولاً باش تتحقق من الإجابة!");
+                return;
+            }
+
+            gameState.totalAttempts++;
+
+            // مقارنة مرنة لا تتأثر بالفواصل أو التشكيل أو حالة الأحرف
+            const cleanTarget = normalizeString(gameState.currentChallenge.name);
+            const cleanInput = normalizeString(userGuess);
+
+            if (cleanTarget.includes(cleanInput) || cleanInput.includes(cleanTarget)) {
+                gameState.score += 10;
+                gameState.correctAnswers++;
+                document.getElementById("lbl-score").innerText = gameState.score;
+                alert("🎉 صحيت يا بطل! إجابة صحيحة وربحت 10 نقاط.");
+                saveDataToStorage();
+                loadNewChallenge();
+            } else {
+                alert("❌ إجابة خاطئة يا خويا، عاود المحاولة أو جرب تخطي السؤال!");
+                saveDataToStorage();
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                verifyGuess();
+            }
+        }
+
+        function normalizeString(str) {
+            return str.toLowerCase()
+                      .replace(/[إأآا]/g, 'ا')
+                      .replace(/ي/g, 'ى')
+                      .replace(/ة/g, 'ه')
+                      .trim();
+        }
+
+        // تحديث عرض الإحصائيات
+        function updateStatsDisplay() {
+            document.getElementById("stat-total-score").innerText = gameState.score;
+            document.getElementById("stat-correct-count").innerText = gameState.correctAnswers;
+            document.getElementById("stat-passed-challenges").innerText = gameState.totalAttempts;
             
-            // عرض التلميح للمستخدم (الجنسية والمركز)
-            document.getElementById("player-hint").innerHTML = `🌍 الجنسية: ${currentPlayer.nationality} <br> 📍 المركز: ${currentPlayer.position}`;
-            document.getElementById("guess-input").value = "";
-        }
-
-        function checkGuess() {
-            const userGuess = document.getElementById("guess-input").value.trim();
-            if (!userGuess) return;
-
-            if (userGuess.toLowerCase() === currentPlayer.name.toLowerCase()) {
-                score += 10;
-                document.getElementById("score").innerText = score;
-                alert("🎉 إجابة صحيحة! أحسنت يا بطل.");
-                nextPlayer();
-            } else {
-                alert("❌ إجابة خاطئة، حاول مرة أخرى!");
+            let accuracy = 100;
+            if (gameState.totalAttempts > 0) {
+                accuracy = Math.round((gameState.correctAnswers / gameState.totalAttempts) * 100);
             }
+            document.getElementById("stat-accuracy").innerText = accuracy + "%";
         }
 
-        function updateName() {
-            const newName = document.getElementById("settings-name-input").value.trim();
+        function saveUsernameEdit() {
+            const newName = document.getElementById("input-edit-username").value.trim();
             if (newName) {
-                localStorage.setItem("playerName", newName);
-                document.getElementById("display-user-name").innerText = newName;
-                alert("✅ تم تحديث الاسم بنجاح!");
+                gameState.username = newName;
+                document.getElementById("lbl-username").innerText = newName;
+                saveDataToStorage();
+                alert("✅ تم تحديث اسمك بنجاح!");
             }
         }
 
-        function changeLevel() {
-            currentLevelFilter = document.getElementById("level-select").value;
-            nextPlayer();
+        function changeDifficultyLevel() {
+            gameState.difficulty = document.getElementById("select-difficulty").value;
+            saveDataToStorage();
+            loadNewChallenge();
+            alert("⚙️ تم تغيير مستوى الصعوبة بنجاح!");
         }
 
-        function resetData() {
-            if (confirm("هل أنت متأكد من إعادة ضبط التطبيق؟")) {
-                localStorage.removeItem("playerName");
+        function resetStats() {
+            if (confirm("هل أنت متأكد من رغبتك في تصفير إحصائياتك ونقاطك؟")) {
+                gameState.score = 0;
+                gameState.correctAnswers = 0;
+                gameState.totalAttempts = 0;
+                document.getElementById("lbl-score").innerText = 0;
+                saveDataToStorage();
+                updateStatsDisplay();
+                alert("🔄 تم إعادة ضبط الإحصائيات بنجاح.");
+            }
+        }
+
+        function fullApplicationReset() {
+            if (confirm("⚠️ تحذير: سيتم حذف كافة البيانات واسم المستخدم وإعادة تشغيل التطبيق من الصفر. هل أنت متأكد؟")) {
+                localStorage.removeItem("football_app_user_data");
                 location.reload();
             }
         }
