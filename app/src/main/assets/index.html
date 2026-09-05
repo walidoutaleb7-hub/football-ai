@@ -1,52 +1,74 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>مين اللاعب؟</title><style>
+<title>مين اللاعب؟</title>
+<style>
 *{box-sizing:border-box}
-
 body{
     margin:0;
     font-family:Arial,sans-serif;
     background:#0b0f14;
     color:#fff;
     min-height:100vh;
+    transition:background 0.3s;
 }
-
+body.light{
+    background:#f0f4fa;
+    color:#0b0f14;
+}
+body.light .card{
+    background:#fff;
+    border-color:#ddd;
+}
+body.light .stat{
+    background:#e8ecf0;
+}
+body.light .option{
+    background:#e8ecf0;
+    border-color:#ccc;
+    color:#0b0f14;
+}
+body.light .mode{
+    background:#e8ecf0;
+    border-color:#ccc;
+}
+body.light .setting{
+    border-color:#ddd;
+}
+body.light .footer{
+    color:#888;
+}
 button{
     font-family:inherit;
     border:0;
     cursor:pointer;
     -webkit-tap-highlight-color:transparent;
 }
-
 button:disabled{
     cursor:default;
+    opacity:0.5;
 }
-
 .app{
     max-width:520px;
     margin:auto;
     min-height:100vh;
-    padding:18px;
+    padding:18px 18px 80px;
 }
-
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:20px;
 }
-
 .logo{
     font-size:25px;
     font-weight:bold;
 }
-
 .logo span{
     color:#20d46b;
 }
-
 .icon-btn{
     width:42px;
     height:42px;
@@ -55,15 +77,12 @@ button:disabled{
     color:#fff;
     font-size:20px;
 }
-
 .screen{
     display:none;
 }
-
 .screen.active{
     display:block;
 }
-
 .card{
     background:#121821;
     border:1px solid #202936;
@@ -71,22 +90,18 @@ button:disabled{
     padding:18px;
     margin-bottom:14px;
 }
-
 .hero{
     text-align:center;
     padding:28px 18px;
 }
-
 .hero h1{
     font-size:32px;
     margin:8px 0;
 }
-
 .hero p{
     color:#9ba6b5;
     line-height:1.7;
 }
-
 .primary{
     width:100%;
     padding:15px;
@@ -96,7 +111,6 @@ button:disabled{
     font-weight:bold;
     font-size:17px;
 }
-
 .secondary{
     width:100%;
     padding:13px;
@@ -105,7 +119,6 @@ button:disabled{
     color:#fff;
     font-weight:bold;
 }
-
 .mode{
     display:flex;
     justify-content:space-between;
@@ -116,17 +129,14 @@ button:disabled{
     background:#171e28;
     border:1px solid #242e3b;
 }
-
 .mode b{
     font-size:17px;
 }
-
 .mode small{
     display:block;
     color:#929dac;
     margin-top:5px;
 }
-
 .mode button{
     background:#20d46b;
     color:#06130b;
@@ -134,44 +144,37 @@ button:disabled{
     border-radius:10px;
     font-weight:bold;
 }
-
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
 }
-
 .stat{
     background:#171e28;
     padding:14px 5px;
     text-align:center;
     border-radius:14px;
 }
-
 .stat b{
     display:block;
     font-size:22px;
     color:#20d46b;
 }
-
 .stat span{
     color:#8f99a7;
     font-size:12px;
 }
-
 .question-top{
     display:flex;
     justify-content:space-between;
     margin-bottom:15px;
 }
-
 .badge{
     background:#1b2733;
     padding:8px 12px;
     border-radius:10px;
     color:#20d46b;
 }
-
 .timer{
     background:#2a1c1c;
     padding:8px 12px;
@@ -179,7 +182,6 @@ button:disabled{
     color:#ff7373;
     font-weight:bold;
 }
-
 .player-box{
     height:280px;
     border-radius:18px;
@@ -190,13 +192,11 @@ button:disabled{
     justify-content:center;
     margin-bottom:15px;
 }
-
 .player-box img{
     width:100%;
     height:100%;
     object-fit:contain;
 }
-
 .image-error{
     display:flex;
     flex-direction:column;
@@ -207,16 +207,13 @@ button:disabled{
     text-align:center;
     padding:20px;
 }
-
 .image-error strong{
     color:#fff;
 }
-
 .options{
     display:grid;
     gap:10px;
 }
-
 .option{
     width:100%;
     padding:15px;
@@ -227,21 +224,17 @@ button:disabled{
     font-size:16px;
     text-align:center;
 }
-
 .option.correct{
     background:#164b2e;
     border-color:#20d46b;
 }
-
 .option.wrong{
     background:#512020;
     border-color:#ff5555;
 }
-
 .option:disabled{
     opacity:1;
 }
-
 .hint{
     margin-top:12px;
     background:#202936;
@@ -250,7 +243,6 @@ button:disabled{
     border-radius:12px;
     text-align:center;
 }
-
 .setting{
     display:flex;
     justify-content:space-between;
@@ -258,17 +250,14 @@ button:disabled{
     padding:16px 4px;
     border-bottom:1px solid #222b36;
 }
-
 .setting:last-child{
     border:0;
 }
-
 .setting small{
     display:block;
     color:#8e98a6;
     margin-top:4px;
 }
-
 .switch{
     width:48px;
     height:26px;
@@ -276,7 +265,6 @@ button:disabled{
     border-radius:20px;
     padding:3px;
 }
-
 .switch i{
     display:block;
     width:20px;
@@ -285,415 +273,336 @@ button:disabled{
     background:#fff;
     transition:.2s;
 }
-
 .switch.on{
     background:#20d46b;
 }
-
 .switch.on i{
     transform:translateX(22px);
 }
-
 .result{
     text-align:center;
 }
-
 .result-score{
     font-size:48px;
     color:#20d46b;
     font-weight:bold;
 }
-
 .footer{
     text-align:center;
     color:#657080;
     font-size:12px;
     margin:25px 0 10px;
 }
-
 .fade{
     animation:fade .25s ease;
 }
-
 @keyframes fade{
-    from{
-        opacity:.2;
-        transform:translateY(5px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+    from{opacity:.2;transform:translateY(5px)}
+    to{opacity:1;transform:translateY(0)}
 }
-</style></head><body><div class="app"><header class="header">
-    <div class="logo">
-        مين <span>اللاعب؟</span>
-    </div><button
-    class="icon-btn"
-    type="button"
-    onclick="showScreen('settings')"
-    aria-label="الإعدادات">
-    ⚙️
-</button>
 
-</header><!-- الرئيسية --><section id="home" class="screen active"><div class="card hero">
+/* المكافأة اليومية */
+.daily{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#1a2a1a;
+    border:1px solid #2a4a2a;
+    border-radius:14px;
+    padding:12px 16px;
+    margin-bottom:14px;
+}
+.daily .info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.daily .info .icon{
+    font-size:28px;
+}
+.daily .info .text{
+    font-weight:bold;
+    font-size:14px;
+}
+.daily .info .text small{
+    display:block;
+    color:#8f99a7;
+    font-size:10px;
+    font-weight:normal;
+}
+.daily .claim{
+    background:#f1c40f;
+    color:#06130b;
+    padding:6px 14px;
+    border-radius:30px;
+    font-weight:bold;
+    font-size:12px;
+}
+.daily .claim.claimed{
+    background:#2a3a2a;
+    color:#8f99a7;
+}
 
-    <div style="font-size:50px">⚽</div>
+/* لوحة المتصدرين */
+.leaderboard{
+    background:#171e28;
+    border-radius:14px;
+    padding:10px;
+}
+.leaderboard .entry{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 6px;
+    border-bottom:1px solid #222b36;
+}
+.leaderboard .entry:last-child{
+    border-bottom:0;
+}
+.leaderboard .rank{
+    font-weight:bold;
+    color:#f1c40f;
+    width:30px;
+}
+.leaderboard .name{
+    flex:1;
+    font-size:14px;
+}
+.leaderboard .score{
+    color:#20d46b;
+    font-weight:bold;
+}
 
-    <h1>مين اللاعب؟</h1>
+/* التنقل السفلي */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:#0b0f14;
+    border-top:1px solid #202936;
+    display:flex;
+    justify-content:space-around;
+    padding:8px 0 12px;
+    z-index:100;
+}
+body.light .bottom-nav{
+    background:#f0f4fa;
+    border-top:1px solid #ddd;
+}
+.nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    background:transparent;
+    color:#8f99a7;
+    font-size:10px;
+    padding:4px 12px;
+    border-radius:10px;
+}
+.nav-item .icon{
+    font-size:22px;
+}
+.nav-item.active{
+    color:#20d46b;
+}
+</style>
+</head>
+<body>
+<div class="app">
 
-    <p>
-        اختبر معلوماتك الكروية وخمّن اللاعب من صورته.
-        هل تستطيع الوصول إلى أعلى نتيجة؟
-    </p>
+<!-- ======== HEADER ======== -->
+<header class="header">
+    <div class="logo">مين <span>اللاعب؟</span></div>
+    <div>
+        <button class="icon-btn" onclick="showScreen('settings')" aria-label="الإعدادات">⚙️</button>
+    </div>
+</header>
 
-    <button
-        class="primary"
-        type="button"
-        onclick="showScreen('modes')">
-        🎮 ابدأ اللعب
+<!-- ======== HOME ======== -->
+<section id="home" class="screen active">
+
+    <div class="card hero">
+        <div style="font-size:50px">⚽</div>
+        <h1>مين اللاعب؟</h1>
+        <p>اختبر معلوماتك الكروية وخمّن اللاعب من صورته.</p>
+        <button class="primary" onclick="showScreen('modes')">🎮 ابدأ اللعب</button>
+    </div>
+
+    <!-- مكافأة يومية -->
+    <div class="daily" id="dailyReward">
+        <div class="info">
+            <div class="icon">🎁</div>
+            <div class="text">
+                مكافأة يومية
+                <small id="dailyStatus">+10 XP عند الاستلام</small>
+            </div>
+        </div>
+        <button class="claim" id="claimBtn" onclick="claimDailyReward()">استلام</button>
+    </div>
+
+    <div class="card">
+        <h3>📊 إحصائياتك</h3>
+        <div class="stats">
+            <div class="stat"><b id="statGames">0</b><span>الألعاب</span></div>
+            <div class="stat"><b id="statBest">0</b><span>أفضل نتيجة</span></div>
+            <div class="stat"><b id="statCorrect">0</b><span>إجابات صحيحة</span></div>
+        </div>
+    </div>
+
+    <!-- لوحة المتصدرين -->
+    <div class="card">
+        <h3>🏆 المتصدرين</h3>
+        <div class="leaderboard" id="leaderboard">
+            <div style="text-align:center;color:#8f99a7;padding:10px;">لا يوجد لاعبين بعد</div>
+        </div>
+    </div>
+
+    <!-- زر تبديل الوضع -->
+    <button class="secondary" onclick="toggleTheme()" style="margin-top:8px;">🌓 تبديل الوضع</button>
+
+</section>
+
+<!-- ======== MODES ======== -->
+<section id="modes" class="screen">
+    <div class="card">
+        <h2>🎮 اختر الوضع</h2>
+
+        <div class="mode">
+            <div><b>الكلاسيكي</b><small>50 سؤال • 15 ثانية</small></div>
+            <button onclick="startGame('classic')">لعب</button>
+        </div>
+
+        <div class="mode">
+            <div><b>⚡ السرعة</b><small>30 سؤال • 10 ثواني</small></div>
+            <button onclick="startGame('speed')">لعب</button>
+        </div>
+
+        <div class="mode">
+            <div><b>🔥 الستريك</b><small>حتى 100 سؤال</small></div>
+            <button onclick="startGame('streak')">لعب</button>
+        </div>
+
+        <div class="mode">
+            <div><b>💎 اللاعب النادر</b><small>لاعبون أصعب في التخمين</small></div>
+            <button onclick="startGame('rare')">لعب</button>
+        </div>
+
+        <button class="secondary" onclick="showScreen('home')">رجوع</button>
+    </div>
+</section>
+
+<!-- ======== GAME ======== -->
+<section id="game" class="screen">
+    <div class="question-top">
+        <div class="badge"><span id="questionNumber">1</span> / <span id="questionTotal">50</span></div>
+        <div class="timer">⏱ <span id="timer">15</span></div>
+    </div>
+
+    <div class="card" id="questionCard">
+        <div class="player-box" id="playerBox">
+            <img id="playerImage" alt="لاعب كرة قدم" loading="eager">
+        </div>
+
+        <div class="options" id="options"></div>
+
+        <div id="hintBox" class="hint" style="display:none"></div>
+
+        <button class="secondary" style="margin-top:12px" onclick="useHint()">💡 تلميح (<span id="hintCount">3</span>)</button>
+    </div>
+
+    <div style="text-align:center;color:#8d98a7">
+        النقاط: <b id="score" style="color:#20d46b">0</b>
+        &nbsp;|&nbsp; 🔥 <b id="streakDisplay">0</b>
+    </div>
+</section>
+
+<!-- ======== RESULT ======== -->
+<section id="result" class="screen">
+    <div class="card result">
+        <div style="font-size:55px">🏆</div>
+        <h2>انتهت اللعبة!</h2>
+        <div class="result-score" id="finalScore">0</div>
+        <p>نقطتك النهائية</p>
+
+        <div class="stats">
+            <div class="stat"><b id="finalCorrect">0</b><span>صحيحة</span></div>
+            <div class="stat"><b id="finalWrong">0</b><span>خاطئة</span></div>
+            <div class="stat"><b id="finalBest">0</b><span>الأفضل</span></div>
+        </div>
+
+        <button class="primary" style="margin-top:18px" onclick="showScreen('modes')">🔄 العب مرة أخرى</button>
+        <button class="secondary" style="margin-top:10px" onclick="showScreen('home')">🏠 الرئيسية</button>
+    </div>
+</section>
+
+<!-- ======== SETTINGS ======== -->
+<section id="settings" class="screen">
+    <div class="card">
+        <h2>⚙️ الإعدادات</h2>
+
+        <div class="setting">
+            <div><b>🔊 الصوت</b><small>أصوات الإجابات</small></div>
+            <button class="switch on" id="soundSwitch" onclick="toggleSetting('sound')"><i></i></button>
+        </div>
+
+        <div class="setting">
+            <div><b>📳 الاهتزاز</b><small>اهتزاز عند الإجابة</small></div>
+            <button class="switch on" id="vibrationSwitch" onclick="toggleSetting('vibration')"><i></i></button>
+        </div>
+
+        <div class="setting">
+            <div><b>✨ الأنيميشن</b><small>حركات الواجهة</small></div>
+            <button class="switch on" id="animationSwitch" onclick="toggleSetting('animation')"><i></i></button>
+        </div>
+
+        <button class="secondary" style="margin-top:18px" onclick="showScreen('home')">رجوع</button>
+    </div>
+
+    <div class="card" style="text-align:center">
+        <div style="font-size:35px">⚽</div>
+        <h3>مين اللاعب؟</h3>
+        <p style="color:#8e98a6">الإصدار 2.0</p>
+        <p style="color:#20d46b;font-weight:bold">Developed by Walid Outaleb</p>
+    </div>
+</section>
+
+</div>
+
+<!-- ======== BOTTOM NAV ======== -->
+<nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item active" onclick="showScreen('home')" data-screen="home">
+        <span class="icon">🏠</span>الرئيسية
     </button>
-
-</div>
-
-
-<div class="card">
-
-    <h3>📊 إحصائياتك</h3>
-
-    <div class="stats">
-
-        <div class="stat">
-            <b id="statGames">0</b>
-            <span>الألعاب</span>
-        </div>
-
-        <div class="stat">
-            <b id="statBest">0</b>
-            <span>أفضل نتيجة</span>
-        </div>
-
-        <div class="stat">
-            <b id="statCorrect">0</b>
-            <span>إجابات صحيحة</span>
-        </div>
-
-    </div>
-
-</div>
-
-</section><!-- أوضاع اللعب --><section id="modes" class="screen"><div class="card">
-
-    <h2>🎮 اختر الوضع</h2>
-
-    <div class="mode">
-        <div>
-            <b>الكلاسيكي</b>
-            <small>50 سؤال • 15 ثانية</small>
-        </div>
-
-        <button
-            type="button"
-            onclick="startGame('classic')">
-            لعب
-        </button>
-    </div>
-
-
-    <div class="mode">
-        <div>
-            <b>⚡ السرعة</b>
-            <small>30 سؤال • 10 ثواني</small>
-        </div>
-
-        <button
-            type="button"
-            onclick="startGame('speed')">
-            لعب
-        </button>
-    </div>
-
-
-    <div class="mode">
-        <div>
-            <b>🔥 الستريك</b>
-            <small>حتى 100 سؤال</small>
-        </div>
-
-        <button
-            type="button"
-            onclick="startGame('streak')">
-            لعب
-        </button>
-    </div>
-
-
-    <div class="mode">
-        <div>
-            <b>💎 اللاعب النادر</b>
-            <small>لاعبون أصعب في التخمين</small>
-        </div>
-
-        <button
-            type="button"
-            onclick="startGame('rare')">
-            لعب
-        </button>
-    </div>
-
-
-    <button
-        class="secondary"
-        type="button"
-        onclick="showScreen('home')">
-        رجوع
+    <button class="nav-item" onclick="showScreen('modes')" data-screen="modes">
+        <span class="icon">🎮</span>اللعب
     </button>
-
-</div>
-
-</section><!-- اللعبة --><section id="game" class="screen"><div class="question-top">
-
-    <div class="badge">
-        <span id="questionNumber">1</span>
-        /
-        <span id="questionTotal">50</span>
-    </div>
-
-    <div class="timer">
-        ⏱ <span id="timer">15</span>
-    </div>
-
-</div>
-
-
-<div class="card" id="questionCard">
-
-    <div class="player-box" id="playerBox">
-
-        <img
-            id="playerImage"
-            alt="لاعب كرة قدم"
-            loading="eager">
-
-    </div>
-
-
-    <div
-        class="options"
-        id="options">
-    </div>
-
-
-    <div
-        id="hintBox"
-        class="hint"
-        style="display:none">
-    </div>
-
-
-    <button
-        class="secondary"
-        style="margin-top:12px"
-        type="button"
-        onclick="useHint()">
-        💡 تلميح
+    <button class="nav-item" onclick="showScreen('settings')" data-screen="settings">
+        <span class="icon">⚙️</span>الإعدادات
     </button>
+</nav>
 
-</div>
-
-
-<div style="text-align:center;color:#8d98a7">
-    النقاط:
-    <b
-        id="score"
-        style="color:#20d46b">
-        0
-    </b>
-</div>
-
-</section><!-- النتيجة --><section id="result" class="screen"><div class="card result">
-
-    <div style="font-size:55px">🏆</div>
-
-    <h2>انتهت اللعبة!</h2>
-
-    <div
-        class="result-score"
-        id="finalScore">
-        0
-    </div>
-
-    <p>نقطتك النهائية</p>
-
-
-    <div class="stats">
-
-        <div class="stat">
-            <b id="finalCorrect">0</b>
-            <span>صحيحة</span>
-        </div>
-
-        <div class="stat">
-            <b id="finalWrong">0</b>
-            <span>خاطئة</span>
-        </div>
-
-        <div class="stat">
-            <b id="finalBest">0</b>
-            <span>الأفضل</span>
-        </div>
-
-    </div>
-
-
-    <button
-        class="primary"
-        style="margin-top:18px"
-        type="button"
-        onclick="showScreen('modes')">
-        🔄 العب مرة أخرى
-    </button>
-
-
-    <button
-        class="secondary"
-        style="margin-top:10px"
-        type="button"
-        onclick="showScreen('home')">
-        🏠 الرئيسية
-    </button>
-
-</div>
-
-</section><!-- الإعدادات --><section id="settings" class="screen"><div class="card">
-
-    <h2>⚙️ الإعدادات</h2>
-
-
-    <div class="setting">
-
-        <div>
-            <b>🔊 الصوت</b>
-            <small>أصوات الإجابات</small>
-        </div>
-
-        <button
-            class="switch on"
-            id="soundSwitch"
-            type="button"
-            onclick="toggleSetting('sound')">
-            <i></i>
-        </button>
-
-    </div>
-
-
-    <div class="setting">
-
-        <div>
-            <b>📳 الاهتزاز</b>
-            <small>اهتزاز عند الإجابة</small>
-        </div>
-
-        <button
-            class="switch on"
-            id="vibrationSwitch"
-            type="button"
-            onclick="toggleSetting('vibration')">
-            <i></i>
-        </button>
-
-    </div>
-
-
-    <div class="setting">
-
-        <div>
-            <b>✨ الأنيميشن</b>
-            <small>حركات الواجهة</small>
-        </div>
-
-        <button
-            class="switch on"
-            id="animationSwitch"
-            type="button"
-            onclick="toggleSetting('animation')">
-            <i></i>
-        </button>
-
-    </div>
-
-
-    <button
-        class="secondary"
-        style="margin-top:18px"
-        type="button"
-        onclick="showScreen('home')">
-        رجوع
-    </button>
-
-</div>
-
-
-<div
-    class="card"
-    style="text-align:center">
-
-    <div style="font-size:35px">⚽</div>
-
-    <h3>مين اللاعب؟</h3>
-
-    <p style="color:#8e98a6">
-        الإصدار 1.0
-    </p>
-
-    <p
-        style="color:#20d46b;font-weight:bold">
-        Developed by Walid Outaleb
-    </p>
-
-</div>
-
-</section><div class="footer">
-    Developed by Walid Outaleb
-</div></div><script>
+<script>
 
 "use strict";
-
 
 /* =========================
    بيانات احتياطية
 ========================= */
 
 const FALLBACK_PLAYERS = [
-
-    {
-        id:257,
-        name:"Cristiano Ronaldo",
-        nationality:"Portugal",
-        level:"easy",
-        image:"https://media.api-sports.io/football/players/257.png"
-    },
-
-    {
-        id:154,
-        name:"Lionel Messi",
-        nationality:"Argentina",
-        level:"easy",
-        image:"https://media.api-sports.io/football/players/154.png"
-    },
-
-    {
-        id:278,
-        name:"Neymar",
-        nationality:"Brazil",
-        level:"easy",
-        image:"https://media.api-sports.io/football/players/278.png"
-    }
-
+    {id:257,name:"كريستيانو رونالدو",nationality:"البرتغال",level:"easy",image:"https://media.api-sports.io/football/players/257.png"},
+    {id:154,name:"ليونيل ميسي",nationality:"الأرجنتين",level:"easy",image:"https://media.api-sports.io/football/players/154.png"},
+    {id:278,name:"كيليان مبابي",nationality:"فرنسا",level:"easy",image:"https://media.api-sports.io/football/players/278.png"},
+    {id:1100,name:"إيرلينغ هالاند",nationality:"النرويج",level:"easy",image:"https://media.api-sports.io/football/players/1100.png"},
+    {id:306,name:"محمد صلاح",nationality:"مصر",level:"easy",image:"https://media.api-sports.io/football/players/306.png"},
+    {id:276,name:"فينيسيوس جونيور",nationality:"البرازيل",level:"easy",image:"https://media.api-sports.io/football/players/276.png"},
+    {id:1000,name:"جود بيلينغهام",nationality:"إنجلترا",level:"easy",image:"https://media.api-sports.io/football/players/1000.png"},
+    {id:1465,name:"بوكايو ساكا",nationality:"إنجلترا",level:"medium",image:"https://media.api-sports.io/football/players/1465.png"},
+    {id:2929,name:"لامين يامال",nationality:"إسبانيا",level:"medium",image:"https://media.api-sports.io/football/players/2929.png"},
+    {id:2000,name:"نيكولو باريلا",nationality:"إيطاليا",level:"hard",image:"https://media.api-sports.io/football/players/2000.png"},
+    {id:3000,name:"زين الدين زيدان",nationality:"فرنسا",level:"legend",image:"https://media.api-sports.io/football/players/3000.png"}
 ];
-
 
 /* =========================
    حالة اللعبة
@@ -701,1323 +610,551 @@ const FALLBACK_PLAYERS = [
 
 let players = [];
 let questions = [];
-
 let currentQuestion = 0;
-
 let score = 0;
 let correct = 0;
 let wrong = 0;
 let streak = 0;
-
+let bestStreak = 0;
 let timerInterval = null;
 let timeLeft = 0;
-
 let currentMode = "classic";
-
 let questionLocked = false;
-
-
-/* =========================
-   إعدادات الأوضاع
-========================= */
+let hintsRemaining = 3;
 
 const configs = {
-
-    classic:{
-        name:"الكلاسيكي",
-        total:50,
-        time:15,
-        bonus:0
-    },
-
-    speed:{
-        name:"السرعة",
-        total:30,
-        time:10,
-        bonus:3
-    },
-
-    streak:{
-        name:"الستريك",
-        total:100,
-        time:12,
-        bonus:2
-    },
-
-    rare:{
-        name:"اللاعب النادر",
-        total:40,
-        time:18,
-        bonus:5
-    }
-
+    classic:{name:"الكلاسيكي",total:50,time:15,bonus:0},
+    speed:{name:"السرعة",total:30,time:10,bonus:3},
+    streak:{name:"الستريك",total:100,time:12,bonus:2},
+    rare:{name:"اللاعب النادر",total:40,time:18,bonus:5}
 };
-
 
 /* =========================
    الإعدادات
 ========================= */
 
 function loadSettings(){
-
     try{
-
-        const saved =
-            localStorage.getItem("gameSettings");
-
-        if(!saved){
-
-            return {
-                sound:true,
-                vibration:true,
-                animation:true
-            };
-
-        }
-
+        const saved = localStorage.getItem("gameSettings");
+        if(!saved) return {sound:true,vibration:true,animation:true};
         const data = JSON.parse(saved);
-
         return {
-
             sound:data.sound !== false,
-
             vibration:data.vibration !== false,
-
             animation:data.animation !== false
-
         };
-
-    }catch(error){
-
-        console.error(
-            "Settings error:",
-            error
-        );
-
-        return {
-            sound:true,
-            vibration:true,
-            animation:true
-        };
-
-    }
-
+    }catch{ return {sound:true,vibration:true,animation:true}; }
 }
-
 
 let settings = loadSettings();
 
-
 function saveSettings(){
-
-    try{
-
-        localStorage.setItem(
-            "gameSettings",
-            JSON.stringify(settings)
-        );
-
-    }catch(error){
-
-        console.error(
-            "Save settings error:",
-            error
-        );
-
-    }
-
+    try{ localStorage.setItem("gameSettings", JSON.stringify(settings)); }catch{}
 }
-
 
 /* =========================
    الإحصائيات
 ========================= */
 
 function getStats(){
-
     try{
-
-        const saved =
-            localStorage.getItem("gameStats");
-
-        if(!saved){
-
-            return {
-                games:0,
-                best:0,
-                correct:0
-            };
-
-        }
-
+        const saved = localStorage.getItem("gameStats");
+        if(!saved) return {games:0,best:0,correct:0,xp:0,level:1};
         const data = JSON.parse(saved);
-
         return {
-
-            games:Number(data.games) || 0,
-
-            best:Number(data.best) || 0,
-
-            correct:Number(data.correct) || 0
-
+            games:Number(data.games)||0,
+            best:Number(data.best)||0,
+            correct:Number(data.correct)||0,
+            xp:Number(data.xp)||0,
+            level:Number(data.level)||1
         };
-
-    }catch(error){
-
-        console.error(
-            "Stats error:",
-            error
-        );
-
-        return {
-            games:0,
-            best:0,
-            correct:0
-        };
-
-    }
-
+    }catch{ return {games:0,best:0,correct:0,xp:0,level:1}; }
 }
-
 
 function saveStats(stats){
+    try{ localStorage.setItem("gameStats", JSON.stringify(stats)); }catch{}
+}
 
+/* =========================
+   المكافأة اليومية
+========================= */
+
+function getDailyStatus(){
     try{
-
-        localStorage.setItem(
-            "gameStats",
-            JSON.stringify(stats)
-        );
-
-    }catch(error){
-
-        console.error(
-            "Save stats error:",
-            error
-        );
-
-    }
-
+        const last = localStorage.getItem("dailyReward");
+        const today = new Date().toDateString();
+        return last === today;
+    }catch{ return false; }
 }
 
+function setDailyClaimed(){
+    try{ localStorage.setItem("dailyReward", new Date().toDateString()); }catch{}
+}
 
-function updateStats(){
+function updateDailyUI(){
+    const claimed = getDailyStatus();
+    const btn = document.getElementById("claimBtn");
+    const status = document.getElementById("dailyStatus");
+    if(claimed){
+        btn.textContent = "تم ✅";
+        btn.className = "claim claimed";
+        status.textContent = "✅ تم الاستلام اليوم";
+    }else{
+        btn.textContent = "استلام";
+        btn.className = "claim";
+        status.textContent = "+10 XP عند الاستلام";
+    }
+}
 
+function claimDailyReward(){
+    if(getDailyStatus()){
+        alert("🎁 لقد استلمت مكافأتك اليوم بالفعل!");
+        return;
+    }
     const stats = getStats();
-
-    const games =
-        document.getElementById("statGames");
-
-    const best =
-        document.getElementById("statBest");
-
-    const totalCorrect =
-        document.getElementById("statCorrect");
-
-
-    if(games){
-        games.textContent = stats.games;
-    }
-
-    if(best){
-        best.textContent = stats.best;
-    }
-
-    if(totalCorrect){
-        totalCorrect.textContent = stats.correct;
-    }
-
+    stats.xp = (stats.xp || 0) + 10;
+    stats.level = Math.floor(stats.xp / 100) + 1;
+    saveStats(stats);
+    setDailyClaimed();
+    updateDailyUI();
+    updateStats();
+    alert("🎁 +10 XP! شكراً لعودتك اليوم.");
 }
 
+/* =========================
+   لوحة المتصدرين
+========================= */
+
+function getLeaderboard(){
+    try{
+        const data = localStorage.getItem("leaderboard");
+        return data ? JSON.parse(data) : [];
+    }catch{ return []; }
+}
+
+function saveLeaderboard(entries){
+    try{ localStorage.setItem("leaderboard", JSON.stringify(entries)); }catch{}
+}
+
+function addToLeaderboard(name, score){
+    const entries = getLeaderboard();
+    entries.push({name: name || "لاعب", score: score, date: new Date().toISOString()});
+    entries.sort((a,b) => b.score - a.score);
+    if(entries.length > 10) entries.length = 10;
+    saveLeaderboard(entries);
+    renderLeaderboard();
+}
+
+function renderLeaderboard(){
+    const container = document.getElementById("leaderboard");
+    const entries = getLeaderboard();
+    if(!entries.length){
+        container.innerHTML = '<div style="text-align:center;color:#8f99a7;padding:10px;">لا يوجد لاعبين بعد</div>';
+        return;
+    }
+    let html = "";
+    entries.slice(0,5).forEach((e,i) => {
+        const medals = ["🥇","🥈","🥉"];
+        const rank = medals[i] || `#${i+1}`;
+        html += `<div class="entry">
+            <div class="rank">${rank}</div>
+            <div class="name">${e.name}</div>
+            <div class="score">${e.score} XP</div>
+        </div>`;
+    });
+    container.innerHTML = html;
+}
 
 /* =========================
    التنقل
 ========================= */
 
 function showScreen(id){
-
     clearTimer();
-
-    document
-        .querySelectorAll(".screen")
-        .forEach(screen=>{
-            screen.classList.remove("active");
-        });
-
-
-    const screen =
-        document.getElementById(id);
-
-
-    if(!screen){
-        return;
-    }
-
-
-    screen.classList.add("active");
-
-
-    if(id !== "game"){
-        questionLocked = false;
-    }
-
-
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    const screen = document.getElementById(id);
+    if(screen) screen.classList.add("active");
+    questionLocked = false;
     updateStats();
+    updateDailyUI();
+    renderLeaderboard();
 
+    // تحديث التنقل السفلي
+    document.querySelectorAll(".nav-item").forEach(b => {
+        b.classList.toggle("active", b.dataset.screen === id);
+    });
+
+    if(id === "home"){
+        updateDailyUI();
+        renderLeaderboard();
+    }
 }
-
 
 /* =========================
    تحميل اللاعبين
 ========================= */
 
 async function loadPlayers(){
-
     try{
-
-        const response =
-            await fetch(
-                "popular_players.json?x="+Date.now(),
-                {
-                    cache:"no-store"
-                }
-            );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                "HTTP "+response.status
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if(
-            !Array.isArray(data) ||
-            data.length === 0
-        ){
-
-            throw new Error(
-                "empty players database"
-            );
-
-        }
-
-
-        players = data
-            .filter(player=>{
-
-                return (
-                    player &&
-                    player.name &&
-                    player.image
-                );
-
-            })
-            .map((player,index)=>{
-
-                return {
-
-                    id:
-                        player.id ??
-                        index + 1,
-
-                    name:
-                        String(player.name),
-
-                    nationality:
-                        player.nationality ||
-                        "غير معروفة",
-
-                    level:
-                        player.level ||
-                        "hard",
-
-                    image:
-                        String(player.image)
-
-                };
-
-            });
-
-
-        if(players.length === 0){
-
-            throw new Error(
-                "no valid players"
-            );
-
-        }
-
-
-        console.log(
-            "Players loaded:",
-            players.length
-        );
-
-
+        const response = await fetch("popular_players.json?x="+Date.now(), {cache:"no-store"});
+        if(!response.ok) throw new Error("HTTP "+response.status);
+        const data = await response.json();
+        if(!Array.isArray(data) || !data.length) throw new Error("empty");
+        players = data.filter(p => p && p.name && p.image).map((p,i) => ({
+            id: p.id || i+1,
+            name: String(p.name),
+            nationality: p.nationality || "غير معروفة",
+            level: p.level || "hard",
+            image: String(p.image)
+        }));
+        if(!players.length) throw new Error("no valid players");
+        console.log("Players loaded:", players.length);
     }catch(error){
-
-        console.error(
-            "Players loading failed:",
-            error
-        );
-
-
-        /*
-         * لا نستعمل fallback مباشرة
-         * إذا كانت قاعدة البيانات موجودة لكنها
-         * تحتوي على بيانات تالفة.
-         *
-         * نستعمله فقط حتى تبقى اللعبة قابلة للتشغيل
-         * في حالة فشل تحميل الملف بالكامل.
-         */
-
-        players = FALLBACK_PLAYERS;
-
+        console.error("Players loading failed:", error);
+        players = FALLBACK_PLAYERS.map(p => ({...p}));
     }
-
-
     updateStats();
-
+    renderLeaderboard();
 }
-
 
 /* =========================
    خلط
 ========================= */
 
 function shuffle(array){
-
     const arr = [...array];
-
-
-    for(
-        let i=arr.length-1;
-        i>0;
-        i--
-    ){
-
-        const j =
-            Math.floor(
-                Math.random()*(i+1)
-            );
-
-
-        [
-            arr[i],
-            arr[j]
-        ] = [
-            arr[j],
-            arr[i]
-        ];
-
+    for(let i=arr.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-
-
     return arr;
-
 }
-
 
 /* =========================
    بدء اللعبة
 ========================= */
 
 function startGame(mode){
-
-    if(questionLocked){
-        return;
-    }
-
-
+    if(questionLocked) return;
     if(!players.length){
-
-        alert(
-            "جاري تحميل اللاعبين، حاول بعد لحظات."
-        );
-
-        return;
-
-    }
-
-
-    const config =
-        configs[mode];
-
-
-    if(!config){
+        alert("جاري تحميل اللاعبين، حاول بعد لحظات.");
         return;
     }
-
-
+    const config = configs[mode];
+    if(!config) return;
     currentMode = mode;
-
+    hintsRemaining = 3;
+    document.getElementById("hintCount").textContent = "3";
+    document.getElementById("hintBtn").disabled = false;
 
     let pool = [...players];
-
-
-    /*
-     * وضع اللاعبين النادرين
-     */
-
     if(mode === "rare"){
-
-        const hardPlayers =
-            players.filter(
-                player =>
-                    player.level === "hard"
-            );
-
-
-        if(hardPlayers.length >= 4){
-
-            pool = hardPlayers;
-
-        }else{
-
-            /*
-             * إذا لم يكن عندنا 4 لاعبين صعبين،
-             * نستعمل كل اللاعبين بدل إنشاء
-             * أسئلة بخيارات ناقصة.
-             */
-
-            pool = [...players];
-
-        }
-
+        const hard = players.filter(p => p.level === "hard" || p.level === "legend");
+        if(hard.length >= 4) pool = hard;
+        else pool = [...players];
     }
 
+    if(!pool.length){ alert("لا توجد قاعدة لاعبين صالحة."); return; }
 
-    /*
-     * لا يمكن إنشاء سؤال بخيارات
-     * إذا كان عندنا أقل من لاعب واحد.
-     */
-
-    if(pool.length === 0){
-
-        alert(
-            "لا توجد قاعدة لاعبين صالحة."
-        );
-
-        return;
-
-    }
-
-
-    questions =
-        shuffle(pool)
-            .slice(
-                0,
-                Math.min(
-                    config.total,
-                    pool.length
-                )
-            );
-
-
+    questions = shuffle(pool).slice(0, Math.min(config.total, pool.length));
     currentQuestion = 0;
-
     score = 0;
-
     correct = 0;
-
     wrong = 0;
-
     streak = 0;
-
+    bestStreak = 0;
     questionLocked = false;
 
-
-    document
-        .getElementById("questionTotal")
-        .textContent =
-            questions.length;
-
-
-    document
-        .getElementById("score")
-        .textContent =
-            "0";
-
+    document.getElementById("questionTotal").textContent = questions.length;
+    document.getElementById("score").textContent = "0";
+    document.getElementById("streakDisplay").textContent = "0";
 
     showScreen("game");
-
-
     renderQuestion();
-
 }
-
 
 /* =========================
    عرض السؤال
 ========================= */
 
 function renderQuestion(){
-
     clearTimer();
-
     questionLocked = false;
 
-
-    if(
-        currentQuestion >=
-        questions.length
-    ){
-
+    if(currentQuestion >= questions.length){
         endGame();
-
         return;
-
     }
 
+    const q = questions[currentQuestion];
+    document.getElementById("questionNumber").textContent = currentQuestion + 1;
 
-    const q =
-        questions[currentQuestion];
+    const img = document.getElementById("playerImage");
+    const box = document.getElementById("playerBox");
 
-
-    document
-        .getElementById("questionNumber")
-        .textContent =
-            currentQuestion + 1;
-
-
-    const img =
-        document.getElementById(
-            "playerImage"
-        );
-
-
-    const playerBox =
-        document.getElementById(
-            "playerBox"
-        );
-
-
-    img.style.display = "block";
-
-
-    img.onerror = function(){
-
-        this.style.display = "none";
-
-
-        playerBox.innerHTML = `
-            <div class="image-error">
-                <div style="font-size:45px">⚽</div>
-                <strong>تعذر تحميل الصورة</strong>
-                <span>يمكنك اختيار إجابة اللاعب</span>
-            </div>
-        `;
-
-    };
-
-
-    img.onload = function(){
-
-        this.style.display = "block";
-
-    };
-
-
-    /*
-     * إعادة img إذا كانت الصورة السابقة
-     * فشلت وتم استبدال محتوى playerBox.
-     */
-
-    playerBox.innerHTML = `
-        <img
-            id="playerImage"
-            alt="لاعب كرة قدم"
-            loading="eager">
-    `;
-
-
-    const newImg =
-        document.getElementById(
-            "playerImage"
-        );
-
+    // إعادة تعيين المحتوى
+    box.innerHTML = `<img id="playerImage" alt="لاعب كرة قدم" loading="eager">`;
+    const newImg = document.getElementById("playerImage");
 
     newImg.onerror = function(){
-
         this.style.display = "none";
-
-
-        playerBox.innerHTML = `
+        box.innerHTML = `
             <div class="image-error">
                 <div style="font-size:45px">⚽</div>
                 <strong>تعذر تحميل الصورة</strong>
                 <span>يمكنك اختيار إجابة اللاعب</span>
             </div>
         `;
-
     };
-
-
-    newImg.onload = function(){
-
-        this.style.display = "block";
-
-    };
-
 
     newImg.src = q.image;
 
-
     generateOptions(q);
 
-
-    const hintBox =
-        document.getElementById(
-            "hintBox"
-        );
-
-
-    hintBox.style.display = "none";
-
-    hintBox.textContent = "";
-
+    document.getElementById("hintBox").style.display = "none";
+    document.getElementById("hintBox").textContent = "";
 
     if(settings.animation){
-
-        const card =
-            document.getElementById(
-                "questionCard"
-            );
-
-
+        const card = document.getElementById("questionCard");
         card.classList.remove("fade");
-
-
         void card.offsetWidth;
-
-
         card.classList.add("fade");
-
     }
 
-
     startTimer();
-
 }
-
 
 /* =========================
    إنشاء الاختيارات
 ========================= */
 
 function generateOptions(correctPlayer){
+    const others = shuffle(players.filter(p => p.id !== correctPlayer.id)).slice(0,3);
+    const options = shuffle([correctPlayer, ...others]);
 
-    /*
-     * إزالة اللاعب الصحيح من قائمة الآخرين
-     */
-
-    const others =
-        shuffle(
-            players.filter(
-                player =>
-                    player.id !==
-                    correctPlayer.id
-            )
-        )
-        .slice(0,3);
-
-
-    const options =
-        shuffle([
-            correctPlayer,
-            ...others
-        ]);
-
-
-    const container =
-        document.getElementById(
-            "options"
-        );
-
-
+    const container = document.getElementById("options");
     container.innerHTML = "";
 
-
-    options.forEach(player=>{
-
-        const button =
-            document.createElement(
-                "button"
-            );
-
-
-        button.type = "button";
-
-        button.className =
-            "option";
-
-
-        button.textContent =
-            player.name;
-
-
-        button.onclick = function(){
-
-            answer(
-                player.id ===
-                    correctPlayer.id,
-
-                button,
-
-                false,
-
-                correctPlayer
-            );
-
+    options.forEach(player => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "option";
+        btn.textContent = player.name;
+        btn.onclick = function(){
+            answer(player.id === correctPlayer.id, this, false, correctPlayer);
         };
-
-
-        container.appendChild(
-            button
-        );
-
+        container.appendChild(btn);
     });
-
 }
-
 
 /* =========================
    المؤقت
 ========================= */
 
 function startTimer(){
-
     clearTimer();
+    const config = configs[currentMode];
+    timeLeft = config.time;
+    document.getElementById("timer").textContent = timeLeft;
 
-
-    const config =
-        configs[currentMode];
-
-
-    timeLeft =
-        config.time;
-
-
-    document
-        .getElementById("timer")
-        .textContent =
-            timeLeft;
-
-
-    timerInterval =
-        setInterval(()=>{
-
-            if(questionLocked){
-
-                clearTimer();
-
-                return;
-
-            }
-
-
-            timeLeft--;
-
-
-            document
-                .getElementById("timer")
-                .textContent =
-                    Math.max(
-                        timeLeft,
-                        0
-                    );
-
-
-            if(timeLeft <= 0){
-
-                clearTimer();
-
-
-                answer(
-                    false,
-                    null,
-                    true,
-                    questions[currentQuestion]
-                );
-
-            }
-
-        },1000);
-
+    timerInterval = setInterval(() => {
+        if(questionLocked){ clearTimer(); return; }
+        timeLeft--;
+        document.getElementById("timer").textContent = Math.max(timeLeft, 0);
+        if(timeLeft <= 0){
+            clearTimer();
+            answer(false, null, true, questions[currentQuestion]);
+        }
+    },1000);
 }
-
 
 function clearTimer(){
-
     if(timerInterval !== null){
-
-        clearInterval(
-            timerInterval
-        );
-
+        clearInterval(timerInterval);
         timerInterval = null;
-
     }
-
 }
-
 
 /* =========================
    الإجابة
 ========================= */
 
-function answer(
-    isCorrect,
-    button,
-    timeout,
-    correctPlayer
-){
-
-    if(questionLocked){
-        return;
-    }
-
-
+function answer(isCorrect, button, timeout, correctPlayer){
+    if(questionLocked) return;
     questionLocked = true;
-
-
     clearTimer();
 
-
-    const buttons =
-        document.querySelectorAll(
-            ".option"
-        );
-
-
-    buttons.forEach(btn=>{
-        btn.disabled = true;
-    });
-
+    const buttons = document.querySelectorAll(".option");
+    buttons.forEach(b => b.disabled = true);
 
     if(isCorrect){
-
         correct++;
-
         streak++;
-
-
-        const config =
-            configs[currentMode];
-
-
-        score +=
-            10 +
-            config.bonus +
-            Math.floor(
-                streak / 5
-            ) * 2;
-
-
-        if(button){
-
-            button.classList.add(
-                "correct"
-            );
-
-        }
-
-
+        if(streak > bestStreak) bestStreak = streak;
+        const config = configs[currentMode];
+        score += 10 + config.bonus + Math.floor(streak / 5) * 2;
+        if(button) button.classList.add("correct");
         vibrate(60);
-
-
     }else{
-
         wrong++;
-
         streak = 0;
-
-
-        if(button){
-
-            button.classList.add(
-                "wrong"
-            );
-
-        }
-
-
-        /*
-         * إظهار الإجابة الصحيحة
-         * عند الخطأ أو انتهاء الوقت.
-         */
-
+        if(button) button.classList.add("wrong");
         if(correctPlayer){
-
-            buttons.forEach(btn=>{
-
-                if(
-                    btn.textContent ===
-                    correctPlayer.name
-                ){
-
-                    btn.classList.add(
-                        "correct"
-                    );
-
-                }
-
+            buttons.forEach(b => {
+                if(b.textContent === correctPlayer.name) b.classList.add("correct");
             });
-
         }
-
-
-        vibrate(
-            [80,50,80]
-        );
-
+        vibrate([80,50,80]);
     }
 
-
-    document
-        .getElementById("score")
-        .textContent =
-            score;
-
-
+    document.getElementById("score").textContent = score;
+    document.getElementById("streakDisplay").textContent = streak;
     playSound(isCorrect);
 
-
-    setTimeout(()=>{
-
+    setTimeout(() => {
         currentQuestion++;
-
         renderQuestion();
-
-    },700);
-
+    }, 700);
 }
-
 
 /* =========================
    التلميح
 ========================= */
 
 function useHint(){
-
-    if(
-        questionLocked ||
-        currentQuestion >=
-            questions.length
-    ){
-
+    if(questionLocked || currentQuestion >= questions.length) return;
+    if(hintsRemaining <= 0){
+        alert("💡 انتهت التلميحات!");
         return;
-
     }
+    hintsRemaining--;
+    document.getElementById("hintCount").textContent = hintsRemaining;
+    if(hintsRemaining <= 0) document.getElementById("hintBtn").disabled = true;
 
-
-    const q =
-        questions[currentQuestion];
-
-
-    const box =
-        document.getElementById(
-            "hintBox"
-        );
-
-
-    box.textContent =
-        "🌍 الجنسية: " +
-        q.nationality;
-
-
-    box.style.display =
-        "block";
-
-
+    const q = questions[currentQuestion];
+    const box = document.getElementById("hintBox");
+    box.textContent = "🌍 الجنسية: " + q.nationality;
+    box.style.display = "block";
     vibrate(30);
-
 }
-
 
 /* =========================
    نهاية اللعبة
 ========================= */
 
 function endGame(){
-
     clearTimer();
-
     questionLocked = true;
 
-
-    const old =
-        getStats();
-
-
-    const best =
-        Math.max(
-            old.best,
-            score
-        );
-
-
+    const old = getStats();
+    const best = Math.max(old.best, score);
     const stats = {
-
-        games:
-            old.games + 1,
-
-        best:
-            best,
-
-        correct:
-            old.correct + correct
-
+        games: old.games + 1,
+        best: best,
+        correct: old.correct + correct,
+        xp: (old.xp || 0) + score,
+        level: Math.floor(((old.xp || 0) + score) / 100) + 1
     };
-
-
     saveStats(stats);
 
+    document.getElementById("finalScore").textContent = score;
+    document.getElementById("finalCorrect").textContent = correct;
+    document.getElementById("finalWrong").textContent = wrong;
+    document.getElementById("finalBest").textContent = bestStreak;
 
-    document
-        .getElementById("finalScore")
-        .textContent =
-            score;
-
-
-    document
-        .getElementById("finalCorrect")
-        .textContent =
-            correct;
-
-
-    document
-        .getElementById("finalWrong")
-        .textContent =
-            wrong;
-
-
-    document
-        .getElementById("finalBest")
-        .textContent =
-            best;
-
+    // إضافة إلى المتصدرين
+    const name = prompt("أدخل اسمك لظهوره في المتصدرين:", "لاعب");
+    if(name) addToLeaderboard(name, score);
 
     showScreen("result");
-
+    updateStats();
 }
 
-
 /* =========================
-   الاهتزاز
+   الاهتزاز والصوت
 ========================= */
 
 function vibrate(pattern){
-
-    if(
-        settings.vibration &&
-        "vibrate" in navigator
-    ){
-
-        try{
-
-            navigator.vibrate(
-                pattern
-            );
-
-        }catch(error){
-
-            console.error(
-                "Vibration error:",
-                error
-            );
-
-        }
-
+    if(settings.vibration && "vibrate" in navigator){
+        try{ navigator.vibrate(pattern); }catch{}
     }
-
 }
-
-
-/* =========================
-   الصوت
-========================= */
 
 function playSound(correctAnswer){
-
-    if(!settings.sound){
-        return;
-    }
-
-
+    if(!settings.sound) return;
     try{
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-
-        if(!AudioContext){
-            return;
-        }
-
-
-        const ctx =
-            new AudioContext();
-
-
-        const oscillator =
-            ctx.createOscillator();
-
-
-        const gain =
-            ctx.createGain();
-
-
-        oscillator.connect(
-            gain
-        );
-
-
-        gain.connect(
-            ctx.destination
-        );
-
-
-        oscillator.frequency.value =
-            correctAnswer
-                ? 700
-                : 180;
-
-
-        gain.gain.value =
-            0.06;
-
-
-        oscillator.start();
-
-
-        setTimeout(()=>{
-
-            try{
-
-                oscillator.stop();
-
-                ctx.close();
-
-            }catch(error){}
-
-        },120);
-
-
-    }catch(error){
-
-        console.error(
-            "Audio error:",
-            error
-        );
-
-    }
-
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = correctAnswer ? 700 : 180;
+        gain.gain.value = 0.06;
+        osc.start();
+        setTimeout(() => { try{ osc.stop(); ctx.close(); }catch{} }, 120);
+    }catch{}
 }
 
-
 /* =========================
-   تبديل الإعدادات
+   الإعدادات
 ========================= */
 
 function toggleSetting(name){
-
-    if(
-        !Object.prototype.hasOwnProperty
-            .call(
-                settings,
-                name
-            )
-    ){
-
-        return;
-
-    }
-
-
-    settings[name] =
-        !settings[name];
-
-
+    if(!settings.hasOwnProperty(name)) return;
+    settings[name] = !settings[name];
     saveSettings();
-
     updateSettingUI();
-
 }
-
 
 function updateSettingUI(){
-
-    const map = {
-
-        sound:
-            "soundSwitch",
-
-        vibration:
-            "vibrationSwitch",
-
-        animation:
-            "animationSwitch"
-
-    };
-
-
-    Object.keys(map).forEach(name=>{
-
-        const el =
-            document.getElementById(
-                map[name]
-            );
-
-
-        if(!el){
-            return;
-        }
-
-
-        if(settings[name]){
-
-            el.classList.add(
-                "on"
-            );
-
-        }else{
-
-            el.classList.remove(
-                "on"
-            );
-
-        }
-
+    const map = {sound:"soundSwitch", vibration:"vibrationSwitch", animation:"animationSwitch"};
+    Object.keys(map).forEach(name => {
+        const el = document.getElementById(map[name]);
+        if(!el) return;
+        el.classList.toggle("on", settings[name]);
     });
-
 }
 
+/* =========================
+   تبديل الوضع
+========================= */
+
+function toggleTheme(){
+    document.body.classList.toggle("light");
+    localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+}
+
+function loadTheme(){
+    if(localStorage.getItem("theme") === "light"){
+        document.body.classList.add("light");
+    }
+}
+
+/* =========================
+   تحديث الواجهة
+========================= */
+
+function updateStats(){
+    const stats = getStats();
+    document.getElementById("statGames").textContent = stats.games;
+    document.getElementById("statBest").textContent = stats.best;
+    document.getElementById("statCorrect").textContent = stats.correct;
+    updateDailyUI();
+}
 
 /* =========================
    التشغيل
 ========================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    ()=>{
+document.addEventListener("DOMContentLoaded", () => {
+    loadTheme();
+    updateSettingUI();
+    updateStats();
+    renderLeaderboard();
+    updateDailyUI();
+    loadPlayers();
+});
 
-        updateSettingUI();
-
-        updateStats();
-
-        loadPlayers();
-
-    }
-);
-
-</script></body>
+</script>
+</body>
 </html>
