@@ -6973,243 +6973,7 @@ function checkAchievements(){
 }
 
 
-/* =========================================================
-   RENDER ACHIEVEMENTS
-========================================================= */
-
-function renderAchievements(){
-
-  const grid=
-    document.getElementById(
-      "achievementGrid"
-    );
-
-  if(!grid)
-    return;
-
-  grid.innerHTML=
-    ACHIEVEMENTS
-      .map(
-        achievement=>{
-
-          const unlocked=
-            state.achievements.includes(
-              achievement.id
-            );
-
-          return `
-            <div
-              class="achievement ${
-                unlocked
-                  ?""
-                  :"locked"
-              }">
-
-              <div class="achievement-icon">
-                ${achievement.icon}
-              </div>
-
-              <strong>
-                ${achievement.title}
-              </strong>
-
-              <small>
-                ${achievement.desc}
-              </small>
-
-              <small>
-                ${unlocked
-                  ?"✅ مكتمل"
-                  :`🎁 ${achievement.reward} 🪙`
-                }
-              </small>
-
-            </div>
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   RENDER GAMES
-========================================================= */
-
-function renderGames(){
-
-  const list=
-    document.getElementById(
-      "gamesList"
-    );
-
-  if(!list)
-    return;
-
-  const keys=[
-    "classic",
-    "speed",
-    "truefalse",
-    "compare",
-    "career",
-    "nationality",
-    "jersey",
-    "millionaire",
-    "detective",
-    "knowledge",
-    "hardcore"
-  ];
-
-  list.innerHTML=
-    keys.map(
-      key=>{
-
-        const mode=
-          GAME_MODES[key];
-
-        const unlocked=
-          state.level>=
-          mode.unlock;
-
-        return `
-          <button
-            class="game-card"
-            onclick="${
-              unlocked
-                ?`startGame('${key}')`
-                :`toast('🔒 تحتاج المستوى ${mode.unlock}')`
-            }">
-
-            <div class="game-icon">
-              ${mode.icon}
-            </div>
-
-            <div class="game-info">
-
-              <strong>
-                ${mode.name}
-              </strong>
-
-              <small>
-                ${mode.desc}
-                • ${mode.questions} أسئلة
-                • ${mode.time} ث
-              </small>
-
-            </div>
-
-            ${
-              unlocked
-                ?"<span>▶️</span>"
-                :`<span class="lock">🔒 ${mode.unlock}</span>`
-            }
-
-          </button>
-        `;
-
-      }
-    )
-    .join("");
-
-}
-
-
-/* =========================================================
-   RENDER DAILY
-========================================================= */
-
-function renderDaily(){
-
-  checkDailyReset();
-
-  const status=
-    document.getElementById(
-      "dailyStatus"
-    );
-
-  const bar=
-    document.getElementById(
-      "dailyBar"
-    );
-
-  if(status){
-
-    status.textContent=
-      state.dailyCompleted
-        ?"مكتمل ✅"
-        :`${state.dailyProgress}/5`;
-
-  }
-
-  if(bar){
-
-    bar.style.width=
-      (
-        state.dailyProgress/5*100
-      )+"%";
-
-  }
-
-}
-
-
-/* =========================================================
-   RENDER PREMIUM
-========================================================= */
-
-function renderPremium(){
-
-  const home=
-    document.getElementById(
-      "homePremium"
-    );
-
-  const challenge=
-    document.getElementById(
-      "premiumChallenge"
-    );
-
-  const profile=
-    document.getElementById(
-      "premiumProfile"
-    );
-
-  const modal=
-    document.getElementById(
-      "premiumModal"
-    );
-
-  if(home)
-    home.innerHTML=
-      premiumHTML();
-
-  if(challenge)
-    challenge.innerHTML=
-      premiumHTML();
-
-  if(profile){
-
-    profile.innerHTML=
-      state.premium
-        ?`
-          <div
-            class="premium-badge"
-            style="margin-top:8px">
-            💎 PREMIUM PLAYER
-          </div>
-        `
-        :"";
-
-  }
-
-  if(modal)
-    modal.innerHTML=
-      premiumHTML();
-
-}
-
+<script>
 
 /* =========================================================
    RENDER PROFILE
@@ -7217,55 +6981,50 @@ function renderPremium(){
 
 function renderProfile(){
 
-  const xp=
-    getXPProgress();
+  const xp = getXPProgress();
+  const rank = getRank(state.level);
 
-  const rank=
-    getRank(
-      state.level
-    );
+  const elements = {
 
-  const elements={
+    profileRank: rank,
 
-    profileRank:rank,
+    profileGames: state.games,
 
-    profileGames:state.games,
+    profileCorrect: state.correct,
 
-    profileCorrect:state.correct,
+    profileBest: state.bestScore,
 
-    profileBest:state.bestScore,
+    profileXP: state.xp,
 
-    profileXP:state.xp,
-
-    profileLevel:state.level,
+    profileLevel: state.level,
 
     profileXPText:
       `${xp.current} / ${xp.need} XP`
 
   };
 
-  Object.entries(
-    elements
-  ).forEach(
-    ([id,value])=>{
+  Object.entries(elements).forEach(
+    ([id,value]) => {
 
-      const el=
+      const el =
         document.getElementById(id);
 
-      if(el)
-        el.textContent=value;
+      if(el){
+        el.textContent = value;
+      }
 
     }
   );
 
-  const bar=
+  const bar =
     document.getElementById(
       "profileXPBar"
     );
 
-  if(bar)
-    bar.style.width=
-      xp.percent+"%";
+  if(bar){
+    bar.style.width =
+      xp.percent + "%";
+  }
 
 }
 
@@ -7276,10 +7035,9 @@ function renderProfile(){
 
 function renderHome(){
 
-  const xp=
-    getXPProgress();
+  const xp = getXPProgress();
 
-  const values={
+  const values = {
 
     homeLevel:
       state.level,
@@ -7291,9 +7049,7 @@ function renderHome(){
       state.streak,
 
     levelName:
-      getRank(
-        state.level
-      ),
+      getRank(state.level),
 
     xpCurrent:
       xp.current,
@@ -7303,28 +7059,26 @@ function renderHome(){
 
   };
 
-  Object.entries(
-    values
-  ).forEach(
-    ([id,value])=>{
+  Object.entries(values).forEach(
+    ([id,value]) => {
 
-      const el=
+      const el =
         document.getElementById(id);
 
-      if(el)
-        el.textContent=value;
+      if(el){
+        el.textContent = value;
+      }
 
     }
   );
 
-  const bar=
-    document.getElementById(
-      "xpBar"
-    );
+  const bar =
+    document.getElementById("xpBar");
 
-  if(bar)
-    bar.style.width=
-      xp.percent+"%";
+  if(bar){
+    bar.style.width =
+      xp.percent + "%";
+  }
 
 }
 
@@ -7335,27 +7089,29 @@ function renderHome(){
 
 function renderSettings(){
 
-  const sound=
+  const sound =
     document.getElementById(
       "soundButton"
     );
 
-  const vibration=
+  const vibration =
     document.getElementById(
       "vibrationButton"
     );
 
-  if(sound)
-    sound.textContent=
+  if(sound){
+    sound.textContent =
       state.sound
-        ?"تشغيل"
-        :"إيقاف";
+        ? "تشغيل"
+        : "إيقاف";
+  }
 
-  if(vibration)
-    vibration.textContent=
+  if(vibration){
+    vibration.textContent =
       state.vibration
-        ?"تشغيل"
-        :"إيقاف";
+        ? "تشغيل"
+        : "إيقاف";
+  }
 
 }
 
@@ -7393,21 +7149,22 @@ function renderUI(){
 
 function resetProgress(){
 
-  const confirmed=
+  const confirmed =
     confirm(
       "⚠️ هل أنت متأكد؟ سيتم حذف كل تقدمك."
     );
 
-  if(!confirmed)
+  if(!confirmed){
     return;
+  }
 
   stopTimer();
 
-  state={
+  state = {
     ...defaultState
   };
 
-  game.active=false;
+  game.active = false;
 
   save();
 
@@ -7415,40 +7172,90 @@ function resetProgress(){
 
   closeModal();
 
-  showScreen(
-    "homeScreen"
-  );
+  showScreen("homeScreen");
 
-  toast(
-    "🗑️ تم حذف التقدم"
-  );
+  toast("🗑️ تم حذف التقدم");
 
 }
 
 
 /* =========================================================
-   QUIT GAME
+   MODERN QUIT GAME
 ========================================================= */
 
 function quitGame(){
 
-  if(!game.active)
+  if(!game.active){
     return;
+  }
 
-  const confirmed=
-    confirm(
-      "هل تريد الخروج؟ لن تحصل على مكافآت هذه المباراة."
+  const modal =
+    document.getElementById(
+      "exitModal"
     );
 
-  if(!confirmed)
+  if(modal){
+
+    modal.classList.add("show");
+
     return;
+
+  }
+
+  /* احتياط إذا لم توجد النافذة */
 
   stopTimer();
 
-  game.active=false;
+  game.active = false;
 
-  showScreen(
-    "homeScreen"
+  showScreen("homeScreen");
+
+}
+
+
+/* =========================================================
+   CONTINUE GAME
+========================================================= */
+
+function continueGame(){
+
+  const modal =
+    document.getElementById(
+      "exitModal"
+    );
+
+  if(modal){
+    modal.classList.remove("show");
+  }
+
+}
+
+
+/* =========================================================
+   CONFIRM EXIT
+========================================================= */
+
+function confirmExitGame(){
+
+  const modal =
+    document.getElementById(
+      "exitModal"
+    );
+
+  if(modal){
+    modal.classList.remove("show");
+  }
+
+  stopTimer();
+
+  game.active = false;
+
+  game.answered = false;
+
+  showScreen("homeScreen");
+
+  toast(
+    "🏠 خرجت من المباراة"
   );
 
 }
@@ -7460,9 +7267,11 @@ function quitGame(){
 
 function restartLastGame(){
 
-  startGame(
-    lastMode
-  );
+  if(!lastMode){
+    lastMode = "classic";
+  }
+
+  startGame(lastMode);
 
 }
 
@@ -7481,7 +7290,7 @@ function initGame(){
     "algeria"
   );
 
-  if(state.theme!=="dark"){
+  if(state.theme !== "dark"){
 
     document.body.classList.add(
       state.theme
@@ -7505,128 +7314,10 @@ function initGame(){
 /* =========================================================
    START
 ========================================================= */
-/* =========================
-   MODERN EXIT MODAL
-========================= */
-
-.exit-modal{
-  position:absolute;
-  inset:0;
-  z-index:450;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:20px;
-
-  background:rgba(0,0,0,.72);
-
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-
-  opacity:0;
-  pointer-events:none;
-
-  transition:opacity .25s ease;
-}
-
-.exit-modal.show{
-  opacity:1;
-  pointer-events:auto;
-}
-
-.exit-modal-box{
-  width:100%;
-  max-width:390px;
-  padding:25px 20px 20px;
-  text-align:center;
-  border-radius:27px;
-
-  background:linear-gradient(
-    145deg,
-    var(--card),
-    var(--bg2)
-  );
-
-  border:1px solid var(--border);
-
-  box-shadow:0 25px 70px rgba(0,0,0,.55);
-
-  transform:scale(.88) translateY(20px);
-
-  transition:
-    transform .3s cubic-bezier(.2,.8,.2,1);
-}
-
-.exit-modal.show .exit-modal-box{
-  transform:scale(1) translateY(0);
-}
-
-.exit-modal-icon{
-  width:70px;
-  height:70px;
-  margin:0 auto 15px;
-
-  display:grid;
-  place-items:center;
-
-  border-radius:22px;
-  font-size:34px;
-
-  background:rgba(255,200,87,.12);
-  border:1px solid rgba(255,200,87,.25);
-}
-
-.exit-modal-box h2{
-  margin:0;
-  font-size:22px;
-  font-weight:900;
-}
-
-.exit-modal-box p{
-  margin:10px 0 22px;
-  color:var(--muted);
-  line-height:1.8;
-  font-size:13px;
-}
-
-.exit-modal-actions{
-  display:grid;
-  gap:9px;
-}
-
-.exit-continue-btn{
-  width:100%;
-  padding:14px;
-  border-radius:15px;
-
-  background:linear-gradient(
-    135deg,
-    var(--primary),
-    var(--primary2)
-  );
-
-  color:#fff;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.exit-confirm-btn{
-  width:100%;
-  padding:13px;
-  border-radius:15px;
-
-  background:rgba(255,82,104,.09);
-  border:1px solid rgba(255,82,104,.2);
-
-  color:var(--red);
-  font-size:14px;
-  font-weight:bold;
-}
 
 initGame();
 
-</script> 
+</script>
+
 </body>
 </html>
