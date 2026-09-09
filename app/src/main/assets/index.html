@@ -7193,7 +7193,6 @@ function renderPremium(){
 
     profile.innerHTML =
       state.premium
-
         ? `
           <div
             class="premium-badge"
@@ -7201,7 +7200,6 @@ function renderPremium(){
             💎 PREMIUM PLAYER
           </div>
         `
-
         : "";
 
   }
@@ -7463,21 +7461,15 @@ function quitGame(){
       "exitModal"
     );
 
-  if(modal){
-
-    modal.classList.add("show");
-
+  if(!modal){
     return;
-
   }
 
-  /* احتياط إذا لم توجد نافذة الخروج */
+  if(modal.classList.contains("show")){
+    return;
+  }
 
-  stopTimer();
-
-  game.active = false;
-
-  showScreen("homeScreen");
+  modal.classList.add("show");
 
 }
 
@@ -7493,11 +7485,11 @@ function continueGame(){
       "exitModal"
     );
 
-  if(modal){
-
-    modal.classList.remove("show");
-
+  if(!modal){
+    return;
   }
+
+  modal.classList.remove("show");
 
 }
 
@@ -7508,15 +7500,18 @@ function continueGame(){
 
 function confirmExitGame(){
 
+  if(!game.active){
+    continueGame();
+    return;
+  }
+
   const modal =
     document.getElementById(
       "exitModal"
     );
 
   if(modal){
-
     modal.classList.remove("show");
-
   }
 
   stopTimer();
@@ -7524,6 +7519,8 @@ function confirmExitGame(){
   game.active = false;
 
   game.answered = false;
+
+  game.currentQuestion = null;
 
   showScreen("homeScreen");
 
