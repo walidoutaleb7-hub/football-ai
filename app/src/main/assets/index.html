@@ -7505,6 +7505,125 @@ function initGame(){
 /* =========================================================
    START
 ========================================================= */
+/* =========================
+   MODERN EXIT MODAL
+========================= */
+
+.exit-modal{
+  position:absolute;
+  inset:0;
+  z-index:450;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:rgba(0,0,0,.72);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:opacity .25s ease;
+}
+
+.exit-modal.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.exit-modal-box{
+  width:100%;
+  max-width:390px;
+  padding:25px 20px 20px;
+  text-align:center;
+  border-radius:27px;
+
+  background:linear-gradient(
+    145deg,
+    var(--card),
+    var(--bg2)
+  );
+
+  border:1px solid var(--border);
+
+  box-shadow:0 25px 70px rgba(0,0,0,.55);
+
+  transform:scale(.88) translateY(20px);
+
+  transition:
+    transform .3s cubic-bezier(.2,.8,.2,1);
+}
+
+.exit-modal.show .exit-modal-box{
+  transform:scale(1) translateY(0);
+}
+
+.exit-modal-icon{
+  width:70px;
+  height:70px;
+  margin:0 auto 15px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:22px;
+  font-size:34px;
+
+  background:rgba(255,200,87,.12);
+  border:1px solid rgba(255,200,87,.25);
+}
+
+.exit-modal-box h2{
+  margin:0;
+  font-size:22px;
+  font-weight:900;
+}
+
+.exit-modal-box p{
+  margin:10px 0 22px;
+  color:var(--muted);
+  line-height:1.8;
+  font-size:13px;
+}
+
+.exit-modal-actions{
+  display:grid;
+  gap:9px;
+}
+
+.exit-continue-btn{
+  width:100%;
+  padding:14px;
+  border-radius:15px;
+
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary2)
+  );
+
+  color:#fff;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.exit-confirm-btn{
+  width:100%;
+  padding:13px;
+  border-radius:15px;
+
+  background:rgba(255,82,104,.09);
+  border:1px solid rgba(255,82,104,.2);
+
+  color:var(--red);
+  font-size:14px;
+  font-weight:bold;
+}
 
 initGame();
 
