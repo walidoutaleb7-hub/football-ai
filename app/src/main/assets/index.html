@@ -6972,8 +6972,249 @@ function checkAchievements(){
 
 }
 
-
 <script>
+
+/* =========================================================
+   RENDER ACHIEVEMENTS
+========================================================= */
+
+function renderAchievements(){
+
+  const grid =
+    document.getElementById("achievementGrid");
+
+  if(!grid) return;
+
+  if(!Array.isArray(state.achievements)){
+    state.achievements = [];
+  }
+
+  grid.innerHTML = ACHIEVEMENTS.map(
+    achievement => {
+
+      const unlocked =
+        state.achievements.includes(
+          achievement.id
+        );
+
+      return `
+        <div class="achievement ${
+          unlocked ? "" : "locked"
+        }">
+
+          <div class="achievement-icon">
+            ${achievement.icon}
+          </div>
+
+          <strong>
+            ${achievement.title}
+          </strong>
+
+          <small>
+            ${achievement.desc}
+          </small>
+
+          <small>
+            ${
+              unlocked
+                ? "✅ مكتمل"
+                : `🎁 ${achievement.reward} 🪙`
+            }
+          </small>
+
+        </div>
+      `;
+
+    }
+  ).join("");
+
+}
+
+
+/* =========================================================
+   RENDER GAMES
+========================================================= */
+
+function renderGames(){
+
+  const list =
+    document.getElementById("gamesList");
+
+  if(!list) return;
+
+  const keys = [
+    "classic",
+    "speed",
+    "truefalse",
+    "compare",
+    "career",
+    "nationality",
+    "jersey",
+    "millionaire",
+    "detective",
+    "knowledge",
+    "hardcore"
+  ];
+
+  list.innerHTML = keys.map(
+    key => {
+
+      const mode = GAME_MODES[key];
+
+      if(!mode) return "";
+
+      const unlocked =
+        state.level >= mode.unlock;
+
+      return `
+        <button
+          class="game-card"
+          onclick="${
+            unlocked
+              ? `startGame('${key}')`
+              : `toast('🔒 تحتاج المستوى ${mode.unlock}')`
+          }">
+
+          <div class="game-icon">
+            ${mode.icon}
+          </div>
+
+          <div class="game-info">
+
+            <strong>
+              ${mode.name}
+            </strong>
+
+            <small>
+              ${mode.desc}
+              • ${mode.questions} أسئلة
+              • ${mode.time} ث
+            </small>
+
+          </div>
+
+          ${
+            unlocked
+              ? "<span>▶️</span>"
+              : `<span class="lock">
+                   🔒 ${mode.unlock}
+                 </span>`
+          }
+
+        </button>
+      `;
+
+    }
+  ).join("");
+
+}
+
+
+/* =========================================================
+   RENDER DAILY
+========================================================= */
+
+function renderDaily(){
+
+  checkDailyReset();
+
+  const status =
+    document.getElementById(
+      "dailyStatus"
+    );
+
+  const bar =
+    document.getElementById(
+      "dailyBar"
+    );
+
+  if(status){
+
+    status.textContent =
+      state.dailyCompleted
+        ? "مكتمل ✅"
+        : `${state.dailyProgress}/5`;
+
+  }
+
+  if(bar){
+
+    const progress =
+      Math.min(
+        100,
+        (state.dailyProgress / 5) * 100
+      );
+
+    bar.style.width =
+      progress + "%";
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER PREMIUM
+========================================================= */
+
+function renderPremium(){
+
+  const home =
+    document.getElementById(
+      "homePremium"
+    );
+
+  const challenge =
+    document.getElementById(
+      "premiumChallenge"
+    );
+
+  const profile =
+    document.getElementById(
+      "premiumProfile"
+    );
+
+  const modal =
+    document.getElementById(
+      "premiumModal"
+    );
+
+  if(home){
+    home.innerHTML =
+      premiumHTML();
+  }
+
+  if(challenge){
+    challenge.innerHTML =
+      premiumHTML();
+  }
+
+  if(profile){
+
+    profile.innerHTML =
+      state.premium
+
+        ? `
+          <div
+            class="premium-badge"
+            style="margin-top:8px">
+            💎 PREMIUM PLAYER
+          </div>
+        `
+
+        : "";
+
+  }
+
+  if(modal){
+
+    modal.innerHTML =
+      premiumHTML();
+
+  }
+
+}
+
 
 /* =========================================================
    RENDER PROFILE
@@ -6981,22 +7222,31 @@ function checkAchievements(){
 
 function renderProfile(){
 
-  const xp = getXPProgress();
-  const rank = getRank(state.level);
+  const xp =
+    getXPProgress();
+
+  const rank =
+    getRank(state.level);
 
   const elements = {
 
-    profileRank: rank,
+    profileRank:
+      rank,
 
-    profileGames: state.games,
+    profileGames:
+      state.games,
 
-    profileCorrect: state.correct,
+    profileCorrect:
+      state.correct,
 
-    profileBest: state.bestScore,
+    profileBest:
+      state.bestScore,
 
-    profileXP: state.xp,
+    profileXP:
+      state.xp,
 
-    profileLevel: state.level,
+    profileLevel:
+      state.level,
 
     profileXPText:
       `${xp.current} / ${xp.need} XP`
@@ -7022,8 +7272,13 @@ function renderProfile(){
     );
 
   if(bar){
+
     bar.style.width =
-      xp.percent + "%";
+      Math.min(
+        100,
+        Math.max(0,xp.percent)
+      ) + "%";
+
   }
 
 }
@@ -7035,7 +7290,8 @@ function renderProfile(){
 
 function renderHome(){
 
-  const xp = getXPProgress();
+  const xp =
+    getXPProgress();
 
   const values = {
 
@@ -7073,11 +7329,18 @@ function renderHome(){
   );
 
   const bar =
-    document.getElementById("xpBar");
+    document.getElementById(
+      "xpBar"
+    );
 
   if(bar){
+
     bar.style.width =
-      xp.percent + "%";
+      Math.min(
+        100,
+        Math.max(0,xp.percent)
+      ) + "%";
+
   }
 
 }
@@ -7100,17 +7363,21 @@ function renderSettings(){
     );
 
   if(sound){
+
     sound.textContent =
       state.sound
         ? "تشغيل"
         : "إيقاف";
+
   }
 
   if(vibration){
+
     vibration.textContent =
       state.vibration
         ? "تشغيل"
         : "إيقاف";
+
   }
 
 }
@@ -7174,13 +7441,15 @@ function resetProgress(){
 
   showScreen("homeScreen");
 
-  toast("🗑️ تم حذف التقدم");
+  toast(
+    "🗑️ تم حذف التقدم"
+  );
 
 }
 
 
 /* =========================================================
-   MODERN QUIT GAME
+   QUIT GAME
 ========================================================= */
 
 function quitGame(){
@@ -7202,7 +7471,7 @@ function quitGame(){
 
   }
 
-  /* احتياط إذا لم توجد النافذة */
+  /* احتياط إذا لم توجد نافذة الخروج */
 
   stopTimer();
 
@@ -7225,7 +7494,9 @@ function continueGame(){
     );
 
   if(modal){
+
     modal.classList.remove("show");
+
   }
 
 }
@@ -7243,7 +7514,9 @@ function confirmExitGame(){
     );
 
   if(modal){
+
     modal.classList.remove("show");
+
   }
 
   stopTimer();
