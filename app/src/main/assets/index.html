@@ -1798,10 +1798,10 @@ button{
 
     <button
       class="quick-game"
-      onclick="setTheme('champions')">
+      onclick="setTheme('orange')">
 
       <div class="emoji">
-        🏆
+        🟠
       </div>
 
       <strong>
@@ -1813,10 +1813,10 @@ button{
 
     <button
       class="quick-game"
-      onclick="setTheme('algeria')">
+      onclick="setTheme('green)">
 
       <div class="emoji">
-        🇩🇿
+        🟢
       </div>
 
       <strong>
@@ -4564,50 +4564,41 @@ function getRank(level){
 
 }
 
+/* =========================================================
+   FUTURE FOOTBALL ENGINE
+========================================================= */
+
+"use strict";
+
 
 /* =========================================================
-   HELPERS
+   SAFE HELPERS
 ========================================================= */
 
 function random(array){
 
-  if(!Array.isArray(array) || array.length===0)
+  if(!Array.isArray(array) || !array.length)
     return null;
 
   return array[
-    Math.floor(
-      Math.random()*array.length
-    )
+    Math.floor(Math.random()*array.length)
   ];
+
 }
 
 
-/* =========================================================
-   SHUFFLE
-========================================================= */
-
 function shuffle(array){
+
+  if(!Array.isArray(array))
+    return [];
 
   const arr=[...array];
 
-  for(
-    let i=arr.length-1;
-    i>0;
-    i--
-  ){
+  for(let i=arr.length-1;i>0;i--){
 
-    const j=
-      Math.floor(
-        Math.random()*(i+1)
-      );
+    const j=Math.floor(Math.random()*(i+1));
 
-    [
-      arr[i],
-      arr[j]
-    ]=[
-      arr[j],
-      arr[i]
-    ];
+    [arr[i],arr[j]]=[arr[j],arr[i]];
 
   }
 
@@ -4616,11 +4607,10 @@ function shuffle(array){
 }
 
 
-/* =========================================================
-   UNIQUE
-========================================================= */
-
 function unique(array){
+
+  if(!Array.isArray(array))
+    return [];
 
   return [
     ...new Set(
@@ -4636,19 +4626,56 @@ function unique(array){
 }
 
 
-/* =========================================================
-   NORMALIZE
-========================================================= */
-
 function normalize(value){
 
-  return String(value||"")
+  return String(value??"")
     .trim()
     .toLowerCase()
     .replace(/[أإآ]/g,"ا")
     .replace(/ة/g,"ه")
     .replace(/ى/g,"ي")
     .replace(/\s+/g," ");
+
+}
+
+
+function clamp(value,min,max){
+
+  return Math.min(
+    max,
+    Math.max(min,value)
+  );
+
+}
+
+
+/* =========================================================
+   SAFE DOM
+========================================================= */
+
+function el(id){
+
+  return document.getElementById(id);
+
+}
+
+
+function setText(id,value){
+
+  const element=el(id);
+
+  if(element)
+    element.textContent=value;
+
+}
+
+
+function setWidth(id,value){
+
+  const element=el(id);
+
+  if(element)
+    element.style.width=clamp(value,0,100)+"%";
 
 }
 
@@ -4695,7 +4722,17 @@ let game={
 
   usedHints:{},
 
-  endlessCount:0
+  endlessCount:0,
+
+  perfectAnswers:0,
+
+  mistakes:0,
+
+  shieldUsed:false,
+
+  criticalHits:0,
+
+  questionStartTime:0
 
 };
 
@@ -4704,7 +4741,7 @@ let lastMode="classic";
 
 
 /* =========================================================
-   DAILY DATE
+   DATE
 ========================================================= */
 
 function getLocalDateKey(){
@@ -4722,8 +4759,7 @@ function getLocalDateKey(){
 
 function checkDailyReset(){
 
-  const today=
-    getLocalDateKey();
+  const today=getLocalDateKey();
 
   if(state.dailyDate!==today){
 
@@ -4741,78 +4777,60 @@ function checkDailyReset(){
 
 
 /* =========================================================
-   XP PROGRESS
+   PLAYER VALIDATION
 ========================================================= */
 
-function getXPProgress(){
+function validPlayers(){
 
-  let spent=0;
+  if(!Array.isArray(players))
+    return [];
 
-  for(
-    let level=1;
-    level<state.level;
-    level++
-  ){
-
-    spent +=
-      xpForLevel(level);
-
-  }
-
-  const current=
-    Math.max(
-      0,
-      state.xp-spent
-    );
-
-  const need=
-    xpForLevel(state.level);
-
-  return {
-    current,
-    need,
-    percent:
-      Math.min(
-        100,
-        (current/need)*100
-      )
-  };
+  return players.filter(
+    player =>
+      player &&
+      player.id!==undefined &&
+      player.name
+  );
 
 }
 
 
-/* =========================================================
-   PLAYER SELECTION
-========================================================= */
-
 function choosePlayer(){
 
+  const all=validPlayers();
+
+  if(!all.length){
+
+    console.error(
+      "Football Engine: players array is empty."
+    );
+
+    return null;
+
+  }
+
   let pool=
-    players.filter(
-      p =>
-        !state.recentPlayers.includes(p.id)
+    all.filter(
+      player =>
+        !Array.isArray(state.recentPlayers) ||
+        !state.recentPlayers.includes(player.id)
     );
 
   if(pool.length<5)
-    pool=[...players];
+    pool=[...all];
 
   const player=random(pool);
 
-  if(player){
+  if(!player)
+    return null;
 
-    state.recentPlayers.push(
-      player.id
-    );
+  if(!Array.isArray(state.recentPlayers))
+    state.recentPlayers=[];
 
-    if(
-      state.recentPlayers.length>15
-    ){
+  state.recentPlayers.push(player.id);
 
-      state.recentPlayers.shift();
-
-    }
-
-  }
+  while(state.recentPlayers.length>18)
+    state.recentPlayers.shift();
 
   return player;
 
@@ -4820,30 +4838,84 @@ function choosePlayer(){
 
 
 /* =========================================================
-   DIFFICULTY
+   XP
+========================================================= */
+
+function getXPProgress(){
+
+  let spent=0;
+
+  const currentLevel=
+    Number(state.level)||1;
+
+  for(let level=1;level<currentLevel;level++){
+
+    spent+=
+      typeof xpForLevel==="function"
+        ?xpForLevel(level)
+        :100;
+
+  }
+
+  const current=
+    Math.max(
+      0,
+      (Number(state.xp)||0)-spent
+    );
+
+  const need=
+    typeof xpForLevel==="function"
+      ?xpForLevel(currentLevel)
+      :100;
+
+  return {
+
+    current,
+
+    need:Math.max(1,need),
+
+    percent:
+      clamp(
+        (current/Math.max(1,need))*100,
+        0,
+        100
+      )
+
+  };
+
+}
+
+
+/* =========================================================
+   DYNAMIC DIFFICULTY
 ========================================================= */
 
 function getDifficultyScore(){
 
-  let score=
-    state.level;
+  const level=
+    Number(state.level)||1;
 
-  score +=
-    Math.floor(
-      game.correct/2
-    );
+  const accuracy=
+    game.index>0
+      ?game.correct/game.index
+      :0;
 
-  score +=
-    Math.floor(
-      game.combo/3
-    );
+  let difficulty=level;
 
-  return Math.min(
-    20,
-    Math.max(
-      1,
-      score
-    )
+  difficulty+=Math.floor(game.correct/2);
+
+  difficulty+=Math.floor(game.combo/3);
+
+  if(accuracy>=.8)
+    difficulty+=2;
+
+  if(accuracy<.4)
+    difficulty-=1;
+
+  return clamp(
+    difficulty,
+    1,
+    20
   );
 
 }
@@ -4851,13 +4923,16 @@ function getDifficultyScore(){
 
 function difficultyName(level){
 
-  if(level>=17)
+  if(level>=18)
     return "☠️ أسطوري";
 
-  if(level>=14)
+  if(level>=15)
+    return "👑 نخبة";
+
+  if(level>=12)
     return "🔥 خبير";
 
-  if(level>=10)
+  if(level>=9)
     return "🔴 صعب";
 
   if(level>=6)
@@ -4869,7 +4944,7 @@ function difficultyName(level){
 
 
 /* =========================================================
-   QUESTION TYPES BY MODE
+   QUESTION TYPES
 ========================================================= */
 
 function getQuestionTypes(modeKey){
@@ -4877,15 +4952,16 @@ function getQuestionTypes(modeKey){
   const difficulty=
     getDifficultyScore();
 
-  let types=[
-    ...QUESTION_TYPES
-  ];
+  let types=
+    Array.isArray(QUESTION_TYPES)
+      ?[...QUESTION_TYPES]
+      :[];
 
   if(modeKey==="nationality"){
 
     types=
-      QUESTION_TYPES.filter(
-        t=>t.id==="nationality"
+      types.filter(
+        type=>type.id==="nationality"
       );
 
   }
@@ -4893,8 +4969,8 @@ function getQuestionTypes(modeKey){
   else if(modeKey==="jersey"){
 
     types=
-      QUESTION_TYPES.filter(
-        t=>t.id==="number"
+      types.filter(
+        type=>type.id==="number"
       );
 
   }
@@ -4902,10 +4978,10 @@ function getQuestionTypes(modeKey){
   else if(modeKey==="career"){
 
     types=
-      QUESTION_TYPES.filter(
-        t =>
-          t.id==="previousClub" ||
-          t.id==="club"
+      types.filter(
+        type =>
+          type.id==="previousClub" ||
+          type.id==="club"
       );
 
   }
@@ -4913,8 +4989,8 @@ function getQuestionTypes(modeKey){
   else if(modeKey==="knowledge"){
 
     types=
-      QUESTION_TYPES.filter(
-        t =>
+      types.filter(
+        type =>
           [
             "foot",
             "height",
@@ -4923,7 +4999,7 @@ function getQuestionTypes(modeKey){
             "league",
             "champions",
             "worldcup"
-          ].includes(t.id)
+          ].includes(type.id)
       );
 
   }
@@ -4935,8 +5011,9 @@ function getQuestionTypes(modeKey){
   ){
 
     types=
-      QUESTION_TYPES.filter(
-        t=>t.min<=difficulty
+      types.filter(
+        type =>
+          Number(type.min||1)<=difficulty
       );
 
   }
@@ -4944,14 +5021,21 @@ function getQuestionTypes(modeKey){
   else{
 
     types=
-      QUESTION_TYPES.filter(
-        t=>t.min<=difficulty
+      types.filter(
+        type =>
+          Number(type.min||1)<=difficulty
       );
 
   }
 
-  if(!types.length)
-    types=[QUESTION_TYPES[0]];
+  if(!types.length){
+
+    types=
+      Array.isArray(QUESTION_TYPES)
+        ?[...QUESTION_TYPES]
+        :[];
+
+  }
 
   return types;
 
@@ -4968,13 +5052,29 @@ function getWrongAnswers(
   correct
 ){
 
+  const all=validPlayers();
+
   const values=
-    players
+    all
       .filter(
         p=>p.id!==player.id
       )
       .map(
-        p=>String(type.answer(p))
+        p=>{
+
+          try{
+
+            return String(
+              type.answer(p)
+            );
+
+          }catch(e){
+
+            return "";
+
+          }
+
+        }
       )
       .filter(
         value =>
@@ -4999,10 +5099,41 @@ function buildStandardQuestion(
   type
 ){
 
-  const correct=
-    String(
-      type.answer(player)
-    );
+  if(!player || !type)
+    return null;
+
+  let correct="";
+
+  try{
+
+    correct=
+      String(
+        type.answer(player)
+      );
+
+  }catch(e){
+
+    return null;
+
+  }
+
+  if(!correct)
+    return null;
+
+  let text="";
+
+  try{
+
+    text=
+      String(
+        type.text(player)
+      );
+
+  }catch(e){
+
+    return null;
+
+  }
 
   let options=[
     correct,
@@ -5014,14 +5145,16 @@ function buildStandardQuestion(
   ];
 
   options=
-    unique(options);
+    shuffle(
+      unique(options)
+    );
 
-  options=
-    shuffle(options);
+  if(options.length<2)
+    return null;
 
   return {
 
-    text:type.text(player),
+    text,
 
     correct,
 
@@ -5032,7 +5165,12 @@ function buildStandardQuestion(
     type:type.id,
 
     difficulty:
-      getDifficultyScore()
+      clamp(
+        getDifficultyScore()+
+        Number(type.min||0),
+        1,
+        20
+      )
 
   };
 
@@ -5059,8 +5197,10 @@ function buildTrueFalseQuestion(){
     "number"
   ];
 
-  const field=
-    random(fields);
+  const field=random(fields);
+
+  if(!field)
+    return null;
 
   let statement="";
   let truth=true;
@@ -5068,7 +5208,7 @@ function buildTrueFalseQuestion(){
   if(field==="nationality"){
 
     statement=
-      `🇺🇳 ${player.name} يحمل جنسية ${player.nationality}.`;
+      `🌍 ${player.name} يحمل جنسية ${player.nationality}.`;
 
   }
 
@@ -5100,15 +5240,14 @@ function buildTrueFalseQuestion(){
 
   }
 
-  if(Math.random()<0.45){
+  if(Math.random()<.48){
 
     const others=
-      players.filter(
+      validPlayers().filter(
         p=>p.id!==player.id
       );
 
-    const other=
-      random(others);
+    const other=random(others);
 
     if(other){
 
@@ -5116,21 +5255,21 @@ function buildTrueFalseQuestion(){
 
       if(field==="nationality")
         statement=
-          `🇺🇳 ${player.name} يحمل جنسية ${other.nationality}.`;
+          `🌍 ${player.name} يحمل جنسية ${other.nationality}.`;
 
-      if(field==="position")
+      else if(field==="position")
         statement=
           `⚽ مركز ${player.name} هو ${other.position}.`;
 
-      if(field==="club")
+      else if(field==="club")
         statement=
           `🏟️ يلعب ${player.name} مع ${other.club}.`;
 
-      if(field==="foot")
+      else if(field==="foot")
         statement=
           `🦶 القدم الأساسية لـ ${player.name} هي ${other.foot}.`;
 
-      if(field==="number")
+      else
         statement=
           `👕 رقم قميص ${player.name} هو ${other.number}.`;
 
@@ -5144,7 +5283,9 @@ function buildTrueFalseQuestion(){
       `صح أم خطأ؟\n\n${statement}`,
 
     correct:
-      truth ? "نعم" : "لا",
+      truth
+        ?"نعم"
+        :"لا",
 
     options:
       shuffle([
@@ -5157,7 +5298,11 @@ function buildTrueFalseQuestion(){
     type:"truefalse",
 
     difficulty:
-      getDifficultyScore()
+      clamp(
+        getDifficultyScore()+1,
+        1,
+        20
+      )
 
   };
 
@@ -5185,46 +5330,53 @@ function buildDetectiveQuestion(){
   ];
 
   const count=
-    Math.min(
+    clamp(
       2+
-      Math.floor(game.index/3),
+      Math.floor(game.index/2),
+      2,
       5
     );
 
   const selected=
-    clues.slice(0,count);
+    shuffle(clues).slice(0,count);
 
   const others=
     shuffle(
-      players.filter(
+      validPlayers().filter(
         p=>p.id!==player.id
       )
     ).slice(0,3);
 
+  const options=
+    shuffle([
+      player.name,
+      ...others.map(
+        p=>p.name
+      )
+    ]);
+
+  if(options.length<2)
+    return null;
+
   return {
 
     text:
-      `🕵️ من هو اللاعب؟\n\n`+
+      `🕵️ ملف سري — من هو اللاعب؟\n\n`+
       selected.join("\n"),
 
     correct:player.name,
 
-    options:
-      shuffle([
-        player.name,
-        ...others.map(
-          p=>p.name
-        )
-      ]),
+    options,
 
     player,
 
     type:"detective",
 
     difficulty:
-      Math.min(
-        20,
-        getDifficultyScore()+2
+      clamp(
+        getDifficultyScore()+3,
+        1,
+        20
       )
 
   };
@@ -5245,44 +5397,85 @@ function buildCompareQuestion(){
     return null;
 
   const candidates=
-    players.filter(
-      p=>
-        p.id!==first.id &&
-        p.height!==first.height
+    validPlayers().filter(
+      player =>
+        player.id!==first.id
     );
 
   const second=
     random(candidates);
 
   if(!second)
-    return buildStandardQuestion(
-      first,
-      QUESTION_TYPES[0]
-    );
+    return null;
 
-  const comparisons=[
+  const comparisons=[];
 
-    {
-      text:
-        "من اللاعب الأطول؟",
+  if(
+    Number(first.height)!==
+    Number(second.height)
+  ){
 
-      test:
-        ()=>first.height>second.height
-          ?first
-          :second
-    },
+    comparisons.push({
 
-    {
-      text:
-        "من يملك عدد ألقاب دوري الأبطال الأكبر؟",
+      text:"من اللاعب الأطول؟",
 
       test:
-        ()=>first.champions>second.champions
-          ?first
-          :second
-    }
+        ()=>Number(first.height)>
+          Number(second.height)
+            ?first
+            :second
 
-  ];
+    });
+
+  }
+
+  if(
+    Number(first.champions)!==
+    Number(second.champions)
+  ){
+
+    comparisons.push({
+
+      text:
+        "من يملك ألقاب دوري الأبطال أكثر؟",
+
+      test:
+        ()=>Number(first.champions)>
+          Number(second.champions)
+            ?first
+            :second
+
+    });
+
+  }
+
+  if(!comparisons.length){
+
+    return {
+
+      text:
+        `⚖️ من اللاعب صاحب القميص رقم ${first.number}؟`,
+
+      correct:first.name,
+
+      options:
+        shuffle([
+          first.name,
+          second.name
+        ]),
+
+      player:first,
+
+      secondPlayer:second,
+
+      type:"compare",
+
+      difficulty:
+        getDifficultyScore()+1
+
+    };
+
+  }
 
   const comparison=
     random(comparisons);
@@ -5311,7 +5504,11 @@ function buildCompareQuestion(){
     type:"compare",
 
     difficulty:
-      getDifficultyScore()+1
+      clamp(
+        getDifficultyScore()+2,
+        1,
+        20
+      )
 
   };
 
@@ -5319,7 +5516,7 @@ function buildCompareQuestion(){
 
 
 /* =========================================================
-   BUILD QUESTION
+   QUESTION FACTORY
 ========================================================= */
 
 function buildQuestion(modeKey){
@@ -5360,12 +5557,18 @@ function buildQuestion(modeKey){
 function createQuestions(modeKey){
 
   const mode=
-    GAME_MODES[modeKey];
+    GAME_MODES?.[modeKey];
+
+  if(!mode)
+    return [];
 
   const total=
-    mode.questions===999
+    Number(mode.questions)===999
       ?1
-      :mode.questions;
+      :Math.max(
+        1,
+        Number(mode.questions)||10
+      );
 
   const list=[];
 
@@ -5373,7 +5576,7 @@ function createQuestions(modeKey){
 
   while(
     list.length<total &&
-    safety<total*8
+    safety<total*12
   ){
 
     safety++;
@@ -5385,9 +5588,7 @@ function createQuestions(modeKey){
       continue;
 
     const signature=
-      normalize(
-        q.text
-      );
+      normalize(q.text);
 
     if(
       !state.recentQuestions.includes(
@@ -5401,8 +5602,8 @@ function createQuestions(modeKey){
         signature
       );
 
-      if(
-        state.recentQuestions.length>40
+      while(
+        state.recentQuestions.length>60
       ){
 
         state.recentQuestions.shift();
@@ -5413,17 +5614,15 @@ function createQuestions(modeKey){
 
   }
 
-  while(
-    list.length<total
-  ){
+  while(list.length<total){
 
     const q=
       buildQuestion(modeKey);
 
-    if(q)
-      list.push(q);
-    else
+    if(!q)
       break;
+
+    list.push(q);
 
   }
 
@@ -5433,8 +5632,31 @@ function createQuestions(modeKey){
 
 
 /* =========================================================
-   SOUND
+   AUDIO ENGINE
 ========================================================= */
+
+let audioContext=null;
+
+
+function getAudioContext(){
+
+  if(audioContext)
+    return audioContext;
+
+  const AudioContext=
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+  if(!AudioContext)
+    return null;
+
+  audioContext=
+    new AudioContext();
+
+  return audioContext;
+
+}
+
 
 function playSound(type){
 
@@ -5443,15 +5665,14 @@ function playSound(type){
 
   try{
 
-    const AudioContext=
-      window.AudioContext ||
-      window.webkitAudioContext;
+    const ctx=
+      getAudioContext();
 
-    if(!AudioContext)
+    if(!ctx)
       return;
 
-    const ctx=
-      new AudioContext();
+    if(ctx.state==="suspended")
+      ctx.resume();
 
     const oscillator=
       ctx.createOscillator();
@@ -5460,28 +5681,39 @@ function playSound(type){
       ctx.createGain();
 
     oscillator.connect(gain);
-    gain.connect(ctx.destination);
 
-    if(type==="correct"){
+    gain.connect(
+      ctx.destination
+    );
 
-      oscillator.frequency.value=700;
+    const frequencies={
 
-    }
+      correct:720,
 
-    else if(type==="wrong"){
+      wrong:170,
 
-      oscillator.frequency.value=180;
+      tick:430,
 
-    }
+      combo:920,
 
-    else{
+      level:1100,
 
-      oscillator.frequency.value=420;
+      click:520,
 
-    }
+      perfect:1250
+
+    };
+
+    oscillator.frequency.value=
+      frequencies[type]||420;
+
+    oscillator.type=
+      type==="wrong"
+        ?"sawtooth"
+        :"sine";
 
     gain.gain.setValueAtTime(
-      .06,
+      .055,
       ctx.currentTime
     );
 
@@ -5508,17 +5740,16 @@ function playSound(type){
 function vibrate(pattern){
 
   if(
-    state.vibration &&
-    navigator.vibrate
-  ){
+    !state.vibration ||
+    !navigator.vibrate
+  )
+    return;
 
-    try{
+  try{
 
-      navigator.vibrate(pattern);
+    navigator.vibrate(pattern);
 
-    }catch(e){}
-
-  }
+  }catch(e){}
 
 }
 
@@ -5529,10 +5760,11 @@ function vibrate(pattern){
 
 let toastTimer=null;
 
+
 function toast(message){
 
   const element=
-    document.getElementById("toast");
+    el("toast");
 
   if(!element)
     return;
@@ -5540,25 +5772,37 @@ function toast(message){
   element.textContent=
     message;
 
-  element.classList.add("show");
+  element.classList.remove(
+    "show"
+  );
 
-  clearTimeout(toastTimer);
+  void element.offsetWidth;
+
+  element.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    toastTimer
+  );
 
   toastTimer=
     setTimeout(
       ()=>{
+
         element.classList.remove(
           "show"
         );
+
       },
-      2400
+      2600
     );
 
 }
 
 
 /* =========================================================
-   SHOW SCREEN
+   SCREEN
 ========================================================= */
 
 function showScreen(id){
@@ -5567,17 +5811,17 @@ function showScreen(id){
     .querySelectorAll(".screen")
     .forEach(
       screen=>{
+
         screen.classList.toggle(
           "active",
           screen.id===id
         );
+
       }
     );
 
   const nav=
-    document.getElementById(
-      "bottomNav"
-    );
+    el("bottomNav");
 
   if(nav){
 
@@ -5613,9 +5857,11 @@ function showScreen(id){
 
 function openSettings(){
 
-  document
-    .getElementById("settingsModal")
-    .classList.add("show");
+  const modal=
+    el("settingsModal");
+
+  if(modal)
+    modal.classList.add("show");
 
 }
 
@@ -5623,13 +5869,14 @@ function openSettings(){
 function closeModal(event){
 
   const modal=
-    document.getElementById(
-      "settingsModal"
-    );
+    el("settingsModal");
 
   if(
-    !event ||
-    event.target===modal
+    modal &&
+    (
+      !event ||
+      event.target===modal
+    )
   ){
 
     modal.classList.remove(
@@ -5650,6 +5897,8 @@ function toggleSound(){
 
   renderUI();
 
+  playSound("click");
+
   toast(
     state.sound
       ?"🔊 المؤثرات مفعلة"
@@ -5668,6 +5917,8 @@ function toggleVibration(){
 
   renderUI();
 
+  vibrate(30);
+
   toast(
     state.vibration
       ?"📳 الاهتزاز مفعل"
@@ -5683,21 +5934,30 @@ function toggleVibration(){
 
 function setTheme(theme){
 
-  document.body.classList.remove(
+  const themes=[
     "light",
     "champions",
     "algeria"
+  ];
+
+  document.body.classList.remove(
+    ...themes
   );
 
   if(theme!=="dark")
     document.body.classList.add(theme);
 
-  state.theme=theme;
+  state.theme=
+    themes.includes(theme)
+      ?theme
+      :"dark";
 
   save();
 
+  playSound("click");
+
   toast(
-    `🎨 تم تغيير المظهر`
+    "🎨 تم تغيير المظهر"
   );
 
 }
@@ -5725,20 +5985,26 @@ function stopTimer(){
 function updateTimer(){
 
   const timer=
-    document.getElementById(
-      "timer"
-    );
+    el("timer");
 
   if(!timer)
     return;
 
   timer.textContent=
-    game.timeLeft;
+    Math.max(
+      0,
+      game.timeLeft
+    );
 
   timer.style.borderColor=
     game.timeLeft<=5
       ?"var(--red)"
       :"var(--primary)";
+
+  timer.classList.toggle(
+    "danger",
+    game.timeLeft<=5
+  );
 
 }
 
@@ -5747,8 +6013,10 @@ function startTimer(){
 
   stopTimer();
 
-  game.timeLeft=
-    game.mode.time;
+  const time=
+    Number(game.mode?.time)||15;
+
+  game.timeLeft=time;
 
   updateTimer();
 
@@ -5767,10 +6035,13 @@ function startTimer(){
         updateTimer();
 
         if(
-          game.timeLeft<=5
+          game.timeLeft<=5 &&
+          game.timeLeft>0
         ){
 
           playSound("tick");
+
+          vibrate(15);
 
         }
 
@@ -5778,11 +6049,7 @@ function startTimer(){
           game.timeLeft<=0
         ){
 
-          clearInterval(
-            game.timerId
-          );
-
-          game.timerId=null;
+          stopTimer();
 
           handleAnswer(
             -1,
@@ -5794,6 +6061,49 @@ function startTimer(){
       },
       1000
     );
+
+}
+
+
+/* =========================================================
+   QUESTION HUD
+========================================================= */
+
+function updateGameHUD(){
+
+  setText(
+    "gameScore",
+    game.score
+  );
+
+  setText(
+    "gameCorrect",
+    game.correct
+  );
+
+  setText(
+    "gameCombo",
+    game.combo>1
+      ?`×${game.combo}`
+      :"×0"
+  );
+
+  const combo=
+    el("comboBox");
+
+  if(combo){
+
+    combo.textContent=
+      game.combo>1
+        ?`🔥 COMBO ×${game.combo}`
+        :"";
+
+    combo.classList.toggle(
+      "active",
+      game.combo>=2
+    );
+
+  }
 
 }
 
@@ -5812,58 +6122,67 @@ function renderQuestion(){
       game.index
     ];
 
-  if(!q)
+  if(!q){
+
+    finishGame();
+
     return;
+
+  }
 
   game.currentQuestion=q;
 
   game.answered=false;
 
-  document.getElementById(
-    "gameModeName"
-  ).textContent=
-    game.mode.name;
+  game.questionStartTime=
+    Date.now();
 
-  document.getElementById(
-    "questionIndex"
-  ).textContent=
-    game.index+1;
+  setText(
+    "gameModeName",
+    game.mode.name
+  );
 
-  document.getElementById(
-    "questionTotal"
-  ).textContent=
+  setText(
+    "questionIndex",
+    game.index+1
+  );
+
+  setText(
+    "questionTotal",
     game.mode.questions===999
       ?"∞"
-      :game.mode.questions;
+      :game.questions.length
+  );
 
-  document.getElementById(
-    "questionBar"
-  ).style.width=
+  const total=
     game.mode.questions===999
-      ?"100%"
-      :(
-        (
-          game.index /
-          game.mode.questions
-        )*100
-      )+"%";
+      ?1
+      :game.questions.length;
 
-  document.getElementById(
-    "difficulty"
-  ).textContent=
+  setWidth(
+    "questionBar",
+    game.mode.questions===999
+      ?100
+      :(game.index/total)*100
+  );
+
+  setText(
+    "difficulty",
     difficultyName(
       q.difficulty
-    );
+    )
+  );
 
-  document.getElementById(
-    "questionText"
-  ).textContent=
-    q.text;
+  setText(
+    "questionText",
+    q.text
+  );
 
   const answers=
-    document.getElementById(
-      "answers"
-    );
+    el("answers");
+
+  if(!answers)
+    return;
 
   answers.innerHTML="";
 
@@ -5875,6 +6194,8 @@ function renderQuestion(){
           "button"
         );
 
+      button.type="button";
+
       button.className=
         "answer";
 
@@ -5884,11 +6205,13 @@ function renderQuestion(){
       button.dataset.index=
         index;
 
-      button.onclick=
+      button.addEventListener(
+        "click",
         ()=>handleAnswer(
           index,
           false
-        );
+        )
+      );
 
       answers.appendChild(
         button
@@ -5897,15 +6220,7 @@ function renderQuestion(){
     }
   );
 
-  const combo=
-    document.getElementById(
-      "comboBox"
-    );
-
-  combo.textContent=
-    game.combo>1
-      ?`🔥 COMBO ×${game.combo}`
-      :"";
+  updateGameHUD();
 
   const hints=
     document.querySelector(
@@ -5938,14 +6253,31 @@ function startGame(modeKey){
   checkDailyReset();
 
   const mode=
-    GAME_MODES[modeKey];
+    GAME_MODES?.[modeKey];
 
-  if(!mode)
+  if(!mode){
+
+    toast(
+      "❌ وضع اللعب غير موجود"
+    );
+
     return;
 
+  }
+
+  if(!Array.isArray(players)||!players.length){
+
+    toast(
+      "❌ قاعدة اللاعبين غير محملة"
+    );
+
+    return;
+
+  }
+
   if(
-    state.level<
-    mode.unlock
+    Number(state.level||1)<
+    Number(mode.unlock||1)
   ){
 
     toast(
@@ -5962,12 +6294,11 @@ function startGame(modeKey){
   ){
 
     toast(
-      "💎 هذا الوضع Premium — افتحه من الملف الشخصي"
+      "💎 هذا الوضع Premium"
     );
 
-    showScreen(
-      "profileScreen"
-    );
+    if(el("profileScreen"))
+      showScreen("profileScreen");
 
     return;
 
@@ -5979,36 +6310,67 @@ function startGame(modeKey){
   ){
 
     toast(
-      "🏆 أكملت تحدي اليوم! عد غداً."
+      "🏆 أكملت تحدي اليوم!"
     );
 
     return;
 
   }
 
-  lastMode=
-    modeKey;
+  stopTimer();
+
+  lastMode=modeKey;
 
   game={
+
     active:true,
+
     modeKey,
+
     mode,
+
     questions:[],
+
     index:0,
+
     score:0,
+
     correct:0,
+
     combo:0,
+
     maxCombo:0,
+
     xpEarned:0,
+
     coinsEarned:0,
+
     skipped:0,
+
     answered:false,
+
     timerId:null,
-    timeLeft:mode.time,
+
+    timeLeft:Number(mode.time)||15,
+
     currentQuestion:null,
+
     startTime:Date.now(),
+
     usedHints:{},
-    endlessCount:0
+
+    endlessCount:0,
+
+    perfectAnswers:0,
+
+    mistakes:0,
+
+    shieldUsed:false,
+
+    criticalHits:0,
+
+    questionStartTime:0
+
   };
 
   game.questions=
@@ -6016,15 +6378,13 @@ function startGame(modeKey){
       modeKey
     );
 
-  if(
-    !game.questions.length
-  ){
-
-    toast(
-      "❌ لم نستطع إنشاء الأسئلة"
-    );
+  if(!game.questions.length){
 
     game.active=false;
+
+    toast(
+      "❌ تعذر إنشاء الأسئلة"
+    );
 
     return;
 
@@ -6034,7 +6394,23 @@ function startGame(modeKey){
     "gameScreen"
   );
 
+  playSound("click");
+
   renderQuestion();
+
+}
+
+
+/* =========================================================
+   CRITICAL HIT
+========================================================= */
+
+function calculateCritical(){
+
+  if(game.combo<4)
+    return false;
+
+  return Math.random()<.12;
 
 }
 
@@ -6061,12 +6437,19 @@ function handleAnswer(
   const q=
     game.currentQuestion;
 
-  const buttons=
-    [
-      ...document.querySelectorAll(
-        "#answers .answer"
-      )
-    ];
+  if(!q){
+
+    nextQuestion();
+
+    return;
+
+  }
+
+  const buttons=[
+    ...document.querySelectorAll(
+      "#answers .answer"
+    )
+  ];
 
   buttons.forEach(
     button=>{
@@ -6074,8 +6457,7 @@ function handleAnswer(
     }
   );
 
-  let selected=
-    null;
+  let selected=null;
 
   if(
     optionIndex>=0 &&
@@ -6094,12 +6476,10 @@ function handleAnswer(
     normalize(q.correct);
 
   buttons.forEach(
-    (button,index)=>{
+    button=>{
 
       if(
-        normalize(
-          button.textContent
-        )===
+        normalize(button.textContent)===
         normalize(q.correct)
       ){
 
@@ -6132,13 +6512,13 @@ function handleAnswer(
     state.dailyProgress=
       Math.min(
         5,
-        state.dailyProgress+1
+        Number(state.dailyProgress||0)+1
       );
 
   }
 
   const difficulty=
-    q.difficulty||1;
+    Number(q.difficulty)||1;
 
   if(isCorrect){
 
@@ -6152,6 +6532,8 @@ function handleAnswer(
         game.combo
       );
 
+    game.perfectAnswers++;
+
     state.correct++;
 
     state.streak++;
@@ -6162,6 +6544,23 @@ function handleAnswer(
         game.combo
       );
 
+    const critical=
+      calculateCritical();
+
+    if(critical){
+
+      game.criticalHits++;
+
+      playSound("perfect");
+
+      vibrate([30,20,30]);
+
+      toast(
+        "⚡ CRITICAL HIT! نقاط مضاعفة!"
+      );
+
+    }
+
     const timeBonus=
       Math.max(
         0,
@@ -6170,32 +6569,35 @@ function handleAnswer(
 
     const comboBonus=
       Math.min(
-        100,
-        game.combo*10
+        150,
+        game.combo*12
       );
 
-    const points=
+    let points=
       Math.round(
         (
           100+
-          difficulty*20+
+          difficulty*22+
           timeBonus+
           comboBonus
         )*
         (
           1+
           Math.min(
-            .75,
-            game.combo*.08
+            .9,
+            game.combo*.09
           )
         )
       );
 
+    if(critical)
+      points*=2;
+
     const xp=
       Math.round(
-        18+
+        20+
         difficulty*5+
-        game.combo*2+
+        game.combo*3+
         timeBonus
       );
 
@@ -6204,7 +6606,7 @@ function handleAnswer(
         3,
         Math.round(
           4+
-          difficulty/2+
+          difficulty*.6+
           game.combo/3
         )
       );
@@ -6215,19 +6617,31 @@ function handleAnswer(
 
     game.coinsEarned+=coins;
 
-    playSound("correct");
+    playSound(
+      game.combo>=3
+        ?"combo"
+        :"correct"
+    );
 
-    vibrate(35);
+    vibrate(
+      game.combo>=5
+        ?[25,20,25]
+        :35
+    );
 
     if(game.combo>=3){
 
       toast(
-        `🔥 COMBO ×${game.combo} +${points} نقطة`
+        `🔥 COMBO ×${game.combo}  +${points}`
       );
 
     }
 
-  }else{
+  }
+
+  else{
+
+    game.mistakes++;
 
     game.combo=0;
 
@@ -6240,7 +6654,7 @@ function handleAnswer(
     if(timedOut){
 
       toast(
-        `⏰ انتهى الوقت! الإجابة: ${q.correct}`
+        `⏰ انتهى الوقت — ${q.correct}`
       );
 
     }
@@ -6248,7 +6662,7 @@ function handleAnswer(
     else{
 
       toast(
-        `❌ خطأ! الإجابة: ${q.correct}`
+        `❌ خطأ — ${q.correct}`
       );
 
     }
@@ -6256,6 +6670,8 @@ function handleAnswer(
   }
 
   save();
+
+  updateGameHUD();
 
   const endlessFail=
     game.modeKey==="endless" &&
@@ -6297,20 +6713,15 @@ function nextQuestion(){
 
   game.index++;
 
-  if(
-    game.modeKey==="endless"
-  ){
+  if(game.modeKey==="endless"){
 
     const q=
       buildQuestion(
         "classic"
       );
 
-    if(q){
-
+    if(q)
       game.questions.push(q);
-
-    }
 
     renderQuestion();
 
@@ -6348,11 +6759,15 @@ function finishGame(reason="complete"){
   game.active=false;
 
   let bonusXP=0;
+
   let bonusCoins=0;
 
   const total=
     game.modeKey==="endless"
-      ?game.index
+      ?Math.max(
+        1,
+        game.correct+game.mistakes
+      )
       :game.questions.length;
 
   const perfect=
@@ -6362,15 +6777,33 @@ function finishGame(reason="complete"){
 
   if(perfect){
 
-    bonusXP=100;
+    bonusXP+=100;
 
-    bonusCoins=75;
+    bonusCoins+=75;
 
     state.perfectGames++;
 
+    playSound("perfect");
+
     toast(
-      "💎 PERFECT GAME! مكافأة إضافية"
+      "💎 PERFECT GAME!"
     );
+
+  }
+
+  if(game.maxCombo>=5){
+
+    bonusXP+=50;
+
+    bonusCoins+=30;
+
+  }
+
+  if(game.maxCombo>=10){
+
+    bonusXP+=100;
+
+    bonusCoins+=75;
 
   }
 
@@ -6388,13 +6821,22 @@ function finishGame(reason="complete"){
 
   }
 
+  if(game.modeKey==="premium"){
+
+    bonusXP+=75;
+
+    bonusCoins+=75;
+
+  }
+
   if(
-    game.modeKey==="premium"
+    game.modeKey==="endless" &&
+    game.correct>=10
   ){
 
-    bonusXP+=50;
+    bonusXP+=100;
 
-    bonusCoins+=50;
+    bonusCoins+=100;
 
   }
 
@@ -6406,15 +6848,18 @@ function finishGame(reason="complete"){
     game.coinsEarned+
     bonusCoins;
 
-  state.xp+=finalXP;
+  state.xp=
+    Number(state.xp||0)+finalXP;
 
-  state.coins+=finalCoins;
+  state.coins=
+    Number(state.coins||0)+finalCoins;
 
-  state.games++;
+  state.games=
+    Number(state.games||0)+1;
 
   state.bestScore=
     Math.max(
-      state.bestScore,
+      Number(state.bestScore||0),
       game.score
     );
 
@@ -6428,17 +6873,13 @@ function finishGame(reason="complete"){
 
   let title="ممتاز!";
 
-  if(
-    game.correct===0
-  ){
+  if(game.correct===0){
 
     title="لا تستسلم 💪";
 
   }
 
-  else if(
-    perfect
-  ){
+  else if(perfect){
 
     title="PERFECT! 💎";
 
@@ -6449,7 +6890,16 @@ function finishGame(reason="complete"){
     Math.ceil(total*.8)
   ){
 
-    title="أداء رائع! 🔥";
+    title="أداء أسطوري! 🔥";
+
+  }
+
+  else if(
+    game.correct>=
+    Math.ceil(total*.6)
+  ){
+
+    title="أداء رائع! 🏆";
 
   }
 
@@ -6462,53 +6912,62 @@ function finishGame(reason="complete"){
 
   }
 
-  if(
-    game.modeKey==="endless"
-  ){
+  else{
 
-    title=
-      `♾️ وصلت إلى ${game.correct} سؤال`;
+    title="تقدر أفضل! ⚡";
 
   }
 
-  document.getElementById(
-    "resultIcon"
-  ).textContent=
+  if(game.modeKey==="endless"){
+
+    title=
+      `♾️ ${game.correct} سؤال`;
+
+  }
+
+  setText(
+    "resultIcon",
     perfect
       ?"💎"
       :game.correct>=total*.8
         ?"🏆"
-        :"⚽";
+        :"⚽"
+  );
 
-  document.getElementById(
-    "resultTitle"
-  ).textContent=
-    title;
+  setText(
+    "resultTitle",
+    title
+  );
 
-  document.getElementById(
-    "resultSub"
-  ).textContent=
-    `أجبت عن ${game.correct} سؤال بشكل صحيح`;
+  setText(
+    "resultSub",
+    `أجبت عن ${game.correct} من ${total} بشكل صحيح`
+  );
 
-  document.getElementById(
-    "resultScore"
-  ).textContent=
-    game.score;
+  setText(
+    "resultScore",
+    game.score
+  );
 
-  document.getElementById(
-    "resultCorrect"
-  ).textContent=
-    `${game.correct}/${total}`;
+  setText(
+    "resultCorrect",
+    `${game.correct}/${total}`
+  );
 
-  document.getElementById(
-    "resultXP"
-  ).textContent=
-    `+${finalXP}`;
+  setText(
+    "resultXP",
+    `+${finalXP}`
+  );
 
-  document.getElementById(
-    "resultCoins"
-  ).textContent=
-    `+${finalCoins}`;
+  setText(
+    "resultCoins",
+    `+${finalCoins}`
+  );
+
+  setText(
+    "resultCombo",
+    `×${game.maxCombo}`
+  );
 
   showScreen(
     "resultScreen"
@@ -6545,7 +7004,7 @@ function useHint(type){
   if(game.usedHints[type]){
 
     toast(
-      "⚠️ استعملت هذا التلميح بالفعل"
+      "⚠️ استخدمت هذا التلميح"
     );
 
     return;
@@ -6553,18 +7012,22 @@ function useHint(type){
   }
 
   const costs={
+
     fifty:25,
+
     clue:20,
+
     skip:35
+
   };
 
   const cost=
     state.premium
       ?0
-      :costs[type];
+      :costs[type]||0;
 
   if(
-    state.coins<cost
+    Number(state.coins||0)<cost
   ){
 
     toast(
@@ -6584,70 +7047,76 @@ function useHint(type){
     const q=
       game.currentQuestion;
 
-    const buttons=
-      [
-        ...document.querySelectorAll(
-          "#answers .answer"
-        )
-      ];
+    const buttons=[
+      ...document.querySelectorAll(
+        "#answers .answer"
+      )
+    ];
 
     const wrongIndexes=
       buttons
         .map(
-          (_,i)=>i
+          (_,index)=>index
         )
         .filter(
-          i=>
+          index =>
             normalize(
-              buttons[i].textContent
+              buttons[index].textContent
             )!==
             normalize(q.correct)
         );
 
-    shuffle(
-      wrongIndexes
-    )
-    .slice(
-      0,
-      Math.max(
+    shuffle(wrongIndexes)
+      .slice(
         0,
-        buttons.length-2
+        Math.max(
+          0,
+          buttons.length-2
+        )
       )
-    )
-    .forEach(
-      i=>{
-        buttons[i].disabled=true;
-        buttons[i].style.opacity=".25";
-      }
-    );
+      .forEach(
+        index=>{
+
+          buttons[index].disabled=true;
+
+          buttons[index].style.opacity=".22";
+
+        }
+      );
 
     toast(
-      "✂️ تم حذف الإجابات الخاطئة"
+      "✂️ حذفت الإجابات الخاطئة"
     );
 
   }
 
   else if(type==="clue"){
 
-    const p=
-      game.currentQuestion.player;
+    const player=
+      game.currentQuestion?.player;
 
-    let clue=
-      `💡 تلميح: ${p.nationality}`;
+    if(player){
 
-    if(
-      game.currentQuestion.type!=="nationality"
-    ){
+      const clue=
+        game.currentQuestion.type==="nationality"
+          ?player.position
+          :player.league;
 
-      clue=
-        `💡 تلميح: يلعب في ${p.league}`;
+      const combo=
+        el("comboBox");
+
+      if(combo){
+
+        combo.textContent=
+          `💡 تلميح: ${clue}`;
+
+      }
 
     }
 
-    document.getElementById(
-      "comboBox"
-    ).textContent=
-      clue;
+    toast(
+      "💡 ظهر التلميح"
+    );
 
   }
 
@@ -6655,22 +7124,21 @@ function useHint(type){
 
     game.skipped++;
 
+    game.answered=true;
+
+    stopTimer();
+
     save();
 
     toast(
       "⏭️ تم تخطي السؤال"
     );
 
-    game.answered=true;
-
-    stopTimer();
-
     setTimeout(
       ()=>{
-        if(!game.active)
-          return;
 
-        nextQuestion();
+        if(game.active)
+          nextQuestion();
 
       },
       300
@@ -6688,13 +7156,13 @@ function useHint(type){
 
 
 /* =========================================================
-   PREMIUM
+   PREMIUM SYSTEM
 ========================================================= */
 
-const PREMIUM_COST=1500;
+const PREMIUM_PRICE="$1";
 
 
-function unlockPremium(){
+function purchasePremium(){
 
   if(state.premium){
 
@@ -6706,39 +7174,74 @@ function unlockPremium(){
 
   }
 
+  /*
+    الشراء الحقيقي يجب أن يتم عبر
+    Google Play Billing في طبقة Android.
+  */
+
   if(
-    state.coins<
-    PREMIUM_COST
+    window.Android &&
+    typeof window.Android.buyPremium==="function"
   ){
 
-    toast(
-      `💎 تحتاج ${PREMIUM_COST} 🪙 لفتح Premium`
-    );
+    try{
+
+      window.Android.buyPremium();
+
+      toast(
+        "💳 جاري فتح Google Play..."
+      );
+
+    }catch(e){
+
+      toast(
+        "❌ تعذر بدء عملية الشراء"
+      );
+
+    }
 
     return;
 
   }
 
-  state.coins-=
-    PREMIUM_COST;
+  toast(
+    "💳 شراء Premium يتم عبر Google Play"
+  );
+
+}
+
+
+/* =========================================================
+   PREMIUM PURCHASE CALLBACK
+========================================================= */
+
+function premiumPurchaseSuccess(){
 
   state.premium=true;
 
-  state.premiumCoins+=500;
+  state.premiumCoins=
+    Number(state.premiumCoins||0)+500;
 
-  state.xp+=250;
+  state.xp=
+    Number(state.xp||0)+250;
 
   updateLevel();
+
+  checkAchievements();
 
   save();
 
   renderUI();
 
   toast(
-    "💎 مبروك! تم فتح Premium Arena!"
+    "💎 تم تفعيل Premium بنجاح!"
   );
 
 }
+
+
+window.premiumPurchaseSuccess=
+  premiumPurchaseSuccess;
 
 
 /* =========================================================
@@ -6750,6 +7253,7 @@ function premiumHTML(){
   if(state.premium){
 
     return `
+
       <div class="premium">
 
         <span class="premium-badge">
@@ -6761,13 +7265,21 @@ function premiumHTML(){
         </h3>
 
         <ul>
-          <li>أسئلة أصعب ومتقدمة</li>
-          <li>تلميحات مجانية</li>
-          <li>مكافآت XP إضافية</li>
-          <li>مكافآت عملات إضافية</li>
+
+          <li>☠️ أسئلة متقدمة</li>
+
+          <li>♾️ تحديات خاصة</li>
+
+          <li>⚡ تلميحات مجانية</li>
+
+          <li>🔥 مكافآت XP إضافية</li>
+
+          <li>🪙 مكافآت عملات إضافية</li>
+
         </ul>
 
         <button
+          type="button"
           class="primary-btn"
           onclick="startGame('premium')">
 
@@ -6776,11 +7288,13 @@ function premiumHTML(){
         </button>
 
       </div>
+
     `;
 
   }
 
   return `
+
     <div class="premium">
 
       <span class="premium-badge">
@@ -6788,25 +7302,60 @@ function premiumHTML(){
       </span>
 
       <h3>
-        افتح ساحة النخبة
+        FUTURE ELITE
       </h3>
 
+      <p>
+        افتح التجربة الكاملة للعبة
+      </p>
+
       <ul>
-        <li>15 سؤالاً صعباً</li>
-        <li>تلميحات مجانية</li>
-        <li>XP مضاعف</li>
-        <li>مكافآت خاصة</li>
+
+        <li>☠️ Premium Arena</li>
+
+        <li>⚡ تلميحات مجانية</li>
+
+        <li>🔥 XP إضافي</li>
+
+        <li>🪙 مكافآت خاصة</li>
+
+        <li>👑 محتوى النخبة</li>
+
       </ul>
 
-      <button
-        class="primary-btn"
-        onclick="unlockPremium()">
+      <div
+        style="
+          font-size:30px;
+          font-weight:900;
+          margin:14px 0;
+        ">
 
-        🔓 فتح بـ ${PREMIUM_COST} 🪙
+        ${PREMIUM_PRICE}
+
+      </div>
+
+      <button
+        type="button"
+        class="primary-btn"
+        onclick="purchasePremium()">
+
+        💎 فتح Premium — ${PREMIUM_PRICE}
 
       </button>
 
+      <small
+        style="
+          display:block;
+          margin-top:10px;
+          opacity:.65;
+        ">
+
+        الدفع يتم عبر Google Play
+
+      </small>
+
     </div>
+
   `;
 
 }
@@ -6839,8 +7388,8 @@ const ACHIEVEMENTS=[
   {
     id:"fifty_correct",
     icon:"🎯",
-    title:"قناص",
-    desc:"أجب عن 50 سؤالاً بشكل صحيح",
+    title:"القناص",
+    desc:"50 إجابة صحيحة",
     reward:150,
     test:s=>s.correct>=50
   },
@@ -6857,7 +7406,7 @@ const ACHIEVEMENTS=[
   {
     id:"combo5",
     icon:"🔥",
-    title:"سلسلة نارية",
+    title:"السلسلة النارية",
     desc:"حقق COMBO ×5",
     reward:100,
     test:s=>s.maxCombo>=5
@@ -6875,8 +7424,8 @@ const ACHIEVEMENTS=[
   {
     id:"level5",
     icon:"⭐",
-    title:"متقدم",
-    desc:"الوصول إلى المستوى 5",
+    title:"المتقدم",
+    desc:"الوصول للمستوى 5",
     reward:100,
     test:s=>s.level>=5
   },
@@ -6884,8 +7433,8 @@ const ACHIEVEMENTS=[
   {
     id:"level10",
     icon:"🏅",
-    title:"خبير",
-    desc:"الوصول إلى المستوى 10",
+    title:"الخبير",
+    desc:"الوصول للمستوى 10",
     reward:200,
     test:s=>s.level>=10
   },
@@ -6894,7 +7443,7 @@ const ACHIEVEMENTS=[
     id:"level15",
     icon:"👑",
     title:"المحترف",
-    desc:"الوصول إلى المستوى 15",
+    desc:"الوصول للمستوى 15",
     reward:300,
     test:s=>s.level>=15
   },
@@ -6903,7 +7452,7 @@ const ACHIEVEMENTS=[
     id:"perfect",
     icon:"💎",
     title:"الكمال",
-    desc:"أكمل مباراة بدون أي خطأ",
+    desc:"مباراة كاملة بدون خطأ",
     reward:300,
     test:s=>s.perfectGames>=1
   },
@@ -6911,8 +7460,8 @@ const ACHIEVEMENTS=[
   {
     id:"daily",
     icon:"📅",
-    title:"لا تفوّت يومك",
-    desc:"أكمل تحدياً يومياً",
+    title:"ملك اليوم",
+    desc:"أكمل التحدي اليومي",
     reward:150,
     test:s=>s.dailyCompleted
   },
@@ -6921,19 +7470,40 @@ const ACHIEVEMENTS=[
     id:"premium",
     icon:"💎",
     title:"النخبة",
-    desc:"افتح Premium Arena",
+    desc:"فتح Premium Arena",
     reward:250,
     test:s=>s.premium
+  },
+
+  {
+    id:"score5000",
+    icon:"🚀",
+    title:"الصاروخ",
+    desc:"سجل 5000 نقطة في مباراة",
+    reward:200,
+    test:s=>s.bestScore>=5000
+  },
+
+  {
+    id:"score10000",
+    icon:"🌌",
+    title:"المستقبل",
+    desc:"سجل 10000 نقطة",
+    reward:500,
+    test:s=>s.bestScore>=10000
   }
 
 ];
 
 
 /* =========================================================
-   CHECK ACHIEVEMENTS
+   ACHIEVEMENTS CHECK
 ========================================================= */
 
 function checkAchievements(){
+
+  if(!Array.isArray(state.achievements))
+    state.achievements=[];
 
   ACHIEVEMENTS.forEach(
     achievement=>{
@@ -6945,21 +7515,36 @@ function checkAchievements(){
       )
         return;
 
-      if(
-        achievement.test(state)
-      ){
+      let unlocked=false;
+
+      try{
+
+        unlocked=
+          achievement.test(state);
+
+      }catch(e){
+
+        unlocked=false;
+
+      }
+
+      if(unlocked){
 
         state.achievements.push(
           achievement.id
         );
 
-        state.coins+=
-          achievement.reward;
+        state.coins=
+          Number(state.coins||0)+
+          Number(achievement.reward||0);
 
-        state.xp+=
+        state.xp=
+          Number(state.xp||0)+
           Math.round(
-            achievement.reward*.5
+            Number(achievement.reward||0)*.5
           );
+
+        playSound("level");
 
         toast(
           `🏆 ${achievement.title} +${achievement.reward} 🪙`
@@ -6972,7 +7557,6 @@ function checkAchievements(){
 
 }
 
-<script>
 
 /* =========================================================
    RENDER ACHIEVEMENTS
@@ -6980,53 +7564,66 @@ function checkAchievements(){
 
 function renderAchievements(){
 
-  const grid =
-    document.getElementById("achievementGrid");
+  const grid=
+    el("achievementGrid");
 
-  if(!grid) return;
+  if(!grid)
+    return;
 
-  if(!Array.isArray(state.achievements)){
-    state.achievements = [];
-  }
+  if(!Array.isArray(state.achievements))
+    state.achievements=[];
 
-  grid.innerHTML = ACHIEVEMENTS.map(
-    achievement => {
+  grid.innerHTML=
+    ACHIEVEMENTS.map(
+      achievement=>{
 
-      const unlocked =
-        state.achievements.includes(
-          achievement.id
-        );
+        const unlocked=
+          state.achievements.includes(
+            achievement.id
+          );
 
-      return `
-        <div class="achievement ${
-          unlocked ? "" : "locked"
-        }">
+        return `
 
-          <div class="achievement-icon">
-            ${achievement.icon}
+          <div class="achievement ${
+            unlocked
+              ?"unlocked"
+              :"locked"
+          }">
+
+            <div class="achievement-icon">
+
+              ${achievement.icon}
+
+            </div>
+
+            <strong>
+
+              ${achievement.title}
+
+            </strong>
+
+            <small>
+
+              ${achievement.desc}
+
+            </small>
+
+            <small>
+
+              ${
+                unlocked
+                  ?"✅ مكتمل"
+                  :`🎁 ${achievement.reward} 🪙`
+              }
+
+            </small>
+
           </div>
 
-          <strong>
-            ${achievement.title}
-          </strong>
+        `;
 
-          <small>
-            ${achievement.desc}
-          </small>
-
-          <small>
-            ${
-              unlocked
-                ? "✅ مكتمل"
-                : `🎁 ${achievement.reward} 🪙`
-            }
-          </small>
-
-        </div>
-      `;
-
-    }
-  ).join("");
+      }
+    ).join("");
 
 }
 
@@ -7037,12 +7634,14 @@ function renderAchievements(){
 
 function renderGames(){
 
-  const list =
-    document.getElementById("gamesList");
+  const list=
+    el("gamesList");
 
-  if(!list) return;
+  if(!list)
+    return;
 
-  const keys = [
+  const keys=[
+
     "classic",
     "speed",
     "truefalse",
@@ -7054,99 +7653,116 @@ function renderGames(){
     "detective",
     "knowledge",
     "hardcore"
+
   ];
 
-  list.innerHTML = keys.map(
-    key => {
+  list.innerHTML=
+    keys.map(
+      key=>{
 
-      const mode = GAME_MODES[key];
+        const mode=
+          GAME_MODES?.[key];
 
-      if(!mode) return "";
+        if(!mode)
+          return "";
 
-      const unlocked =
-        state.level >= mode.unlock;
+        const unlocked=
+          Number(state.level||1)>=
+          Number(mode.unlock||1);
 
-      return `
-        <button
-          class="game-card"
-          onclick="${
-            unlocked
-              ? `startGame('${key}')`
-              : `toast('🔒 تحتاج المستوى ${mode.unlock}')`
-          }">
+        return `
 
-          <div class="game-icon">
-            ${mode.icon}
-          </div>
+          <button
+            type="button"
+            class="game-card"
+            onclick="${
+              unlocked
+                ?`startGame('${key}')`
+                :`toast('🔒 تحتاج المستوى ${mode.unlock}')`
+            }">
 
-          <div class="game-info">
+            <div class="game-icon">
 
-            <strong>
-              ${mode.name}
-            </strong>
+              ${mode.icon||"⚽"}
 
-            <small>
-              ${mode.desc}
-              • ${mode.questions} أسئلة
-              • ${mode.time} ث
-            </small>
+            </div>
 
-          </div>
+            <div class="game-info">
 
-          ${
-            unlocked
-              ? "<span>▶️</span>"
-              : `<span class="lock">
-                   🔒 ${mode.unlock}
-                 </span>`
-          }
+              <strong>
 
-        </button>
-      `;
+                ${mode.name}
 
-    }
-  ).join("");
+              </strong>
+
+              <small>
+
+                ${mode.desc||""}
+
+                • ${mode.questions===999?"∞":mode.questions}
+
+                • ${mode.time||"-"} ث
+
+              </small>
+
+            </div>
+
+            ${
+              unlocked
+
+                ?"<span>▶️</span>"
+
+                :`
+                  <span class="lock">
+                    🔒 ${mode.unlock}
+                  </span>
+                `
+            }
+
+          </button>
+
+        `;
+
+      }
+    ).join("");
 
 }
 
 
 /* =========================================================
-   RENDER DAILY
+   DAILY
 ========================================================= */
 
 function renderDaily(){
 
   checkDailyReset();
 
-  const status =
-    document.getElementById(
-      "dailyStatus"
-    );
+  const status=
+    el("dailyStatus");
 
-  const bar =
-    document.getElementById(
-      "dailyBar"
+  const bar=
+    el("dailyBar");
+
+  const progress=
+    clamp(
+      Number(state.dailyProgress||0),
+      0,
+      5
     );
 
   if(status){
 
-    status.textContent =
+    status.textContent=
       state.dailyCompleted
-        ? "مكتمل ✅"
-        : `${state.dailyProgress}/5`;
+        ?"مكتمل ✅"
+        :`${progress}/5`;
 
   }
 
   if(bar){
 
-    const progress =
-      Math.min(
-        100,
-        (state.dailyProgress / 5) * 100
-      );
-
-    bar.style.width =
-      progress + "%";
+    bar.style.width=
+      (progress/5*100)+"%";
 
   }
 
@@ -7154,156 +7770,143 @@ function renderDaily(){
 
 
 /* =========================================================
-   RENDER PREMIUM
+   PREMIUM RENDER
 ========================================================= */
 
 function renderPremium(){
 
-  const home =
-    document.getElementById(
-      "homePremium"
-    );
+  const targets=[
 
-  const challenge =
-    document.getElementById(
-      "premiumChallenge"
-    );
+    "homePremium",
+    "premiumChallenge",
+    "premiumProfile",
+    "premiumModal"
 
-  const profile =
-    document.getElementById(
-      "premiumProfile"
-    );
+  ];
 
-  const modal =
-    document.getElementById(
-      "premiumModal"
-    );
+  targets.forEach(
+    id=>{
 
-  if(home){
-    home.innerHTML =
-      premiumHTML();
-  }
+      const element=
+        el(id);
 
-  if(challenge){
-    challenge.innerHTML =
-      premiumHTML();
-  }
+      if(!element)
+        return;
 
-  if(profile){
+      if(id==="premiumProfile"){
 
-    profile.innerHTML =
-      state.premium
-        ? `
-          <div
-            class="premium-badge"
-            style="margin-top:8px">
-            💎 PREMIUM PLAYER
-          </div>
-        `
-        : "";
+        element.innerHTML=
+          state.premium
 
-  }
+            ?`
+              <div
+                class="premium-badge"
+                style="margin-top:8px">
 
-  if(modal){
+                💎 PREMIUM PLAYER
 
-    modal.innerHTML =
-      premiumHTML();
+              </div>
+            `
 
-  }
+            :"";
+
+      }
+
+      else{
+
+        element.innerHTML=
+          premiumHTML();
+
+      }
+
+    }
+  );
 
 }
 
 
 /* =========================================================
-   RENDER PROFILE
+   PROFILE
 ========================================================= */
 
 function renderProfile(){
 
-  const xp =
+  const xp=
     getXPProgress();
 
-  const rank =
-    getRank(state.level);
+  const rank=
+    typeof getRank==="function"
+      ?getRank(state.level)
+      :"Player";
 
-  const elements = {
+  const values={
 
-    profileRank:
-      rank,
+    profileRank:rank,
 
     profileGames:
-      state.games,
+      state.games||0,
 
     profileCorrect:
-      state.correct,
+      state.correct||0,
 
     profileBest:
-      state.bestScore,
+      state.bestScore||0,
 
     profileXP:
-      state.xp,
+      state.xp||0,
 
     profileLevel:
-      state.level,
+      state.level||1,
 
     profileXPText:
       `${xp.current} / ${xp.need} XP`
 
   };
 
-  Object.entries(elements).forEach(
-    ([id,value]) => {
+  Object.entries(values)
+    .forEach(
+      ([id,value])=>{
 
-      const el =
-        document.getElementById(id);
+        setText(
+          id,
+          value
+        );
 
-      if(el){
-        el.textContent = value;
       }
-
-    }
-  );
-
-  const bar =
-    document.getElementById(
-      "profileXPBar"
     );
 
-  if(bar){
-
-    bar.style.width =
-      Math.min(
-        100,
-        Math.max(0,xp.percent)
-      ) + "%";
-
-  }
+  setWidth(
+    "profileXPBar",
+    xp.percent
+  );
 
 }
 
 
 /* =========================================================
-   RENDER HOME
+   HOME
 ========================================================= */
 
 function renderHome(){
 
-  const xp =
+  const xp=
     getXPProgress();
 
-  const values = {
+  const values={
 
     homeLevel:
-      state.level,
+      state.level||1,
 
     homeCoins:
-      state.coins,
+      state.coins||0,
 
     homeStreak:
-      state.streak,
+      state.streak||0,
 
     levelName:
-      getRank(state.level),
+      typeof getRank==="function"
+        ?getRank(state.level)
+        :"Player",
 
     xpCurrent:
       xp.current,
@@ -7313,83 +7916,59 @@ function renderHome(){
 
   };
 
-  Object.entries(values).forEach(
-    ([id,value]) => {
+  Object.entries(values)
+    .forEach(
+      ([id,value])=>{
 
-      const el =
-        document.getElementById(id);
+        setText(
+          id,
+          value
+        );
 
-      if(el){
-        el.textContent = value;
       }
-
-    }
-  );
-
-  const bar =
-    document.getElementById(
-      "xpBar"
     );
 
-  if(bar){
-
-    bar.style.width =
-      Math.min(
-        100,
-        Math.max(0,xp.percent)
-      ) + "%";
-
-  }
+  setWidth(
+    "xpBar",
+    xp.percent
+  );
 
 }
 
 
 /* =========================================================
-   RENDER SETTINGS
+   SETTINGS RENDER
 ========================================================= */
 
 function renderSettings(){
 
-  const sound =
-    document.getElementById(
-      "soundButton"
-    );
+  setText(
+    "soundButton",
+    state.sound
+      ?"تشغيل"
+      :"إيقاف"
+  );
 
-  const vibration =
-    document.getElementById(
-      "vibrationButton"
-    );
-
-  if(sound){
-
-    sound.textContent =
-      state.sound
-        ? "تشغيل"
-        : "إيقاف";
-
-  }
-
-  if(vibration){
-
-    vibration.textContent =
-      state.vibration
-        ? "تشغيل"
-        : "إيقاف";
-
-  }
+  setText(
+    "vibrationButton",
+    state.vibration
+      ?"تشغيل"
+      :"إيقاف"
+  );
 
 }
 
 
 /* =========================================================
-   RENDER UI
+   GLOBAL UI
 ========================================================= */
 
 function renderUI(){
 
   checkDailyReset();
 
-  updateLevel();
+  if(typeof updateLevel==="function")
+    updateLevel();
 
   renderHome();
 
@@ -7409,27 +7988,30 @@ function renderUI(){
 
 
 /* =========================================================
-   RESET PROGRESS
+   RESET
 ========================================================= */
 
 function resetProgress(){
 
-  const confirmed =
+  const confirmed=
     confirm(
       "⚠️ هل أنت متأكد؟ سيتم حذف كل تقدمك."
     );
 
-  if(!confirmed){
+  if(!confirmed)
     return;
-  }
 
   stopTimer();
 
-  state = {
-    ...defaultState
-  };
+  if(typeof defaultState==="object"){
 
-  game.active = false;
+    state={
+      ...defaultState
+    };
+
+  }
+
+  game.active=false;
 
   save();
 
@@ -7437,7 +8019,9 @@ function resetProgress(){
 
   closeModal();
 
-  showScreen("homeScreen");
+  showScreen(
+    "homeScreen"
+  );
 
   toast(
     "🗑️ تم حذف التقدم"
@@ -7447,82 +8031,78 @@ function resetProgress(){
 
 
 /* =========================================================
-   QUIT GAME
+   EXIT MODAL
 ========================================================= */
 
 function quitGame(){
 
-  if(!game.active){
+  if(!game.active)
     return;
-  }
 
-  const modal =
-    document.getElementById(
-      "exitModal"
-    );
+  const modal=
+    el("exitModal");
 
-  if(!modal){
+  if(!modal)
     return;
-  }
 
-  if(modal.classList.contains("show")){
+  if(
+    modal.classList.contains("show")
+  )
     return;
-  }
 
-  modal.classList.add("show");
+  modal.classList.add(
+    "show"
+  );
+
+  playSound("click");
 
 }
 
-
-/* =========================================================
-   CONTINUE GAME
-========================================================= */
 
 function continueGame(){
 
-  const modal =
-    document.getElementById(
-      "exitModal"
-    );
+  const modal=
+    el("exitModal");
 
-  if(!modal){
+  if(!modal)
     return;
-  }
 
-  modal.classList.remove("show");
+  modal.classList.remove(
+    "show"
+  );
+
+  playSound("click");
 
 }
 
-
-/* =========================================================
-   CONFIRM EXIT
-========================================================= */
 
 function confirmExitGame(){
 
   if(!game.active){
+
     continueGame();
+
     return;
+
   }
 
-  const modal =
-    document.getElementById(
-      "exitModal"
-    );
+  const modal=
+    el("exitModal");
 
-  if(modal){
+  if(modal)
     modal.classList.remove("show");
-  }
 
   stopTimer();
 
-  game.active = false;
+  game.active=false;
 
-  game.answered = false;
+  game.answered=false;
 
-  game.currentQuestion = null;
+  game.currentQuestion=null;
 
-  showScreen("homeScreen");
+  showScreen(
+    "homeScreen"
+  );
 
   toast(
     "🏠 خرجت من المباراة"
@@ -7537,11 +8117,42 @@ function confirmExitGame(){
 
 function restartLastGame(){
 
-  if(!lastMode){
-    lastMode = "classic";
+  startGame(
+    lastMode||"classic"
+  );
+
+}
+
+
+/* =========================================================
+   LEVEL UP EFFECT
+========================================================= */
+
+let previousLevel=1;
+
+
+function detectLevelUp(){
+
+  const current=
+    Number(state.level)||1;
+
+  if(
+    current>previousLevel
+  ){
+
+    playSound("level");
+
+    vibrate(
+      [40,30,40,30,80]
+    );
+
+    toast(
+      `🚀 LEVEL UP! وصلت للمستوى ${current}`
+    );
+
   }
 
-  startGame(lastMode);
+  previousLevel=current;
 
 }
 
@@ -7554,13 +8165,25 @@ function initGame(){
 
   checkDailyReset();
 
+  if(!Array.isArray(state.recentPlayers))
+    state.recentPlayers=[];
+
+  if(!Array.isArray(state.recentQuestions))
+    state.recentQuestions=[];
+
+  if(!Array.isArray(state.achievements))
+    state.achievements=[];
+
   document.body.classList.remove(
     "light",
     "champions",
     "algeria"
   );
 
-  if(state.theme !== "dark"){
+  if(
+    state.theme &&
+    state.theme!=="dark"
+  ){
 
     document.body.classList.add(
       state.theme
@@ -7568,9 +8191,15 @@ function initGame(){
 
   }
 
-  updateLevel();
+  previousLevel=
+    Number(state.level)||1;
+
+  if(typeof updateLevel==="function")
+    updateLevel();
 
   checkAchievements();
+
+  save();
 
   renderUI();
 
@@ -7582,12 +8211,26 @@ function initGame(){
 
 
 /* =========================================================
-   START
+   START ENGINE
 ========================================================= */
 
-initGame();
+if(
+  document.readyState==="loading"
+){
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initGame,
+    {once:true}
+  );
+
+}
+else{
+
+  initGame();
+
+}
 
 </script>
-
 </body>
 </html>
